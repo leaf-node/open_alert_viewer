@@ -2,17 +2,43 @@ import 'package:bloc/bloc.dart';
 
 import '../model/alert.dart';
 import '../model/alerts.dart';
+import 'alert_events.dart';
+import 'alert_state.dart';
 
-class AlertsCubit extends Cubit<List<Alert>> {
-  AlertsCubit(this.sources) : super([]);
+class AlertsBloc extends Bloc<AlertEvent, AlertState> {
+  AlertsBloc() : super(const AlertsInit()) {
+    _alertSources = {};
+    _alerts = [];
+    on<AddAlertSource>(_addSource);
+    on<RemoveAlertSource>(_removeSource);
+    on<FetchAlerts>(_fetch);
+  }
 
-  late List<AlertSource> sources;
+  late Set<AlertSource> _alertSources;
+  late List<Alert> _alerts;
 
-  Future<void> fetch(Duration maxCacheAge) async {
-    List<Alert> alerts = [];
-    for (var source in sources) {
-      alerts.addAll(await source.fetchAlerts(maxCacheAge));
+  Future<void> _addSource(
+      AddAlertSource event, Emitter<AlertState> emit) async {
+    _alertSources.add(event.source);
+
+    add(const FetchAlerts(maxCacheAge: Duration.zero));
+  }
+
+  Future<void> _removeSource(
+      RemoveAlertSource event, Emitter<AlertState> emit) async {
+    _alertSources.remove(event.source);
+
+    add(const FetchAlerts(maxCacheAge: Duration.zero));
+  }
+
+  Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
+    emit(AlertsFetching(_alerts));
+
+    List<Alert> newAlerts = [];
+    for (var source in _alertSources) {
+      newAlerts.addAll(await source.fetchAlerts(event.maxCacheAge));
     }
-    emit(alerts);
+    _alerts = newAlerts;
+    emit(AlertsFetched(_alerts));
   }
 }

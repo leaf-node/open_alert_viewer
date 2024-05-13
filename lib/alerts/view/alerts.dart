@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/alert_events.dart';
+import '../bloc/alert_state.dart';
 import '../bloc/alerts.dart';
-import '../model/alert.dart';
 import '../model/alerts.dart';
 import 'alert.dart';
 
@@ -15,7 +16,7 @@ class AlertsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => AlertsCubit(sources),
+        create: (context) => AlertsBloc(),
         child:
             Scaffold(appBar: Header(title: title), body: const AlertsList()));
   }
@@ -39,10 +40,23 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                 shape: CircleBorder(),
               ),
               child: IconButton(
+                  icon: const Icon(Icons.add),
+                  color: Colors.white,
+                  onPressed: () => context
+                      .read<AlertsBloc>()
+                      .add(AddAlertSource(source: RandomAlerts())))),
+          const SizedBox(width: 10),
+          Ink(
+              decoration: const ShapeDecoration(
+                color: Colors.black,
+                shape: CircleBorder(),
+              ),
+              child: IconButton(
                   icon: const Icon(Icons.refresh),
                   color: Colors.white,
-                  onPressed: () =>
-                      context.read<AlertsCubit>().fetch(Duration.zero))),
+                  onPressed: () => context
+                      .read<AlertsBloc>()
+                      .add(const FetchAlerts(maxCacheAge: Duration.zero)))),
           const SizedBox(width: 10)
         ]);
   }
@@ -56,9 +70,9 @@ class AlertsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AlertsCubit, List<Alert>>(builder: (context, state) {
+    return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
       List<Widget> alertWidgets = [];
-      for (var alert in state) {
+      for (var alert in state.alerts) {
         alertWidgets.add(AlertWidget(alert: alert));
       }
       return ListView(children: alertWidgets);
