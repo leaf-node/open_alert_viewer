@@ -62,16 +62,12 @@ class AlertWidget extends StatelessWidget {
   }
 
   String _prettyPrintAge() {
-    int seconds;
-    int minutes;
-    int hours;
-    int days;
     String fmtStr;
 
-    seconds = alert.age.inSeconds.floor() % 60;
-    minutes = alert.age.inMinutes.floor() % 60;
-    hours = alert.age.inHours.floor() % 24;
-    days = alert.age.inDays.floor();
+    int seconds = alert.age.inSeconds.floor() % 60;
+    int minutes = alert.age.inMinutes.floor() % 60;
+    int hours = alert.age.inHours.floor() % 24;
+    int days = alert.age.inDays.floor();
 
     fmtStr = (days > 0) ? "${days}d " : "";
     fmtStr += (days > 0 || hours > 0) ? "${hours}h " : "";
