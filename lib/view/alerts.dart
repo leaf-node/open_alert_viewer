@@ -34,12 +34,16 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
         title: Text(title),
         actions: [
           Ink(
-              color: Colors.black,
+              decoration: const ShapeDecoration(
+                color: Colors.black,
+                shape: CircleBorder(),
+              ),
               child: IconButton(
                   icon: const Icon(Icons.refresh),
                   color: Colors.white,
                   onPressed: () =>
-                      context.read<AlertsCubit>().fetch(Duration.zero)))
+                      context.read<AlertsCubit>().fetch(Duration.zero))),
+          const SizedBox(width: 10)
         ]);
   }
 
