@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../model/alerts.dart';
-import 'alerts.dart';
+import 'alerts/model/alerts.dart';
+import 'alerts/view/alerts.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
