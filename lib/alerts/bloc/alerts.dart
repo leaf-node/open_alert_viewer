@@ -35,9 +35,18 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     emit(AlertsFetching(_alerts));
 
     List<Alert> newAlerts = [];
+    List<List<Alert>> fetched = [];
+    List<Future<List<Alert>>> incoming = [];
+
     for (var source in _alertSources) {
-      newAlerts.addAll(await source.fetchAlerts(event.maxCacheAge));
+      incoming.add(source.fetchAlerts(event.maxCacheAge));
     }
+
+    fetched = await Future.wait(incoming);
+    for (var result in fetched) {
+      newAlerts.addAll(result);
+    }
+
     _alerts = newAlerts;
     emit(AlertsFetched(_alerts));
   }
