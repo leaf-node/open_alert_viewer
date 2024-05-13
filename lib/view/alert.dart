@@ -36,7 +36,7 @@ enum AlertTypeView {
       numArgs: 1),
   unknown(
       icon: Icons.question_mark,
-      bgColor: Color(0xFF4F2723), // modified brown900
+      bgColor: Color(0xFF3C111A), // dark red
       fgColor: Colors.white,
       template: "%s is UNKNOWN: %s",
       numArgs: 2);
