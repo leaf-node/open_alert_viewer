@@ -32,7 +32,8 @@ class RandomAlerts implements AlertSource {
     for (int i = 0; i < count; i++) {
       _nextAlerts.add(Alert(
           kind: AlertType.values[_randomSeed.nextInt(AlertType.values.length)],
-          message: "something broke",
+          hostname: "example.com",
+          message: "foo bar baz",
           age: Duration(seconds: _randomSeed.nextInt(60 * 60 * 24 * 7))));
     }
     // simulate network timeout
