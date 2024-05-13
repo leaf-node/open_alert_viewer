@@ -17,8 +17,10 @@ class AlertsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => AlertsBloc(),
-        child:
-            Scaffold(appBar: Header(title: title), body: const AlertsList()));
+        child: Scaffold(
+            backgroundColor: Colors.black,
+            appBar: Header(title: title),
+            body: const AlertsList()));
   }
 }
 
