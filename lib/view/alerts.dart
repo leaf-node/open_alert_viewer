@@ -61,7 +61,7 @@ class AlertsList extends StatelessWidget {
       for (var alert in state) {
         alertWidgets.add(AlertWidget(alert: alert));
       }
-      return Column(children: alertWidgets);
+      return ListView(children: alertWidgets);
     });
   }
 }
