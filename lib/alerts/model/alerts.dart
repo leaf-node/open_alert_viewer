@@ -38,6 +38,7 @@ class RandomAlerts implements AlertSource {
     }
     // simulate network timeout
     await Future.delayed(const Duration(seconds: 2));
+    _nextAlerts.sort((a, b) => a.age.compareTo(b.age));
 
     _lastFetch = DateTime.now();
     _alerts = _nextAlerts;
