@@ -57,21 +57,21 @@ class AlertWidget extends StatelessWidget {
         textColor: viewKind.fgColor,
         tileColor: viewKind.bgColor,
         title: Text(alert.message),
-        subtitle: Text(_prettyPrintAge(alert.age)),
+        subtitle: Text(_prettyPrintAge()),
         leading: Icon(viewKind.icon));
   }
 
-  String _prettyPrintAge(Duration age) {
+  String _prettyPrintAge() {
     int seconds;
     int minutes;
     int hours;
     int days;
     String fmtStr;
 
-    seconds = age.inSeconds.floor() % 60;
-    minutes = age.inMinutes.floor() % 60;
-    hours = age.inHours.floor() % 24;
-    days = age.inDays.floor();
+    seconds = alert.age.inSeconds.floor() % 60;
+    minutes = alert.age.inMinutes.floor() % 60;
+    hours = alert.age.inHours.floor() % 24;
+    days = alert.age.inDays.floor();
 
     fmtStr = (days > 0) ? "${days}d " : "";
     fmtStr += (days > 0 || hours > 0) ? "${hours}h " : "";
