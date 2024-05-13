@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../model/alerts.dart';
 import 'alerts.dart';
 
 class MyApp extends StatelessWidget {
@@ -13,9 +14,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Alerts(
-        title: 'Open Alert Viewer',
-      ),
+      home: AlertsPage(title: 'Open Alert Viewer', sources: [RandomAlerts()]),
     );
   }
 }
