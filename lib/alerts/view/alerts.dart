@@ -72,12 +72,19 @@ class AlertsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
+    return RefreshIndicator(onRefresh: () async {
+      context
+          .read<AlertsBloc>()
+          .add(const FetchAlerts(maxCacheAge: Duration.zero));
+      await context.read<AlertsBloc>().stream.firstWhere(
+            (state) => state is! AlertsFetching,
+          );
+    }, child: BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
       List<Widget> alertWidgets = [];
       for (var alert in state.alerts) {
         alertWidgets.add(AlertWidget(alert: alert));
       }
       return ListView(children: alertWidgets);
-    });
+    }));
   }
 }
