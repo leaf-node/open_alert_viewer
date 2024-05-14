@@ -1,4 +1,4 @@
-enum AlertType { okay, warning, error, unreachable, down, unknown }
+enum AlertType { up, okay, warning, error, unreachable, down, unknown, pending }
 
 class Alert {
   const Alert(

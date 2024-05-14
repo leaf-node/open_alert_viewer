@@ -4,6 +4,12 @@ import 'package:sprintf/sprintf.dart';
 import '../model/alert.dart';
 
 enum AlertTypeView {
+  up(
+      icon: Icons.check,
+      bgColor: Color(0xFF2E7D32), // green800
+      fgColor: Colors.white,
+      template: "%s: UP",
+      numArgs: 1),
   okay(
       icon: Icons.check,
       bgColor: Color(0xFF2E7D32), // green800
@@ -39,7 +45,13 @@ enum AlertTypeView {
       bgColor: Color(0xFF3C111A), // dark red
       fgColor: Colors.white,
       template: "%s is UNKNOWN: %s",
-      numArgs: 2);
+      numArgs: 2),
+  pending(
+      icon: Icons.pending_outlined,
+      bgColor: Color(0xFF999999), // dark red
+      fgColor: Colors.black,
+      template: "%s is PENDING",
+      numArgs: 1);
 
   const AlertTypeView(
       {required this.icon,
@@ -63,12 +75,14 @@ class AlertWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewKind = switch (alert.kind) {
+      AlertType.up => AlertTypeView.up,
       AlertType.okay => AlertTypeView.okay,
       AlertType.warning => AlertTypeView.warning,
       AlertType.error => AlertTypeView.error,
       AlertType.unreachable => AlertTypeView.unreachable,
       AlertType.down => AlertTypeView.down,
       AlertType.unknown => AlertTypeView.unknown,
+      AlertType.pending => AlertTypeView.pending,
     };
 
     return ListTile(
