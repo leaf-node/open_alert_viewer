@@ -5,6 +5,7 @@ import '../bloc/alert_events.dart';
 import '../bloc/alert_state.dart';
 import '../bloc/alerts.dart';
 import '../model/alerts.dart';
+import '../model/alerts_random.dart';
 import 'alert.dart';
 
 class AlertsPage extends StatelessWidget {

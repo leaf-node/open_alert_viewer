@@ -1,4 +1,4 @@
-import '../model/alert.dart';
+import '../model/alerts.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AlertState extends Equatable {

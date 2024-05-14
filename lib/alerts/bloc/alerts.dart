@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
-import '../model/alert.dart';
 import '../model/alerts.dart';
 import 'alert_events.dart';
 import 'alert_state.dart';

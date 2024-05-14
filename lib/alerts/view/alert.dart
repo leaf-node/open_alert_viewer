@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 
-import '../model/alert.dart';
+import '../model/alerts.dart';
 
 enum AlertTypeView {
   up(

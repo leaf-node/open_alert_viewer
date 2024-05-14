@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-import 'alerts/model/alerts.dart';
+import 'alerts/model/alerts_random.dart';
 import 'alerts/view/alerts.dart';
 
 class MyApp extends StatelessWidget {
