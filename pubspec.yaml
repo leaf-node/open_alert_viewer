@@ -39,6 +39,7 @@ dependencies:
   flutter_bloc: ^8.1.5
   sprintf: ^7.0.0
   equatable: ^2.0.5
+  bloc_concurrency: ^0.2.5
 
 dev_dependencies:
   flutter_test:
