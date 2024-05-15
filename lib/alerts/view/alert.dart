@@ -24,7 +24,7 @@ enum AlertTypeView {
       numArgs: 3),
   pending(
       icon: Icons.pending_outlined,
-      bgColor: Color(0xFF999999), // dark red
+      bgColor: Color(0xFF999999), // light gray
       fgColor: Colors.black,
       template: "%s [%s]: PENDING",
       numArgs: 2),
@@ -54,7 +54,7 @@ enum AlertTypeView {
       numArgs: 1),
   hostPending(
       icon: Icons.pending_outlined,
-      bgColor: Color(0xFF999999), // dark red
+      bgColor: Color(0xFF999999), // light gray
       fgColor: Colors.black,
       template: "%s: PENDING",
       numArgs: 1);
