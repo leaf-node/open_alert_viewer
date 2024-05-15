@@ -27,6 +27,7 @@ class RandomAlerts implements AlertSource {
       _nextAlerts.add(Alert(
           kind: AlertType.values[_randomSeed.nextInt(AlertType.values.length)],
           hostname: "example.com",
+          service: "fizz buzz",
           message: "foo bar baz",
           age: Duration(seconds: _randomSeed.nextInt(60 * 60 * 24 * 7))));
     }

@@ -4,53 +4,59 @@ import 'package:sprintf/sprintf.dart';
 import '../model/alerts.dart';
 
 enum AlertTypeView {
+  okay(
+      icon: Icons.check,
+      bgColor: Color(0xFF2E7D32), // green800
+      fgColor: Colors.white,
+      template: "%s [%s]: OKAY: %s",
+      numArgs: 3),
+  warning(
+      icon: Icons.error_outline, // circular icon
+      bgColor: Color(0xFFF9A825), // yellow800
+      fgColor: Colors.black,
+      template: "%s [%s]: WARNING: %s",
+      numArgs: 3),
+  error(
+      icon: Icons.warning_amber_outlined, // triangular icon
+      bgColor: Color(0xFFC62828), // red800
+      fgColor: Colors.white,
+      template: "%s [%s]: ERROR: %s",
+      numArgs: 3),
+  pending(
+      icon: Icons.pending_outlined,
+      bgColor: Color(0xFF999999), // dark red
+      fgColor: Colors.black,
+      template: "%s [%s]: PENDING",
+      numArgs: 2),
+  unknown(
+      icon: Icons.question_mark,
+      bgColor: Color(0xFF3C111A), // dark red
+      fgColor: Colors.white,
+      template: "%s [%s]: UNKNOWN: %s",
+      numArgs: 3),
   up(
       icon: Icons.check,
       bgColor: Color(0xFF2E7D32), // green800
       fgColor: Colors.white,
       template: "%s: UP",
       numArgs: 1),
-  okay(
-      icon: Icons.check,
-      bgColor: Color(0xFF2E7D32), // green800
-      fgColor: Colors.white,
-      template: "%s: OKAY: %s",
-      numArgs: 2),
-  warning(
-      icon: Icons.error_outline, // circular icon
-      bgColor: Color(0xFFF9A825), // yellow800
-      fgColor: Colors.black,
-      template: "%s: WARNING: %s",
-      numArgs: 2),
-  error(
-      icon: Icons.warning_amber_outlined, // triangular icon
-      bgColor: Color(0xFFC62828), // red800
-      fgColor: Colors.white,
-      template: "%s: ERROR: %s",
-      numArgs: 2),
   unreachable(
       icon: Icons.close,
       bgColor: Color(0xFF222222), // dark gray
       fgColor: Colors.white,
-      template: "%s is UNREACHABLE",
+      template: "%s: UNREACHABLE",
       numArgs: 1),
   down(
       icon: Icons.keyboard_double_arrow_down,
       bgColor: Color(0xFF111111), // darker gray
       fgColor: Colors.white,
-      template: "%s is DOWN",
+      template: "%s: DOWN",
       numArgs: 1),
-  unknown(
-      icon: Icons.question_mark,
-      bgColor: Color(0xFF3C111A), // dark red
-      fgColor: Colors.white,
-      template: "%s is UNKNOWN: %s",
-      numArgs: 2),
-  pending(
+  hostPending(
       icon: Icons.pending_outlined,
       bgColor: Color(0xFF999999), // dark red
       fgColor: Colors.black,
-      template: "%s is PENDING",
+      template: "%s: PENDING",
       numArgs: 1);
 
   const AlertTypeView(
@@ -75,14 +81,15 @@ class AlertWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewKind = switch (alert.kind) {
-      AlertType.up => AlertTypeView.up,
       AlertType.okay => AlertTypeView.okay,
       AlertType.warning => AlertTypeView.warning,
       AlertType.error => AlertTypeView.error,
+      AlertType.pending => AlertTypeView.pending,
+      AlertType.up => AlertTypeView.up,
       AlertType.unreachable => AlertTypeView.unreachable,
       AlertType.down => AlertTypeView.down,
       AlertType.unknown => AlertTypeView.unknown,
-      AlertType.pending => AlertTypeView.pending,
+      AlertType.hostPending => AlertTypeView.hostPending,
     };
 
     return ListTile(
@@ -97,8 +104,10 @@ class AlertWidget extends StatelessWidget {
   String _printMessage(template, numArgs) {
     if (numArgs == 1) {
       return sprintf(template, [alert.hostname]);
+    } else if (numArgs == 2) {
+      return sprintf(template, [alert.hostname, alert.service]);
     } else {
-      return sprintf(template, [alert.hostname, alert.message]);
+      return sprintf(template, [alert.hostname, alert.service, alert.message]);
     }
   }
 
