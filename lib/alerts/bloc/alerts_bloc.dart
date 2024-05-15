@@ -11,7 +11,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     _alertSources = {};
     _alerts = [];
     refreshKey = GlobalKey<RefreshIndicatorState>();
-    on<AddAlertSource>(_addSource);
+    on<AddAlertSources>(_addSources);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
   }
@@ -20,9 +20,9 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   late List<Alert> _alerts;
   late GlobalKey<RefreshIndicatorState> refreshKey;
 
-  Future<void> _addSource(
-      AddAlertSource event, Emitter<AlertState> emit) async {
-    _alertSources.add(event.source);
+  Future<void> _addSources(
+      AddAlertSources event, Emitter<AlertState> emit) async {
+    _alertSources.addAll(event.sources);
 
     add(const FetchAlerts(maxCacheAge: Duration.zero));
   }

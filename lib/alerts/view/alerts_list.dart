@@ -47,7 +47,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                   color: Colors.white,
                   onPressed: () => context
                       .read<AlertsBloc>()
-                      .add(AddAlertSource(source: RandomAlerts())))),
+                      .add(AddAlertSources(sources: [RandomAlerts()])))),
           const SizedBox(width: 10),
           Ink(
               decoration: const ShapeDecoration(
