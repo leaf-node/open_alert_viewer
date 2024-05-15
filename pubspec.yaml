@@ -40,6 +40,8 @@ dependencies:
   sprintf: ^7.0.0
   equatable: ^2.0.5
   bloc_concurrency: ^0.2.5
+  sqlite3: ^2.4.3
+  sqlite3_flutter_libs: ^0.5.21
 
 dev_dependencies:
   flutter_test:
