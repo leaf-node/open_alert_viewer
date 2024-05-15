@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 enum AlertType {
   okay,
   warning,
@@ -10,7 +12,7 @@ enum AlertType {
   hostPending
 }
 
-class Alert {
+class Alert extends Equatable {
   const Alert(
       {required this.kind,
       required this.hostname,
@@ -23,6 +25,9 @@ class Alert {
   final String service;
   final String message;
   final Duration age;
+
+  @override
+  List<Object> get props => [kind, hostname, service, message, age];
 }
 
 abstract class AlertSource {
