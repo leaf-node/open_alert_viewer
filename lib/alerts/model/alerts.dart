@@ -14,12 +14,14 @@ enum AlertType {
 
 class Alert extends Equatable {
   const Alert(
-      {required this.kind,
+      {required this.source,
+      required this.kind,
       required this.hostname,
       required this.service,
       required this.message,
       required this.age});
 
+  final int source;
   final AlertType kind;
   final String hostname;
   final String service;
@@ -27,7 +29,7 @@ class Alert extends Equatable {
   final Duration age;
 
   @override
-  List<Object> get props => [kind, hostname, service, message, age];
+  List<Object> get props => [source, kind, hostname, service, message, age];
 }
 
 abstract class AlertSource {
