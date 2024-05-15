@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 
 import 'alerts/model/alerts_random.dart';
-import 'alerts/view/alerts.dart';
+import 'alerts/view/alerts_list.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

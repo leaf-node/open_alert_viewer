@@ -1,94 +1,129 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sprintf/sprintf.dart';
 
-import '../bloc/alert_events.dart';
-import '../bloc/alert_state.dart';
-import '../bloc/alerts.dart';
 import '../model/alerts.dart';
-import '../model/alerts_random.dart';
-import 'alert.dart';
 
-class AlertsPage extends StatelessWidget {
-  const AlertsPage({super.key, required this.title, required this.sources});
+enum AlertTypeView {
+  okay(
+      icon: Icons.check,
+      bgColor: Color(0xFF2E7D32), // green800
+      fgColor: Colors.white,
+      template: "%s [%s]: OKAY: %s",
+      numArgs: 3),
+  warning(
+      icon: Icons.error_outline, // circular icon
+      bgColor: Color(0xFFF9A825), // yellow800
+      fgColor: Colors.black,
+      template: "%s [%s]: WARNING: %s",
+      numArgs: 3),
+  error(
+      icon: Icons.warning_amber_outlined, // triangular icon
+      bgColor: Color(0xFFC62828), // red800
+      fgColor: Colors.white,
+      template: "%s [%s]: ERROR: %s",
+      numArgs: 3),
+  pending(
+      icon: Icons.pending_outlined,
+      bgColor: Color(0xFF999999), // light gray
+      fgColor: Colors.black,
+      template: "%s [%s]: PENDING",
+      numArgs: 2),
+  unknown(
+      icon: Icons.question_mark,
+      bgColor: Color(0xFF3C111A), // dark red
+      fgColor: Colors.white,
+      template: "%s [%s]: UNKNOWN: %s",
+      numArgs: 3),
+  up(
+      icon: Icons.check,
+      bgColor: Color(0xFF2E7D32), // green800
+      fgColor: Colors.white,
+      template: "%s: UP",
+      numArgs: 1),
+  unreachable(
+      icon: Icons.close,
+      bgColor: Color(0xFF222222), // dark gray
+      fgColor: Colors.white,
+      template: "%s: UNREACHABLE",
+      numArgs: 1),
+  down(
+      icon: Icons.keyboard_double_arrow_down,
+      bgColor: Color(0xFF111111), // darker gray
+      fgColor: Colors.white,
+      template: "%s: DOWN",
+      numArgs: 1),
+  hostPending(
+      icon: Icons.pending_outlined,
+      bgColor: Color(0xFF999999), // light gray
+      fgColor: Colors.black,
+      template: "%s: PENDING",
+      numArgs: 1);
 
-  final String title;
-  final List<AlertSource> sources;
+  const AlertTypeView(
+      {required this.icon,
+      required this.bgColor,
+      required this.fgColor,
+      required this.template,
+      required this.numArgs});
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => AlertsBloc(),
-        child: Scaffold(
-            backgroundColor: Colors.black,
-            appBar: Header(title: title),
-            body: const AlertsList()));
-  }
+  final IconData icon;
+  final Color bgColor;
+  final Color fgColor;
+  final String template;
+  final int numArgs;
 }
 
-class Header extends StatelessWidget implements PreferredSizeWidget {
-  const Header({super.key, required this.title});
+class AlertWidget extends StatelessWidget {
+  const AlertWidget({super.key, required this.alert});
 
-  final String title;
+  final Alert alert;
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        title: Text(title),
-        actions: [
-          Ink(
-              decoration: const ShapeDecoration(
-                color: Colors.black,
-                shape: CircleBorder(),
-              ),
-              child: IconButton(
-                  icon: const Icon(Icons.add),
-                  color: Colors.white,
-                  onPressed: () => context
-                      .read<AlertsBloc>()
-                      .add(AddAlertSource(source: RandomAlerts())))),
-          const SizedBox(width: 10),
-          Ink(
-              decoration: const ShapeDecoration(
-                color: Colors.black,
-                shape: CircleBorder(),
-              ),
-              child: IconButton(
-                  icon: const Icon(Icons.refresh),
-                  color: Colors.white,
-                  onPressed: () => context
-                      .read<AlertsBloc>()
-                      .add(const FetchAlerts(maxCacheAge: Duration.zero)))),
-          const SizedBox(width: 10)
-        ]);
+    final viewKind = switch (alert.kind) {
+      AlertType.okay => AlertTypeView.okay,
+      AlertType.warning => AlertTypeView.warning,
+      AlertType.error => AlertTypeView.error,
+      AlertType.pending => AlertTypeView.pending,
+      AlertType.up => AlertTypeView.up,
+      AlertType.unreachable => AlertTypeView.unreachable,
+      AlertType.down => AlertTypeView.down,
+      AlertType.unknown => AlertTypeView.unknown,
+      AlertType.hostPending => AlertTypeView.hostPending,
+    };
+
+    return ListTile(
+        iconColor: viewKind.fgColor,
+        textColor: viewKind.fgColor,
+        tileColor: viewKind.bgColor,
+        title: Text(_printMessage(viewKind.template, viewKind.numArgs)),
+        subtitle: Text(_prettyPrintAge()),
+        leading: Icon(viewKind.icon));
   }
 
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
+  String _printMessage(template, numArgs) {
+    if (numArgs == 1) {
+      return sprintf(template, [alert.hostname]);
+    } else if (numArgs == 2) {
+      return sprintf(template, [alert.hostname, alert.service]);
+    } else {
+      return sprintf(template, [alert.hostname, alert.service, alert.message]);
+    }
+  }
 
-class AlertsList extends StatelessWidget {
-  const AlertsList({super.key});
+  String _prettyPrintAge() {
+    String ageStr;
 
-  @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-        onRefresh: () async {
-          context
-              .read<AlertsBloc>()
-              .add(const FetchAlerts(maxCacheAge: Duration.zero));
-          await context.read<AlertsBloc>().stream.firstWhere(
-                (state) => state is! AlertsFetching,
-              );
-        },
-        key: context.read<AlertsBloc>().refreshKey,
-        child: BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
-          List<Widget> alertWidgets = [];
-          for (var alert in state.alerts) {
-            alertWidgets.add(AlertWidget(alert: alert));
-          }
-          return ListView(children: alertWidgets);
-        }));
+    int seconds = alert.age.inSeconds.floor() % 60;
+    int minutes = alert.age.inMinutes.floor() % 60;
+    int hours = alert.age.inHours.floor() % 24;
+    int days = alert.age.inDays.floor();
+
+    ageStr = (days > 0) ? "${days}d " : "";
+    ageStr += (days > 0 || hours > 0) ? "${hours}h " : "";
+    ageStr += (days > 0 || hours > 0 || minutes > 0) ? "${minutes}m " : "";
+    ageStr += "${seconds}s";
+
+    return ageStr;
   }
 }

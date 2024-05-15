@@ -3,8 +3,8 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/material.dart';
 
 import '../model/alerts.dart';
-import 'alert_events.dart';
-import 'alert_state.dart';
+import 'alerts_events.dart';
+import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   AlertsBloc() : super(const AlertsInit()) {
