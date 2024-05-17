@@ -22,16 +22,4 @@ class Sources {
   removeSource(int id) {
     localDB.db.execute("DROP FROM sources WHERE id = ?;", [id]);
   }
-
-  migrateDatabase() async {
-    localDB.db.execute('''
-      CREATE TABLE IF NOT EXISTS sources (
-        id INTEGER NOT NULL PRIMARY KEY,
-        name TEXT NOT NULL,
-        url TEXT NOT NULL,
-        username TEXT NOT NULL,
-        password TEXT NOT NULL
-      );
-    ''');
-  }
 }

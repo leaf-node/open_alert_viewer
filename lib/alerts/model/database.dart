@@ -25,4 +25,20 @@ class LocalDatabase {
     db.dispose();
     isOpen = false;
   }
+
+  migrateDatabase() async {
+    if (!isOpen) {
+      open();
+    }
+
+    db.execute('''
+      CREATE TABLE IF NOT EXISTS sources (
+        id INTEGER NOT NULL PRIMARY KEY,
+        name TEXT NOT NULL,
+        url TEXT NOT NULL,
+        username TEXT NOT NULL,
+        password TEXT NOT NULL
+      );
+    ''');
+  }
 }
