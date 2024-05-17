@@ -23,9 +23,9 @@ enum AlertTypeView {
       template: "%s [%s]: ERROR: %s",
       numArgs: 3),
   pending(
-      icon: Icons.pending_outlined,
-      bgColor: Color(0xFF999999), // light gray
-      fgColor: Colors.black,
+      icon: Icons.more_horiz,
+      bgColor: Color(0xFF444444), // dark gray
+      fgColor: Color(0xFFBBBBBB), // light gray
       template: "%s [%s]: PENDING",
       numArgs: 2),
   unknown(
@@ -53,9 +53,9 @@ enum AlertTypeView {
       template: "%s: DOWN",
       numArgs: 1),
   hostPending(
-      icon: Icons.pending_outlined,
-      bgColor: Color(0xFF999999), // light gray
-      fgColor: Colors.black,
+      icon: Icons.more_horiz,
+      bgColor: Color(0xFF444444), // dark gray
+      fgColor: Color(0xFFBBBBBB), // light gray
       template: "%s: PENDING",
       numArgs: 1);
 
