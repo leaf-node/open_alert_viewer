@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Andrew Engelbrecht <andrew@sourceflow.dev>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
 import 'package:equatable/equatable.dart';
 
 enum AlertType {

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Andrew Engelbrecht <andrew@sourceflow.dev>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
 import '../model/alerts.dart';
 import 'package:equatable/equatable.dart';
 

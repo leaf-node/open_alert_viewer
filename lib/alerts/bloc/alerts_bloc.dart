@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Andrew Engelbrecht <andrew@sourceflow.dev>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/material.dart';

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Andrew Engelbrecht <andrew@sourceflow.dev>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
 import 'dart:math';
 
 import 'alerts.dart';
