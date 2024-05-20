@@ -43,30 +43,16 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         title: Text(title),
         actions: [
-          Ink(
-              decoration: const ShapeDecoration(
-                color: Colors.black,
-                shape: CircleBorder(),
-              ),
-              child: IconButton(
-                  icon: const Icon(Icons.add),
-                  color: Colors.white,
-                  onPressed: () => context
-                      .read<AlertsBloc>()
-                      .add(AddAlertSources(sources: [RandomAlerts()])))),
-          const SizedBox(width: 10),
-          Ink(
-              decoration: const ShapeDecoration(
-                color: Colors.black,
-                shape: CircleBorder(),
-              ),
-              child: IconButton(
-                  icon: const Icon(Icons.refresh),
-                  color: Colors.white,
-                  onPressed: () => context
-                      .read<AlertsBloc>()
-                      .add(const FetchAlerts(maxCacheAge: Duration.zero)))),
-          const SizedBox(width: 10)
+          HeaderButton(
+              icon: Icons.add,
+              function: () => context
+                  .read<AlertsBloc>()
+                  .add(AddAlertSources(sources: [RandomAlerts()]))),
+          HeaderButton(
+              icon: Icons.refresh,
+              function: () => context
+                  .read<AlertsBloc>()
+                  .add(const FetchAlerts(maxCacheAge: Duration.zero))),
         ]);
   }
 
@@ -96,5 +82,26 @@ class AlertsList extends StatelessWidget {
           }
           return ListView(children: alertWidgets);
         }));
+  }
+}
+
+class HeaderButton extends StatelessWidget {
+  const HeaderButton({super.key, required this.icon, required this.function});
+
+  final IconData icon;
+  final void Function() function;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      Ink(
+          decoration: const ShapeDecoration(
+            color: Colors.black,
+            shape: CircleBorder(),
+          ),
+          child: IconButton(
+              icon: Icon(icon), color: Colors.white, onPressed: function)),
+      const SizedBox(width: 10)
+    ]);
   }
 }
