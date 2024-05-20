@@ -1,4 +1,4 @@
-# open_alert_viewer
+# Open Alert Viewer
 
 A server and network alert client that will be able to display active alerts on
 your Android phone or Linux desktop, with the opportunity for wider support in
