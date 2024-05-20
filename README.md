@@ -1,16 +1,10 @@
 # open_alert_viewer
 
-A new Flutter project.
+A server and network alert client that will be able to display active alerts on
+your Android phone or Linux desktop, with the opportunity for wider support in
+the future.
 
-## Getting Started
+Currently this project is under development, with the goal of building an MVP
+and incrementally growing the number of compatible back end alerting services.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+License: MIT
