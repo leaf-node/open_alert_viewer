@@ -5,6 +5,7 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/alerts_events.dart';
@@ -41,6 +42,9 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        leading: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [HeaderButton(icon: Icons.menu, function: () => ())]),
         title: Text(title),
         actions: [
           HeaderButton(
