@@ -6,7 +6,7 @@
 
 import 'dart:math';
 
-import 'alerts.dart';
+import '../model/alerts.dart';
 
 class RandomAlerts implements AlertSource {
   RandomAlerts() {

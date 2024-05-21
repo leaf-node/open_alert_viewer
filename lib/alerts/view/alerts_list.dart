@@ -11,7 +11,7 @@ import '../bloc/alerts_events.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
 import '../model/alerts.dart';
-import '../model/alerts_random.dart';
+import '../sources/alerts_random.dart';
 import 'alerts.dart';
 
 class AlertsPage extends StatelessWidget {

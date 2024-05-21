@@ -6,8 +6,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'alerts/model/database.dart';
-import 'alerts/model/sources.dart';
+import 'settings/model/database.dart';
+import 'settings/model/sources.dart';
 import 'app.dart';
 
 Future<void> main() async {
