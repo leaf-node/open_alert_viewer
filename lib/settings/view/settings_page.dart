@@ -56,6 +56,8 @@ class SettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("Settings ...");
+    return const Column(children: [
+      Text("Settings ...", style: TextStyle(color: Colors.white))
+    ]);
   }
 }
