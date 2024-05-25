@@ -6,7 +6,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_alert_viewer/app/bloc/navigation_events.dart';
 
+import '../../app/bloc/navigation_bloc.dart';
+import '../../app/view/app_view_elements.dart';
 import '../bloc/alerts_events.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
@@ -20,19 +23,24 @@ class AlertsPage extends StatelessWidget {
   final String title;
   final List<AlertSource> sources;
 
+  static Route<void> route({required title, required sources}) {
+    return MaterialPageRoute<void>(
+        builder: (_) => AlertsPage(title: title, sources: sources));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => AlertsBloc(),
         child: Scaffold(
             backgroundColor: Colors.black,
-            appBar: Header(title: title),
+            appBar: AlertsHeader(title: title),
             body: const AlertsList()));
   }
 }
 
-class Header extends StatelessWidget implements PreferredSizeWidget {
-  const Header({super.key, required this.title});
+class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
+  const AlertsHeader({super.key, required this.title});
 
   final String title;
 
@@ -41,9 +49,12 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        leading: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [HeaderButton(icon: Icons.menu, function: () => ())]),
+        leading: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          HeaderButton(
+              icon: Icons.menu,
+              function: () =>
+                  context.read<NavBloc>().add(OpenSettingsPageEvent()))
+        ]),
         title: Text(title),
         actions: [
           HeaderButton(
@@ -85,26 +96,5 @@ class AlertsList extends StatelessWidget {
           }
           return ListView(children: alertWidgets);
         }));
-  }
-}
-
-class HeaderButton extends StatelessWidget {
-  const HeaderButton({super.key, required this.icon, required this.function});
-
-  final IconData icon;
-  final void Function() function;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-      Ink(
-          decoration: const ShapeDecoration(
-            color: Colors.black,
-            shape: CircleBorder(),
-          ),
-          child: IconButton(
-              icon: Icon(icon), color: Colors.white, onPressed: function)),
-      const SizedBox(width: 10)
-    ]);
   }
 }

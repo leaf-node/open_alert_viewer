@@ -17,5 +17,5 @@ Future<void> main() async {
   await db.migrateDatabase();
   var sources = Sources(localDB: db);
 
-  runApp(const MyApp());
+  runApp(const OAVapp());
 }
