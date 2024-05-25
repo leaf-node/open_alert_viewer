@@ -39,11 +39,9 @@ class SettingsHeader extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        leading: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          HeaderButton(
-              icon: Icons.arrow_back,
-              function: () => context.read<NavBloc>().add(PopPageEvent()))
-        ]),
+        leading: HeaderButton(
+            icon: Icons.arrow_back,
+            function: () => context.read<NavBloc>().add(PopPageEvent())),
         title: Text(title));
   }
 

@@ -14,14 +14,11 @@ class HeaderButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      Ink(
-          decoration: const ShapeDecoration(
-            shape: CircleBorder(),
-          ),
-          child: IconButton(
-              icon: Icon(icon), color: Colors.white, onPressed: function)),
-      const SizedBox(width: 10)
-    ]);
+    return Ink(
+        decoration: const ShapeDecoration(
+          shape: CircleBorder(),
+        ),
+        child: IconButton(
+            icon: Icon(icon), color: Colors.white, onPressed: function));
   }
 }

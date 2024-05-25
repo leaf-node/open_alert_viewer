@@ -46,12 +46,10 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        leading: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          HeaderButton(
-              icon: Icons.menu,
-              function: () =>
-                  context.read<NavBloc>().add(OpenSettingsPageEvent()))
-        ]),
+        leading: HeaderButton(
+            icon: Icons.menu,
+            function: () =>
+                context.read<NavBloc>().add(OpenSettingsPageEvent())),
         title: Text(title),
         actions: [
           HeaderButton(
