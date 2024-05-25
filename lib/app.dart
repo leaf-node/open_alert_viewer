@@ -49,6 +49,8 @@ class _OAVappViewState extends State<OAVappView> {
         return BlocListener<NavBloc, NavState>(
             listener: (context, state) {
               switch (state) {
+                case PopPage():
+                  _navigator.pop();
                 case ShowAlertsPage():
                   _navigator.push(AlertsPage.route(
                       title: 'Open Alert Viewer', sources: [RandomAlerts()]));

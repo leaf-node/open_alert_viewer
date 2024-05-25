@@ -6,6 +6,8 @@
 
 abstract class NavEvent {}
 
+final class PopPageEvent implements NavEvent {}
+
 final class OpenSplashPageEvent implements NavEvent {}
 
 final class OpenAlertsPageEvent implements NavEvent {}

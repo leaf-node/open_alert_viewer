@@ -42,8 +42,7 @@ class SettingsHeader extends StatelessWidget implements PreferredSizeWidget {
         leading: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
           HeaderButton(
               icon: Icons.arrow_back,
-              function: () =>
-                  context.read<NavBloc>().add(OpenAlertsPageEvent()))
+              function: () => context.read<NavBloc>().add(PopPageEvent()))
         ]),
         title: Text(title));
   }

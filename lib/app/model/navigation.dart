@@ -4,4 +4,4 @@
  * SPDX-License-Identifier: MIT
  */
 
-enum NavStatus { splashPage, alertsPage, settingsPage }
+enum NavStatus { popPage, splashPage, alertsPage, settingsPage }

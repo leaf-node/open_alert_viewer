@@ -12,6 +12,10 @@ abstract class NavState {
   final NavStatus status;
 }
 
+final class PopPage extends NavState {
+  const PopPage() : super(NavStatus.popPage);
+}
+
 final class ShowSplashPage extends NavState {
   const ShowSplashPage() : super(NavStatus.splashPage);
 }
