@@ -17,7 +17,6 @@ class HeaderButton extends StatelessWidget {
     return Row(children: [
       Ink(
           decoration: const ShapeDecoration(
-            color: Colors.black,
             shape: CircleBorder(),
           ),
           child: IconButton(
