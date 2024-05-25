@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui';
 
-import 'alerts/sources/alerts_random.dart';
 import 'alerts/view/alerts_list.dart';
 import 'app/bloc/navigation_bloc.dart';
 import 'app/bloc/navigation_state.dart';
@@ -52,16 +51,14 @@ class _OAVappViewState extends State<OAVappView> {
                 case PopPage():
                   _navigator.pop();
                 case ShowAlertsPage():
-                  _navigator.push(AlertsPage.route(
-                      title: 'Open Alert Viewer', sources: [RandomAlerts()]));
+                  _navigator.push(AlertsPage.route(title: 'Open Alert Viewer'));
                 case ShowSettingsPage():
                   _navigator.push(SettingsPage.route(title: "OAV Settings"));
               }
             },
             child: child);
       },
-      onGenerateRoute: (_) => AlertsPage.route(
-          title: 'Open Alert Viewer', sources: [RandomAlerts()]),
+      onGenerateRoute: (_) => AlertsPage.route(title: 'Open Alert Viewer'),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,

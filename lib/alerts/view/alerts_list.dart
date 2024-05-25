@@ -13,19 +13,16 @@ import '../../app/view/app_view_elements.dart';
 import '../bloc/alerts_events.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
-import '../model/alerts.dart';
 import '../sources/alerts_random.dart';
 import 'alerts.dart';
 
 class AlertsPage extends StatelessWidget {
-  const AlertsPage({super.key, required this.title, required this.sources});
+  const AlertsPage({super.key, required this.title});
 
   final String title;
-  final List<AlertSource> sources;
 
-  static Route<void> route({required title, required sources}) {
-    return MaterialPageRoute<void>(
-        builder: (_) => AlertsPage(title: title, sources: sources));
+  static Route<void> route({required title}) {
+    return MaterialPageRoute<void>(builder: (_) => AlertsPage(title: title));
   }
 
   @override
