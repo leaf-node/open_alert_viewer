@@ -1,7 +1,7 @@
 /*
- * spdx-filecopyrighttext: 2024 andrew engelbrecht <andrew@sourceflow.dev>
+ * SPDX-FileCopyrightText: 2024 Andrew Engelbrecht <andrew@sourceflow.dev>
  *
- * spdx-license-identifier: mit
+ * SPDX-License-Identifier: MIT
  */
 
 import 'package:flutter/material.dart';
