@@ -11,6 +11,8 @@ import 'dart:ui';
 import 'alerts/view/alerts_list.dart';
 import 'app/bloc/navigation_bloc.dart';
 import 'app/bloc/navigation_state.dart';
+import 'settings/model/database.dart';
+import 'settings/model/sources.dart';
 import 'settings/view/settings_page.dart';
 
 class OAVapp extends StatefulWidget {
@@ -21,9 +23,19 @@ class OAVapp extends StatefulWidget {
 }
 
 class _OAVappState extends State<OAVapp> {
+  late final Sources sources;
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (_) => NavBloc(), child: const OAVappView());
+    return RepositoryProvider(
+        create: (_) async {
+          var db = LocalDatabase();
+          await db.open();
+          await db.migrateDatabase();
+          return db;
+        },
+        child:
+            BlocProvider(create: (_) => NavBloc(), child: const OAVappView()));
   }
 }
 
