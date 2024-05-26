@@ -11,8 +11,8 @@ import 'dart:ui';
 import 'alerts/view/alerts_list.dart';
 import 'app/bloc/navigation_bloc.dart';
 import 'app/bloc/navigation_state.dart';
-import 'settings/model/database.dart';
-import 'settings/model/sources.dart';
+import 'app/repository/database.dart';
+import 'app/repository/sources.dart';
 import 'settings/view/settings_page.dart';
 
 class OAVapp extends StatefulWidget {

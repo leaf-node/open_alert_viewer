@@ -6,14 +6,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/app/bloc/navigation_events.dart';
 
 import '../../app/bloc/navigation_bloc.dart';
+import '../../app/bloc/navigation_events.dart';
 import '../../app/view/app_view_elements.dart';
 import '../bloc/alerts_events.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
-import '../sources/alerts_random.dart';
+import '../repository/alerts_random.dart';
 import 'alerts.dart';
 
 class AlertsPage extends StatelessWidget {
