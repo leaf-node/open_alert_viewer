@@ -4,26 +4,22 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'package:open_alert_viewer/app/model/navigation.dart';
-
 abstract class NavState {
-  const NavState(this.status);
-
-  final NavStatus status;
+  const NavState();
 }
 
 final class PopPage extends NavState {
-  const PopPage() : super(NavStatus.popPage);
+  const PopPage();
 }
 
 final class ShowSplashPage extends NavState {
-  const ShowSplashPage() : super(NavStatus.splashPage);
+  const ShowSplashPage();
 }
 
 final class ShowAlertsPage extends NavState {
-  const ShowAlertsPage() : super(NavStatus.alertsPage);
+  const ShowAlertsPage();
 }
 
 final class ShowSettingsPage extends NavState {
-  const ShowSettingsPage() : super(NavStatus.settingsPage);
+  const ShowSettingsPage();
 }
