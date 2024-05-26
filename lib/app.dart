@@ -59,7 +59,9 @@ class _OAVappViewState extends State<OAVappView> {
                 case PopPage():
                   _navigator.pop();
                 case ShowAlertsPage():
-                  _navigator.push(AlertsPage.route(title: 'Open Alert Viewer'));
+                  _navigator.pushAndRemoveUntil(
+                      AlertsPage.route(title: 'Open Alert Viewer'),
+                      (_) => false);
                 case ShowSettingsPage():
                   _navigator.push(SettingsPage.route(title: "OAV Settings"));
               }
