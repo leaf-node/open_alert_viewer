@@ -8,12 +8,14 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/material.dart';
 
+import '../../app/repository/sources.dart';
 import '../model/alerts.dart';
 import 'alerts_events.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
-  AlertsBloc() : super(const AlertsInit()) {
+  AlertsBloc(localDatabase) : super(const AlertsInit()) {
+    _sources = Sources(localDB: localDatabase);
     _alertSources = {};
     _alerts = [];
     refreshKey = GlobalKey<RefreshIndicatorState>();
@@ -22,6 +24,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     on<FetchAlerts>(_fetch, transformer: droppable());
   }
 
+  late Sources _sources;
   late Set<AlertSource> _alertSources;
   late List<Alert> _alerts;
   late GlobalKey<RefreshIndicatorState> refreshKey;

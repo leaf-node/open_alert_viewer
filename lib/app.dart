@@ -14,6 +14,7 @@ import 'app/bloc/navigation_state.dart';
 import 'app/repository/database.dart';
 import 'app/repository/sources.dart';
 import 'settings/view/settings_page.dart';
+import 'splash/view/splash_page.dart';
 
 class OAVapp extends StatefulWidget {
   const OAVapp({super.key});
@@ -28,12 +29,7 @@ class _OAVappState extends State<OAVapp> {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-        create: (_) async {
-          var db = LocalDatabase();
-          await db.open();
-          await db.migrateDatabase();
-          return db;
-        },
+        create: (_) => LocalDatabase(),
         child:
             BlocProvider(create: (_) => NavBloc(), child: const OAVappView()));
   }
@@ -70,7 +66,9 @@ class _OAVappViewState extends State<OAVappView> {
             },
             child: child);
       },
-      onGenerateRoute: (_) => AlertsPage.route(title: 'Open Alert Viewer'),
+      onGenerateRoute: (_) => SplashPage.route(
+          title: 'Open Alert Viewer',
+          localDatabase: context.read<LocalDatabase>()),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
