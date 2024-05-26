@@ -11,29 +11,29 @@ import 'package:sqlite3/sqlite3.dart';
 
 class LocalDatabase {
   LocalDatabase() {
-    isOpen = false;
+    _isOpen = false;
   }
 
-  late bool isOpen;
+  late bool _isOpen;
   late Database db;
 
   open() async {
-    if (!isOpen) {
+    if (!_isOpen) {
       final path = await getApplicationSupportDirectory();
       log('App data directory: ${path.path}/');
 
       db = sqlite3.open("${path.path}/oav_data.sqlite3");
-      isOpen = true;
+      _isOpen = true;
     }
   }
 
   void close() {
     db.dispose();
-    isOpen = false;
+    _isOpen = false;
   }
 
   migrateDatabase() async {
-    if (!isOpen) {
+    if (!_isOpen) {
       open();
     }
 
