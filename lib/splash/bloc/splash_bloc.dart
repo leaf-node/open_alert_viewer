@@ -6,7 +6,7 @@
 
 import 'package:bloc/bloc.dart';
 import '../../app/repository/database.dart';
-import 'splash_events.dart';
+import 'splash_event.dart';
 import 'splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {

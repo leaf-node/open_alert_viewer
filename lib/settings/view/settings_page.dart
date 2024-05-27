@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/bloc/navigation_bloc.dart';
-import '../../app/bloc/navigation_events.dart';
+import '../../app/bloc/navigation_event.dart';
 import '../../app/view/app_view_elements.dart';
 
 class SettingsPage extends StatelessWidget {

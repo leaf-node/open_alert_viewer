@@ -5,7 +5,7 @@
  */
 
 import 'package:bloc/bloc.dart';
-import 'navigation_events.dart';
+import 'navigation_event.dart';
 import 'navigation_state.dart';
 
 class NavBloc extends Bloc<NavEvent, NavState> {

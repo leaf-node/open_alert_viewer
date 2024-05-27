@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import '../../app/repository/database.dart';
 import '../../app/repository/sources.dart';
 import '../model/alerts.dart';
-import 'alerts_events.dart';
+import 'alerts_event.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
