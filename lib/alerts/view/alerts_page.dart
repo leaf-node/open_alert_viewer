@@ -75,6 +75,7 @@ class AlertsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var refreshKey = GlobalKey<RefreshIndicatorState>();
     return RefreshIndicator(
         onRefresh: () async {
           context
@@ -84,9 +85,12 @@ class AlertsList extends StatelessWidget {
                 (state) => state is! AlertsFetching,
               );
         },
-        key: context.read<AlertsBloc>().refreshKey,
+        key: refreshKey,
         child: BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
           List<Widget> alertWidgets = [];
+          if (state is AlertsFetching) {
+            refreshKey.currentState?.show();
+          }
           for (var alert in state.alerts) {
             alertWidgets.add(AlertWidget(alert: alert));
           }

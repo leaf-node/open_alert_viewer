@@ -6,7 +6,6 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:flutter/material.dart';
 
 import '../model/alerts.dart';
 import '../repository/alerts_repository.dart';
@@ -17,7 +16,6 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   AlertsBloc({required AllAlerts alertsRepo}) : super(const AlertsInit()) {
     _alerts = [];
     _alertsRepo = alertsRepo;
-    refreshKey = GlobalKey<RefreshIndicatorState>();
     on<AddAlertSources>(_addSources);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
@@ -25,7 +23,6 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
 
   late List<Alert> _alerts;
   late AllAlerts _alertsRepo;
-  late GlobalKey<RefreshIndicatorState> refreshKey;
 
   Future<void> _addSources(
       AddAlertSources event, Emitter<AlertState> emit) async {
@@ -41,8 +38,6 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
 
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
     emit(AlertsFetching(alerts: _alerts));
-    refreshKey.currentState?.show();
-
     _alerts = await _alertsRepo.fetch(maxCacheAge: Duration.zero);
     emit(AlertsFetched(alerts: _alerts));
   }
