@@ -5,7 +5,7 @@
  */
 
 import 'package:bloc/bloc.dart';
-import 'package:open_alert_viewer/app/repository/database.dart';
+import '../../app/repository/database.dart';
 import 'splash_events.dart';
 import 'splash_state.dart';
 
