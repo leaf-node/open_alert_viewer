@@ -4,28 +4,31 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'package:sqlite3/sqlite3.dart';
+
 import 'database.dart';
 
 class Sources {
-  const Sources({required this.localDatabase});
+  Sources({required LocalDatabase localDatabase}) {
+    _db = localDatabase.db;
+  }
 
-  final LocalDatabase localDatabase;
+  late final Database _db;
 
   List<Map<String, Object?>> listSources() {
-    return localDatabase.db.select("SELECT * FROM sources;")
-        as List<Map<String, Object?>>;
+    return _db.select("SELECT * FROM sources;") as List<Map<String, Object?>>;
   }
 
   int addSource({required List<String> source}) {
-    localDatabase.db.execute('''
+    _db.execute('''
       INSERT INTO sources
         (name, type, url, username, password)
         VALUES (?, ?, ?, ?, ?);
     ''', source);
-    return localDatabase.db.lastInsertRowId;
+    return _db.lastInsertRowId;
   }
 
   removeSource({required int id}) {
-    localDatabase.db.execute("DROP FROM sources WHERE id = ?;", [id]);
+    _db.execute("DROP FROM sources WHERE id = ?;", [id]);
   }
 }
