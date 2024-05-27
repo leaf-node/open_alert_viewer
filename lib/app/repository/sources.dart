@@ -19,8 +19,8 @@ class Sources {
   int addSource({required List<String> source}) {
     localDatabase.db.execute('''
       INSERT INTO sources
-        (name, url, username, password)
-        VALUES (?, ?, ?, ?);
+        (name, type, url, username, password)
+        VALUES (?, ?, ?, ?, ?);
     ''', source);
     return localDatabase.db.lastInsertRowId;
   }
