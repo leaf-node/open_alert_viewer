@@ -12,7 +12,6 @@ import 'alerts/view/alerts_page.dart';
 import 'app/bloc/navigation_bloc.dart';
 import 'app/bloc/navigation_state.dart';
 import 'app/repository/database.dart';
-import 'app/repository/sources.dart';
 import 'settings/view/settings_page.dart';
 import 'splash/view/splash_page.dart';
 
@@ -24,8 +23,6 @@ class OAVapp extends StatefulWidget {
 }
 
 class _OAVappState extends State<OAVapp> {
-  late final Sources sources;
-
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
