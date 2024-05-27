@@ -8,7 +8,7 @@ import '../model/alerts.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AlertState extends Equatable {
-  const AlertState(this.alerts);
+  const AlertState({required this.alerts});
 
   final List<Alert> alerts;
 
@@ -17,13 +17,13 @@ abstract class AlertState extends Equatable {
 }
 
 final class AlertsInit extends AlertState {
-  const AlertsInit() : super(const []);
+  const AlertsInit() : super(alerts: const []);
 }
 
 final class AlertsFetching extends AlertState {
-  const AlertsFetching(super.alerts);
+  const AlertsFetching({required super.alerts});
 }
 
 final class AlertsFetched extends AlertState {
-  const AlertsFetched(super.alerts);
+  const AlertsFetched({required super.alerts});
 }

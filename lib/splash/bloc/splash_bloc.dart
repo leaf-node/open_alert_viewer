@@ -10,7 +10,7 @@ import 'splash_events.dart';
 import 'splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
-  SplashBloc(this.localDatabase) : super(const SplashInit()) {
+  SplashBloc({required this.localDatabase}) : super(const SplashInit()) {
     on<InitSplashEvent>(_splashInit);
     on<RunningSplashEvent>(_splashRunning);
     on<CompleteSplashEvent>(_splashComplete);

@@ -29,7 +29,8 @@ class AlertsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => AlertsBloc(context.read<LocalDatabase>()),
+        create: (context) =>
+            AlertsBloc(localDatabase: context.read<LocalDatabase>()),
         child: Scaffold(
             backgroundColor: Colors.black,
             appBar: AlertsHeader(title: title),

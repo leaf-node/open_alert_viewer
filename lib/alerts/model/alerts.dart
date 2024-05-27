@@ -41,5 +41,5 @@ class Alert extends Equatable {
 abstract class AlertSource {
   const AlertSource();
 
-  Future<List<Alert>> fetchAlerts(Duration maxCacheAge);
+  Future<List<Alert>> fetchAlerts({required Duration maxCacheAge});
 }

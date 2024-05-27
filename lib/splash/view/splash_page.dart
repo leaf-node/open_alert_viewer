@@ -28,7 +28,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => SplashBloc(localDatabase),
+        create: (_) => SplashBloc(localDatabase: localDatabase),
         child: BlocListener<SplashBloc, SplashState>(
             listener: (context, state) {
               switch (state) {

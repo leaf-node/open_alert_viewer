@@ -22,7 +22,7 @@ class RandomAlerts implements AlertSource {
   late DateTime _lastFetch;
 
   @override
-  Future<List<Alert>> fetchAlerts(Duration maxCacheAge) async {
+  Future<List<Alert>> fetchAlerts({required Duration maxCacheAge}) async {
     if (maxCacheAge.compareTo(DateTime.now().difference(_lastFetch)) > 0) {
       return _alerts;
     }

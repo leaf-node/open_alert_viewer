@@ -8,14 +8,16 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/material.dart';
 
+import '../../app/repository/database.dart';
 import '../../app/repository/sources.dart';
 import '../model/alerts.dart';
 import 'alerts_events.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
-  AlertsBloc(localDatabase) : super(const AlertsInit()) {
-    _sources = Sources(localDB: localDatabase);
+  AlertsBloc({required LocalDatabase localDatabase})
+      : super(const AlertsInit()) {
+    _sources = Sources(localDatabase: localDatabase);
     _alertSources = {};
     _alerts = [];
     refreshKey = GlobalKey<RefreshIndicatorState>();
@@ -44,7 +46,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   }
 
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
-    emit(AlertsFetching(_alerts));
+    emit(AlertsFetching(alerts: _alerts));
     refreshKey.currentState?.show();
 
     List<Alert> newAlerts = [];
@@ -52,7 +54,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     List<Future<List<Alert>>> incoming = [];
 
     for (var source in _alertSources) {
-      incoming.add(source.fetchAlerts(event.maxCacheAge));
+      incoming.add(source.fetchAlerts(maxCacheAge: event.maxCacheAge));
     }
 
     fetched = await Future.wait(incoming);
@@ -61,6 +63,6 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     }
 
     _alerts = newAlerts;
-    emit(AlertsFetched(_alerts));
+    emit(AlertsFetched(alerts: _alerts));
   }
 }
