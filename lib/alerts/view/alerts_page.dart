@@ -9,12 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
-import '../../app/repository/database.dart';
 import '../../app/view/app_view_elements.dart';
 import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
-import '../repository/alerts_random.dart';
+import '../data_provider/alerts_random.dart';
+import '../repository/alerts_repository.dart';
 import 'alerts.dart';
 
 class AlertsPage extends StatelessWidget {
@@ -29,8 +29,7 @@ class AlertsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) =>
-            AlertsBloc(localDatabase: context.read<LocalDatabase>()),
+        create: (context) => AlertsBloc(alertsRepo: AllAlerts()),
         child: Scaffold(
             backgroundColor: Colors.black,
             appBar: AlertsHeader(title: title),

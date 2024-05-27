@@ -8,40 +8,34 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/material.dart';
 
-import '../../app/repository/database.dart';
-import '../../app/repository/sources.dart';
 import '../model/alerts.dart';
+import '../repository/alerts_repository.dart';
 import 'alerts_event.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
-  AlertsBloc({required LocalDatabase localDatabase})
-      : super(const AlertsInit()) {
-    _sources = Sources(localDatabase: localDatabase);
-    _alertSources = {};
+  AlertsBloc({required AllAlerts alertsRepo}) : super(const AlertsInit()) {
     _alerts = [];
+    _alertsRepo = alertsRepo;
     refreshKey = GlobalKey<RefreshIndicatorState>();
     on<AddAlertSources>(_addSources);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
   }
 
-  late Sources _sources;
-  late Set<AlertSource> _alertSources;
   late List<Alert> _alerts;
+  late AllAlerts _alertsRepo;
   late GlobalKey<RefreshIndicatorState> refreshKey;
 
   Future<void> _addSources(
       AddAlertSources event, Emitter<AlertState> emit) async {
-    _alertSources.addAll(event.sources);
-
+    _alertsRepo.addSources(sources: event.sources);
     add(const FetchAlerts(maxCacheAge: Duration.zero));
   }
 
   Future<void> _removeSource(
       RemoveAlertSource event, Emitter<AlertState> emit) async {
-    _alertSources.remove(event.source);
-
+    _alertsRepo.removeSource(source: event.source);
     add(const FetchAlerts(maxCacheAge: Duration.zero));
   }
 
@@ -49,20 +43,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     emit(AlertsFetching(alerts: _alerts));
     refreshKey.currentState?.show();
 
-    List<Alert> newAlerts = [];
-    List<List<Alert>> fetched = [];
-    List<Future<List<Alert>>> incoming = [];
-
-    for (var source in _alertSources) {
-      incoming.add(source.fetchAlerts(maxCacheAge: event.maxCacheAge));
-    }
-
-    fetched = await Future.wait(incoming);
-    for (var result in fetched) {
-      newAlerts.addAll(result);
-    }
-
-    _alerts = newAlerts;
+    _alerts = await _alertsRepo.fetch(maxCacheAge: Duration.zero);
     emit(AlertsFetched(alerts: _alerts));
   }
 }
