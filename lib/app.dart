@@ -14,6 +14,7 @@ import 'alerts/view/alerts_page.dart';
 import 'app/bloc/navigation_bloc.dart';
 import 'app/bloc/navigation_state.dart';
 import 'app/data_provider/database.dart';
+import 'app/data_provider/sources.dart';
 import 'settings/view/settings_page.dart';
 import 'splash/view/splash_page.dart';
 
@@ -33,8 +34,9 @@ class _OAVappState extends State<OAVapp> {
           BlocProvider(create: (_) => NavBloc()),
           BlocProvider(
               create: (context) => AlertsBloc(
-                  alertsRepo:
-                      AllAlerts(localDatabase: context.read<LocalDatabase>())))
+                  alertsRepo: AllAlerts(
+                      dbSources: Sources(
+                          localDatabase: context.read<LocalDatabase>()))))
         ], child: const OAVappView()));
   }
 }
