@@ -13,7 +13,6 @@ import '../../app/view/app_view_elements.dart';
 import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
-import '../data_provider/alerts_random.dart';
 import 'alerts.dart';
 
 class AlertsPage extends StatelessWidget {
@@ -54,7 +53,9 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
               icon: Icons.add,
               function: () => context
                   .read<AlertsBloc>()
-                  .add(AddAlertSources(sources: [RandomAlerts()]))),
+                  .add(const AddAlertSources(sources: [
+                    ["Random", "0", "", "", ""]
+                  ]))),
           HeaderButton(
               icon: Icons.refresh,
               function: () => context

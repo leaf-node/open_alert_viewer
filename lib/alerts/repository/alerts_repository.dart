@@ -4,34 +4,62 @@
  * SPDX-License-Identifier: MIT
  */
 
+import '../data_provider/alerts_random.dart';
+
 import '../../app/data_provider/sources.dart';
 import '../model/alerts.dart';
 
 class AllAlerts {
-  AllAlerts({required Sources dbSources}) {
-    _dbSources = dbSources;
+  AllAlerts({required SourcesDBwrapper sourcesDBwrapper}) {
+    _sourcesDBwrapper = sourcesDBwrapper;
     _alertSources = {};
     _alerts = [];
     _lastFetch = DateTime.utc(1970);
   }
 
-  late Sources _dbSources;
+  late SourcesDBwrapper _sourcesDBwrapper;
   late Set<AlertSource> _alertSources;
   late List<Alert> _alerts;
   late DateTime _lastFetch;
 
-  void addSources({required List<AlertSource> sources}) {
-    _alertSources.addAll(sources);
+  void _refreshSources() {
+    Set<AlertSource> sources = {};
+    List<Map<String, dynamic>> sourcesData = _sourcesDBwrapper.listSources();
+    for (var source in sourcesData) {
+      List<dynamic> values = source.values.toList();
+      var id = values[0] as int;
+      var name = values[1] as String;
+      var type = values[2] as int;
+      var url = values[3] as String;
+      var username = values[4] as String;
+      var password = values[5] as String;
+
+      switch (type) {
+        case 0:
+          sources.add(RandomAlerts(id: id, name: name));
+        default:
+          throw "Unsupported source id: $type";
+      }
+    }
+    _alertSources.addAll(sources.toList());
   }
 
-  void removeSource({required AlertSource source}) {
-    _alertSources.remove(source);
+  void addSources({required List<List<String>> sources}) {
+    for (var source in sources) {
+      _sourcesDBwrapper.addSource(source: source);
+    }
+  }
+
+  void removeSource({required int id}) {
+    _sourcesDBwrapper.removeSource(id: id);
   }
 
   Future<List<Alert>> fetch({required Duration maxCacheAge}) async {
     if (maxCacheAge.compareTo(DateTime.now().difference(_lastFetch)) > 0) {
       return _alerts;
     }
+
+    _refreshSources();
 
     List<Alert> newAlerts = [];
     List<List<Alert>> fetched = [];

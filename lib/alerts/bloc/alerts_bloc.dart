@@ -19,6 +19,8 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     on<AddAlertSources>(_addSources);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
+
+    add(const FetchAlerts(maxCacheAge: Duration.zero));
   }
 
   late List<Alert> _alerts;
@@ -32,7 +34,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
 
   Future<void> _removeSource(
       RemoveAlertSource event, Emitter<AlertState> emit) async {
-    _alertsRepo.removeSource(source: event.source);
+    _alertsRepo.removeSource(id: event.id);
     add(const FetchAlerts(maxCacheAge: Duration.zero));
   }
 

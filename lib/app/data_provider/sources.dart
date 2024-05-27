@@ -8,15 +8,18 @@ import 'package:sqlite3/sqlite3.dart';
 
 import 'database.dart';
 
-class Sources {
-  Sources({required LocalDatabase localDatabase}) {
+class SourcesDBwrapper {
+  SourcesDBwrapper({required LocalDatabase localDatabase}) {
     _db = localDatabase.db;
   }
 
   late final Database _db;
 
-  List<Map<String, Object?>> listSources() {
-    return _db.select("SELECT * FROM sources;") as List<Map<String, Object?>>;
+  List<Map<String, dynamic>> listSources() {
+    var results = _db.select(
+            "SELECT id, name, type, url, username, password FROM sources;")
+        as Iterable<Map<String, dynamic>>;
+    return results.toList();
   }
 
   int addSource({required List<String> source}) {
