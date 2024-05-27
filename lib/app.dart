@@ -18,14 +18,9 @@ import 'app/data_provider/sources.dart';
 import 'settings/view/settings_page.dart';
 import 'splash/view/splash_page.dart';
 
-class OAVapp extends StatefulWidget {
+class OAVapp extends StatelessWidget {
   const OAVapp({super.key});
 
-  @override
-  State<OAVapp> createState() => _OAVappState();
-}
-
-class _OAVappState extends State<OAVapp> {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
