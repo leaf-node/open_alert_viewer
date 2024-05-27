@@ -14,21 +14,18 @@ import '../bloc/splash_bloc.dart';
 import '../bloc/splash_state.dart';
 
 class SplashPage extends StatelessWidget {
-  const SplashPage(
-      {super.key, required this.title, required this.localDatabase});
+  const SplashPage({super.key, required this.title});
 
   final String title;
-  final LocalDatabase localDatabase;
 
-  static Route<void> route({required title, required localDatabase}) {
-    return MaterialPageRoute<void>(
-        builder: (_) => SplashPage(title: title, localDatabase: localDatabase));
+  static Route<void> route({required title}) {
+    return MaterialPageRoute<void>(builder: (_) => SplashPage(title: title));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => SplashBloc(localDatabase: localDatabase),
+        create: (_) => SplashBloc(localDatabase: context.read<LocalDatabase>()),
         child: BlocListener<SplashBloc, SplashState>(
             listener: (context, state) {
               switch (state) {

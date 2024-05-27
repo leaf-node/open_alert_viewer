@@ -65,9 +65,7 @@ class _OAVappViewState extends State<OAVappView> {
             },
             child: child);
       },
-      onGenerateRoute: (_) => SplashPage.route(
-          title: 'Open Alert Viewer',
-          localDatabase: context.read<LocalDatabase>()),
+      onGenerateRoute: (_) => SplashPage.route(title: 'Open Alert Viewer'),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
