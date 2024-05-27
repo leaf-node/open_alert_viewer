@@ -14,7 +14,6 @@ import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
 import '../data_provider/alerts_random.dart';
-import '../repository/alerts_repository.dart';
 import 'alerts.dart';
 
 class AlertsPage extends StatelessWidget {
@@ -28,12 +27,10 @@ class AlertsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => AlertsBloc(alertsRepo: AllAlerts()),
-        child: Scaffold(
-            backgroundColor: Colors.black,
-            appBar: AlertsHeader(title: title),
-            body: const AlertsList()));
+    return Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AlertsHeader(title: title),
+        body: const AlertsList());
   }
 }
 

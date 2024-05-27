@@ -4,15 +4,19 @@
  * SPDX-License-Identifier: MIT
  */
 
+import '../../app/data_provider/database.dart';
+
 import '../model/alerts.dart';
 
 class AllAlerts {
-  AllAlerts() {
+  AllAlerts({required LocalDatabase localDatabase}) {
+    _localDatabase = localDatabase;
     _alertSources = {};
     _alerts = [];
     _lastFetch = DateTime.utc(1970);
   }
 
+  late LocalDatabase _localDatabase;
   late Set<AlertSource> _alertSources;
   late List<Alert> _alerts;
   late DateTime _lastFetch;
