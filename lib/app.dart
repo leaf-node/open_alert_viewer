@@ -71,12 +71,15 @@ class _OAVappViewState extends State<OAVappView> {
       },
       onGenerateRoute: (_) => SplashPage.route(title: 'Open Alert Viewer'),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.lightBlue, secondary: Color(0xFF224488)),
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
         colorScheme: const ColorScheme.dark(
-            primary: Color(0xFF224488), onPrimary: Colors.white),
+            primary: Color(0xFF224488),
+            onPrimary: Colors.white,
+            secondary: Color(0xFF66AAFF)),
         brightness: Brightness.dark,
         useMaterial3: true,
       ),

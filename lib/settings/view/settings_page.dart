@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
 import '../../app/view/app_view_elements.dart';
+import 'menu_item.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key, required this.title});
@@ -52,6 +53,10 @@ class SettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(children: [Text("Settings ...")]);
+    return ListView(children: const [
+      MenuItem(icon: Icons.settings, title: "General Settings"),
+      MenuHeader(title: "Accounts"),
+      MenuItem(icon: Icons.manage_accounts, title: "Placeholder"),
+    ]);
   }
 }
