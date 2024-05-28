@@ -34,7 +34,6 @@ class SplashPage extends StatelessWidget {
               }
             },
             child: const Scaffold(
-                backgroundColor: Colors.black,
                 body: Align(
                     alignment: Alignment.center,
                     child: Column(
@@ -42,13 +41,11 @@ class SplashPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(
-                            color: Colors.white,
                             size: 96,
                             Icons.swap_calls,
                           ),
                           Text(
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 24),
+                              style: TextStyle(fontSize: 24),
                               textAlign: TextAlign.center,
                               "Open Alert Viewer"),
                         ])))));

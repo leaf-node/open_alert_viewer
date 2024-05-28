@@ -27,9 +27,7 @@ class AlertsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
-        appBar: AlertsHeader(title: title),
-        body: const AlertsList());
+        appBar: AlertsHeader(title: title), body: const AlertsList());
   }
 }
 

@@ -74,6 +74,13 @@ class _OAVappViewState extends State<OAVappView> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
+      darkTheme: ThemeData(
+        colorScheme: const ColorScheme.dark(
+            primary: Color(0xFF224488), onPrimary: Colors.white),
+        brightness: Brightness.dark,
+        useMaterial3: true,
+      ),
+      themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       scrollBehavior: CustomScrollBehavior(),
     );

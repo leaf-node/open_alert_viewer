@@ -23,9 +23,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
-        appBar: SettingsHeader(title: title),
-        body: const SettingsList());
+        appBar: SettingsHeader(title: title), body: const SettingsList());
   }
 }
 
@@ -54,8 +52,6 @@ class SettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(children: [
-      Text("Settings ...", style: TextStyle(color: Colors.white))
-    ]);
+    return const Column(children: [Text("Settings ...")]);
   }
 }

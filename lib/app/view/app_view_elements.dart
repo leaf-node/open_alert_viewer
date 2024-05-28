@@ -18,7 +18,6 @@ class HeaderButton extends StatelessWidget {
         decoration: const ShapeDecoration(
           shape: CircleBorder(),
         ),
-        child: IconButton(
-            icon: Icon(icon), color: Colors.white, onPressed: function));
+        child: IconButton(icon: Icon(icon), onPressed: function));
   }
 }
