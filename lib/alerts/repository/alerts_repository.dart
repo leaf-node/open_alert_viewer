@@ -40,7 +40,7 @@ class AllAlerts {
           throw "Unsupported source id: $type";
       }
     }
-    _alertSources.addAll(sources.toList());
+    _alertSources = sources;
   }
 
   int addSource({required List<String> source}) {
