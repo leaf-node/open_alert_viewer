@@ -29,7 +29,7 @@ class OAVapp extends StatelessWidget {
           BlocProvider(create: (_) => NavBloc()),
           BlocProvider(
               create: (context) => AlertsBloc(
-                  alertsRepo: AllAlerts(
+                  alertSourcesRepo: AllAlerts(
                       sourcesDBwrapper: SourcesDBwrapper(
                           localDatabase: context.read<LocalDatabase>()))))
         ], child: const OAVappView()));
