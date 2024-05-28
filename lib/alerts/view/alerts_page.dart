@@ -65,12 +65,22 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class AlertsList extends StatelessWidget {
+class AlertsList extends StatefulWidget {
   const AlertsList({super.key});
 
   @override
+  State<AlertsList> createState() => _AlertsListState();
+}
+
+class _AlertsListState extends State<AlertsList> {
+  _AlertsListState() {
+    refreshKey = GlobalKey<RefreshIndicatorState>();
+  }
+
+  late final GlobalKey<RefreshIndicatorState> refreshKey;
+
+  @override
   Widget build(BuildContext context) {
-    var refreshKey = GlobalKey<RefreshIndicatorState>();
     return RefreshIndicator(
         onRefresh: () async {
           context
