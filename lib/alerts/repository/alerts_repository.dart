@@ -30,9 +30,9 @@ class AllAlerts {
       var id = values[0] as int;
       var name = values[1] as String;
       var type = values[2] as int;
-      var url = values[3] as String;
-      var username = values[4] as String;
-      var password = values[5] as String;
+      //var url = values[3] as String;
+      //var username = values[4] as String;
+      //var password = values[5] as String;
 
       switch (type) {
         case 0:
