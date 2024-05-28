@@ -23,15 +23,24 @@ class SourcesDBwrapper {
   }
 
   int addSource({required List<String> source}) {
-    _db.execute('''
+    try {
+      _db.execute('''
       INSERT INTO sources
         (name, type, url, username, password)
         VALUES (?, ?, ?, ?, ?);
     ''', source);
+    } on SqliteException catch (e) {
+      if (e.extendedResultCode == 2067) {
+        // already in database
+        return -1;
+      } else {
+        rethrow;
+      }
+    }
     return _db.lastInsertRowId;
   }
 
-  removeSource({required int id}) {
+  void removeSource({required int id}) {
     _db.execute("DROP FROM sources WHERE id = ?;", [id]);
   }
 }

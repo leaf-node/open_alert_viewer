@@ -16,7 +16,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   AlertsBloc({required AllAlerts alertsRepo}) : super(const AlertsInit()) {
     _alerts = [];
     _alertsRepo = alertsRepo;
-    on<AddAlertSources>(_addSources);
+    on<AddAlertSource>(_addSource);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
 
@@ -26,10 +26,14 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   late List<Alert> _alerts;
   late AllAlerts _alertsRepo;
 
-  Future<void> _addSources(
-      AddAlertSources event, Emitter<AlertState> emit) async {
-    _alertsRepo.addSources(sources: event.sources);
-    add(const FetchAlerts(maxCacheAge: Duration.zero));
+  Future<void> _addSource(
+      AddAlertSource event, Emitter<AlertState> emit) async {
+    var result = _alertsRepo.addSource(source: event.source);
+    if (result >= 0) {
+      add(const FetchAlerts(maxCacheAge: Duration.zero));
+    } else {
+      emit(SourcesListUpdateError(alerts: _alerts));
+    }
   }
 
   Future<void> _removeSource(

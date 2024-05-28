@@ -4,9 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
-import '../data_provider/alerts_random.dart';
-
 import '../../app/data_provider/sources.dart';
+import '../data_provider/alerts_random.dart';
 import '../model/alerts.dart';
 
 class AllAlerts {
@@ -44,10 +43,8 @@ class AllAlerts {
     _alertSources.addAll(sources.toList());
   }
 
-  void addSources({required List<List<String>> sources}) {
-    for (var source in sources) {
-      _sourcesDBwrapper.addSource(source: source);
-    }
+  int addSource({required List<String> source}) {
+    return _sourcesDBwrapper.addSource(source: source);
   }
 
   void removeSource({required int id}) {

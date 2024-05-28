@@ -27,3 +27,7 @@ final class AlertsFetching extends AlertState {
 final class AlertsFetched extends AlertState {
   const AlertsFetched({required super.alerts});
 }
+
+final class SourcesListUpdateError extends AlertState {
+  const SourcesListUpdateError({required super.alerts});
+}

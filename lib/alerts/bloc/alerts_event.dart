@@ -14,10 +14,10 @@ final class FetchAlerts implements AlertEvent {
   final Duration maxCacheAge;
 }
 
-final class AddAlertSources implements AlertEvent {
-  const AddAlertSources({required this.sources});
+final class AddAlertSource implements AlertEvent {
+  const AddAlertSource({required this.source});
 
-  final List<List<String>> sources;
+  final List<String> source;
 }
 
 final class RemoveAlertSource implements AlertEvent {
