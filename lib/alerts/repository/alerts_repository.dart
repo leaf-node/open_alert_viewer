@@ -11,18 +11,20 @@ import '../model/alerts.dart';
 class AllAlerts {
   AllAlerts({required SourcesDBwrapper sourcesDBwrapper}) {
     _sourcesDBwrapper = sourcesDBwrapper;
-    _alertSources = {};
+    _alertSources = [];
     _alerts = [];
     _lastFetch = DateTime.utc(1970);
   }
 
   late SourcesDBwrapper _sourcesDBwrapper;
-  late Set<AlertSource> _alertSources;
+  late List<AlertSource> _alertSources;
   late List<Alert> _alerts;
   late DateTime _lastFetch;
 
+  List<AlertSource> get alertSources => _alertSources;
+
   void _refreshSources() {
-    Set<AlertSource> sources = {};
+    List<AlertSource> sources = [];
     List<Map<String, dynamic>> sourcesData = _sourcesDBwrapper.listSources();
     for (var source in sourcesData) {
       List<dynamic> values = source.values.toList();
