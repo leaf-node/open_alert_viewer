@@ -9,15 +9,14 @@ import 'dart:math';
 import '../model/alerts.dart';
 
 class RandomAlerts implements AlertSource {
-  RandomAlerts({required this.id, required this.name}) {
-    _randomSeed = Random(DateTime.now().millisecondsSinceEpoch);
-    _alerts = [];
-  }
+  RandomAlerts({required this.id, required this.name})
+      : _randomSeed = Random(DateTime.now().millisecondsSinceEpoch),
+        _alerts = [];
 
   final int id;
   final String name;
-  late Random _randomSeed;
-  late List<Alert> _alerts;
+  final Random _randomSeed;
+  List<Alert> _alerts;
 
   @override
   Future<List<Alert>> fetchAlerts() async {

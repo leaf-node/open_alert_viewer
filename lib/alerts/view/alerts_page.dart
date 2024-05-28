@@ -73,11 +73,9 @@ class AlertsList extends StatefulWidget {
 }
 
 class _AlertsListState extends State<AlertsList> {
-  _AlertsListState() {
-    refreshKey = GlobalKey<RefreshIndicatorState>();
-  }
+  _AlertsListState() : refreshKey = GlobalKey<RefreshIndicatorState>();
 
-  late final GlobalKey<RefreshIndicatorState> refreshKey;
+  final GlobalKey<RefreshIndicatorState> refreshKey;
 
   @override
   Widget build(BuildContext context) {

@@ -9,17 +9,16 @@ import '../data_provider/alerts_random.dart';
 import '../model/alerts.dart';
 
 class AllAlerts {
-  AllAlerts({required SourcesDBwrapper sourcesDBwrapper}) {
-    _sourcesDBwrapper = sourcesDBwrapper;
-    _alertSources = [];
-    _alerts = [];
-    _lastFetch = DateTime.utc(1970);
-  }
+  AllAlerts({required SourcesDBwrapper sourcesDBwrapper})
+      : _sourcesDBwrapper = sourcesDBwrapper,
+        _alertSources = [],
+        _alerts = [],
+        _lastFetch = DateTime.utc(1970);
 
-  late SourcesDBwrapper _sourcesDBwrapper;
-  late List<AlertSource> _alertSources;
-  late List<Alert> _alerts;
-  late DateTime _lastFetch;
+  final SourcesDBwrapper _sourcesDBwrapper;
+  List<AlertSource> _alertSources;
+  List<Alert> _alerts;
+  DateTime _lastFetch;
 
   List<AlertSource> get alertSources => _alertSources;
 

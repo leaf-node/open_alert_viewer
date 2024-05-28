@@ -44,7 +44,7 @@ class OAVappView extends StatefulWidget {
 }
 
 class _OAVappViewState extends State<OAVappView> {
-  late final _navigatorKey = GlobalKey<NavigatorState>();
+  final _navigatorKey = GlobalKey<NavigatorState>();
 
   NavigatorState get _navigator => _navigatorKey.currentState!;
 

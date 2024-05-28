@@ -9,11 +9,10 @@ import 'package:sqlite3/sqlite3.dart';
 import 'database.dart';
 
 class SourcesDBwrapper {
-  SourcesDBwrapper({required LocalDatabase localDatabase}) {
-    _db = localDatabase.db;
-  }
+  SourcesDBwrapper({required LocalDatabase localDatabase})
+      : _db = localDatabase.db;
 
-  late final Database _db;
+  final Database _db;
 
   List<Map<String, dynamic>> listSources() {
     var results = _db.select(

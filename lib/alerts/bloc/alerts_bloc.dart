@@ -13,9 +13,10 @@ import 'alerts_event.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
-  AlertsBloc({required AllAlerts alertsRepo}) : super(const AlertsInit()) {
-    _alerts = [];
-    _alertsRepo = alertsRepo;
+  AlertsBloc({required AllAlerts alertsRepo})
+      : _alerts = [],
+        _alertsRepo = alertsRepo,
+        super(const AlertsInit()) {
     on<AddAlertSource>(_addSource);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
@@ -23,8 +24,8 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     add(const FetchAlerts(maxCacheAge: Duration.zero));
   }
 
-  late List<Alert> _alerts;
-  late AllAlerts _alertsRepo;
+  List<Alert> _alerts;
+  final AllAlerts _alertsRepo;
 
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
