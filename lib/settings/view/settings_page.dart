@@ -53,10 +53,13 @@ class SettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: const [
-      MenuItem(icon: Icons.settings, title: "General Settings"),
-      MenuHeader(title: "Accounts"),
-      MenuItem(icon: Icons.manage_accounts, title: "Placeholder"),
+    return ListView(children: [
+      MenuItem(
+          icon: Icons.settings, title: "General Settings", function: () => ()),
+      const MenuHeader(title: "Accounts"),
+      MenuItem(
+          icon: Icons.manage_accounts, title: "Random", function: () => ()),
+      MenuItem(icon: Icons.add, title: "Add new account", function: () => ()),
     ]);
   }
 }
