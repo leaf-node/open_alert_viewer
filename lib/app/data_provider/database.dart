@@ -46,6 +46,22 @@ class LocalDatabase {
 
         UNIQUE(type, url, username, password)
       );
+
+      CREATE TABLE IF NOT EXISTS settings (
+        id INTEGER NOT NULL PRIMARY KEY,
+        key TEXT NOT NULL UNIQUE,
+        value TEXT NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS alerts_cache (
+        id INTEGER NOT NULL PRIMARY KEY,
+        source INTEGER NOT NULL,
+        kind INTEGER NOT NULL,
+        hostname TEXT NOT NULL,
+        service TEXT NOT NULL,
+        message TEXT NOT NULL,
+        age INTEGER NOT NULL
+      );
     ''');
   }
 }
