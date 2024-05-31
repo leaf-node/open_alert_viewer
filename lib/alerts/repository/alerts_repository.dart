@@ -4,18 +4,18 @@
  * SPDX-License-Identifier: MIT
  */
 
-import '../../app/data_provider/sources.dart';
+import '../../app/data_provider/database.dart';
 import '../data_provider/alerts_random.dart';
 import '../model/alerts.dart';
 
 class AllAlerts {
-  AllAlerts({required SourcesDBwrapper sourcesDBwrapper})
-      : _sourcesDBwrapper = sourcesDBwrapper,
+  AllAlerts({required LocalDatabase db})
+      : _db = db,
         _alertSources = [],
         _alerts = [],
         _lastFetch = DateTime.utc(1970);
 
-  final SourcesDBwrapper _sourcesDBwrapper;
+  final LocalDatabase _db;
   List<AlertSource> _alertSources;
   List<Alert> _alerts;
   DateTime _lastFetch;
@@ -24,7 +24,7 @@ class AllAlerts {
 
   void _refreshSources() {
     List<AlertSource> sources = [];
-    List<Map<String, dynamic>> sourcesData = _sourcesDBwrapper.listSources();
+    List<Map<String, dynamic>> sourcesData = _db.listSources();
     for (var source in sourcesData) {
       List<dynamic> values = source.values.toList();
       var id = values[0] as int;
@@ -45,11 +45,11 @@ class AllAlerts {
   }
 
   int addSource({required List<String> source}) {
-    return _sourcesDBwrapper.addSource(source: source);
+    return _db.addSource(source: source);
   }
 
   void removeSource({required int id}) {
-    _sourcesDBwrapper.removeSource(id: id);
+    _db.removeSource(id: id);
   }
 
   Future<List<Alert>> fetch({required Duration maxCacheAge}) async {
