@@ -53,6 +53,7 @@ class LocalDatabase {
 
   int insertIntoTable(
       {required String query, required List<List<Object>> values}) {
+    _db.execute("BEGIN TRANSACTION;");
     try {
       for (var value in values) {
         _db.execute(query, value);
@@ -65,6 +66,7 @@ class LocalDatabase {
         rethrow;
       }
     }
+    _db.execute("COMMIT TRANSACTION;");
     return _db.lastInsertRowId;
   }
 
