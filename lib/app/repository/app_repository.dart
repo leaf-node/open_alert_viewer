@@ -12,13 +12,11 @@ class AllAlerts {
   AllAlerts({required LocalDatabase db})
       : _db = db,
         _alertSources = [],
-        _alerts = [],
-        _lastFetch = DateTime.utc(1970);
+        _alerts = [];
 
   final LocalDatabase _db;
   List<AlertSource> _alertSources;
   List<Alert> _alerts;
-  DateTime _lastFetch;
 
   List<AlertSource> get alertSources => _alertSources;
 
@@ -53,7 +51,11 @@ class AllAlerts {
   }
 
   Future<List<Alert>> fetch({required Duration maxCacheAge}) async {
-    if (maxCacheAge.compareTo(DateTime.now().difference(_lastFetch)) > 0) {
+    String lastFetchStr = _db.getSetting(setting: "last_fetch_time");
+    var lastFetch = DateTime.fromMillisecondsSinceEpoch(
+        switch (lastFetchStr) { "" => 0, _ => int.parse(lastFetchStr) });
+
+    if (maxCacheAge.compareTo(DateTime.now().difference(lastFetch)) > 0) {
       return _alerts;
     }
     _refreshSources();
@@ -65,17 +67,18 @@ class AllAlerts {
     for (var source in _alertSources) {
       incoming.add(source.fetchAlerts());
     }
-
     fetched = await Future.wait(incoming);
+    lastFetch = DateTime.now();
     for (var result in fetched) {
       newAlerts.addAll(result);
     }
-
     newAlerts.sort((a, b) => a.age.compareTo(b.age));
     _alerts = newAlerts;
 
-    _lastFetch = DateTime.now();
     _cacheAlerts();
+    _db.setSetting(
+        setting: "last_fetch_time",
+        value: lastFetch.millisecondsSinceEpoch.toString());
     return _alerts;
   }
 

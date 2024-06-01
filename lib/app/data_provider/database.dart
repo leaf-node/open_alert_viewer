@@ -43,8 +43,9 @@ class LocalDatabase {
 
   // Generic querying methods
 
-  List<Map<String, dynamic>> fetchFromTable({required String query}) {
-    return _db.select(query) as List<Map<String, dynamic>>;
+  List<Map<String, dynamic>> fetchFromTable(
+      {required String query, required List<Object> values}) {
+    return _db.select(query, values) as List<Map<String, dynamic>>;
   }
 
   void removeFromTable({required String query, required List<Object> values}) {
@@ -70,11 +71,16 @@ class LocalDatabase {
     return _db.lastInsertRowId;
   }
 
+  void updateTable({required String query, required List<Object> values}) {
+    _db.execute(query, values);
+  }
+
   // App-specific queries
 
   List<Map<String, dynamic>> listSources() {
     return fetchFromTable(
-        query: "SELECT id, name, type, url, username, password FROM sources;");
+        query: "SELECT id, name, type, url, username, password FROM sources;",
+        values: []);
   }
 
   int addSource({required List<String> source}) {
@@ -92,7 +98,7 @@ class LocalDatabase {
   List<Map<String, dynamic>> fetchCachedAlerts() {
     return fetchFromTable(
         query: '''SELECT id, source, kind, hostname, service, message, age
-            FROM alerts_cache;''');
+            FROM alerts_cache;''', values: []);
   }
 
   void removeCachedAlerts() {
@@ -104,5 +110,30 @@ class LocalDatabase {
         INSERT INTO alerts_cache
           (source, kind, hostname, service, message, age)
           VALUES (?, ?, ?, ?, ?, ?);''', values: alerts);
+  }
+
+  String getSetting({required String setting}) {
+    var results = fetchFromTable(
+        query: "SELECT value from settings where key = ?;", values: [setting]);
+    return switch (results.length) {
+      0 => "",
+      _ => results[0]["value"] as String,
+    };
+  }
+
+  void setSetting({required String setting, required String value}) {
+    var results = fetchFromTable(
+        query: "SELECT value from settings WHERE key = ?;", values: [setting]);
+    if (results.isEmpty) {
+      insertIntoTable(
+          query: "INSERT INTO settings (key, value) VALUES (?, ?);",
+          values: [
+            [setting, value]
+          ]);
+    } else {
+      updateTable(
+          query: "UPDATE settings SET value = ? WHERE key = ?;",
+          values: [value, setting]);
+    }
   }
 }

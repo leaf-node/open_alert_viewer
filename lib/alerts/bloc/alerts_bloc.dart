@@ -13,19 +13,21 @@ import 'alerts_event.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
-  AlertsBloc({required AllAlerts repo})
+  AlertsBloc({required AllAlerts repo, required int refreshFrequencySeconds})
       : _alerts = [],
         _repo = repo,
+        _refreshFrequencySeconds = refreshFrequencySeconds,
         super(const AlertsInit()) {
     on<AddAlertSource>(_addSource);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
 
-    add(const FetchAlerts(maxCacheAge: Duration.zero));
+    add(FetchAlerts(maxCacheAge: Duration(seconds: _refreshFrequencySeconds)));
   }
 
   List<Alert> _alerts;
   final AllAlerts _repo;
+  final int _refreshFrequencySeconds;
 
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
