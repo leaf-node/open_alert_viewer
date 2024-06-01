@@ -41,20 +41,22 @@ class LocalDatabase {
     _db.execute(sqlString);
   }
 
-  List<Map<String, dynamic>> listSources() {
-    var results = _db.select(
-            "SELECT id, name, type, url, username, password FROM sources;")
-        as Iterable<Map<String, dynamic>>;
-    return results.toList();
+  // Generic querying methods
+
+  List<Map<String, dynamic>> fetchFromTable({required String query}) {
+    return _db.select(query) as List<Map<String, dynamic>>;
   }
 
-  int addSource({required List<String> source}) {
+  void removeFromTable({required String query, required List<Object> values}) {
+    _db.execute(query, values);
+  }
+
+  int insertIntoTable(
+      {required String query, required List<List<String>> values}) {
     try {
-      _db.execute('''
-      INSERT INTO sources
-        (name, type, url, username, password)
-        VALUES (?, ?, ?, ?, ?);
-    ''', source);
+      for (var value in values) {
+        _db.execute(query, value);
+      }
     } on SqliteException catch (e) {
       if (e.extendedResultCode == 2067) {
         // already in database
@@ -66,7 +68,22 @@ class LocalDatabase {
     return _db.lastInsertRowId;
   }
 
+  // App-specific queries
+
+  List<Map<String, dynamic>> listSources() {
+    return fetchFromTable(
+        query: "SELECT id, name, type, url, username, password FROM sources;");
+  }
+
+  int addSource({required List<String> source}) {
+    return insertIntoTable(query: '''
+      INSERT INTO sources
+        (name, type, url, username, password)
+        VALUES (?, ?, ?, ?, ?);
+    ''', values: [source]);
+  }
+
   void removeSource({required int id}) {
-    _db.execute("DROP FROM sources WHERE id = ?;", [id]);
+    removeFromTable(query: "DROP FROM sources WHERE id = ?;", values: [id]);
   }
 }
