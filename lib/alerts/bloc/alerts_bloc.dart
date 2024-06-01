@@ -44,8 +44,9 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   }
 
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
+    _alerts = _repo.fetchCachedAlerts();
     emit(AlertsFetching(alerts: _alerts));
-    _alerts = await _repo.fetch(maxCacheAge: Duration.zero);
+    _alerts = await _repo.fetch(maxCacheAge: event.maxCacheAge);
     emit(AlertsFetched(alerts: _alerts));
   }
 }
