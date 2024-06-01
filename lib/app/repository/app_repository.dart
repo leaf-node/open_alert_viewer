@@ -53,10 +53,10 @@ class AllAlerts {
   }
 
   Future<List<Alert>> fetch({required Duration maxCacheAge}) async {
+    _fetchCachedAlerts();
     if (maxCacheAge.compareTo(DateTime.now().difference(_lastFetch)) > 0) {
       return _alerts;
     }
-
     _refreshSources();
 
     List<Alert> newAlerts = [];
@@ -76,6 +76,39 @@ class AllAlerts {
     _alerts = newAlerts;
 
     _lastFetch = DateTime.now();
+    _cacheAlerts();
     return _alerts;
+  }
+
+  void _cacheAlerts() {
+    List<List<Object>> serialized = [];
+    for (var alert in _alerts) {
+      serialized.add([
+        alert.source,
+        alert.kind.index,
+        alert.hostname,
+        alert.service,
+        alert.message,
+        alert.age.inSeconds
+      ]);
+    }
+    _db.removeCachedAlerts();
+    _db.insertIntoAlertsCache(alerts: serialized);
+  }
+
+  List<Alert> _fetchCachedAlerts() {
+    List<Alert> alerts = [];
+    List<Map<String, dynamic>> serializedList = _db.fetchCachedAlerts();
+    for (var serialized in serializedList) {
+      alerts.add(Alert(
+        source: serialized["source"] as int,
+        kind: AlertType.values[serialized["kind"] as int],
+        message: serialized["message"] as String,
+        hostname: serialized["hostname"] as String,
+        service: serialized["service"] as String,
+        age: Duration(seconds: serialized["age"] as int),
+      ));
+    }
+    return alerts;
   }
 }

@@ -52,7 +52,7 @@ class LocalDatabase {
   }
 
   int insertIntoTable(
-      {required String query, required List<List<String>> values}) {
+      {required String query, required List<List<Object>> values}) {
     try {
       for (var value in values) {
         _db.execute(query, value);
@@ -84,6 +84,23 @@ class LocalDatabase {
   }
 
   void removeSource({required int id}) {
-    removeFromTable(query: "DROP FROM sources WHERE id = ?;", values: [id]);
+    removeFromTable(query: "DELETE FROM sources WHERE id = ?;", values: [id]);
+  }
+
+  List<Map<String, dynamic>> fetchCachedAlerts() {
+    return fetchFromTable(
+        query: '''SELECT id, source, kind, hostname, service, message, age
+            FROM alerts_cache;''');
+  }
+
+  void removeCachedAlerts() {
+    removeFromTable(query: "DELETE FROM alerts_cache;", values: []);
+  }
+
+  void insertIntoAlertsCache({required List<List<Object>> alerts}) {
+    insertIntoTable(query: '''
+        INSERT INTO alerts_cache
+          (source, kind, hostname, service, message, age)
+          VALUES (?, ?, ?, ?, ?, ?);''', values: alerts);
   }
 }
