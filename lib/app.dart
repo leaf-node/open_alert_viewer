@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui';
 
 import 'alerts/bloc/alerts_bloc.dart';
-import 'alerts/repository/alerts_repository.dart';
+import 'app/repository/app_repository.dart';
 import 'alerts/view/alerts_page.dart';
 import 'app/bloc/navigation_bloc.dart';
 import 'app/bloc/navigation_state.dart';

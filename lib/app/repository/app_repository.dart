@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: MIT
  */
 
-import '../../app/data_provider/database.dart';
-import '../data_provider/alerts_random.dart';
-import '../model/alerts.dart';
+import '../data_provider/database.dart';
+import '../../alerts/data_provider/alerts_random.dart';
+import '../../alerts/model/alerts.dart';
 
 class AllAlerts {
   AllAlerts({required LocalDatabase db})
