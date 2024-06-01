@@ -87,6 +87,7 @@ class _AlertsListState extends State<AlertsList> {
               );
         },
         key: refreshKey,
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         child: BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
           List<Widget> alertWidgets = [];
           if (state is AlertsFetching) {
