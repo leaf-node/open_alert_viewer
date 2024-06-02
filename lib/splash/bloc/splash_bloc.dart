@@ -5,12 +5,12 @@
  */
 
 import 'package:bloc/bloc.dart';
-import '../../app/data_provider/database.dart';
+import '../../app/repository/app_repository.dart';
 import 'splash_event.dart';
 import 'splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
-  SplashBloc({required this.localDatabase}) : super(const SplashInit()) {
+  SplashBloc({required this.appRepo}) : super(const SplashInit()) {
     on<InitSplashEvent>(_splashInit);
     on<RunningSplashEvent>(_splashRunning);
     on<CompleteSplashEvent>(_splashComplete);
@@ -18,7 +18,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     add(RunningSplashEvent());
   }
 
-  final LocalDatabase localDatabase;
+  final AppRepo appRepo;
 
   void _splashInit(SplashEvent event, Emitter<SplashState> emit) {
     emit(const SplashInit());
@@ -26,8 +26,8 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
   void _splashRunning(SplashEvent event, Emitter<SplashState> emit) async {
     emit(const SplashRunning());
-    await localDatabase.open();
-    await localDatabase.migrateDatabase();
+    await appRepo.open();
+    await appRepo.migrate();
     await Future.delayed(const Duration(seconds: 1));
     add(CompleteSplashEvent());
   }

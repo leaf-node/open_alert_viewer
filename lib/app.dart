@@ -22,14 +22,17 @@ class OAVapp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-        create: (_) => LocalDatabase(),
+    return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(create: (context) => LocalDatabase()),
+          RepositoryProvider(
+              create: (context) => AppRepo(db: context.read<LocalDatabase>())),
+        ],
         child: MultiBlocProvider(providers: [
-          BlocProvider(create: (_) => NavBloc()),
+          BlocProvider(create: (context) => NavBloc()),
           BlocProvider(
               create: (context) => AlertsBloc(
-                  repo: AppRepo(db: context.read<LocalDatabase>()),
-                  refreshFrequencySeconds: 60))
+                  repo: context.read<AppRepo>(), refreshFrequencySeconds: 60))
         ], child: const OAVappView()));
   }
 }

@@ -31,7 +31,7 @@ class LocalDatabase {
     _isOpen = false;
   }
 
-  migrateDatabase() async {
+  migrate() async {
     String sqlString;
 
     if (!_isOpen) {

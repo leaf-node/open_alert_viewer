@@ -20,6 +20,18 @@ class AppRepo {
 
   List<AlertSource> get alertSources => _alertSources;
 
+  Future<void> open() async {
+    await _db.open();
+  }
+
+  Future<void> migrate() async {
+    await _db.migrate();
+  }
+
+  void close() {
+    _db.close();
+  }
+
   void _refreshSources() {
     List<AlertSource> sources = [];
     List<Map<String, dynamic>> sourcesData = _db.listSources();
