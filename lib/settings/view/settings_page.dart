@@ -28,6 +28,24 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
+class GeneralSettingsPage extends StatelessWidget {
+  const GeneralSettingsPage({super.key, required this.title});
+
+  final String title;
+
+  static Route<void> route({required title}) {
+    return MaterialPageRoute<void>(
+        builder: (_) => GeneralSettingsPage(title: title));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: SettingsHeader(title: title),
+        body: const GeneralSettingsList());
+  }
+}
+
 class SettingsHeader extends StatelessWidget implements PreferredSizeWidget {
   const SettingsHeader({super.key, required this.title});
 
@@ -55,11 +73,26 @@ class SettingsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(children: [
       MenuItem(
-          icon: Icons.settings, title: "General Settings", function: () => ()),
+          icon: Icons.settings,
+          title: "General Settings",
+          function: () =>
+              context.read<NavBloc>().add(OpenGeneralSettingsPageEvent())),
       const MenuHeader(title: "Accounts"),
       MenuItem(
           icon: Icons.manage_accounts, title: "Random", function: () => ()),
       MenuItem(icon: Icons.add, title: "Add new account", function: () => ()),
+    ]);
+  }
+}
+
+class GeneralSettingsList extends StatelessWidget {
+  const GeneralSettingsList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(children: [
+      MenuItem(
+          icon: Icons.update, title: "Refresh Interval", function: () => ()),
     ]);
   }
 }

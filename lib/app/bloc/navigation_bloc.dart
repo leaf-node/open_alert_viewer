@@ -14,6 +14,7 @@ class NavBloc extends Bloc<NavEvent, NavState> {
     on<OpenSplashPageEvent>(_openSplashPage);
     on<OpenAlertsPageEvent>(_openAlertsPage);
     on<OpenSettingsPageEvent>(_openSettingsPage);
+    on<OpenGeneralSettingsPageEvent>(_openGeneralSettingsPage);
   }
 
   void _popPage(PopPageEvent event, Emitter<NavState> emit) {
@@ -30,5 +31,10 @@ class NavBloc extends Bloc<NavEvent, NavState> {
 
   void _openSettingsPage(OpenSettingsPageEvent event, Emitter<NavState> emit) {
     emit(const ShowSettingsPage());
+  }
+
+  void _openGeneralSettingsPage(
+      OpenGeneralSettingsPageEvent event, Emitter<NavState> emit) {
+    emit(const ShowGeneralSettingsPage());
   }
 }

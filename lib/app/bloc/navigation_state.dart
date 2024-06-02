@@ -23,3 +23,7 @@ final class ShowAlertsPage extends NavState {
 final class ShowSettingsPage extends NavState {
   const ShowSettingsPage();
 }
+
+final class ShowGeneralSettingsPage extends NavState {
+  const ShowGeneralSettingsPage();
+}

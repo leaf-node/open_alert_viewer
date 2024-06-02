@@ -63,6 +63,9 @@ class _OAVappViewState extends State<OAVappView> {
                       (_) => false);
                 case ShowSettingsPage():
                   _navigator.push(SettingsPage.route(title: "OAV Settings"));
+                case ShowGeneralSettingsPage():
+                  _navigator.push(
+                      GeneralSettingsPage.route(title: "OAV General Settings"));
               }
             },
             child: child);

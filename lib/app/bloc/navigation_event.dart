@@ -13,3 +13,5 @@ final class OpenSplashPageEvent implements NavEvent {}
 final class OpenAlertsPageEvent implements NavEvent {}
 
 final class OpenSettingsPageEvent implements NavEvent {}
+
+final class OpenGeneralSettingsPageEvent implements NavEvent {}
