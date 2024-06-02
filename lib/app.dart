@@ -9,11 +9,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui';
 
 import 'alerts/bloc/alerts_bloc.dart';
-import 'app/repository/app_repository.dart';
 import 'alerts/view/alerts_page.dart';
 import 'app/bloc/navigation_bloc.dart';
 import 'app/bloc/navigation_state.dart';
 import 'app/data_provider/database.dart';
+import 'app/repository/app_repository.dart';
 import 'settings/view/settings_page.dart';
 import 'splash/view/splash_page.dart';
 
@@ -28,7 +28,7 @@ class OAVapp extends StatelessWidget {
           BlocProvider(create: (_) => NavBloc()),
           BlocProvider(
               create: (context) => AlertsBloc(
-                  repo: AllAlerts(db: context.read<LocalDatabase>()),
+                  repo: AppRepo(db: context.read<LocalDatabase>()),
                   refreshFrequencySeconds: 60))
         ], child: const OAVappView()));
   }

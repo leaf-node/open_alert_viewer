@@ -8,8 +8,8 @@ import '../data_provider/database.dart';
 import '../../alerts/data_provider/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
 
-class AllAlerts {
-  AllAlerts({required LocalDatabase db})
+class AppRepo {
+  AppRepo({required LocalDatabase db})
       : _db = db,
         _alertSources = [],
         _alerts = [];
@@ -51,7 +51,7 @@ class AllAlerts {
   }
 
   Future<List<Alert>> fetch({required Duration maxCacheAge}) async {
-    String lastFetchStr = _db.getSetting(setting: "last_fetch_time");
+    String lastFetchStr = getSetting(setting: "last_fetch_time");
     var lastFetch = DateTime.fromMillisecondsSinceEpoch(
         switch (lastFetchStr) { "" => 0, _ => int.parse(lastFetchStr) });
 
@@ -76,7 +76,7 @@ class AllAlerts {
     _alerts = newAlerts;
 
     _cacheAlerts();
-    _db.setSetting(
+    setSetting(
         setting: "last_fetch_time",
         value: lastFetch.millisecondsSinceEpoch.toString());
     return _alerts;
@@ -113,5 +113,13 @@ class AllAlerts {
     }
     _alerts = alerts;
     return alerts;
+  }
+
+  void setSetting({required String setting, required String value}) {
+    _db.setSetting(setting: setting, value: value);
+  }
+
+  String getSetting({required String setting}) {
+    return _db.getSetting(setting: setting);
   }
 }

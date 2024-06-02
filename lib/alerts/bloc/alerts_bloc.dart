@@ -13,7 +13,7 @@ import 'alerts_event.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
-  AlertsBloc({required AllAlerts repo, required int refreshFrequencySeconds})
+  AlertsBloc({required AppRepo repo, required int refreshFrequencySeconds})
       : _alerts = [],
         _repo = repo,
         _refreshFrequencySeconds = refreshFrequencySeconds,
@@ -26,7 +26,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   }
 
   List<Alert> _alerts;
-  final AllAlerts _repo;
+  final AppRepo _repo;
   final int _refreshFrequencySeconds;
 
   Future<void> _addSource(
