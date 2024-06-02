@@ -127,6 +127,10 @@ class AppRepo {
     return alerts;
   }
 
+  List<String> listSettings() {
+    return _db.listSettings();
+  }
+
   void setSetting({required String setting, required String value}) {
     _db.setSetting(setting: setting, value: value);
   }

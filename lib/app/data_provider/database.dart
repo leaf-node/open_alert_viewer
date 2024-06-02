@@ -112,6 +112,16 @@ class LocalDatabase {
           VALUES (?, ?, ?, ?, ?, ?);''', values: alerts);
   }
 
+  List<String> listSettings() {
+    List<String> settings = [];
+    var results =
+        fetchFromTable(query: "SELECT key from settings;", values: []);
+    for (var row in results) {
+      settings.add(row["key"] as String);
+    }
+    return settings;
+  }
+
   String getSetting({required String setting}) {
     var results = fetchFromTable(
         query: "SELECT value from settings where key = ?;", values: [setting]);
