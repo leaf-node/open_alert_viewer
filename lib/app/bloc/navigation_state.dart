@@ -10,6 +10,15 @@ abstract class NavState {
 
 final class PopPage extends NavState {
   const PopPage();
+
+  @override
+  int get hashCode =>
+      Object.hash("PopPage", DateTime.now().microsecondsSinceEpoch);
+
+  @override
+  bool operator ==(Object other) {
+    return false;
+  }
 }
 
 final class ShowSplashPage extends NavState {
