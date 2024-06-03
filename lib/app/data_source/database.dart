@@ -37,7 +37,8 @@ class LocalDatabase {
     if (!_isOpen) {
       open();
     }
-    sqlString = await rootBundle.loadString("lib/app/migrations/version_0.sql");
+    sqlString =
+        await rootBundle.loadString("lib/app/db_migrations/version_0.sql");
     _db.execute(sqlString);
   }
 

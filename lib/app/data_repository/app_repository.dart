@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
-import '../data_provider/database.dart';
-import '../../alerts/data_provider/alerts_random.dart';
+import '../data_source/database.dart';
+import '../../alerts/data_source/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
 
 class AppRepo {

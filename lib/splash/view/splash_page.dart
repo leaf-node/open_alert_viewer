@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
-import '../../app/repository/app_repository.dart';
+import '../../app/data_repository/app_repository.dart';
 import '../bloc/splash_bloc.dart';
 import '../bloc/splash_state.dart';
 

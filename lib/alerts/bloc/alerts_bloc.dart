@@ -8,7 +8,7 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 import '../model/alerts.dart';
-import '../../app/repository/app_repository.dart';
+import '../../app/data_repository/app_repository.dart';
 import 'alerts_event.dart';
 import 'alerts_state.dart';
 
