@@ -7,14 +7,17 @@
 import '../data_source/database.dart';
 import '../../alerts/data_source/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
+import 'settings_repository.dart';
 
 class AppRepo {
-  AppRepo({required LocalDatabase db})
+  AppRepo({required LocalDatabase db, required SettingsRepo settings})
       : _db = db,
+        _settings = settings,
         _alertSources = [],
         _alerts = [];
 
   final LocalDatabase _db;
+  final SettingsRepo _settings;
   List<AlertSource> _alertSources;
   List<Alert> _alerts;
 
@@ -67,11 +70,8 @@ class AppRepo {
     var maxCacheAge = const Duration(seconds: 60);
 
     if (!forceRefreshNow) {
-      String lastFetchStr = getSetting(setting: "last_fetch_time");
-      var lastFetch = DateTime.fromMillisecondsSinceEpoch(
-          switch (lastFetchStr) { "" => 0, _ => int.parse(lastFetchStr) });
-
-      if (maxCacheAge.compareTo(DateTime.now().difference(lastFetch)) > 0) {
+      var lastFetched = _settings.lastFetched;
+      if (maxCacheAge.compareTo(DateTime.now().difference(lastFetched)) > 0) {
         return _alerts;
       }
     }
@@ -85,7 +85,7 @@ class AppRepo {
       incoming.add(source.fetchAlerts());
     }
     fetched = await Future.wait(incoming);
-    var lastFetch = DateTime.now();
+    var lastFetched = DateTime.now();
     for (var result in fetched) {
       newAlerts.addAll(result);
     }
@@ -93,9 +93,7 @@ class AppRepo {
     _alerts = newAlerts;
 
     _cacheAlerts();
-    setSetting(
-        setting: "last_fetch_time",
-        value: lastFetch.millisecondsSinceEpoch.toString());
+    _settings.lastFetched = lastFetched;
     return _alerts;
   }
 
@@ -130,17 +128,5 @@ class AppRepo {
     }
     _alerts = alerts;
     return alerts;
-  }
-
-  List<String> listSettings() {
-    return _db.listSettings();
-  }
-
-  void setSetting({required String setting, required String value}) {
-    _db.setSetting(setting: setting, value: value);
-  }
-
-  String getSetting({required String setting}) {
-    return _db.getSetting(setting: setting);
   }
 }
