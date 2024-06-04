@@ -66,8 +66,7 @@ class AppRepo {
   }
 
   Future<List<Alert>> fetchAlerts({required bool forceRefreshNow}) async {
-    // TODO: look up actual setting
-    var maxCacheAge = const Duration(seconds: 60);
+    var maxCacheAge = Duration(seconds: _settings.refreshFrequency);
 
     if (!forceRefreshNow) {
       var lastFetched = _settings.lastFetched;
