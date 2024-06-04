@@ -62,7 +62,7 @@ class AppRepo {
     _db.removeSource(id: id);
   }
 
-  Future<List<Alert>> fetch({required Duration maxCacheAge}) async {
+  Future<List<Alert>> fetchAlerts({required Duration maxCacheAge}) async {
     String lastFetchStr = getSetting(setting: "last_fetch_time");
     var lastFetch = DateTime.fromMillisecondsSinceEpoch(
         switch (lastFetchStr) { "" => 0, _ => int.parse(lastFetchStr) });
