@@ -55,7 +55,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
               icon: Icons.refresh,
               function: () => context
                   .read<AlertsBloc>()
-                  .add(const FetchAlerts(maxCacheAge: Duration.zero))),
+                  .add(const FetchAlerts(forceRefreshNow: true))),
         ]);
   }
 
@@ -81,7 +81,7 @@ class _AlertsListState extends State<AlertsList> {
         onRefresh: () async {
           context
               .read<AlertsBloc>()
-              .add(const FetchAlerts(maxCacheAge: Duration.zero));
+              .add(const FetchAlerts(forceRefreshNow: true));
           await context.read<AlertsBloc>().stream.firstWhere(
                 (state) => state is! AlertsFetching,
               );

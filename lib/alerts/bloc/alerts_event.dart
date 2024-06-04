@@ -9,9 +9,9 @@ abstract class AlertEvent {
 }
 
 final class FetchAlerts implements AlertEvent {
-  const FetchAlerts({required this.maxCacheAge});
+  const FetchAlerts({required this.forceRefreshNow});
 
-  final Duration maxCacheAge;
+  final bool forceRefreshNow;
 }
 
 final class AddAlertSource implements AlertEvent {

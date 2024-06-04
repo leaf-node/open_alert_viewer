@@ -13,27 +13,25 @@ import 'alerts_event.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
-  AlertsBloc({required AppRepo repo, required int refreshFrequencySeconds})
+  AlertsBloc({required AppRepo repo})
       : _alerts = [],
         _repo = repo,
-        _refreshFrequencySeconds = refreshFrequencySeconds,
         super(const AlertsInit()) {
     on<AddAlertSource>(_addSource);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
 
-    add(FetchAlerts(maxCacheAge: Duration(seconds: _refreshFrequencySeconds)));
+    add(const FetchAlerts(forceRefreshNow: false));
   }
 
   List<Alert> _alerts;
   final AppRepo _repo;
-  final int _refreshFrequencySeconds;
 
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
     var result = _repo.addSource(source: event.source);
     if (result >= 0) {
-      add(const FetchAlerts(maxCacheAge: Duration.zero));
+      add(const FetchAlerts(forceRefreshNow: true));
     } else {
       emit(SourcesListUpdateError(alerts: _alerts));
     }
@@ -42,13 +40,13 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   Future<void> _removeSource(
       RemoveAlertSource event, Emitter<AlertState> emit) async {
     _repo.removeSource(id: event.id);
-    add(const FetchAlerts(maxCacheAge: Duration.zero));
+    add(const FetchAlerts(forceRefreshNow: true));
   }
 
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
     _alerts = _repo.fetchCachedAlerts();
     emit(AlertsFetching(alerts: _alerts));
-    _alerts = await _repo.fetchAlerts(maxCacheAge: event.maxCacheAge);
+    _alerts = await _repo.fetchAlerts(forceRefreshNow: event.forceRefreshNow);
     emit(AlertsFetched(alerts: _alerts));
   }
 }

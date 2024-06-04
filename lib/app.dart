@@ -31,8 +31,7 @@ class OAVapp extends StatelessWidget {
         child: MultiBlocProvider(providers: [
           BlocProvider(create: (context) => NavBloc()),
           BlocProvider(
-              create: (context) => AlertsBloc(
-                  repo: context.read<AppRepo>(), refreshFrequencySeconds: 60))
+              create: (context) => AlertsBloc(repo: context.read<AppRepo>()))
         ], child: const OAVappView()));
   }
 }

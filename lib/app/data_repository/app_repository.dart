@@ -62,13 +62,18 @@ class AppRepo {
     _db.removeSource(id: id);
   }
 
-  Future<List<Alert>> fetchAlerts({required Duration maxCacheAge}) async {
-    String lastFetchStr = getSetting(setting: "last_fetch_time");
-    var lastFetch = DateTime.fromMillisecondsSinceEpoch(
-        switch (lastFetchStr) { "" => 0, _ => int.parse(lastFetchStr) });
+  Future<List<Alert>> fetchAlerts({required bool forceRefreshNow}) async {
+    // TODO: look up actual setting
+    var maxCacheAge = const Duration(seconds: 60);
 
-    if (maxCacheAge.compareTo(DateTime.now().difference(lastFetch)) > 0) {
-      return _alerts;
+    if (!forceRefreshNow) {
+      String lastFetchStr = getSetting(setting: "last_fetch_time");
+      var lastFetch = DateTime.fromMillisecondsSinceEpoch(
+          switch (lastFetchStr) { "" => 0, _ => int.parse(lastFetchStr) });
+
+      if (maxCacheAge.compareTo(DateTime.now().difference(lastFetch)) > 0) {
+        return _alerts;
+      }
     }
     _refreshSources();
 
@@ -80,7 +85,7 @@ class AppRepo {
       incoming.add(source.fetchAlerts());
     }
     fetched = await Future.wait(incoming);
-    lastFetch = DateTime.now();
+    var lastFetch = DateTime.now();
     for (var result in fetched) {
       newAlerts.addAll(result);
     }
