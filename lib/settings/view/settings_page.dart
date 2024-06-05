@@ -5,10 +5,12 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
+import '../../app/data_repository/settings_repository.dart';
 import '../../app/view/app_view_elements.dart';
 import 'menu_item.dart';
 
@@ -58,7 +60,7 @@ class SettingsHeader extends StatelessWidget implements PreferredSizeWidget {
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         leading: HeaderButton(
             icon: Icons.arrow_back,
-            function: () => context.read<NavBloc>().add(PopPageEvent())),
+            function: () => Navigator.of(context).pop()),
         title: Text(title));
   }
 

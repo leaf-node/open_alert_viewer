@@ -10,15 +10,10 @@ import 'navigation_state.dart';
 
 class NavBloc extends Bloc<NavEvent, NavState> {
   NavBloc() : super(const ShowSplashPage()) {
-    on<PopPageEvent>(_popPage);
     on<OpenSplashPageEvent>(_openSplashPage);
     on<OpenAlertsPageEvent>(_openAlertsPage);
     on<OpenSettingsPageEvent>(_openSettingsPage);
     on<OpenGeneralSettingsPageEvent>(_openGeneralSettingsPage);
-  }
-
-  void _popPage(PopPageEvent event, Emitter<NavState> emit) {
-    emit(const PopPage());
   }
 
   void _openSplashPage(OpenSplashPageEvent event, Emitter<NavState> emit) {

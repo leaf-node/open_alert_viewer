@@ -6,14 +6,10 @@
 
 abstract class NavState {
   const NavState();
-}
-
-final class PopPage extends NavState {
-  const PopPage();
 
   @override
   int get hashCode =>
-      Object.hash("PopPage", DateTime.now().microsecondsSinceEpoch);
+      Object.hash("NavState", DateTime.now().microsecondsSinceEpoch);
 
   @override
   bool operator ==(Object other) {
