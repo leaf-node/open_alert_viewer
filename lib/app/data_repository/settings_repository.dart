@@ -18,8 +18,12 @@ class SettingsRepo {
 
   DateTime _getLastFetched() {
     String lastFetchStr = _db.getSetting(setting: "last_fetch_time");
-    return DateTime.fromMillisecondsSinceEpoch(
+    var value = DateTime.fromMillisecondsSinceEpoch(
         switch (lastFetchStr) { "" => 0, _ => int.parse(lastFetchStr) });
+    if (value.compareTo(DateTime.now()) > 0) {
+      value = DateTime.fromMillisecondsSinceEpoch(0);
+    }
+    return value;
   }
 
   void _setLastFetched(DateTime lastFetch) {
@@ -30,10 +34,12 @@ class SettingsRepo {
 
   int _getRefreshFrequency() {
     String refreshFrequency = _db.getSetting(setting: "refresh_frequency");
-    return switch (refreshFrequency) {
-      "" => 5,
-      _ => int.parse(refreshFrequency)
-    };
+    var value =
+        switch (refreshFrequency) { "" => 5, _ => int.parse(refreshFrequency) };
+    if (value <= 0) {
+      value = 1;
+    }
+    return value;
   }
 
   void _setRefreshFrequency(int refreshFrequency) {
