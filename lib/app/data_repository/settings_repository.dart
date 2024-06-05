@@ -31,7 +31,7 @@ class SettingsRepo {
   int _getRefreshFrequency() {
     String refreshFrequency = _db.getSetting(setting: "refresh_frequency");
     return switch (refreshFrequency) {
-      "" => 60,
+      "" => 5,
       _ => int.parse(refreshFrequency)
     };
   }
