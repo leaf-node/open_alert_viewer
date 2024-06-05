@@ -67,8 +67,9 @@ class LocalDatabase {
       } else {
         rethrow;
       }
+    } finally {
+      _db.execute("COMMIT TRANSACTION;");
     }
-    _db.execute("COMMIT TRANSACTION;");
     return _db.lastInsertRowId;
   }
 
