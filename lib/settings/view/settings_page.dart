@@ -87,6 +87,22 @@ class SettingsList extends StatelessWidget {
   }
 }
 
+enum RefreshFrequencies {
+  oneMinute("Every Minute", 1),
+  threeMinutes("Every 3 Minutes", 3),
+  fiveMinutes("Every 5 Minutes", 5),
+  fifteenMinutes("Every 15 Minutes", 15),
+  thirtyMinutes("Every 30 Minutes", 30),
+  oneHour("Every Hour", 60),
+  twoHours("Every 2 Hours", 120),
+  never("Never", null);
+
+  const RefreshFrequencies(this.text, this.periodMinutes);
+
+  final String text;
+  final int? periodMinutes;
+}
+
 class GeneralSettingsList extends StatelessWidget {
   const GeneralSettingsList({super.key});
 
@@ -94,7 +110,40 @@ class GeneralSettingsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(children: [
       MenuItem(
-          icon: Icons.update, title: "Refresh Interval", function: () => ()),
+          icon: Icons.update,
+          title: "Refresh Interval",
+          function: () async {
+            var settings = context.read<SettingsRepo>();
+            int? result = await _dialogBuilder(
+                context: context,
+                text: "Refresh Interval",
+                priorSettingMinutes: settings.refreshInterval);
+            settings.refreshInterval = result;
+          }),
     ]);
   }
+}
+
+Future<int?> _dialogBuilder(
+    {required BuildContext context,
+    required String text,
+    required int? priorSettingMinutes}) async {
+  return await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            child: SizedBox(
+                width: 300,
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  for (var option in RefreshFrequencies.values)
+                    RadioListTile<int?>(
+                      title: Text(option.text),
+                      value: option.periodMinutes,
+                      groupValue: priorSettingMinutes,
+                      onChanged: (int? value) {
+                        Navigator.of(context).pop(value);
+                      },
+                    ),
+                ])));
+      });
 }
