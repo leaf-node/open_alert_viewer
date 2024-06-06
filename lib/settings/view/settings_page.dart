@@ -105,14 +105,14 @@ class GeneralSettingsList extends StatelessWidget {
           title: "Refresh Interval",
           function: () async {
             var settings = context.read<SettingsRepo>();
-            int? result = await _dialogBuilder(
+            int? result = await _frequencyDialogBuilder(
                 context: context,
                 text: "Refresh Interval",
                 priorSettingMinutes: settings.refreshInterval ?? -1);
             // null here means "choice canceled"
             result ??= settings.refreshInterval;
             if (result == -1) {
-              // null here means "Never"
+              // null here means "Never Refresh"
               result = null;
             }
             settings.refreshInterval = result;
@@ -121,7 +121,7 @@ class GeneralSettingsList extends StatelessWidget {
   }
 }
 
-Future<int?> _dialogBuilder(
+Future<int?> _frequencyDialogBuilder(
     {required BuildContext context,
     required String text,
     required int? priorSettingMinutes}) async {
