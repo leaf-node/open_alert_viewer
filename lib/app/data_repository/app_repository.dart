@@ -21,7 +21,10 @@ class AppRepo {
   List<AlertSource> _alertSources;
   List<Alert> _alerts;
 
-  List<AlertSource> get alertSources => _alertSources;
+  List<AlertSource> get alertSources {
+    _refreshSources();
+    return _alertSources;
+  }
 
   Future<void> open() async {
     await _db.open();
@@ -33,11 +36,6 @@ class AppRepo {
 
   void close() {
     _db.close();
-  }
-
-  List<AlertSource> get listSources {
-    _refreshSources();
-    return _alertSources;
   }
 
   void _refreshSources() {

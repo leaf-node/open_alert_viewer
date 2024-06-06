@@ -6,11 +6,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_alert_viewer/alerts/bloc/alerts_state.dart';
 
+import '../../alerts/bloc/alerts_bloc.dart';
+import '../../alerts/bloc/alerts_event.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
-import '../../app/data_repository/app_repository.dart';
 import '../../app/data_repository/settings_repository.dart';
 import 'settings_components.dart';
 
@@ -53,20 +55,26 @@ class SettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
-      MenuItem(
-          icon: Icons.settings,
-          title: "General Settings",
-          function: () =>
-              context.read<NavBloc>().add(OpenGeneralSettingsPageEvent())),
-      const MenuHeader(title: "Accounts"),
-      for (AlertSource account in context.read<AppRepo>().listSources)
+    return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
+      return ListView(children: [
         MenuItem(
-            icon: Icons.manage_accounts,
-            title: account.name,
-            function: () => ()),
-      MenuItem(icon: Icons.add, title: "Add new account", function: () => ()),
-    ]);
+            icon: Icons.settings,
+            title: "General Settings",
+            function: () =>
+                context.read<NavBloc>().add(OpenGeneralSettingsPageEvent())),
+        const MenuHeader(title: "Accounts"),
+        for (AlertSource account in state.sources)
+          MenuItem(
+              icon: Icons.manage_accounts,
+              title: account.name,
+              function: () => ()),
+        MenuItem(
+            icon: Icons.add,
+            title: "Add new account",
+            function: () => context.read<AlertsBloc>().add(
+                const AddAlertSource(source: ["Random", "0", "", "", ""]))),
+      ]);
+    });
   }
 }
 

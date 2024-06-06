@@ -48,10 +48,6 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
         title: Text(title),
         actions: [
           HeaderButton(
-              icon: Icons.add,
-              function: () => context.read<AlertsBloc>().add(
-                  const AddAlertSource(source: ["Random", "0", "", "", ""]))),
-          HeaderButton(
               icon: Icons.refresh,
               function: () => context
                   .read<AlertsBloc>()
