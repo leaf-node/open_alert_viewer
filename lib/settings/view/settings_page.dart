@@ -73,7 +73,7 @@ enum RefreshFrequencies {
   thirtyMinutes("Every 30 Minutes", 30),
   oneHour("Every Hour", 60),
   twoHours("Every 2 Hours", 120),
-  never("Never", null);
+  never("Never", -1);
 
   const RefreshFrequencies(this.text, this.periodMinutes);
 
@@ -95,7 +95,13 @@ class GeneralSettingsList extends StatelessWidget {
             int? result = await _dialogBuilder(
                 context: context,
                 text: "Refresh Interval",
-                priorSettingMinutes: settings.refreshInterval);
+                priorSettingMinutes: settings.refreshInterval ?? -1);
+            // null here means "choice canceled"
+            result ??= settings.refreshInterval;
+            if (result == -1) {
+              // null here means "Never"
+              result = null;
+            }
             settings.refreshInterval = result;
           }),
     ]);
