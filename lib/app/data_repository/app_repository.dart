@@ -67,10 +67,10 @@ class AppRepo {
 
   Future<List<Alert>> fetchAlerts({required bool forceRefreshNow}) async {
     int? interval = _settings.refreshInterval;
-    if (interval == null) {
-      return _alerts;
-    }
     if (!forceRefreshNow) {
+      if (interval == null) {
+        return _alerts;
+      }
       var maxCacheAge = Duration(minutes: interval);
       var lastFetched = _settings.lastFetched;
       if (maxCacheAge.compareTo(DateTime.now().difference(lastFetched)) > 0) {
