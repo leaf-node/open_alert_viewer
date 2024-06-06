@@ -7,8 +7,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../alerts/model/alerts.dart';
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
+import '../../app/data_repository/app_repository.dart';
 import '../../app/data_repository/settings_repository.dart';
 import 'settings_components.dart';
 
@@ -58,8 +60,11 @@ class SettingsList extends StatelessWidget {
           function: () =>
               context.read<NavBloc>().add(OpenGeneralSettingsPageEvent())),
       const MenuHeader(title: "Accounts"),
-      MenuItem(
-          icon: Icons.manage_accounts, title: "Random", function: () => ()),
+      for (AlertSource account in context.read<AppRepo>().listSources)
+        MenuItem(
+            icon: Icons.manage_accounts,
+            title: account.name,
+            function: () => ()),
       MenuItem(icon: Icons.add, title: "Add new account", function: () => ()),
     ]);
   }

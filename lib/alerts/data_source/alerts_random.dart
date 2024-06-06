@@ -13,7 +13,9 @@ class RandomAlerts implements AlertSource {
       : _randomSeed = Random(DateTime.now().millisecondsSinceEpoch),
         _alerts = [];
 
+  @override
   final int id;
+  @override
   final String name;
   final Random _randomSeed;
   List<Alert> _alerts;

@@ -35,6 +35,11 @@ class AppRepo {
     _db.close();
   }
 
+  List<AlertSource> get listSources {
+    _refreshSources();
+    return _alertSources;
+  }
+
   void _refreshSources() {
     List<AlertSource> sources = [];
     List<Map<String, dynamic>> sourcesData = _db.listSources();
