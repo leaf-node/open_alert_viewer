@@ -32,17 +32,20 @@ class SettingsRepo {
         value: lastFetch.millisecondsSinceEpoch.toString());
   }
 
-  int _getRefreshInterval() {
+  int? _getRefreshInterval() {
     String refreshInterval = _db.getSetting(setting: "refresh_interval");
-    var value =
-        switch (refreshInterval) { "" => 5, _ => int.parse(refreshInterval) };
-    if (value <= 0) {
+    var value = switch (refreshInterval) {
+      "" => 5,
+      "null" => null,
+      _ => int.parse(refreshInterval)
+    };
+    if (value != null && value <= 0) {
       value = 1;
     }
     return value;
   }
 
-  void _setRefreshInterval(int refreshInterval) {
+  void _setRefreshInterval(int? refreshInterval) {
     _db.setSetting(
         setting: "refresh_interval", value: refreshInterval.toString());
   }
