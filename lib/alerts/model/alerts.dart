@@ -39,10 +39,18 @@ class Alert extends Equatable {
 }
 
 abstract class AlertSource {
-  const AlertSource({required this.id, required this.name});
+  const AlertSource(
+      {required this.id,
+      required this.name,
+      required this.url,
+      required this.username,
+      required this.password});
 
   Future<List<Alert>> fetchAlerts();
 
   final int id;
   final String name;
+  final String url;
+  final String username;
+  final String password;
 }

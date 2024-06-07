@@ -41,21 +41,28 @@ class AppRepo {
   void _refreshSources() {
     List<AlertSource> sources = [];
     List<Map<String, dynamic>> sourcesData = _db.listSources();
+    Function alertSource;
     for (var source in sourcesData) {
       List<dynamic> values = source.values.toList();
       var id = values[0] as int;
       var name = values[1] as String;
       var type = values[2] as int;
-      //var url = values[3] as String;
-      //var username = values[4] as String;
-      //var password = values[5] as String;
+      var url = values[3] as String;
+      var username = values[4] as String;
+      var password = values[5] as String;
 
       switch (type) {
         case 0:
-          sources.add(RandomAlerts(id: id, name: name));
+          alertSource = RandomAlerts.new;
         default:
           throw "Unsupported source id: $type";
       }
+      sources.add(alertSource(
+          id: id,
+          name: name,
+          url: url,
+          username: username,
+          password: password));
     }
     _alertSources = sources;
   }
