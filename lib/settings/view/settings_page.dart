@@ -62,12 +62,14 @@ class SettingsList extends StatelessWidget {
             title: "General Settings",
             function: () =>
                 context.read<NavBloc>().add(OpenGeneralSettingsPageEvent())),
-        const MenuHeader(title: "Accounts"),
+        const MenuHeaderTile(title: "Accounts"),
         for (AlertSource account in state.sources)
           MenuItem(
               icon: Icons.manage_accounts,
               title: account.name,
-              function: () => ()),
+              function: () => context
+                  .read<NavBloc>()
+                  .add(OpenAccountSettingsPageEvent(source: account))),
         MenuItem(
             icon: Icons.add,
             title: "Add new account",
@@ -143,4 +145,55 @@ Future<int?> _frequencyDialogBuilder(
                     ),
                 ])));
       });
+}
+
+class AccountSettingsPage extends StatelessWidget {
+  const AccountSettingsPage(
+      {super.key, required this.title, required this.source});
+
+  final String title;
+  final AlertSource source;
+
+  static Route<void> route(
+      {required String title, required AlertSource source}) {
+    return MaterialPageRoute<void>(
+        builder: (_) => AccountSettingsPage(title: title, source: source));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: SettingsHeader(title: title),
+        body: Center(
+            child: Form(
+                autovalidateMode: AutovalidateMode.always,
+                onChanged: () => (),
+                child: SizedBox(
+                    width: 400,
+                    child: ListView(children: const [
+                      SizedBox(height: 20),
+                      MenuHeader(title: "Account Details", padding: 8.0),
+                      AccountField(title: "Account Name"),
+                      AccountField(title: "Base URL"),
+                      AccountField(title: "User Name"),
+                      AccountField(title: "Password")
+                    ])))));
+  }
+}
+
+class AccountField extends StatelessWidget {
+  const AccountField({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Align(
+            alignment: Alignment.topCenter,
+            child: TextFormField(
+                onSaved: (String? value) {},
+                decoration: InputDecoration(labelText: title))));
+  }
 }

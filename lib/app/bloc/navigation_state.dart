@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'package:open_alert_viewer/alerts/model/alerts.dart';
+
 abstract class NavState {
   const NavState();
 
@@ -31,4 +33,19 @@ final class ShowSettingsPage extends NavState {
 
 final class ShowGeneralSettingsPage extends NavState {
   const ShowGeneralSettingsPage();
+}
+
+final class ShowAccountSettingsPage extends NavState {
+  const ShowAccountSettingsPage({required this.source});
+
+  final AlertSource source;
+
+  @override
+  int get hashCode => Object.hash(
+      "AccountSettings", source, DateTime.now().microsecondsSinceEpoch);
+
+  @override
+  bool operator ==(Object other) {
+    return false;
+  }
 }

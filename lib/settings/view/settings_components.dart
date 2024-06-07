@@ -26,19 +26,32 @@ class MenuItem extends StatelessWidget {
 }
 
 class MenuHeader extends StatelessWidget {
-  const MenuHeader({super.key, required this.title});
+  const MenuHeader({super.key, required this.title, required this.padding});
+
+  final String title;
+  final double padding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.all(padding),
+        child: Text(
+          title,
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+              fontWeight: FontWeight.bold),
+        ));
+  }
+}
+
+class MenuHeaderTile extends StatelessWidget {
+  const MenuHeaderTile({super.key, required this.title});
 
   final String title;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-        title: Text(
-      title,
-      style: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
-          fontWeight: FontWeight.bold),
-    ));
+    return ListTile(title: MenuHeader(title: title, padding: 0));
   }
 }
 
