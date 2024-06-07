@@ -170,21 +170,22 @@ class AccountSettingsPage extends StatelessWidget {
                 onChanged: () => (),
                 child: SizedBox(
                     width: 400,
-                    child: ListView(children: const [
-                      SizedBox(height: 20),
-                      MenuHeader(title: "Account Details", padding: 8.0),
-                      AccountField(title: "Account Name"),
-                      AccountField(title: "Base URL"),
-                      AccountField(title: "User Name"),
-                      AccountField(title: "Password")
+                    child: ListView(children: [
+                      const SizedBox(height: 20),
+                      const MenuHeader(title: "Account Details", padding: 8.0),
+                      AccountField(title: "Account Name", value: source.name),
+                      AccountField(title: "Base URL", value: source.url),
+                      AccountField(title: "User Name", value: source.username),
+                      AccountField(title: "Password", value: source.password)
                     ])))));
   }
 }
 
 class AccountField extends StatelessWidget {
-  const AccountField({super.key, required this.title});
+  const AccountField({super.key, required this.title, required this.value});
 
   final String title;
+  final String value;
 
   @override
   Widget build(BuildContext context) {
@@ -193,6 +194,7 @@ class AccountField extends StatelessWidget {
         child: Align(
             alignment: Alignment.topCenter,
             child: TextFormField(
+                initialValue: value,
                 onSaved: (String? value) {},
                 decoration: InputDecoration(labelText: title))));
   }
