@@ -111,12 +111,7 @@ class GeneralSettingsList extends StatelessWidget {
                 context: context,
                 text: "Refresh Interval",
                 priorSettingMinutes: settings.refreshInterval ?? -1);
-            // null here means "choice canceled"
             result ??= settings.refreshInterval;
-            if (result == -1) {
-              // null here means "Never Refresh"
-              result = null;
-            }
             settings.refreshInterval = result;
           }),
     ]);
