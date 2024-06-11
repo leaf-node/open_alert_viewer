@@ -13,7 +13,6 @@ import '../../alerts/bloc/alerts_state.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
-import '../../app/data_repository/app_repository.dart';
 import '../../app/data_repository/settings_repository.dart';
 import 'settings_components.dart';
 
@@ -217,15 +216,15 @@ class _AccountFormState extends State<AccountForm> {
                 ElevatedButton(
                     onPressed: () {
                       if (Form.of(context).validate()) {
-                        context
-                            .read<AppRepo>()
-                            .updateSource(id: widget.source.id, values: [
-                          nameController.text,
-                          widget.source.type,
-                          urlController.text,
-                          userController.text,
-                          passwordController.text
-                        ]);
+                        context.read<AlertsBloc>().add(UpdateAlertSource(
+                                id: widget.source.id,
+                                values: [
+                                  nameController.text,
+                                  widget.source.type,
+                                  urlController.text,
+                                  userController.text,
+                                  passwordController.text
+                                ]));
                         Navigator.of(context).pop();
                       }
                     },
