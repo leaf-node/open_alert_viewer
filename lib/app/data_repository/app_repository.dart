@@ -59,6 +59,7 @@ class AppRepo {
       }
       sources.add(alertSource(
           id: id,
+          type: type,
           name: name,
           url: url,
           username: username,
@@ -69,6 +70,11 @@ class AppRepo {
 
   int addSource({required List<String> source}) {
     return _db.addSource(source: source);
+  }
+
+  void updateSource({required int id, required List<Object> values}) {
+    _db.updateSource(id: id, values: values);
+    _refreshSources();
   }
 
   void removeSource({required int id}) {

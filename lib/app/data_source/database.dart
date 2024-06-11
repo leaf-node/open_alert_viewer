@@ -93,6 +93,14 @@ class LocalDatabase {
     ''', values: [source]);
   }
 
+  void updateSource({required int id, required List<Object> values}) {
+    updateTable(query: '''
+      UPDATE sources SET
+        (name, type, url, username, password)
+        = (?, ?, ?, ?, ?) WHERE id = ?;
+    ''', values: [...values, id]);
+  }
+
   void removeSource({required int id}) {
     removeFromTable(query: "DELETE FROM sources WHERE id = ?;", values: [id]);
   }

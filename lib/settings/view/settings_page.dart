@@ -6,13 +6,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/alerts/bloc/alerts_state.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_event.dart';
+import '../../alerts/bloc/alerts_state.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
+import '../../app/data_repository/app_repository.dart';
 import '../../app/data_repository/settings_repository.dart';
 import 'settings_components.dart';
 
@@ -159,28 +160,90 @@ class AccountSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SettingsHeader(title: title),
-        body: Center(
-            child: Form(
-                autovalidateMode: AutovalidateMode.always,
-                onChanged: () => (),
-                child: SizedBox(
-                    width: 400,
-                    child: ListView(children: [
-                      const SizedBox(height: 20),
-                      const MenuHeader(title: "Account Details", padding: 8.0),
-                      AccountField(title: "Account Name", value: source.name),
-                      AccountField(title: "Base URL", value: source.url),
-                      AccountField(title: "User Name", value: source.username),
-                      AccountField(title: "Password", value: source.password)
-                    ])))));
+        body: Center(child: AccountForm(source: source)));
+  }
+}
+
+class AccountForm extends StatefulWidget {
+  const AccountForm({super.key, required this.source});
+
+  final AlertSource source;
+
+  @override
+  State<AccountForm> createState() => _AccountFormState();
+}
+
+class _AccountFormState extends State<AccountForm> {
+  final nameController = TextEditingController();
+  final urlController = TextEditingController();
+  final userController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    nameController.text = widget.source.name;
+    urlController.text = widget.source.url;
+    userController.text = widget.source.username;
+    passwordController.text = widget.source.password;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+    urlController.dispose();
+    userController.dispose();
+    passwordController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+        autovalidateMode: AutovalidateMode.always,
+        onChanged: () => (),
+        child: SizedBox(
+            width: 400,
+            child: Builder(builder: (context) {
+              nameController.value;
+              return ListView(children: [
+                const SizedBox(height: 20),
+                const MenuHeader(title: "Account Details", padding: 8.0),
+                AccountField(title: "Account Name", controller: nameController),
+                AccountField(title: "Base URL", controller: urlController),
+                AccountField(title: "User Name", controller: userController),
+                AccountField(title: "Password", controller: passwordController),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                    onPressed: () {
+                      if (Form.of(context).validate()) {
+                        context
+                            .read<AppRepo>()
+                            .updateSource(id: widget.source.id, values: [
+                          nameController.text,
+                          widget.source.type,
+                          urlController.text,
+                          userController.text,
+                          passwordController.text
+                        ]);
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: Text("Submit",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontWeight: FontWeight.bold)))
+              ]);
+            })));
   }
 }
 
 class AccountField extends StatelessWidget {
-  const AccountField({super.key, required this.title, required this.value});
+  const AccountField(
+      {super.key, required this.title, required this.controller});
 
   final String title;
-  final String value;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +252,7 @@ class AccountField extends StatelessWidget {
         child: Align(
             alignment: Alignment.topCenter,
             child: TextFormField(
-                initialValue: value,
+                controller: controller,
                 onSaved: (String? value) {},
                 decoration: InputDecoration(labelText: title))));
   }

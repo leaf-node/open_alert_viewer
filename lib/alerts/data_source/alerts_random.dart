@@ -12,6 +12,7 @@ class RandomAlerts implements AlertSource {
   RandomAlerts(
       {required this.id,
       required this.name,
+      required this.type,
       required this.url,
       required this.username,
       required this.password})
@@ -22,6 +23,8 @@ class RandomAlerts implements AlertSource {
   final int id;
   @override
   final String name;
+  @override
+  final int type;
   @override
   final String url;
   @override
