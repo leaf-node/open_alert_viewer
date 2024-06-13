@@ -21,10 +21,10 @@ final class AddAlertSource implements AlertEvent {
 }
 
 final class UpdateAlertSource implements AlertEvent {
-  const UpdateAlertSource({required this.id, required this.values});
+  const UpdateAlertSource({required this.id, required this.source});
 
   final int id;
-  final List<Object> values;
+  final List<String> source;
 }
 
 final class RemoveAlertSource implements AlertEvent {

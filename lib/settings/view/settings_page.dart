@@ -218,9 +218,9 @@ class _AccountFormState extends State<AccountForm> {
                       if (Form.of(context).validate()) {
                         context.read<AlertsBloc>().add(UpdateAlertSource(
                                 id: widget.source.id,
-                                values: [
+                                source: [
                                   nameController.text,
-                                  widget.source.type,
+                                  widget.source.type.toString(),
                                   urlController.text,
                                   userController.text,
                                   passwordController.text
