@@ -42,9 +42,14 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
 
   Future<void> _updateSource(
       UpdateAlertSource event, Emitter<AlertState> emit) async {
-    _repo.updateSource(id: event.id, values: event.source);
-    emit(SourcesChanged(alerts: _alerts, sources: _repo.alertSources));
-    add(const FetchAlerts(forceRefreshNow: true));
+    var success = _repo.updateSource(id: event.id, values: event.source);
+    if (success) {
+      emit(SourcesChanged(alerts: _alerts, sources: _repo.alertSources));
+      add(const FetchAlerts(forceRefreshNow: true));
+    } else {
+      emit(
+          SourcesListUpdateError(alerts: _alerts, sources: _repo.alertSources));
+    }
   }
 
   Future<void> _removeSource(

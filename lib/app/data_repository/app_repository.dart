@@ -72,8 +72,8 @@ class AppRepo {
     return _db.addSource(source: source);
   }
 
-  void updateSource({required int id, required List<Object> values}) {
-    _db.updateSource(id: id, values: values);
+  bool updateSource({required int id, required List<Object> values}) {
+    return _db.updateSource(id: id, values: values);
   }
 
   void removeSource({required int id}) {

@@ -73,8 +73,18 @@ class LocalDatabase {
     return _db.lastInsertRowId;
   }
 
-  void updateTable({required String query, required List<Object> values}) {
-    _db.execute(query, values);
+  bool updateTable({required String query, required List<Object> values}) {
+    try {
+      _db.execute(query, values);
+    } on SqliteException catch (e) {
+      if (e.extendedResultCode == 2067) {
+        // already in database
+        return false;
+      } else {
+        rethrow;
+      }
+    }
+    return true;
   }
 
   // App-specific queries
@@ -93,8 +103,8 @@ class LocalDatabase {
     ''', values: [source]);
   }
 
-  void updateSource({required int id, required List<Object> values}) {
-    updateTable(query: '''
+  bool updateSource({required int id, required List<Object> values}) {
+    return updateTable(query: '''
       UPDATE sources SET
         (name, type, url, username, password)
         = (?, ?, ?, ?, ?) WHERE id = ?;
