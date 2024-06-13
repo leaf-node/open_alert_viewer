@@ -13,15 +13,25 @@ class MenuItem extends StatelessWidget {
       {super.key,
       required this.icon,
       required this.title,
+      this.subtitle,
       required this.function});
 
   final IconData icon;
   final String title;
+  final String? subtitle;
   final void Function() function;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(leading: Icon(icon), title: Text(title), onTap: function);
+    if (subtitle == null) {
+      return ListTile(leading: Icon(icon), title: Text(title), onTap: function);
+    } else {
+      return ListTile(
+          leading: Icon(icon),
+          title: Text(title),
+          subtitle: Text(subtitle!),
+          onTap: function);
+    }
   }
 }
 

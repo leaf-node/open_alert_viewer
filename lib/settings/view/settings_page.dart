@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_alert_viewer/settings/bloc/bloc/settings_bloc.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_event.dart';
@@ -101,20 +102,33 @@ class GeneralSettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
-      MenuItem(
-          icon: Icons.update,
-          title: "Refresh Interval",
-          function: () async {
-            var settings = context.read<SettingsRepo>();
-            int? result = await _frequencyDialogBuilder(
-                context: context,
-                text: "Refresh Interval",
-                priorSettingMinutes: settings.refreshInterval ?? -1);
-            result ??= settings.refreshInterval;
-            settings.refreshInterval = result;
-          }),
-    ]);
+    return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
+      var settings = context.read<SettingsRepo>();
+      var settingsBloc = context.read<SettingsBloc>();
+      String subtitle = () {
+        for (var option in RefreshFrequencies.values) {
+          if (option.periodMinutes == settings.refreshInterval) {
+            return option.text;
+          }
+        }
+        return "Every ${settings.refreshInterval} minutes";
+      }();
+      return ListView(children: [
+        MenuItem(
+            icon: Icons.update,
+            title: "Refresh Interval",
+            subtitle: subtitle,
+            function: () async {
+              int result = await _frequencyDialogBuilder(
+                      context: context,
+                      text: "Refresh Interval",
+                      priorSettingMinutes: settings.refreshInterval) ??
+                  settings.refreshInterval;
+              settingsBloc.add(
+                  SettingsPushEvent(newSettings: {"refreshInterval": result}));
+            })
+      ]);
+    });
   }
 }
 
