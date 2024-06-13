@@ -14,7 +14,6 @@ import '../../alerts/model/alerts.dart';
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
 import '../../app/data_repository/settings_repository.dart';
-import 'settings_account.dart';
 import 'settings_components.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -142,25 +141,4 @@ Future<int?> _frequencyDialogBuilder(
                   ])
                 ])));
       });
-}
-
-class AccountSettingsPage extends StatelessWidget {
-  const AccountSettingsPage(
-      {super.key, required this.title, required this.source});
-
-  final String title;
-  final AlertSource source;
-
-  static Route<void> route(
-      {required String title, required AlertSource source}) {
-    return MaterialPageRoute<void>(
-        builder: (_) => AccountSettingsPage(title: title, source: source));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: SettingsHeader(title: title),
-        body: Center(child: AccountForm(source: source)));
-  }
 }

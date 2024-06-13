@@ -6,7 +6,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/app/data_repository/settings_repository.dart';
 import 'dart:ui';
 
 import 'alerts/bloc/alerts_bloc.dart';
@@ -15,6 +14,8 @@ import 'app/bloc/navigation_bloc.dart';
 import 'app/bloc/navigation_state.dart';
 import 'app/data_source/database.dart';
 import 'app/data_repository/app_repository.dart';
+import 'app/data_repository/settings_repository.dart';
+import 'settings/view/settings_account.dart';
 import 'settings/view/settings_page.dart';
 import 'splash/view/splash_page.dart';
 
