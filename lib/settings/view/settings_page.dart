@@ -89,7 +89,7 @@ enum RefreshFrequencies {
   thirtyMinutes("Every 30 Minutes", 30),
   oneHour("Every Hour", 60),
   twoHours("Every 2 Hours", 120),
-  never("Never", -1);
+  off("Off", -1);
 
   const RefreshFrequencies(this.text, this.periodMinutes);
 
@@ -129,7 +129,7 @@ Future<int?> _frequencyDialogBuilder(
         return Dialog(
             child: SizedBox(
                 width: 300,
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                child: ListView(children: [
                   for (var option in RefreshFrequencies.values)
                     RadioListTile<int?>(
                       title: Text(option.text),
