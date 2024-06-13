@@ -129,16 +129,17 @@ Future<int?> _frequencyDialogBuilder(
         return Dialog(
             child: SizedBox(
                 width: 300,
-                child: ListView(children: [
-                  for (var option in RefreshFrequencies.values)
-                    RadioListTile<int?>(
-                      title: Text(option.text),
-                      value: option.periodMinutes,
-                      groupValue: priorSettingMinutes,
-                      onChanged: (int? value) {
-                        Navigator.of(context).pop(value);
-                      },
-                    ),
+                child: ListView(shrinkWrap: true, children: [
+                  Column(mainAxisSize: MainAxisSize.min, children: [
+                    for (var option in RefreshFrequencies.values)
+                      RadioListTile<int?>(
+                          title: Text(option.text),
+                          value: option.periodMinutes,
+                          groupValue: priorSettingMinutes,
+                          onChanged: (int? value) {
+                            Navigator.of(context).pop(value);
+                          })
+                  ])
                 ])));
       });
 }
