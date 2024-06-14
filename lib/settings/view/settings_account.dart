@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_event.dart';
 import '../../alerts/model/alerts.dart';
+import '../../app/data_repository/app_repository.dart';
 import 'settings_components.dart';
 
 class AccountSettingsPage extends StatelessWidget {
@@ -88,7 +89,21 @@ class _AccountFormState extends State<AccountForm> {
               return ListView(children: [
                 const SizedBox(height: 20),
                 const MenuHeader(title: "Account Details", padding: 8.0),
-                AccountField(title: "Account Name", controller: nameController),
+                AccountField(
+                    title: "Account Name",
+                    controller: nameController,
+                    validator: (String? value) {
+                      int? id;
+                      id = widget.source?.id;
+                      if (value == null || value == "") {
+                        return "Please enter a name";
+                      }
+                      return context
+                              .read<AppRepo>()
+                              .checkUniqueSource(id: id, name: value)
+                          ? null
+                          : "Name already used";
+                    }),
                 AccountField(title: "Base URL", controller: urlController),
                 AccountField(title: "User Name", controller: userController),
                 AccountField(title: "Password", controller: passwordController),
@@ -165,10 +180,14 @@ class _AccountFormState extends State<AccountForm> {
 
 class AccountField extends StatelessWidget {
   const AccountField(
-      {super.key, required this.title, required this.controller});
+      {super.key,
+      required this.title,
+      required this.controller,
+      this.validator});
 
   final String title;
   final TextEditingController controller;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -179,6 +198,7 @@ class AccountField extends StatelessWidget {
             child: TextFormField(
                 controller: controller,
                 onSaved: (String? value) {},
-                decoration: InputDecoration(labelText: title))));
+                decoration: InputDecoration(labelText: title),
+                validator: validator)));
   }
 }

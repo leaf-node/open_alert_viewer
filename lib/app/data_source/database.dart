@@ -115,6 +115,18 @@ class LocalDatabase {
     removeFromTable(query: "DELETE FROM sources WHERE id = ?;", values: [id]);
   }
 
+  bool checkUniqueSource({int? id, required String name}) {
+    var rows =
+        fetchFromTable(query: "SELECT id, name FROM sources;", values: []);
+    for (var row in rows) {
+      var rowid = row["id"] as int;
+      if (id != rowid && name == row["name"] as String) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   List<Map<String, dynamic>> fetchCachedAlerts() {
     return fetchFromTable(
         query: '''SELECT id, source, kind, hostname, service, message, age

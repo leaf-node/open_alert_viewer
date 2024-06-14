@@ -89,6 +89,10 @@ class AppRepo {
     _db.removeSource(id: id);
   }
 
+  bool checkUniqueSource({int? id, required String name}) {
+    return _db.checkUniqueSource(id: id, name: name);
+  }
+
   Future<List<Alert>> fetchAlerts({required bool forceRefreshNow}) async {
     int interval = _settings.refreshInterval;
     if (!forceRefreshNow) {
