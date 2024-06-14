@@ -6,7 +6,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/settings/bloc/bloc/settings_bloc.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_state.dart';
@@ -14,6 +13,7 @@ import '../../alerts/model/alerts.dart';
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
 import '../../app/data_repository/settings_repository.dart';
+import '../bloc/bloc/settings_bloc.dart';
 import 'settings_components.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -28,7 +28,17 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SettingsHeader(title: title), body: const SettingsList());
+        appBar: SettingsHeader(title: title),
+        body: BlocListener<AlertsBloc, AlertState>(
+            listener: (context, state) {
+              switch (state) {
+                case SourcesListUpdateError():
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                          "Ignoring duplicate of existing sources config")));
+              }
+            },
+            child: const SettingsList()));
   }
 }
 
