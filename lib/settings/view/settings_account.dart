@@ -93,43 +93,71 @@ class _AccountFormState extends State<AccountForm> {
                 AccountField(title: "User Name", controller: userController),
                 AccountField(title: "Password", controller: passwordController),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                    onPressed: () {
-                      if (Form.of(context).validate()) {
-                        if (widget.source == null) {
-                          context
-                              .read<AlertsBloc>()
-                              .add(AddAlertSource(source: [
-                                nameController.text,
-                                typeController.text,
-                                urlController.text,
-                                userController.text,
-                                passwordController.text
-                              ]));
-                        } else {
-                          context.read<AlertsBloc>().add(UpdateAlertSource(
-                                  id: widget.source!.id,
-                                  source: [
-                                    nameController.text,
-                                    typeController.text,
-                                    urlController.text,
-                                    userController.text,
-                                    passwordController.text
-                                  ]));
-                        }
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: Text(() {
-                      if (widget.source == null) {
-                        return "Add Account";
-                      } else {
-                        return "Update Account";
-                      }
-                    }(),
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontWeight: FontWeight.bold)))
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Expanded(
+                      child: Center(
+                          child: ElevatedButton(
+                              onPressed: () {
+                                if (widget.source != null) {
+                                  context.read<AlertsBloc>().add(
+                                      RemoveAlertSource(id: widget.source!.id));
+                                }
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(() {
+                                if (widget.source == null) {
+                                  return "Cancel";
+                                } else {
+                                  return "Remove Account";
+                                }
+                              }(),
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                      fontWeight: FontWeight.bold))))),
+                  Expanded(
+                      child: Center(
+                          child: ElevatedButton(
+                              onPressed: () {
+                                if (Form.of(context).validate()) {
+                                  if (widget.source == null) {
+                                    context
+                                        .read<AlertsBloc>()
+                                        .add(AddAlertSource(source: [
+                                          nameController.text,
+                                          typeController.text,
+                                          urlController.text,
+                                          userController.text,
+                                          passwordController.text
+                                        ]));
+                                  } else {
+                                    context.read<AlertsBloc>().add(
+                                            UpdateAlertSource(
+                                                id: widget.source!.id,
+                                                source: [
+                                              nameController.text,
+                                              typeController.text,
+                                              urlController.text,
+                                              userController.text,
+                                              passwordController.text
+                                            ]));
+                                  }
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                              child: Text(() {
+                                if (widget.source == null) {
+                                  return "Add Account";
+                                } else {
+                                  return "Update Account";
+                                }
+                              }(),
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontWeight: FontWeight.bold)))))
+                ])
               ]);
             })));
   }
