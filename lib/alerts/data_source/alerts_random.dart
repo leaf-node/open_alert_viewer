@@ -16,7 +16,7 @@ class RandomAlerts implements AlertSource {
       required this.url,
       required this.username,
       required this.password})
-      : _randomSeed = Random(DateTime.now().millisecondsSinceEpoch),
+      : _randomSeed = Random(DateTime.now().microsecondsSinceEpoch),
         _alerts = [];
 
   @override
