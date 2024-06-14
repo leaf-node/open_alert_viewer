@@ -34,8 +34,8 @@ class SettingsPage extends StatelessWidget {
               switch (state) {
                 case SourcesListUpdateError():
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                          "Ignoring duplicate of existing sources config")));
+                      content:
+                          Text("Ignoring duplicate of existing alert source")));
               }
             },
             child: const SettingsList()));
