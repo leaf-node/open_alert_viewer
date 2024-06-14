@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_alert_viewer/settings/bloc/bloc/settings_bloc.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
-import '../../alerts/bloc/alerts_event.dart';
 import '../../alerts/bloc/alerts_state.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/bloc/navigation_bloc.dart';
@@ -74,8 +73,9 @@ class SettingsList extends StatelessWidget {
         MenuItem(
             icon: Icons.add,
             title: "Add new account",
-            function: () => context.read<AlertsBloc>().add(
-                const AddAlertSource(source: ["Random", "0", "", "", ""]))),
+            function: () => context
+                .read<NavBloc>()
+                .add(const OpenAccountSettingsPageEvent(source: null))),
       ]);
     });
   }

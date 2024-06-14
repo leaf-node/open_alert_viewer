@@ -38,7 +38,7 @@ final class ShowGeneralSettingsPage extends NavState {
 final class ShowAccountSettingsPage extends NavState {
   const ShowAccountSettingsPage({required this.source});
 
-  final AlertSource source;
+  final AlertSource? source;
 
   @override
   int get hashCode => Object.hash(

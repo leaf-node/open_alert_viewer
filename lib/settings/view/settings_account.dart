@@ -17,10 +17,10 @@ class AccountSettingsPage extends StatelessWidget {
       {super.key, required this.title, required this.source});
 
   final String title;
-  final AlertSource source;
+  final AlertSource? source;
 
   static Route<void> route(
-      {required String title, required AlertSource source}) {
+      {required String title, required AlertSource? source}) {
     return MaterialPageRoute<void>(
         builder: (_) => AccountSettingsPage(title: title, source: source));
   }
@@ -36,7 +36,7 @@ class AccountSettingsPage extends StatelessWidget {
 class AccountForm extends StatefulWidget {
   const AccountForm({super.key, required this.source});
 
-  final AlertSource source;
+  final AlertSource? source;
 
   @override
   State<AccountForm> createState() => _AccountFormState();
@@ -44,6 +44,7 @@ class AccountForm extends StatefulWidget {
 
 class _AccountFormState extends State<AccountForm> {
   final nameController = TextEditingController();
+  final typeController = TextEditingController();
   final urlController = TextEditingController();
   final userController = TextEditingController();
   final passwordController = TextEditingController();
@@ -51,10 +52,19 @@ class _AccountFormState extends State<AccountForm> {
   @override
   void initState() {
     super.initState();
-    nameController.text = widget.source.name;
-    urlController.text = widget.source.url;
-    userController.text = widget.source.username;
-    passwordController.text = widget.source.password;
+    if (widget.source == null) {
+      nameController.text = "";
+      typeController.text = "0";
+      urlController.text = "";
+      userController.text = "";
+      passwordController.text = "";
+    } else {
+      nameController.text = widget.source!.name;
+      typeController.text = widget.source!.type.toString();
+      urlController.text = widget.source!.url;
+      userController.text = widget.source!.username;
+      passwordController.text = widget.source!.password;
+    }
   }
 
   @override
@@ -86,19 +96,37 @@ class _AccountFormState extends State<AccountForm> {
                 ElevatedButton(
                     onPressed: () {
                       if (Form.of(context).validate()) {
-                        context.read<AlertsBloc>().add(UpdateAlertSource(
-                                id: widget.source.id,
-                                source: [
-                                  nameController.text,
-                                  widget.source.type.toString(),
-                                  urlController.text,
-                                  userController.text,
-                                  passwordController.text
-                                ]));
+                        if (widget.source == null) {
+                          context
+                              .read<AlertsBloc>()
+                              .add(AddAlertSource(source: [
+                                nameController.text,
+                                typeController.text,
+                                urlController.text,
+                                userController.text,
+                                passwordController.text
+                              ]));
+                        } else {
+                          context.read<AlertsBloc>().add(UpdateAlertSource(
+                                  id: widget.source!.id,
+                                  source: [
+                                    nameController.text,
+                                    typeController.text,
+                                    urlController.text,
+                                    userController.text,
+                                    passwordController.text
+                                  ]));
+                        }
                         Navigator.of(context).pop();
                       }
                     },
-                    child: Text("Submit",
+                    child: Text(() {
+                      if (widget.source == null) {
+                        return "Add Account";
+                      } else {
+                        return "Update Account";
+                      }
+                    }(),
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontWeight: FontWeight.bold)))

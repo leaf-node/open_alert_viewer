@@ -19,5 +19,5 @@ final class OpenGeneralSettingsPageEvent implements NavEvent {}
 final class OpenAccountSettingsPageEvent implements NavEvent {
   const OpenAccountSettingsPageEvent({required this.source});
 
-  final AlertSource source;
+  final AlertSource? source;
 }
