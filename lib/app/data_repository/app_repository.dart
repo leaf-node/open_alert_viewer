@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:developer';
+
 import '../data_source/database.dart';
 import '../../alerts/data_source/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
@@ -46,7 +48,14 @@ class AppRepo {
       List<dynamic> values = source.values.toList();
       var id = values[0] as int;
       var name = values[1] as String;
-      var type = values[2] as int;
+      int type;
+      try {
+        type = values[2] as int;
+      } catch (e) {
+        log("Unsupported source id: '${values[2]}'. Removing source.");
+        removeSource(id: id);
+        continue;
+      }
       var url = values[3] as String;
       var username = values[4] as String;
       var password = values[5] as String;
