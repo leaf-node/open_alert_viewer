@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:async';
 import 'dart:developer';
 
 import '../data_source/database.dart';
@@ -93,38 +94,45 @@ class AppRepo {
     return _db.checkUniqueSource(id: id, name: name);
   }
 
-  Future<List<Alert>> fetchAlerts({required bool forceRefreshNow}) async {
-    int interval = _settings.refreshInterval;
+  void fetchAlerts(
+      {required StreamController<List<Alert>> controller,
+      required bool forceRefreshNow}) async {
+    fetchCachedAlerts();
+    controller.add(_alerts);
     if (!forceRefreshNow) {
+      int interval = _settings.refreshInterval;
       if (interval == -1) {
-        return _alerts;
+        controller.close();
+        return;
       }
       var maxCacheAge = Duration(minutes: interval);
       var lastFetched = _settings.lastFetched;
       if (maxCacheAge.compareTo(DateTime.now().difference(lastFetched)) > 0) {
-        return _alerts;
+        controller.close();
+        return;
       }
     }
     _refreshSources();
-
-    List<Alert> newAlerts = [];
-    List<List<Alert>> fetched = [];
     List<Future<List<Alert>>> incoming = [];
-
+    List<Alert> freshAlerts = [];
+    var lastFetched = DateTime.now();
     for (var source in _alertSources) {
       incoming.add(source.fetchAlerts());
+      incoming.last.then((List<Alert> alerts) {
+        freshAlerts.addAll(alerts);
+        _alerts = _alerts.where((alert) => alert.source != source.id).toList();
+        _alerts.addAll(alerts);
+        _alerts.sort((a, b) => a.age.compareTo(b.age));
+        controller.add(_alerts);
+      });
     }
-    fetched = await Future.wait(incoming);
-    var lastFetched = DateTime.now();
-    for (var result in fetched) {
-      newAlerts.addAll(result);
-    }
-    newAlerts.sort((a, b) => a.age.compareTo(b.age));
-    _alerts = newAlerts;
-
+    await Future.wait(incoming);
+    _alerts = freshAlerts;
+    _alerts.sort((a, b) => a.age.compareTo(b.age));
+    controller.add(_alerts);
     _cacheAlerts();
     _settings.lastFetched = lastFetched;
-    return _alerts;
+    controller.close();
   }
 
   void _cacheAlerts() {

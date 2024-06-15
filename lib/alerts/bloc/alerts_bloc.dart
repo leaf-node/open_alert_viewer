@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
@@ -60,9 +62,13 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   }
 
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
-    _alerts = _repo.fetchCachedAlerts();
-    emit(AlertsFetching(alerts: _alerts, sources: _repo.alertSources));
-    _alerts = await _repo.fetchAlerts(forceRefreshNow: event.forceRefreshNow);
+    StreamController<List<Alert>> controller = StreamController();
+    _repo.fetchAlerts(
+        controller: controller, forceRefreshNow: event.forceRefreshNow);
+    await for (var alerts in controller.stream) {
+      _alerts = alerts;
+      emit(AlertsFetching(alerts: _alerts, sources: _repo.alertSources));
+    }
     emit(AlertsFetched(alerts: _alerts, sources: _repo.alertSources));
   }
 }
