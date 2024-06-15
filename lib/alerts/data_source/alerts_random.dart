@@ -40,7 +40,7 @@ class RandomAlerts implements AlertSource {
     int count = 20 + _randomSeed.nextInt(20);
     for (int i = 0; i < count; i++) {
       nextAlerts.add(Alert(
-          source: 0,
+          source: id,
           kind: AlertType.values[_randomSeed.nextInt(AlertType.values.length)],
           hostname: "example.com",
           service: "fizz buzz",
@@ -48,7 +48,7 @@ class RandomAlerts implements AlertSource {
           age: Duration(seconds: _randomSeed.nextInt(60 * 60 * 24 * 7))));
     }
     // simulate network timeout
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(Duration(milliseconds: _randomSeed.nextInt(4000)));
     _alerts = nextAlerts;
     return _alerts;
   }
