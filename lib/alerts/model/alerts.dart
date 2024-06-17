@@ -15,7 +15,8 @@ enum AlertType {
   up,
   unreachable,
   down,
-  hostPending
+  hostPending,
+  fetchFailure
 }
 
 class Alert extends Equatable {
