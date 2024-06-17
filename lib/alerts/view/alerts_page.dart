@@ -73,26 +73,27 @@ class _AlertsListState extends State<AlertsList> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-        onRefresh: () async {
-          context
-              .read<AlertsBloc>()
-              .add(const FetchAlerts(forceRefreshNow: true));
-          await context.read<AlertsBloc>().stream.firstWhere(
-                (state) => state is! AlertsFetching,
-              );
-        },
-        key: refreshKey,
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
-        child: BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
-          List<Widget> alertWidgets = [];
-          if (state is AlertsFetching) {
-            refreshKey.currentState?.show();
-          }
-          for (var alert in state.alerts) {
-            alertWidgets.add(AlertWidget(alert: alert));
-          }
-          return ListView(children: alertWidgets);
-        }));
+    return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
+      List<Widget> alertWidgets = [];
+      if (state is AlertsFetching) {
+        refreshKey.currentState?.show();
+      }
+      for (var alert in state.alerts) {
+        alertWidgets.add(AlertWidget(alert: alert));
+      }
+      return RefreshIndicator(
+          onRefresh: () async {
+            var stream = context.read<AlertsBloc>().stream;
+            if (state is! AlertsFetching) {
+              return;
+            }
+            await stream.firstWhere(
+              (state) => state is! AlertsFetching,
+            );
+          },
+          key: refreshKey,
+          backgroundColor: Theme.of(context).colorScheme.onPrimary,
+          child: ListView(children: alertWidgets));
+    });
   }
 }
