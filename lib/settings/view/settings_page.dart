@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_alert_viewer/alerts/bloc/alerts_event.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_state.dart';
@@ -115,6 +116,7 @@ class GeneralSettingsList extends StatelessWidget {
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
       var settings = context.read<SettingsRepo>();
       var settingsBloc = context.read<SettingsBloc>();
+      var alertsBloc = context.read<AlertsBloc>();
       String subtitle = () {
         for (var option in RefreshFrequencies.values) {
           if (option.periodMinutes == settings.refreshInterval) {
@@ -136,6 +138,7 @@ class GeneralSettingsList extends StatelessWidget {
                   settings.refreshInterval;
               settingsBloc.add(
                   SettingsPushEvent(newSettings: {"refreshInterval": result}));
+              alertsBloc.add(const FetchAlerts(forceRefreshNow: true));
             })
       ]);
     });
