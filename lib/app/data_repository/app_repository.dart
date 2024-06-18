@@ -109,7 +109,7 @@ class AppRepo {
       }
       var maxCacheAge = Duration(minutes: interval);
       var lastFetched = _settings.lastFetched;
-      if (maxCacheAge.compareTo(DateTime.now().difference(lastFetched)) > 0) {
+      if (maxCacheAge.compareTo(DateTime.now().difference(lastFetched)) >= 0) {
         controller.close();
         return;
       }
