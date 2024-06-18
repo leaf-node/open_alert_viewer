@@ -117,7 +117,19 @@ class AppRepo {
     List<Alert> freshAlerts = [];
     var lastFetched = DateTime.now();
     for (var source in _alertSources) {
-      incoming.add(source.fetchAlerts());
+      incoming.add(source
+          .fetchAlerts()
+          .timeout(Duration(seconds: _settings.syncTimeout), onTimeout: () {
+        return Future.value([
+          Alert(
+              source: source.id,
+              kind: AlertType.fetchFailure,
+              hostname: source.name,
+              service: "",
+              message: "",
+              age: Duration.zero)
+        ]);
+      }));
       incoming.last.then((List<Alert> alerts) {
         freshAlerts.addAll(alerts);
         _alerts = _alerts.where((alert) => alert.source != source.id).toList();

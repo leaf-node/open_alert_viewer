@@ -15,6 +15,8 @@ class SettingsRepo {
   set lastFetched(value) => _setLastFetched(value);
   get refreshInterval => _getRefreshInterval();
   set refreshInterval(value) => _setRefreshInterval(value);
+  get syncTimeout => _getSyncTimeout();
+  set syncTimeout(value) => _setSyncTimeout(value);
 
   DateTime _getLastFetched() {
     String storedValue = _db.getSetting(setting: "last_fetch_time");
@@ -43,5 +45,18 @@ class SettingsRepo {
 
   void _setRefreshInterval(int? newValue) {
     _db.setSetting(setting: "refresh_interval", value: newValue.toString());
+  }
+
+  int _getSyncTimeout() {
+    String storedValue = _db.getSetting(setting: "sync_timeout");
+    var value = switch (storedValue) { "" => 10, _ => int.parse(storedValue) };
+    if (value <= 0) {
+      value = 10;
+    }
+    return value;
+  }
+
+  void _setSyncTimeout(int? newValue) {
+    _db.setSetting(setting: "sync_timeout", value: newValue.toString());
   }
 }

@@ -28,11 +28,15 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       switch (setting) {
         case "refreshInterval":
           _settingsRepo.refreshInterval = event.newSettings[setting];
+        case "syncTimeout":
+          _settingsRepo.syncTimeout = event.newSettings[setting];
         case _:
           throw "Unsupported setting: $setting";
       }
     }
-    emit(SettingsChanged(
-        settings: {"refreshInterval": _settingsRepo.refreshInterval}));
+    emit(SettingsChanged(settings: {
+      "refreshInterval": _settingsRepo.refreshInterval,
+      "syncTimeout": _settingsRepo.syncTimeout
+    }));
   }
 }

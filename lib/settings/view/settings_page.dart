@@ -103,10 +103,26 @@ enum RefreshFrequencies {
   twoHours("Every 2 Hours", 120),
   off("Off", -1);
 
-  const RefreshFrequencies(this.text, this.periodMinutes);
+  const RefreshFrequencies(this.text, this.value);
 
   final String text;
-  final int? periodMinutes;
+  final int value;
+}
+
+enum SyncTimeouts {
+  oneMinute("5 Seconds", 5),
+  threeMinutes("10 Seconds", 10),
+  fiveMinutes("15 Seconds", 15),
+  fifteenMinutes("30 Seconds", 30),
+  thirtyMinutes("45 Seconds", 45),
+  oneHour("1 Minute", 60),
+  twoHours("2 Minutes", 120),
+  off("Off", -1);
+
+  const SyncTimeouts(this.text, this.value);
+
+  final String text;
+  final int value;
 }
 
 class GeneralSettingsList extends StatelessWidget {
@@ -119,57 +135,122 @@ class GeneralSettingsList extends StatelessWidget {
       var settingsBloc = context.read<SettingsBloc>();
       var alertsBloc = context.read<AlertsBloc>();
       var timerBloc = context.read<TimerBloc>();
-      String subtitle = () {
+      String refreshIntervalSubtitle = () {
         for (var option in RefreshFrequencies.values) {
-          if (option.periodMinutes == settings.refreshInterval) {
+          if (option.value == settings.refreshInterval) {
             return option.text;
           }
         }
         return "Every ${settings.refreshInterval} minutes";
       }();
+      String syncTimeoutSubtitle = () {
+        for (var option in SyncTimeouts.values) {
+          if (option.value == settings.syncTimeout) {
+            return option.text;
+          }
+        }
+        return "Every ${settings.syncTimeout} seconds";
+      }();
       return ListView(children: [
         MenuItem(
             icon: Icons.update,
             title: "Refresh Interval",
-            subtitle: subtitle,
+            subtitle: refreshIntervalSubtitle,
             function: () async {
-              int result = await _frequencyDialogBuilder(
-                      context: context,
-                      text: "Refresh Interval",
-                      priorSettingMinutes: settings.refreshInterval) ??
-                  settings.refreshInterval;
-              settingsBloc.add(
-                  SettingsPushEvent(newSettings: {"refreshInterval": result}));
-              timerBloc.add(RefreshTimerIntervalEvent(callback: (timer) {
-                alertsBloc.add(const FetchAlerts(forceRefreshNow: true));
-              }));
+              int? result = await _settingsDialogBuilder<int>(
+                  context: context,
+                  text: "Refresh Interval",
+                  priorSetting: settings.refreshInterval,
+                  valueListBuilder: listRefreshFrequencies);
+              if (result != null) {
+                settingsBloc.add(SettingsPushEvent(
+                    newSettings: {"refreshInterval": result}));
+                timerBloc.add(RefreshTimerIntervalEvent(callback: (timer) {
+                  alertsBloc.add(const FetchAlerts(forceRefreshNow: true));
+                }));
+              }
+            }),
+        MenuItem(
+            icon: Icons.timer_outlined,
+            title: "Sync Timeout",
+            subtitle: syncTimeoutSubtitle,
+            function: () async {
+              int? result = await _settingsDialogBuilder<int>(
+                  context: context,
+                  text: "Sync Timeout",
+                  priorSetting: settings.syncTimeout,
+                  valueListBuilder: listSyncTimeouts);
+              if (result != null) {
+                settingsBloc.add(
+                    SettingsPushEvent(newSettings: {"syncTimeout": result}));
+                timerBloc.add(RefreshTimerIntervalEvent(callback: (timer) {
+                  alertsBloc.add(const FetchAlerts(forceRefreshNow: true));
+                }));
+              }
             })
       ]);
     });
   }
 }
 
-Future<int?> _frequencyDialogBuilder(
+Future _settingsDialogBuilder<T>(
     {required BuildContext context,
     required String text,
-    required int? priorSettingMinutes}) async {
-  return await showDialog<int>(
+    required T? priorSetting,
+    required Function<T>({T? priorSetting}) valueListBuilder}) async {
+  return await showDialog<T>(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
             child: SizedBox(
                 width: 300,
                 child: ListView(shrinkWrap: true, children: [
-                  Column(mainAxisSize: MainAxisSize.min, children: [
-                    for (var option in RefreshFrequencies.values)
-                      RadioListTile<int?>(
-                          title: Text(option.text),
-                          value: option.periodMinutes,
-                          groupValue: priorSettingMinutes,
-                          onChanged: (int? value) {
-                            Navigator.of(context).pop(value);
-                          })
-                  ])
+                  Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: valueListBuilder<T>(priorSetting: priorSetting))
                 ])));
       });
+}
+
+List<SettingsEnumValue> listRefreshFrequencies<T>({T? priorSetting}) {
+  return [
+    for (var option in RefreshFrequencies.values)
+      SettingsEnumValue<T>(
+          title: option.text,
+          value: option.value as T,
+          priorSetting: priorSetting)
+  ];
+}
+
+List<SettingsEnumValue> listSyncTimeouts<T>({T? priorSetting}) {
+  return [
+    for (var option in SyncTimeouts.values)
+      SettingsEnumValue<T>(
+          title: option.text,
+          value: option.value as T,
+          priorSetting: priorSetting)
+  ];
+}
+
+class SettingsEnumValue<T> extends StatelessWidget {
+  const SettingsEnumValue(
+      {super.key,
+      required this.title,
+      required this.value,
+      required this.priorSetting});
+
+  final String title;
+  final T value;
+  final T? priorSetting;
+
+  @override
+  Widget build(BuildContext context) {
+    return RadioListTile<T>(
+        title: Text(title),
+        value: value,
+        groupValue: priorSetting,
+        onChanged: (T? value) {
+          Navigator.of(context).pop(value);
+        });
+  }
 }
