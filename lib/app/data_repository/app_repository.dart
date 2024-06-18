@@ -116,20 +116,24 @@ class AppRepo {
     List<Future<List<Alert>>> incoming = [];
     List<Alert> freshAlerts = [];
     var lastFetched = DateTime.now();
+    var timeout = _settings.syncTimeout;
     for (var source in _alertSources) {
-      incoming.add(source
-          .fetchAlerts()
-          .timeout(Duration(seconds: _settings.syncTimeout), onTimeout: () {
-        return Future.value([
-          Alert(
-              source: source.id,
-              kind: AlertType.fetchFailure,
-              hostname: source.name,
-              service: "",
-              message: "",
-              age: Duration.zero)
-        ]);
-      }));
+      var sourceFuture = source.fetchAlerts();
+      if (timeout > 0) {
+        sourceFuture =
+            sourceFuture.timeout(Duration(seconds: timeout), onTimeout: () {
+          return Future.value([
+            Alert(
+                source: source.id,
+                kind: AlertType.fetchFailure,
+                hostname: source.name,
+                service: "",
+                message: "",
+                age: Duration.zero)
+          ]);
+        });
+      }
+      incoming.add(sourceFuture);
       incoming.last.then((List<Alert> alerts) {
         freshAlerts.addAll(alerts);
         _alerts = _alerts.where((alert) => alert.source != source.id).toList();

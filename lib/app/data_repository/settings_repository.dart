@@ -50,7 +50,7 @@ class SettingsRepo {
   int _getSyncTimeout() {
     String storedValue = _db.getSetting(setting: "sync_timeout");
     var value = switch (storedValue) { "" => 10, _ => int.parse(storedValue) };
-    if (value <= 0) {
+    if (value == 0 || value < -1) {
       value = 10;
     }
     return value;
