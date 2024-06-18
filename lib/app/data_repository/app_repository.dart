@@ -7,7 +7,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import '../../alerts/bloc/alerts_event.dart';
 import '../../alerts/data_source/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
 import '../data_source/database.dart';
@@ -97,8 +96,7 @@ class AppRepo {
 
   void fetchAlerts(
       {required StreamController<List<Alert>> controller,
-      required bool forceRefreshNow,
-      required Function alertsBlocAdd}) async {
+      required bool forceRefreshNow}) async {
     int interval = _settings.refreshInterval;
     fetchCachedAlerts();
     controller.add(_alerts);
@@ -118,9 +116,6 @@ class AppRepo {
     List<Future<List<Alert>>> incoming = [];
     List<Alert> freshAlerts = [];
     var lastFetched = DateTime.now();
-    Future.delayed(Duration(minutes: interval), () {
-      alertsBlocAdd(const FetchAlerts(forceRefreshNow: false));
-    });
     for (var source in _alertSources) {
       incoming.add(source.fetchAlerts());
       incoming.last.then((List<Alert> alerts) {

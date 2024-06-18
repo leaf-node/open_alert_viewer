@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui';
 
 import 'alerts/bloc/alerts_bloc.dart';
+import 'alerts/bloc/timer_bloc.dart';
 import 'alerts/view/alerts_page.dart';
 import 'app/bloc/navigation_bloc.dart';
 import 'app/bloc/navigation_state.dart';
@@ -43,6 +44,9 @@ class OAVapp extends StatelessWidget {
           BlocProvider(
               create: (context) =>
                   SettingsBloc(repo: context.read<SettingsRepo>())),
+          BlocProvider(
+              create: (context) =>
+                  TimerBloc(settings: context.read<SettingsRepo>())),
         ], child: const OAVappView()));
   }
 }

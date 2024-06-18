@@ -64,9 +64,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
     StreamController<List<Alert>> controller = StreamController();
     _repo.fetchAlerts(
-        controller: controller,
-        forceRefreshNow: event.forceRefreshNow,
-        alertsBlocAdd: add);
+        controller: controller, forceRefreshNow: event.forceRefreshNow);
     await for (var alerts in controller.stream) {
       _alerts = alerts;
       emit(AlertsFetching(alerts: _alerts, sources: _repo.alertSources));

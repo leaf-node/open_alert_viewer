@@ -10,6 +10,7 @@ import 'package:open_alert_viewer/alerts/bloc/alerts_event.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_state.dart';
+import '../../alerts/bloc/timer_bloc.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
@@ -117,6 +118,7 @@ class GeneralSettingsList extends StatelessWidget {
       var settings = context.read<SettingsRepo>();
       var settingsBloc = context.read<SettingsBloc>();
       var alertsBloc = context.read<AlertsBloc>();
+      var timerBloc = context.read<TimerBloc>();
       String subtitle = () {
         for (var option in RefreshFrequencies.values) {
           if (option.periodMinutes == settings.refreshInterval) {
@@ -138,7 +140,9 @@ class GeneralSettingsList extends StatelessWidget {
                   settings.refreshInterval;
               settingsBloc.add(
                   SettingsPushEvent(newSettings: {"refreshInterval": result}));
-              alertsBloc.add(const FetchAlerts(forceRefreshNow: true));
+              timerBloc.add(RefreshTimerIntervalEvent(callback: (timer) {
+                alertsBloc.add(const FetchAlerts(forceRefreshNow: true));
+              }));
             })
       ]);
     });

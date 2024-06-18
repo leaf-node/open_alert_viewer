@@ -13,6 +13,7 @@ import '../../app/view/app_view_elements.dart';
 import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
+import '../bloc/timer_bloc.dart';
 import 'alerts.dart';
 
 class AlertsPage extends StatelessWidget {
@@ -73,6 +74,9 @@ class _AlertsListState extends State<AlertsList> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<TimerBloc>().add(StartTimerIntervalEvent(callback: (timer) {
+      context.read<AlertsBloc>().add(const FetchAlerts(forceRefreshNow: true));
+    }));
     return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
       List<Widget> alertWidgets = [];
       if (state is AlertsFetching) {
