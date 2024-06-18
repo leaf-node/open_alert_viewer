@@ -87,13 +87,12 @@ class _AlertsListState extends State<AlertsList> {
       }
       return RefreshIndicator(
           onRefresh: () async {
-            var stream = context.read<AlertsBloc>().stream;
-            if (state is! AlertsFetching) {
-              return;
-            }
-            await stream.firstWhere(
-              (state) => state is! AlertsFetching,
-            );
+            context
+                .read<AlertsBloc>()
+                .add(const FetchAlerts(forceRefreshNow: true));
+            await context.read<AlertsBloc>().stream.firstWhere(
+                  (state) => state is! AlertsFetching,
+                );
           },
           key: refreshKey,
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
