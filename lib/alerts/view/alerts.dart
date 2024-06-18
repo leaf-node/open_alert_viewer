@@ -65,7 +65,7 @@ enum AlertTypeView {
       template: "%s: PENDING",
       numArgs: 1),
   fetchFailure(
-      icon: Icons.more_horiz,
+      icon: Icons.mobiledata_off,
       bgColor: Color(0xFF111111), // darker gray
       fgColor: Color(0xFFC62828), // red800
       template: "%s: FETCH FAILURE",
