@@ -17,9 +17,9 @@ class SettingsRepo {
   set refreshInterval(value) => _setRefreshInterval(value);
 
   DateTime _getLastFetched() {
-    String lastFetchStr = _db.getSetting(setting: "last_fetch_time");
+    String storedValue = _db.getSetting(setting: "last_fetch_time");
     var value = DateTime.fromMillisecondsSinceEpoch(
-        switch (lastFetchStr) { "" => 0, _ => int.parse(lastFetchStr) });
+        switch (storedValue) { "" => 0, _ => int.parse(storedValue) });
     if (value.compareTo(DateTime.now()) > 0) {
       value = DateTime.fromMillisecondsSinceEpoch(0);
     }
@@ -33,17 +33,15 @@ class SettingsRepo {
   }
 
   int _getRefreshInterval() {
-    String refreshInterval = _db.getSetting(setting: "refresh_interval");
-    var value =
-        switch (refreshInterval) { "" => 5, _ => int.parse(refreshInterval) };
+    String storedValue = _db.getSetting(setting: "refresh_interval");
+    var value = switch (storedValue) { "" => 5, _ => int.parse(storedValue) };
     if (value == 0 || value < -1) {
       value = 1;
     }
     return value;
   }
 
-  void _setRefreshInterval(int? refreshInterval) {
-    _db.setSetting(
-        setting: "refresh_interval", value: refreshInterval.toString());
+  void _setRefreshInterval(int? newValue) {
+    _db.setSetting(setting: "refresh_interval", value: newValue.toString());
   }
 }
