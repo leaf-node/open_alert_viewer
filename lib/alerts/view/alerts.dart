@@ -68,7 +68,7 @@ enum AlertTypeView {
       icon: Icons.more_horiz,
       bgColor: Color(0xFF111111), // darker gray
       fgColor: Color(0xFFC62828), // red800
-      template: "%s: PENDING",
+      template: "%s: FETCH FAILURE",
       numArgs: 1);
 
   const AlertTypeView(
