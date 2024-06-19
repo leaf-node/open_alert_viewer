@@ -8,11 +8,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:open_alert_viewer/app/data_repository/settings_repository.dart';
 
+import '../../app/data_repository/settings_repository.dart';
 import '../../notifications/bloc/notification_bloc.dart';
-import '../model/alerts.dart';
 import '../../app/data_repository/app_repository.dart';
+import '../model/alerts.dart';
 import 'alerts_event.dart';
 import 'alerts_state.dart';
 

@@ -5,8 +5,8 @@
  */
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:open_alert_viewer/app/bloc/navigation_event.dart';
 
+import '../../app/bloc/navigation_event.dart';
 import '../../app/bloc/navigation_bloc.dart';
 
 class Notifier {

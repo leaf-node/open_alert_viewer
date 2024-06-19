@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'package:open_alert_viewer/alerts/model/alerts.dart';
+import '../../alerts/model/alerts.dart';
 
 abstract class NavState {
   const NavState();

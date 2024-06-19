@@ -6,9 +6,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/alerts/bloc/alerts_event.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
+import '../../alerts/bloc/alerts_event.dart';
 import '../../alerts/bloc/alerts_state.dart';
 import '../../alerts/bloc/timer_bloc.dart';
 import '../../alerts/model/alerts.dart';
