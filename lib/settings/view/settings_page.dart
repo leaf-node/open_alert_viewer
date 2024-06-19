@@ -183,9 +183,7 @@ class GeneralSettingsList extends StatelessWidget {
               if (result != null) {
                 settingsBloc.add(
                     SettingsPushEvent(newSettings: {"syncTimeout": result}));
-                timerBloc.add(RefreshTimerIntervalEvent(callback: (timer) {
-                  alertsBloc.add(const FetchAlerts(forceRefreshNow: true));
-                }));
+                alertsBloc.add(const FetchAlerts(forceRefreshNow: true));
               }
             })
       ]);
