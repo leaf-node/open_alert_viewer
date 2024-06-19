@@ -41,7 +41,8 @@ class RandomAlerts implements AlertSource {
     for (int i = 0; i < count; i++) {
       nextAlerts.add(Alert(
           source: id,
-          kind: AlertType.values[_randomSeed.nextInt(AlertType.values.length)],
+          kind: AlertType
+              .values[_randomSeed.nextInt(AlertType.values.length - 1)],
           hostname: "example.com",
           service: "fizz buzz",
           message: "foo bar baz",
