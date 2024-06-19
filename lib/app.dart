@@ -16,6 +16,7 @@ import 'app/bloc/navigation_state.dart';
 import 'app/data_source/database.dart';
 import 'app/data_repository/app_repository.dart';
 import 'app/data_repository/settings_repository.dart';
+import 'notifications/bloc/notification_bloc.dart';
 import 'settings/bloc/bloc/settings_bloc.dart';
 import 'settings/view/settings_account.dart';
 import 'settings/view/settings_page.dart';
@@ -40,7 +41,13 @@ class OAVapp extends StatelessWidget {
         child: MultiBlocProvider(providers: [
           BlocProvider(create: (context) => NavBloc()),
           BlocProvider(
-              create: (context) => AlertsBloc(repo: context.read<AppRepo>())),
+              create: (context) =>
+                  NotificationBloc(navigator: context.read<NavBloc>())),
+          BlocProvider(
+              create: (context) => AlertsBloc(
+                  repo: context.read<AppRepo>(),
+                  settings: context.read<SettingsRepo>(),
+                  notifier: context.read<NotificationBloc>())),
           BlocProvider(
               create: (context) =>
                   SettingsBloc(repo: context.read<SettingsRepo>())),

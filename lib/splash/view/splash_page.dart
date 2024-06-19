@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
 import '../../app/data_repository/app_repository.dart';
+import '../../notifications/bloc/notification_bloc.dart';
 import '../bloc/splash_bloc.dart';
 import '../bloc/splash_state.dart';
 
@@ -25,7 +26,9 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => SplashBloc(appRepo: context.read<AppRepo>()),
+        create: (_) => SplashBloc(
+            appRepo: context.read<AppRepo>(),
+            notifier: context.read<NotificationBloc>()),
         child: BlocListener<SplashBloc, SplashState>(
             listener: (context, state) {
               switch (state) {

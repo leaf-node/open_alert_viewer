@@ -46,7 +46,7 @@ class RandomAlerts implements AlertSource {
           hostname: "example.com",
           service: "fizz buzz",
           message: "foo bar baz",
-          age: Duration(seconds: _randomSeed.nextInt(60 * 60 * 24 * 7))));
+          age: Duration(seconds: _randomSeed.nextInt(60 * 10))));
     }
     // simulate network timeout
     await Future.delayed(Duration(milliseconds: _randomSeed.nextInt(4000)));

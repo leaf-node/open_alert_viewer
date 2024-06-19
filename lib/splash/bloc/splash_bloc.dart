@@ -6,11 +6,15 @@
 
 import 'package:bloc/bloc.dart';
 import '../../app/data_repository/app_repository.dart';
+import '../../notifications/bloc/notification_bloc.dart';
 import 'splash_event.dart';
 import 'splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
-  SplashBloc({required this.appRepo}) : super(const SplashInit()) {
+  SplashBloc({required AppRepo appRepo, required NotificationBloc notifier})
+      : _appRepo = appRepo,
+        _notifier = notifier,
+        super(const SplashInit()) {
     on<InitSplashEvent>(_splashInit);
     on<RunningSplashEvent>(_splashRunning);
     on<CompleteSplashEvent>(_splashComplete);
@@ -18,7 +22,8 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     add(RunningSplashEvent());
   }
 
-  final AppRepo appRepo;
+  final AppRepo _appRepo;
+  final NotificationBloc _notifier;
 
   void _splashInit(SplashEvent event, Emitter<SplashState> emit) {
     emit(const SplashInit());
@@ -26,8 +31,9 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
   void _splashRunning(SplashEvent event, Emitter<SplashState> emit) async {
     emit(const SplashRunning());
-    await appRepo.open();
-    await appRepo.migrate();
+    await _appRepo.open();
+    await _appRepo.migrate();
+    await _notifier.initialize();
     await Future.delayed(const Duration(seconds: 1));
     add(CompleteSplashEvent());
   }

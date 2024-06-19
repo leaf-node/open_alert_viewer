@@ -11,11 +11,11 @@ class SettingsRepo {
 
   final LocalDatabase _db;
 
-  get lastFetched => _getLastFetched();
+  DateTime get lastFetched => _getLastFetched();
   set lastFetched(value) => _setLastFetched(value);
-  get refreshInterval => _getRefreshInterval();
+  int get refreshInterval => _getRefreshInterval();
   set refreshInterval(value) => _setRefreshInterval(value);
-  get syncTimeout => _getSyncTimeout();
+  int get syncTimeout => _getSyncTimeout();
   set syncTimeout(value) => _setSyncTimeout(value);
 
   DateTime _getLastFetched() {
