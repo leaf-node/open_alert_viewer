@@ -14,7 +14,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   SplashBloc({required AppRepo appRepo, required NotificationBloc notifier})
       : _appRepo = appRepo,
         _notifier = notifier,
-        super(const SplashInit()) {
+        super(SplashInit()) {
     on<InitSplashEvent>(_splashInit);
     on<RunningSplashEvent>(_splashRunning);
     on<CompleteSplashEvent>(_splashComplete);
@@ -26,11 +26,11 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   final NotificationBloc _notifier;
 
   void _splashInit(SplashEvent event, Emitter<SplashState> emit) {
-    emit(const SplashInit());
+    emit(SplashInit());
   }
 
   void _splashRunning(SplashEvent event, Emitter<SplashState> emit) async {
-    emit(const SplashRunning());
+    emit(SplashRunning());
     await _appRepo.open();
     await _appRepo.migrate();
     _notifier
@@ -40,6 +40,6 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   }
 
   void _splashComplete(SplashEvent event, Emitter<SplashState> emit) {
-    emit(const SplashComplete());
+    emit(SplashComplete());
   }
 }

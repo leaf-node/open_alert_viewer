@@ -9,13 +9,13 @@ abstract class SplashState {
 }
 
 final class SplashInit extends SplashState {
-  const SplashInit();
+  SplashInit();
 }
 
 final class SplashRunning extends SplashState {
-  const SplashRunning();
+  SplashRunning();
 }
 
 final class SplashComplete extends SplashState {
-  const SplashComplete();
+  SplashComplete();
 }

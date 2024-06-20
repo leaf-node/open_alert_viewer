@@ -14,21 +14,21 @@ abstract class AlertState {
 }
 
 final class AlertsInit extends AlertState {
-  const AlertsInit() : super(alerts: const [], sources: const []);
+  AlertsInit() : super(alerts: const [], sources: const []);
 }
 
 final class AlertsFetching extends AlertState {
-  const AlertsFetching({required super.alerts, required super.sources});
+  AlertsFetching({required super.alerts, required super.sources});
 }
 
 final class AlertsFetched extends AlertState {
-  const AlertsFetched({required super.alerts, required super.sources});
+  AlertsFetched({required super.alerts, required super.sources});
 }
 
 final class SourcesChanged extends AlertState {
-  const SourcesChanged({required super.alerts, required super.sources});
+  SourcesChanged({required super.alerts, required super.sources});
 }
 
 final class SourcesListUpdateError extends AlertState {
-  const SourcesListUpdateError({required super.alerts, required super.sources});
+  SourcesListUpdateError({required super.alerts, required super.sources});
 }

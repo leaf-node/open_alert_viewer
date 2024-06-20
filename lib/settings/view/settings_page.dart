@@ -88,7 +88,7 @@ class SettingsList extends StatelessWidget {
             title: "Add new account",
             function: () => context
                 .read<NavBloc>()
-                .add(const OpenAccountSettingsPageEvent(source: null))),
+                .add(OpenAccountSettingsPageEvent(source: null))),
       ]);
     });
   }
@@ -170,7 +170,7 @@ class GeneralSettingsList extends StatelessWidget {
                 settingsBloc.add(SettingsPushEvent(
                     newSettings: {"refreshInterval": result}));
                 timerBloc.add(RefreshTimerIntervalEvent(callback: (timer) {
-                  alertsBloc.add(const FetchAlerts(forceRefreshNow: true));
+                  alertsBloc.add(FetchAlerts(forceRefreshNow: true));
                 }));
               }
             }),
@@ -187,7 +187,7 @@ class GeneralSettingsList extends StatelessWidget {
               if (result != null) {
                 settingsBloc.add(
                     SettingsPushEvent(newSettings: {"syncTimeout": result}));
-                alertsBloc.add(const FetchAlerts(forceRefreshNow: true));
+                alertsBloc.add(FetchAlerts(forceRefreshNow: true));
               }
             }),
         MenuItem(
@@ -196,10 +196,10 @@ class GeneralSettingsList extends StatelessWidget {
             subtitle: notificationsEnabledSubtitle,
             function: () async {
               if (settings.notificationsEnabled) {
-                settingsBloc.add(const SettingsPushEvent(
+                settingsBloc.add(SettingsPushEvent(
                     newSettings: {"notificationsEnabled": false}));
               } else if (settings.notificationsGranted) {
-                settingsBloc.add(const SettingsPushEvent(
+                settingsBloc.add(SettingsPushEvent(
                     newSettings: {"notificationsEnabled": true}));
               } else {
                 context

@@ -10,12 +10,10 @@ abstract class SettingsState {
   const SettingsState();
 }
 
-final class SettingsInitial extends SettingsState {
-  const SettingsInitial();
-}
+final class SettingsInitial extends SettingsState {}
 
 final class SettingsChanged extends SettingsState {
-  const SettingsChanged({required this.settings});
+  SettingsChanged({required this.settings});
 
   final Map<String, Object> settings;
 }

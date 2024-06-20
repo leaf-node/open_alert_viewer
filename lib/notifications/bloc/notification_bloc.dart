@@ -72,7 +72,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           message:
               "$newDownCount Recently Down / Unreachable, $newErrorCount Recent Error${newErrorCount == 1 ? "" : "s"}"));
     } else {
-      add(const RemoveNotificationEvent());
+      add(RemoveNotificationEvent());
     }
   }
 }

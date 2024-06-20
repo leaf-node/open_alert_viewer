@@ -14,10 +14,10 @@ part 'settings_state.dart';
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc({required SettingsRepo repo})
       : _settingsRepo = repo,
-        super(const SettingsInitial()) {
+        super(SettingsInitial()) {
     on<SettingsPushEvent>(_pushSettings);
 
-    add(const SettingsPushEvent(newSettings: {}));
+    add(SettingsPushEvent(newSettings: {}));
   }
 
   final SettingsRepo _settingsRepo;

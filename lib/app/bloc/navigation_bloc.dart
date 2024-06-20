@@ -9,7 +9,7 @@ import 'navigation_event.dart';
 import 'navigation_state.dart';
 
 class NavBloc extends Bloc<NavEvent, NavState> {
-  NavBloc() : super(const ShowSplashPage()) {
+  NavBloc() : super(ShowSplashPage()) {
     on<OpenSplashPageEvent>(_openSplashPage);
     on<OpenAlertsPageEvent>(_openAlertsPage);
     on<OpenSettingsPageEvent>(_openSettingsPage);
@@ -18,20 +18,20 @@ class NavBloc extends Bloc<NavEvent, NavState> {
   }
 
   void _openSplashPage(OpenSplashPageEvent event, Emitter<NavState> emit) {
-    emit(const ShowSplashPage());
+    emit(ShowSplashPage());
   }
 
   void _openAlertsPage(OpenAlertsPageEvent event, Emitter<NavState> emit) {
-    emit(const ShowAlertsPage());
+    emit(ShowAlertsPage());
   }
 
   void _openSettingsPage(OpenSettingsPageEvent event, Emitter<NavState> emit) {
-    emit(const ShowSettingsPage());
+    emit(ShowSettingsPage());
   }
 
   void _openGeneralSettingsPage(
       OpenGeneralSettingsPageEvent event, Emitter<NavState> emit) {
-    emit(const ShowGeneralSettingsPage());
+    emit(ShowGeneralSettingsPage());
   }
 
   void _openAccountSettingsPage(

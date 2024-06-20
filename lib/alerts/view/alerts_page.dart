@@ -52,7 +52,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
               icon: Icons.refresh,
               function: () => context
                   .read<AlertsBloc>()
-                  .add(const FetchAlerts(forceRefreshNow: true))),
+                  .add(FetchAlerts(forceRefreshNow: true))),
         ]);
   }
 
@@ -75,7 +75,7 @@ class _AlertsListState extends State<AlertsList> {
   @override
   Widget build(BuildContext context) {
     context.read<TimerBloc>().add(StartTimerIntervalEvent(callback: (timer) {
-      context.read<AlertsBloc>().add(const FetchAlerts(forceRefreshNow: true));
+      context.read<AlertsBloc>().add(FetchAlerts(forceRefreshNow: true));
     }));
     return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
       List<Widget> alertWidgets = [];
@@ -87,9 +87,7 @@ class _AlertsListState extends State<AlertsList> {
       }
       return RefreshIndicator(
           onRefresh: () async {
-            context
-                .read<AlertsBloc>()
-                .add(const FetchAlerts(forceRefreshNow: true));
+            context.read<AlertsBloc>().add(FetchAlerts(forceRefreshNow: true));
             await context.read<AlertsBloc>().stream.firstWhere(
                   (state) => state is! AlertsFetching,
                 );

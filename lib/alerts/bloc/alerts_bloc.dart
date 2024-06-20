@@ -25,13 +25,13 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
         _repo = repo,
         _settings = settings,
         _notifierBloc = notifier,
-        super(const AlertsInit()) {
+        super(AlertsInit()) {
     on<AddAlertSource>(_addSource);
     on<UpdateAlertSource>(_updateSource);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
 
-    add(const FetchAlerts(forceRefreshNow: false));
+    add(FetchAlerts(forceRefreshNow: false));
   }
 
   List<Alert> _alerts;
@@ -44,7 +44,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     var result = _repo.addSource(source: event.source);
     if (result >= 0) {
       emit(SourcesChanged(alerts: _alerts, sources: _repo.alertSources));
-      add(const FetchAlerts(forceRefreshNow: true));
+      add(FetchAlerts(forceRefreshNow: true));
     } else {
       emit(
           SourcesListUpdateError(alerts: _alerts, sources: _repo.alertSources));
@@ -56,7 +56,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     var success = _repo.updateSource(id: event.id, values: event.source);
     if (success) {
       emit(SourcesChanged(alerts: _alerts, sources: _repo.alertSources));
-      add(const FetchAlerts(forceRefreshNow: true));
+      add(FetchAlerts(forceRefreshNow: true));
     } else {
       emit(
           SourcesListUpdateError(alerts: _alerts, sources: _repo.alertSources));
@@ -67,7 +67,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
       RemoveAlertSource event, Emitter<AlertState> emit) async {
     _repo.removeSource(id: event.id);
     emit(SourcesChanged(alerts: _alerts, sources: _repo.alertSources));
-    add(const FetchAlerts(forceRefreshNow: true));
+    add(FetchAlerts(forceRefreshNow: true));
   }
 
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {

@@ -11,13 +11,13 @@ abstract class TimerEvent {
 }
 
 final class StartTimerIntervalEvent extends TimerEvent {
-  const StartTimerIntervalEvent({required this.callback});
+  StartTimerIntervalEvent({required this.callback});
 
   final void Function(Timer) callback;
 }
 
 final class RefreshTimerIntervalEvent extends TimerEvent {
-  const RefreshTimerIntervalEvent({required this.callback});
+  RefreshTimerIntervalEvent({required this.callback});
 
   final void Function(Timer) callback;
 }

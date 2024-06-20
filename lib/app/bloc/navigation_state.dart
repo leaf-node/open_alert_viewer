@@ -11,23 +11,23 @@ abstract class NavState {
 }
 
 final class ShowSplashPage extends NavState {
-  const ShowSplashPage();
+  ShowSplashPage();
 }
 
 final class ShowAlertsPage extends NavState {
-  const ShowAlertsPage();
+  ShowAlertsPage();
 }
 
 final class ShowSettingsPage extends NavState {
-  const ShowSettingsPage();
+  ShowSettingsPage();
 }
 
 final class ShowGeneralSettingsPage extends NavState {
-  const ShowGeneralSettingsPage();
+  ShowGeneralSettingsPage();
 }
 
 final class ShowAccountSettingsPage extends NavState {
-  const ShowAccountSettingsPage({required this.source});
+  ShowAccountSettingsPage({required this.source});
 
   final AlertSource? source;
 }

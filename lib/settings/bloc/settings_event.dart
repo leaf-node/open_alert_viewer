@@ -10,12 +10,10 @@ abstract class SettingsEvent {
   const SettingsEvent();
 }
 
-final class SettingsInitEvent extends SettingsEvent {
-  const SettingsInitEvent();
-}
+final class SettingsInitEvent extends SettingsEvent {}
 
 final class SettingsPushEvent extends SettingsEvent {
-  const SettingsPushEvent({required this.newSettings});
+  SettingsPushEvent({required this.newSettings});
 
   final Map<String, Object> newSettings;
 }
