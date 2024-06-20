@@ -8,15 +8,6 @@ part of 'timer_bloc.dart';
 
 abstract class TimerState {
   const TimerState();
-
-  @override
-  int get hashCode =>
-      Object.hash("TimerState", DateTime.now().microsecondsSinceEpoch);
-
-  @override
-  bool operator ==(Object other) {
-    return false;
-  }
 }
 
 final class TimerInitial extends TimerState {}

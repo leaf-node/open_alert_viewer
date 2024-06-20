@@ -8,15 +8,6 @@ import '../../alerts/model/alerts.dart';
 
 abstract class NavState {
   const NavState();
-
-  @override
-  int get hashCode =>
-      Object.hash("NavState", DateTime.now().microsecondsSinceEpoch);
-
-  @override
-  bool operator ==(Object other) {
-    return false;
-  }
 }
 
 final class ShowSplashPage extends NavState {
@@ -39,13 +30,4 @@ final class ShowAccountSettingsPage extends NavState {
   const ShowAccountSettingsPage({required this.source});
 
   final AlertSource? source;
-
-  @override
-  int get hashCode => Object.hash(
-      "AccountSettings", source, DateTime.now().microsecondsSinceEpoch);
-
-  @override
-  bool operator ==(Object other) {
-    return false;
-  }
 }

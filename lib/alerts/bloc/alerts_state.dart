@@ -5,16 +5,12 @@
  */
 
 import '../model/alerts.dart';
-import 'package:equatable/equatable.dart';
 
-abstract class AlertState extends Equatable {
+abstract class AlertState {
   const AlertState({required this.alerts, required this.sources});
 
   final List<Alert> alerts;
   final List<AlertSource> sources;
-
-  @override
-  List<Object> get props => [...sources, ...alerts];
 }
 
 final class AlertsInit extends AlertState {

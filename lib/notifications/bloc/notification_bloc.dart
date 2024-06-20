@@ -5,7 +5,6 @@
  */
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 
 import '../../alerts/model/alerts.dart';
 import '../../app/bloc/navigation_bloc.dart';

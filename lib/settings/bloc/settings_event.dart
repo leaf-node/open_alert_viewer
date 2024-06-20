@@ -6,11 +6,8 @@
 
 part of 'settings_bloc.dart';
 
-abstract class SettingsEvent extends Equatable {
+abstract class SettingsEvent {
   const SettingsEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 final class SettingsInitEvent extends SettingsEvent {
@@ -21,7 +18,4 @@ final class SettingsPushEvent extends SettingsEvent {
   const SettingsPushEvent({required this.newSettings});
 
   final Map<String, Object> newSettings;
-
-  @override
-  List<Object> get props => [newSettings];
 }

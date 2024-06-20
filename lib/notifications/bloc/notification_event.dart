@@ -6,11 +6,8 @@
 
 part of 'notification_bloc.dart';
 
-sealed class NotificationEvent extends Equatable {
+abstract class NotificationEvent {
   const NotificationEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 final class InitializeNotificationEvent extends NotificationEvent {
@@ -19,18 +16,12 @@ final class InitializeNotificationEvent extends NotificationEvent {
 
   final bool askAgain;
   final void Function() callback;
-
-  @override
-  List<Object> get props => [askAgain, callback];
 }
 
 final class ShowNotificationEvent extends NotificationEvent {
   const ShowNotificationEvent({required this.message});
 
   final String message;
-
-  @override
-  List<Object> get props => [message];
 }
 
 final class RemoveNotificationEvent extends NotificationEvent {
@@ -43,7 +34,4 @@ final class ShowFilteredNotificationsEvent extends NotificationEvent {
 
   final Duration timeSincePrevFetch;
   final List<Alert> alerts;
-
-  @override
-  List<Object> get props => [timeSincePrevFetch, ...alerts];
 }

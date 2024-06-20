@@ -6,10 +6,8 @@
 
 part of 'settings_bloc.dart';
 
-abstract class SettingsState extends Equatable {
+abstract class SettingsState {
   const SettingsState();
-  @override
-  List<Object> get props => [];
 }
 
 final class SettingsInitial extends SettingsState {
@@ -20,7 +18,4 @@ final class SettingsChanged extends SettingsState {
   const SettingsChanged({required this.settings});
 
   final Map<String, Object> settings;
-
-  @override
-  List<Object> get props => [settings];
 }

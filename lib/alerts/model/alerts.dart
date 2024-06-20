@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'package:equatable/equatable.dart';
-
 enum AlertType {
   okay,
   warning,
@@ -19,7 +17,7 @@ enum AlertType {
   fetchFailure
 }
 
-class Alert extends Equatable {
+class Alert {
   const Alert(
       {required this.source,
       required this.kind,
@@ -34,9 +32,6 @@ class Alert extends Equatable {
   final String service;
   final String message;
   final Duration age;
-
-  @override
-  List<Object> get props => [source, kind, hostname, service, message, age];
 }
 
 abstract class AlertSource {
