@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:io';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../app/bloc/navigation_event.dart';
@@ -60,14 +62,18 @@ class Notifier {
   }
 
   void requestNotificationPermission() async {
-    if (!_settings.notificationsRequested) {
-      bool? result = await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.requestNotificationsPermission();
-      if (result != null) {
-        _settings.notificationsRequested = result;
-        _settings.notificationsEnabled = result;
+    var version = Platform.operatingSystemVersion;
+    if (Platform.isAndroid &&
+        int.parse(version.substring(0, version.indexOf('.'))) >= 13) {
+      if (!_settings.notificationsRequested) {
+        bool? result = await _flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.requestNotificationsPermission();
+        if (result != null) {
+          _settings.notificationsRequested = result;
+          _settings.notificationsEnabled = result;
+        }
       }
     }
   }
