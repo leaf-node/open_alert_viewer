@@ -16,7 +16,7 @@ class LocalDatabase {
   bool _isOpen;
   late Database _db;
 
-  open() async {
+  Future<void> open() async {
     if (!_isOpen) {
       final path = await getApplicationSupportDirectory();
       log('App data directory: ${path.path}/');
@@ -31,7 +31,7 @@ class LocalDatabase {
     _isOpen = false;
   }
 
-  migrate() async {
+  Future<void> migrate() async {
     String sqlString;
 
     if (!_isOpen) {
