@@ -15,6 +15,7 @@ import '../../alerts/model/alerts.dart';
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
 import '../../app/data_repository/settings_repository.dart';
+import '../../notifications/bloc/notification_bloc.dart';
 import '../bloc/bloc/settings_bloc.dart';
 import 'settings_components.dart';
 
@@ -151,6 +152,9 @@ class GeneralSettingsList extends StatelessWidget {
         }
         return "Every ${settings.syncTimeout} seconds";
       }();
+      String notificationsEnabledSubtitle = () {
+        return settings.notificationsEnabled ? "Enabled" : "Disabled";
+      }();
       return ListView(children: [
         MenuItem(
             icon: Icons.update,
@@ -184,6 +188,26 @@ class GeneralSettingsList extends StatelessWidget {
                 settingsBloc.add(
                     SettingsPushEvent(newSettings: {"syncTimeout": result}));
                 alertsBloc.add(const FetchAlerts(forceRefreshNow: true));
+              }
+            }),
+        MenuItem(
+            icon: Icons.notifications_outlined,
+            title: "Notifications",
+            subtitle: notificationsEnabledSubtitle,
+            function: () async {
+              if (settings.notificationsEnabled) {
+                settingsBloc.add(const SettingsPushEvent(
+                    newSettings: {"notificationsEnabled": false}));
+              } else if (settings.notificationsGranted) {
+                settingsBloc.add(const SettingsPushEvent(
+                    newSettings: {"notificationsEnabled": true}));
+              } else {
+                context
+                    .read<NotificationBloc>()
+                    .add(const InitializeNotificationEvent(askAgain: true));
+                settingsBloc.add(SettingsPushEvent(newSettings: {
+                  "notificationsEnabled": settings.notificationsEnabled
+                }));
               }
             })
       ]);
