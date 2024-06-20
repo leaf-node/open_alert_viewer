@@ -13,15 +13,38 @@ class SettingsRepo {
 
   DateTime get lastFetched => _getLastFetched();
   set lastFetched(value) => _setLastFetched(value);
-  int get refreshInterval => _getRefreshInterval();
-  set refreshInterval(value) => _setRefreshInterval(value);
-  int get syncTimeout => _getSyncTimeout();
-  set syncTimeout(value) => _setSyncTimeout(value);
+  int get refreshInterval => _getSetting<int>("refresh_interval", 5);
+  set refreshInterval(value) => _setSetting<int>("refresh_interval", value);
+  int get syncTimeout => _getSetting<int>("sync_timeout", 10);
+  set syncTimeout(value) => _setSetting<int>("sync_timeout", value);
+
+  T _getSetting<T>(String name, T defaultValue) {
+    String storedValue = _db.getSetting(setting: name);
+    T value;
+    try {
+      if (T == int) {
+        value = int.parse(storedValue) as T;
+      } else if (T == bool) {
+        value = bool.parse(storedValue) as T;
+      } else {
+        value = defaultValue;
+      }
+    } catch (e) {
+      value = defaultValue;
+    }
+    if (value == 0 || (T is int && value as int < -1)) {
+      value = defaultValue;
+    }
+    return value;
+  }
+
+  void _setSetting<T>(String name, T newValue) {
+    _db.setSetting(setting: name, value: newValue.toString());
+  }
 
   DateTime _getLastFetched() {
-    String storedValue = _db.getSetting(setting: "last_fetch_time");
     var value = DateTime.fromMillisecondsSinceEpoch(
-        switch (storedValue) { "" => 0, _ => int.parse(storedValue) });
+        _getSetting<int>("last_fetch_time", 0));
     if (value.compareTo(DateTime.now()) > 0) {
       value = DateTime.fromMillisecondsSinceEpoch(0);
     }
@@ -29,34 +52,6 @@ class SettingsRepo {
   }
 
   void _setLastFetched(DateTime lastFetch) {
-    _db.setSetting(
-        setting: "last_fetch_time",
-        value: lastFetch.millisecondsSinceEpoch.toString());
-  }
-
-  int _getRefreshInterval() {
-    String storedValue = _db.getSetting(setting: "refresh_interval");
-    var value = switch (storedValue) { "" => 5, _ => int.parse(storedValue) };
-    if (value == 0 || value < -1) {
-      value = 1;
-    }
-    return value;
-  }
-
-  void _setRefreshInterval(int? newValue) {
-    _db.setSetting(setting: "refresh_interval", value: newValue.toString());
-  }
-
-  int _getSyncTimeout() {
-    String storedValue = _db.getSetting(setting: "sync_timeout");
-    var value = switch (storedValue) { "" => 10, _ => int.parse(storedValue) };
-    if (value == 0 || value < -1) {
-      value = 10;
-    }
-    return value;
-  }
-
-  void _setSyncTimeout(int? newValue) {
-    _db.setSetting(setting: "sync_timeout", value: newValue.toString());
+    _setSetting<int>("last_fetch_time", lastFetch.millisecondsSinceEpoch);
   }
 }
