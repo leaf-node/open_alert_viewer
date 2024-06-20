@@ -61,21 +61,20 @@ class Notifier {
     _navigator.add(OpenAlertsPageEvent());
   }
 
-  void requestNotificationPermission() async {
+  void requestNotificationPermission({required bool askAgain}) async {
     if (Platform.isAndroid) {
-      if (!_settings.notificationsRequested) {
+      if (!_settings.notificationsRequested ||
+          (askAgain && !_settings.notificationsGranted)) {
         bool? result = await _flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.requestNotificationsPermission();
+        _settings.notificationsRequested = true;
         if (result != null) {
-          _settings.notificationsRequested = result;
+          _settings.notificationsGranted = result;
           _settings.notificationsEnabled = result;
         }
       }
-    } else if (!_settings.notificationsRequested) {
-      _settings.notificationsRequested = true;
-      _settings.notificationsEnabled = true;
     }
   }
 }

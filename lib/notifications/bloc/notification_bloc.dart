@@ -35,7 +35,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   Future<void> _initialize(InitializeNotificationEvent event,
       Emitter<NotificationState> emit) async {
     await _notifier.initialize();
-    _notifier.requestNotificationPermission();
+    _notifier.requestNotificationPermission(askAgain: event.askAgain);
   }
 
   Future<void> _showNotification(

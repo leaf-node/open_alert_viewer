@@ -14,7 +14,9 @@ sealed class NotificationEvent extends Equatable {
 }
 
 final class InitializeNotificationEvent extends NotificationEvent {
-  const InitializeNotificationEvent();
+  const InitializeNotificationEvent({required this.askAgain});
+
+  final bool askAgain;
 }
 
 final class ShowNotificationEvent extends NotificationEvent {
