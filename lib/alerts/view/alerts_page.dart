@@ -79,11 +79,20 @@ class _AlertsListState extends State<AlertsList> {
     }));
     return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
       List<Widget> alertWidgets = [];
+      Widget child;
       if (state is AlertsFetching) {
         refreshKey.currentState?.show();
       }
-      for (var alert in state.alerts) {
-        alertWidgets.add(AlertWidget(alert: alert));
+      if (state.sources.isEmpty) {
+        child =
+            const EmptyPane(icon: Icons.login, text: "Configure an account.");
+      } else if (state.alerts.isEmpty) {
+        child = const EmptyPane(icon: Icons.check, text: "No alerts here!");
+      } else {
+        for (var alert in state.alerts) {
+          alertWidgets.add(AlertWidget(alert: alert));
+        }
+        child = ListView(children: alertWidgets);
       }
       return RefreshIndicator(
           onRefresh: () async {
@@ -94,7 +103,28 @@ class _AlertsListState extends State<AlertsList> {
           },
           key: refreshKey,
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
-          child: ListView(children: alertWidgets));
+          child: child);
     });
+  }
+}
+
+class EmptyPane extends StatelessWidget {
+  const EmptyPane({super.key, required this.text, required this.icon});
+
+  final String text;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    var color = Theme.of(context).colorScheme.onSurface;
+    return Center(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+          Icon(icon, size: 100, color: color),
+          const SizedBox(height: 10),
+          Text(text, style: TextStyle(fontSize: 20, color: color))
+        ]));
   }
 }
