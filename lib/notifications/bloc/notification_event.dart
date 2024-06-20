@@ -13,6 +13,10 @@ sealed class NotificationEvent extends Equatable {
   List<Object> get props => [];
 }
 
+final class InitializeNotificationEvent extends NotificationEvent {
+  const InitializeNotificationEvent();
+}
+
 final class ShowNotificationEvent extends NotificationEvent {
   const ShowNotificationEvent({required this.message});
 

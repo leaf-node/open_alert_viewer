@@ -22,6 +22,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         super(NotificationInitial()) {
     _notifier = Notifier(navigator: _navigator, settings: _settings);
 
+    on<InitializeNotificationEvent>(_initialize);
     on<ShowNotificationEvent>(_showNotification);
     on<RemoveNotificationEvent>(_removeNotification);
     on<ShowFilteredNotificationsEvent>(_showFilteredNotifications);
@@ -31,7 +32,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   final SettingsRepo _settings;
   late Notifier _notifier;
 
-  Future<void> initialize() async {
+  Future<void> _initialize(InitializeNotificationEvent event,
+      Emitter<NotificationState> emit) async {
     await _notifier.initialize();
     _notifier.requestNotificationPermission();
   }

@@ -33,7 +33,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     emit(const SplashRunning());
     await _appRepo.open();
     await _appRepo.migrate();
-    await _notifier.initialize();
+    _notifier.add(const InitializeNotificationEvent());
     await Future.delayed(const Duration(seconds: 1));
     add(CompleteSplashEvent());
   }
