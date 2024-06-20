@@ -9,16 +9,18 @@ import 'package:equatable/equatable.dart';
 
 import '../../alerts/model/alerts.dart';
 import '../../app/bloc/navigation_bloc.dart';
+import '../../app/data_repository/settings_repository.dart';
 import '../model/notification.dart';
 
 part 'notification_event.dart';
 part 'notification_state.dart';
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
-  NotificationBloc({required NavBloc navigator})
+  NotificationBloc({required NavBloc navigator, required SettingsRepo settings})
       : _navigator = navigator,
+        _settings = settings,
         super(NotificationInitial()) {
-    _notifier = Notifier(navigator: _navigator);
+    _notifier = Notifier(navigator: _navigator, settings: _settings);
 
     on<ShowNotificationEvent>(_showNotification);
     on<RemoveNotificationEvent>(_removeNotification);
@@ -26,22 +28,28 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   }
 
   final NavBloc _navigator;
+  final SettingsRepo _settings;
   late Notifier _notifier;
 
   Future<void> initialize() async {
     await _notifier.initialize();
+    _notifier.requestNotificationPermission();
   }
 
   Future<void> _showNotification(
       ShowNotificationEvent event, Emitter<NotificationState> emit) async {
-    await _notifier.showNotification(message: event.message);
-    emit(NotificationShown());
+    if (_settings.notificationsEnabled) {
+      await _notifier.showNotification(message: event.message);
+      emit(NotificationShown());
+    }
   }
 
   Future<void> _removeNotification(
       RemoveNotificationEvent event, Emitter<NotificationState> emit) async {
-    await _notifier.removeNotification();
-    emit(NotificationRemoved());
+    if (_settings.notificationsEnabled) {
+      await _notifier.removeNotification();
+      emit(NotificationRemoved());
+    }
   }
 
   Future<void> _showFilteredNotifications(ShowFilteredNotificationsEvent event,

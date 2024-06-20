@@ -17,6 +17,14 @@ class SettingsRepo {
   set refreshInterval(value) => _setSetting<int>("refresh_interval", value);
   int get syncTimeout => _getSetting<int>("sync_timeout", 10);
   set syncTimeout(value) => _setSetting<int>("sync_timeout", value);
+  bool get notificationsRequested =>
+      _getSetting<bool>("notifications_requested", false);
+  set notificationsRequested(value) =>
+      _setSetting<bool>("notifications_requested", value);
+  bool get notificationsEnabled =>
+      _getSetting<bool>("notifications_enabled", false);
+  set notificationsEnabled(value) =>
+      _setSetting<bool>("notifications_enabled", value);
 
   T _getSetting<T>(String name, T defaultValue) {
     String storedValue = _db.getSetting(setting: name);
@@ -26,6 +34,8 @@ class SettingsRepo {
         value = int.parse(storedValue) as T;
       } else if (T == bool) {
         value = bool.parse(storedValue) as T;
+      } else if (T == String) {
+        value = storedValue as T;
       } else {
         value = defaultValue;
       }
