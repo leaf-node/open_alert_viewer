@@ -30,13 +30,22 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           _settingsRepo.refreshInterval = event.newSettings[setting];
         case "syncTimeout":
           _settingsRepo.syncTimeout = event.newSettings[setting];
+        case "notificationsRequested":
+          _settingsRepo.notificationsRequested = event.newSettings[setting];
+        case "notificationsGranted":
+          _settingsRepo.notificationsGranted = event.newSettings[setting];
+        case "notificationsEnabled":
+          _settingsRepo.notificationsEnabled = event.newSettings[setting];
         case _:
           throw "Unsupported setting: $setting";
       }
     }
     emit(SettingsChanged(settings: {
       "refreshInterval": _settingsRepo.refreshInterval,
-      "syncTimeout": _settingsRepo.syncTimeout
+      "syncTimeout": _settingsRepo.syncTimeout,
+      "notificationsRequested": _settingsRepo.notificationsRequested,
+      "notificationsGranted": _settingsRepo.notificationsGranted,
+      "notificationsEnabled": _settingsRepo.notificationsEnabled,
     }));
   }
 }
