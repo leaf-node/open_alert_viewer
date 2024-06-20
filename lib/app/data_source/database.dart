@@ -32,14 +32,15 @@ class LocalDatabase {
   }
 
   Future<void> migrate() async {
-    String sqlString;
-
     if (!_isOpen) {
       open();
     }
-    sqlString =
-        await rootBundle.loadString("lib/app/db_migrations/version_0.sql");
-    _db.execute(sqlString);
+    if (getSetting(setting: "migration_version") == "") {
+      var sqlString =
+          await rootBundle.loadString("lib/app/db_migrations/version_0.sql");
+      _db.execute(sqlString);
+      setSetting(setting: "migration_version", value: "0.0.0");
+    }
   }
 
   // Generic querying methods
