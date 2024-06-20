@@ -36,10 +36,10 @@ class Notifier {
         android: _initializationSettingsAndroid);
     await _flutterLocalNotificationsPlugin.initialize(_initializationSettings,
         onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse);
-    const description = "Open Alert Viewer Notifications";
+    const description = "Status Notifications";
     _notificationDetails = const NotificationDetails(
         linux: LinuxNotificationDetails(),
-        android: AndroidNotificationDetails("open_alert_viewer", "main",
+        android: AndroidNotificationDetails("Open Alert Viewer", "Alerts",
             channelDescription: description,
             importance: Importance.max,
             priority: Priority.high,
@@ -62,9 +62,7 @@ class Notifier {
   }
 
   void requestNotificationPermission() async {
-    var version = Platform.operatingSystemVersion;
-    if (Platform.isAndroid &&
-        int.parse(version.substring(0, version.indexOf('.'))) >= 13) {
+    if (Platform.isAndroid) {
       if (!_settings.notificationsRequested) {
         bool? result = await _flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
@@ -75,6 +73,9 @@ class Notifier {
           _settings.notificationsEnabled = result;
         }
       }
+    } else if (!_settings.notificationsRequested) {
+      _settings.notificationsRequested = true;
+      _settings.notificationsEnabled = true;
     }
   }
 }
