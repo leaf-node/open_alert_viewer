@@ -16,7 +16,7 @@ import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
 import '../../app/data_repository/settings_repository.dart';
 import '../../notifications/bloc/notification_bloc.dart';
-import '../bloc/bloc/settings_bloc.dart';
+import '../bloc/settings_bloc.dart';
 import 'settings_components.dart';
 
 class SettingsPage extends StatelessWidget {

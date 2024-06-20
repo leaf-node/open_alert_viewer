@@ -17,7 +17,7 @@ import 'app/data_source/database.dart';
 import 'app/data_repository/app_repository.dart';
 import 'app/data_repository/settings_repository.dart';
 import 'notifications/bloc/notification_bloc.dart';
-import 'settings/bloc/bloc/settings_bloc.dart';
+import 'settings/bloc/settings_bloc.dart';
 import 'settings/view/settings_account.dart';
 import 'settings/view/settings_page.dart';
 import 'splash/view/splash_page.dart';

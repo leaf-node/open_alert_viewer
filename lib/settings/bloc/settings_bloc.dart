@@ -7,7 +7,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../app/data_repository/settings_repository.dart';
+import '../../app/data_repository/settings_repository.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
