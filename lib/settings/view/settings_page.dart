@@ -204,10 +204,14 @@ class GeneralSettingsList extends StatelessWidget {
               } else {
                 context
                     .read<NotificationBloc>()
-                    .add(const InitializeNotificationEvent(askAgain: true));
-                settingsBloc.add(SettingsPushEvent(newSettings: {
-                  "notificationsEnabled": settings.notificationsEnabled
-                }));
+                    .add(InitializeNotificationEvent(
+                        askAgain: true,
+                        callback: () {
+                          settingsBloc.add(SettingsPushEvent(newSettings: {
+                            "notificationsEnabled":
+                                settings.notificationsEnabled
+                          }));
+                        }));
               }
             })
       ]);

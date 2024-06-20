@@ -61,7 +61,8 @@ class Notifier {
     _navigator.add(OpenAlertsPageEvent());
   }
 
-  void requestNotificationPermission({required bool askAgain}) async {
+  void requestNotificationPermission(
+      {required bool askAgain, required void Function() callback}) async {
     if (Platform.isAndroid) {
       if (!_settings.notificationsRequested ||
           (askAgain && !_settings.notificationsGranted)) {
@@ -75,6 +76,9 @@ class Notifier {
           _settings.notificationsEnabled = result;
         }
       }
+    } else {
+      _settings.notificationsGranted = true;
     }
+    callback();
   }
 }
