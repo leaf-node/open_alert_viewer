@@ -24,17 +24,18 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   void _pushSettings(SettingsPushEvent event, Emitter<SettingsState> emit) {
     for (var setting in event.newSettings.keys) {
+      var newSetting = event.newSettings[setting];
       switch (setting) {
         case "refreshInterval":
-          _settingsRepo.refreshInterval = event.newSettings[setting];
+          _settingsRepo.refreshInterval = newSetting;
         case "syncTimeout":
-          _settingsRepo.syncTimeout = event.newSettings[setting];
+          _settingsRepo.syncTimeout = newSetting;
         case "notificationsRequested":
-          _settingsRepo.notificationsRequested = event.newSettings[setting];
+          _settingsRepo.notificationsRequested = newSetting;
         case "notificationsGranted":
-          _settingsRepo.notificationsGranted = event.newSettings[setting];
+          _settingsRepo.notificationsGranted = newSetting;
         case "notificationsEnabled":
-          _settingsRepo.notificationsEnabled = event.newSettings[setting];
+          _settingsRepo.notificationsEnabled = newSetting;
         case _:
           throw "Unsupported setting: $setting";
       }
