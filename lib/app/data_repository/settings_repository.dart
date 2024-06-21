@@ -58,6 +58,7 @@ class SettingsRepo {
   void _setSetting<T>(String name, T newValue) {
     if (T == DateTime) {
       _setSetting<int>(name, (newValue as DateTime).millisecondsSinceEpoch);
+      return;
     }
     _db.setSetting(setting: name, value: newValue.toString());
   }
