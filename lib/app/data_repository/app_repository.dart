@@ -122,13 +122,15 @@ class AppRepo {
       if (timeout > 0) {
         sourceFuture =
             sourceFuture.timeout(Duration(seconds: timeout), onTimeout: () {
+          String host = Uri.parse(source.url).host;
+          host = (host.isEmpty) ? source.name : host;
           return Future.value([
             Alert(
                 source: source.id,
                 kind: AlertType.syncFailure,
-                hostname: source.name,
-                service: "",
-                message: "",
+                hostname: host,
+                service: source.name,
+                message: "Connection Timed Out",
                 age: Duration.zero)
           ]);
         });
