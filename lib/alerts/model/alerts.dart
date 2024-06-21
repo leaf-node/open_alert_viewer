@@ -14,7 +14,7 @@ enum AlertType {
   unreachable,
   down,
   hostPending,
-  fetchFailure
+  syncFailure
 }
 
 class Alert {

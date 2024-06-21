@@ -59,21 +59,33 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   Future<void> _showFilteredNotifications(ShowFilteredNotificationsEvent event,
       Emitter<NotificationState> emit) async {
-    int newDownCount = 0, newErrorCount = 0;
+    int newSyncFailureCount = 0, newDownCount = 0, newErrorCount = 0;
+    List<String> messages = [];
     for (var alert in event.alerts) {
       if (alert.age.compareTo(event.timeSincePrevFetch) >= 0) {
         continue;
       }
-      if (alert.kind == AlertType.down || alert.kind == AlertType.unreachable) {
+      if (alert.kind == AlertType.syncFailure) {
+        newSyncFailureCount += 1;
+      } else if (alert.kind == AlertType.down ||
+          alert.kind == AlertType.unreachable) {
         newDownCount += 1;
       } else if (alert.kind == AlertType.error) {
         newErrorCount += 1;
       }
     }
-    if (newDownCount > 0 || newErrorCount > 0) {
-      add(ShowNotificationEvent(
-          message:
-              "$newDownCount Recently Down / Unreachable, $newErrorCount Recent Error${newErrorCount == 1 ? "" : "s"}"));
+    if (newSyncFailureCount > 0) {
+      messages.add("$newSyncFailureCount Sync Failures");
+    }
+    if (newDownCount > 0) {
+      messages.add("$newDownCount Newly Down");
+    }
+    if (newErrorCount > 0) {
+      messages.add("$newErrorCount New Error${newErrorCount == 1 ? "" : "s"}");
+    }
+
+    if (messages.isNotEmpty) {
+      add(ShowNotificationEvent(message: messages.join(", ")));
     } else {
       add(RemoveNotificationEvent());
     }

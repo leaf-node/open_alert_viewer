@@ -125,7 +125,7 @@ class AppRepo {
           return Future.value([
             Alert(
                 source: source.id,
-                kind: AlertType.fetchFailure,
+                kind: AlertType.syncFailure,
                 hostname: source.name,
                 service: "",
                 message: "",

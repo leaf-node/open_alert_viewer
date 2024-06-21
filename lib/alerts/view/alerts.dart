@@ -64,11 +64,11 @@ enum AlertTypeView {
       fgColor: Color(0xFFBBBBBB), // light gray
       template: "%s: PENDING",
       numArgs: 1),
-  fetchFailure(
+  syncFailure(
       icon: Icons.mobiledata_off,
       bgColor: Color(0xFF111111), // darker gray
       fgColor: Color(0xFFC62828), // red800
-      template: "%s: FETCH FAILURE",
+      template: "%s: SYNC FAILURE",
       numArgs: 1);
 
   const AlertTypeView(
@@ -102,7 +102,7 @@ class AlertWidget extends StatelessWidget {
       AlertType.down => AlertTypeView.down,
       AlertType.unknown => AlertTypeView.unknown,
       AlertType.hostPending => AlertTypeView.hostPending,
-      AlertType.fetchFailure => AlertTypeView.fetchFailure,
+      AlertType.syncFailure => AlertTypeView.syncFailure,
     };
 
     return ListTile(
