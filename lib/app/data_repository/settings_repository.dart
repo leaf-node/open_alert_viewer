@@ -21,10 +21,6 @@ class SettingsRepo {
       _getSetting<bool>("notifications_requested", false);
   set notificationsRequested(value) =>
       _setSetting<bool>("notifications_requested", value);
-  bool get notificationsGranted =>
-      _getSetting<bool>("notifications_granted", false);
-  set notificationsGranted(value) =>
-      _setSetting<bool>("notifications_granted", value);
   bool get notificationsEnabled =>
       _getSetting<bool>("notifications_enabled", false);
   set notificationsEnabled(value) =>

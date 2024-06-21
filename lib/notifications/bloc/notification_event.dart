@@ -11,7 +11,12 @@ abstract class NotificationEvent {
 }
 
 final class InitializeNotificationEvent extends NotificationEvent {
-  InitializeNotificationEvent({required this.askAgain, required this.callback});
+  InitializeNotificationEvent();
+}
+
+final class RequestAndEnableNotificationEvent extends NotificationEvent {
+  RequestAndEnableNotificationEvent(
+      {required this.askAgain, required this.callback});
 
   final bool askAgain;
   final void Function() callback;

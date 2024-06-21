@@ -8,21 +8,17 @@ import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import '../../app/bloc/navigation_event.dart';
-import '../../app/bloc/navigation_bloc.dart';
 import '../../app/data_repository/settings_repository.dart';
 
-class Notifier {
-  Notifier({required NavBloc navigator, required SettingsRepo settings})
-      : _navigator = navigator,
-        _settings = settings,
+class NotificationRepo {
+  NotificationRepo({required SettingsRepo settings})
+      : _settings = settings,
         _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin(),
         _initializationSettingsLinux =
             const LinuxInitializationSettings(defaultActionName: 'Launch app'),
         _initializationSettingsAndroid =
             const AndroidInitializationSettings('@mipmap/launcher_icon');
 
-  final NavBloc _navigator;
   final SettingsRepo _settings;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   final LinuxInitializationSettings _initializationSettingsLinux;
@@ -58,26 +54,41 @@ class Notifier {
 
   void _onDidReceiveNotificationResponse(
       NotificationResponse notificationResponse) {
-    _navigator.add(OpenAlertsPageEvent());
+    // TODO: show alerts page
   }
 
-  void requestNotificationPermission(
+  Future<bool> areNotificationsAllowed() async {
+    if (Platform.isAndroid) {
+      return await _flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>()
+              ?.areNotificationsEnabled() ??
+          false;
+    }
+    return true;
+  }
+
+  Future<void> requestAndEnableNotifications(
       {required bool askAgain, required void Function() callback}) async {
     if (Platform.isAndroid) {
+      bool systemNotificationsGranted = await areNotificationsAllowed();
       if (!_settings.notificationsRequested ||
-          (askAgain && !_settings.notificationsGranted)) {
+          askAgain ||
+          (!systemNotificationsGranted && _settings.notificationsEnabled)) {
         bool? result = await _flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.requestNotificationsPermission();
         _settings.notificationsRequested = true;
         if (result != null) {
-          _settings.notificationsGranted = result;
           _settings.notificationsEnabled = result;
         }
       }
     } else {
-      _settings.notificationsGranted = true;
+      if (!_settings.notificationsRequested || askAgain) {
+        _settings.notificationsRequested = true;
+        _settings.notificationsEnabled = true;
+      }
     }
     callback();
   }

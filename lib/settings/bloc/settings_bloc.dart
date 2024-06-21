@@ -32,8 +32,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           _settingsRepo.syncTimeout = newSetting;
         case "notificationsRequested":
           _settingsRepo.notificationsRequested = newSetting;
-        case "notificationsGranted":
-          _settingsRepo.notificationsGranted = newSetting;
         case "notificationsEnabled":
           _settingsRepo.notificationsEnabled = newSetting;
         case _:
@@ -44,7 +42,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       "refreshInterval": _settingsRepo.refreshInterval,
       "syncTimeout": _settingsRepo.syncTimeout,
       "notificationsRequested": _settingsRepo.notificationsRequested,
-      "notificationsGranted": _settingsRepo.notificationsGranted,
       "notificationsEnabled": _settingsRepo.notificationsEnabled,
     }));
   }

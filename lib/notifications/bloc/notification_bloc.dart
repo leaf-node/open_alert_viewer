@@ -7,34 +7,37 @@
 import 'package:bloc/bloc.dart';
 
 import '../../alerts/model/alerts.dart';
-import '../../app/bloc/navigation_bloc.dart';
 import '../../app/data_repository/settings_repository.dart';
-import '../model/notification.dart';
+import '../data_repository/notification.dart';
 
 part 'notification_event.dart';
 part 'notification_state.dart';
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
-  NotificationBloc({required NavBloc navigator, required SettingsRepo settings})
-      : _navigator = navigator,
+  NotificationBloc(
+      {required NotificationRepo notifier, required SettingsRepo settings})
+      : _notifier = notifier,
         _settings = settings,
         super(NotificationInitial()) {
-    _notifier = Notifier(navigator: _navigator, settings: _settings);
-
     on<InitializeNotificationEvent>(_initialize);
+    on<RequestAndEnableNotificationEvent>(_requestAndEnableNotifications);
     on<ShowNotificationEvent>(_showNotification);
     on<RemoveNotificationEvent>(_removeNotification);
     on<ShowFilteredNotificationsEvent>(_showFilteredNotifications);
   }
 
-  final NavBloc _navigator;
+  final NotificationRepo _notifier;
   final SettingsRepo _settings;
-  late Notifier _notifier;
 
   Future<void> _initialize(InitializeNotificationEvent event,
       Emitter<NotificationState> emit) async {
     await _notifier.initialize();
-    _notifier.requestNotificationPermission(
+  }
+
+  Future<void> _requestAndEnableNotifications(
+      RequestAndEnableNotificationEvent event,
+      Emitter<NotificationState> emit) async {
+    await _notifier.requestAndEnableNotifications(
         askAgain: event.askAgain, callback: event.callback);
   }
 
