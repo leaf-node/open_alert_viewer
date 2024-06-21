@@ -35,7 +35,8 @@ class LocalDatabase {
     if (!_isOpen) {
       open();
     }
-    if (getSetting(setting: "migration_version") == "") {
+    if (!_checkIfTableExists(name: "settings") ||
+        getSetting(setting: "migration_version") == "") {
       var sqlString =
           await rootBundle.loadString("lib/app/db_migrations/version_0.sql");
       _db.execute(sqlString);
@@ -84,6 +85,15 @@ class LocalDatabase {
       } else {
         rethrow;
       }
+    }
+    return true;
+  }
+
+  bool _checkIfTableExists({required String name}) {
+    var result = _db.select(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='$name'");
+    if (result.isEmpty) {
+      return false;
     }
     return true;
   }
