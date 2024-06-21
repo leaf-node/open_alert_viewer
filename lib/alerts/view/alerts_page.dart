@@ -84,8 +84,8 @@ class _AlertsListState extends State<AlertsList> {
         refreshKey.currentState?.show();
       }
       if (state.sources.isEmpty) {
-        child =
-            const EmptyPane(icon: Icons.login, text: "Configure an account.");
+        child = const EmptyPane(
+            icon: Icons.login, text: "Please configure an account");
       } else if (state.alerts.isEmpty) {
         child = const EmptyPane(icon: Icons.check, text: "No alerts here!");
       } else {
