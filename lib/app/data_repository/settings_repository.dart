@@ -11,8 +11,9 @@ class SettingsRepo {
 
   final LocalDatabase _db;
 
-  DateTime get lastFetched => _getLastFetched();
-  set lastFetched(value) => _setLastFetched(value);
+  DateTime get lastFetched => _getSetting<DateTime>(
+      "last_fetch_time", DateTime.fromMillisecondsSinceEpoch(0));
+  set lastFetched(value) => _setSetting<DateTime>("last_fetch_time", value);
   int get refreshInterval => _getSetting<int>("refresh_interval", 5);
   set refreshInterval(value) => _setSetting<int>("refresh_interval", value);
   int get syncTimeout => _getSetting<int>("sync_timeout", 10);
@@ -36,10 +37,16 @@ class SettingsRepo {
         value = bool.parse(storedValue) as T;
       } else if (T == String) {
         value = storedValue as T;
+      } else if (T == DateTime) {
+        value =
+            DateTime.fromMillisecondsSinceEpoch(int.parse(storedValue)) as T;
       } else {
         value = defaultValue;
       }
     } catch (e) {
+      value = defaultValue;
+    }
+    if (T == DateTime && (value as DateTime).compareTo(DateTime.now()) > 0) {
       value = defaultValue;
     }
     if (value == 0 || (T is int && value as int < -1)) {
@@ -49,19 +56,9 @@ class SettingsRepo {
   }
 
   void _setSetting<T>(String name, T newValue) {
-    _db.setSetting(setting: name, value: newValue.toString());
-  }
-
-  DateTime _getLastFetched() {
-    var value = DateTime.fromMillisecondsSinceEpoch(
-        _getSetting<int>("last_fetch_time", 0));
-    if (value.compareTo(DateTime.now()) > 0) {
-      value = DateTime.fromMillisecondsSinceEpoch(0);
+    if (T == DateTime) {
+      _setSetting<int>(name, (newValue as DateTime).millisecondsSinceEpoch);
     }
-    return value;
-  }
-
-  void _setLastFetched(DateTime lastFetch) {
-    _setSetting<int>("last_fetch_time", lastFetch.millisecondsSinceEpoch);
+    _db.setSetting(setting: name, value: newValue.toString());
   }
 }
