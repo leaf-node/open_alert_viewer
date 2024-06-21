@@ -49,7 +49,7 @@ class SettingsRepo {
     if (T == DateTime && (value as DateTime).compareTo(DateTime.now()) > 0) {
       value = defaultValue;
     }
-    if (value == 0 || (T is int && value as int < -1)) {
+    if (T == int && (value == 0 || value as int < -1)) {
       value = defaultValue;
     }
     return value;
