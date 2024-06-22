@@ -48,7 +48,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
       if (!settings.notificationsEnabled) {
         notificationsStatusWidget = HeaderButton(
             icon: Icons.notifications_off,
-            function: () =>
+            onPressed: () =>
                 context.read<NavBloc>().add(OpenGeneralSettingsPageEvent()));
       } else {
         notificationsStatusWidget = Container();
@@ -58,14 +58,14 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
           foregroundColor: Theme.of(context).colorScheme.onPrimary,
           leading: HeaderButton(
               icon: Icons.menu,
-              function: () =>
+              onPressed: () =>
                   context.read<NavBloc>().add(OpenSettingsPageEvent())),
           title: Text(title),
           actions: [
             notificationsStatusWidget,
             HeaderButton(
                 icon: Icons.refresh,
-                function: () => context
+                onPressed: () => context
                     .read<AlertsBloc>()
                     .add(FetchAlerts(forceRefreshNow: true)))
           ]);

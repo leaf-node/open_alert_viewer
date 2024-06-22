@@ -7,10 +7,10 @@
 import 'package:flutter/material.dart';
 
 class HeaderButton extends StatelessWidget {
-  const HeaderButton({super.key, required this.icon, required this.function});
+  const HeaderButton({super.key, required this.icon, required this.onPressed});
 
   final IconData icon;
-  final void Function() function;
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +18,6 @@ class HeaderButton extends StatelessWidget {
         decoration: const ShapeDecoration(
           shape: CircleBorder(),
         ),
-        child: IconButton(icon: Icon(icon), onPressed: function));
+        child: IconButton(icon: Icon(icon), onPressed: onPressed));
   }
 }

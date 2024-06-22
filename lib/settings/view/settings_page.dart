@@ -73,20 +73,20 @@ class SettingsList extends StatelessWidget {
         MenuItem(
             icon: Icons.settings,
             title: "General Settings",
-            function: () =>
+            onTap: () =>
                 context.read<NavBloc>().add(OpenGeneralSettingsPageEvent())),
         const MenuHeaderTile(title: "Accounts"),
         for (AlertSource account in state.sources)
           MenuItem(
               icon: Icons.manage_accounts,
               title: account.name,
-              function: () => context
+              onTap: () => context
                   .read<NavBloc>()
                   .add(OpenAccountSettingsPageEvent(source: account))),
         MenuItem(
             icon: Icons.add,
             title: "Add new account",
-            function: () => context
+            onTap: () => context
                 .read<NavBloc>()
                 .add(OpenAccountSettingsPageEvent(source: null))),
       ]);
@@ -160,7 +160,7 @@ class GeneralSettingsList extends StatelessWidget {
             icon: Icons.update,
             title: "Refresh Interval",
             subtitle: refreshIntervalSubtitle,
-            function: () async {
+            onTap: () async {
               int? result = await _settingsDialogBuilder<int>(
                   context: context,
                   text: "Refresh Interval",
@@ -178,7 +178,7 @@ class GeneralSettingsList extends StatelessWidget {
             icon: Icons.timer_outlined,
             title: "Sync Timeout",
             subtitle: syncTimeoutSubtitle,
-            function: () async {
+            onTap: () async {
               int? result = await _settingsDialogBuilder<int>(
                   context: context,
                   text: "Sync Timeout",
@@ -194,7 +194,7 @@ class GeneralSettingsList extends StatelessWidget {
             icon: Icons.notifications_outlined,
             title: "Notifications",
             subtitle: notificationsEnabledSubtitle,
-            function: () async {
+            onTap: () async {
               if (settings.notificationsEnabled) {
                 settingsBloc.add(SettingsPushEvent(
                     newSettings: {"notificationsEnabled": false}));

@@ -14,23 +14,23 @@ class MenuItem extends StatelessWidget {
       required this.icon,
       required this.title,
       this.subtitle,
-      required this.function});
+      required this.onTap});
 
   final IconData icon;
   final String title;
   final String? subtitle;
-  final void Function() function;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     if (subtitle == null) {
-      return ListTile(leading: Icon(icon), title: Text(title), onTap: function);
+      return ListTile(leading: Icon(icon), title: Text(title), onTap: onTap);
     } else {
       return ListTile(
           leading: Icon(icon),
           title: Text(title),
           subtitle: Text(subtitle!),
-          onTap: function);
+          onTap: onTap);
     }
   }
 }
@@ -77,7 +77,7 @@ class SettingsHeader extends StatelessWidget implements PreferredSizeWidget {
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         leading: HeaderButton(
             icon: Icons.arrow_back,
-            function: () => Navigator.of(context).pop()),
+            onPressed: () => Navigator.of(context).pop()),
         title: Text(title));
   }
 
