@@ -43,6 +43,7 @@ class NotificationRepo {
   }
 
   Future<void> showNotification({required String message}) async {
+    await removeNotification();
     await _flutterLocalNotificationsPlugin.show(
         0, 'Open Alert Viewer', message, _notificationDetails,
         payload: 'Open alerts page');
