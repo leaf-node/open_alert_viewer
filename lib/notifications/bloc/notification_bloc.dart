@@ -23,6 +23,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     on<RequestAndEnableNotificationEvent>(_requestAndEnableNotifications);
     on<ShowNotificationEvent>(_showNotification);
     on<RemoveNotificationEvent>(_removeNotification);
+    on<DisableNotificationsEvent>(_disableNotifications);
     on<ShowFilteredNotificationsEvent>(_showFilteredNotifications);
   }
 
@@ -38,7 +39,9 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       RequestAndEnableNotificationEvent event,
       Emitter<NotificationState> emit) async {
     await _notifier.requestAndEnableNotifications(
-        askAgain: event.askAgain, callback: event.callback);
+        askAgain: event.askAgain,
+        callback: event.callback,
+        isAppVisible: event.isAppVisible);
   }
 
   Future<void> _showNotification(
@@ -54,6 +57,15 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     if (_settings.notificationsEnabled) {
       await _notifier.removeNotification();
       emit(NotificationRemoved());
+    }
+  }
+
+  Future<void> _disableNotifications(
+      DisableNotificationsEvent event, Emitter<NotificationState> emit) async {
+    if (_settings.notificationsEnabled) {
+      add(RemoveNotificationEvent());
+      await _notifier.stopForegroundService();
+      emit(NotificationsDisabled());
     }
   }
 

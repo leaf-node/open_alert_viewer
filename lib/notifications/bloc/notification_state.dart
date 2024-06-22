@@ -15,3 +15,5 @@ final class NotificationInitial extends NotificationState {}
 final class NotificationShown extends NotificationState {}
 
 final class NotificationRemoved extends NotificationState {}
+
+final class NotificationsDisabled extends NotificationState {}

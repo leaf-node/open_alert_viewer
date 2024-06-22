@@ -33,13 +33,14 @@ class NotificationRepo {
     await _flutterLocalNotificationsPlugin.initialize(_initializationSettings,
         onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse);
     const description = "Status Notifications";
+    const androidNotificationDetails = AndroidNotificationDetails(
+        "Open Alert Viewer", "Alerts",
+        channelDescription: description,
+        importance: Importance.max,
+        priority: Priority.high,
+        ticker: description);
     _notificationDetails = const NotificationDetails(
-        linux: LinuxNotificationDetails(),
-        android: AndroidNotificationDetails("Open Alert Viewer", "Alerts",
-            channelDescription: description,
-            importance: Importance.max,
-            priority: Priority.high,
-            ticker: description));
+        linux: LinuxNotificationDetails(), android: androidNotificationDetails);
   }
 
   Future<void> showNotification({required String message}) async {
@@ -66,14 +67,53 @@ class NotificationRepo {
     return true;
   }
 
+  Future<void> _startForegroundService({required bool isAppVisible}) async {
+    if (Platform.isAndroid && _settings.notificationsEnabled && isAppVisible) {
+      var activeAlerts = await _flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.getActiveNotifications();
+      if ((activeAlerts?.where((alert) => alert.id == 1).isEmpty ?? true)) {
+        const androidNotificationDetails = AndroidNotificationDetails(
+            "Open Alert Viewer Sticky Alerts", "Sticky Alerts",
+            channelDescription: "Foreground Service Notification",
+            importance: Importance.max,
+            priority: Priority.high,
+            silent: true,
+            ticker: "Sticky Alerts");
+        await _flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.startForegroundService(
+                1, 'Open Alerts Viewer', 'Periodically checking alerts',
+                notificationDetails: androidNotificationDetails,
+                foregroundServiceTypes: {
+              AndroidServiceForegroundType.foregroundServiceTypeDataSync
+            });
+      }
+    }
+  }
+
+  Future<void> stopForegroundService() async {
+    if (Platform.isAndroid) {
+      await _flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.stopForegroundService();
+    }
+  }
+
   Future<void> requestAndEnableNotifications(
-      {required bool askAgain, required void Function() callback}) async {
+      {required bool askAgain,
+      required void Function() callback,
+      bool? isAppVisible}) async {
     if (Platform.isAndroid) {
       bool systemNotificationsGranted = await areNotificationsAllowed();
+      bool? result;
       if (!_settings.notificationsRequested ||
           askAgain ||
           (!systemNotificationsGranted && _settings.notificationsEnabled)) {
-        bool? result = await _flutterLocalNotificationsPlugin
+        result = await _flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.requestNotificationsPermission();
@@ -82,7 +122,10 @@ class NotificationRepo {
           _settings.notificationsEnabled = result;
         }
       }
-    } else {
+      if (_settings.notificationsEnabled) {
+        await _startForegroundService(
+            isAppVisible: isAppVisible ?? (result != null));
+      }
       if (!_settings.notificationsRequested || askAgain) {
         _settings.notificationsRequested = true;
         _settings.notificationsEnabled = true;

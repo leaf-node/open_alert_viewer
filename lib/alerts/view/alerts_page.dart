@@ -102,6 +102,10 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
     if (ModalRoute.of(context)?.isCurrent ?? false) {
       _settings.userLastLooked = _settings.lastFetched;
     }
+    if (state == AppLifecycleState.resumed && _settings.notificationsEnabled) {
+      context.read<NotificationBloc>().add(RequestAndEnableNotificationEvent(
+          askAgain: false, callback: () {}, isAppVisible: true));
+    }
   }
 
   @override
