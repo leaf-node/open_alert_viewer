@@ -53,9 +53,7 @@ class NotificationRepo {
   }
 
   void _onDidReceiveNotificationResponse(
-      NotificationResponse notificationResponse) {
-    // TODO: show alerts page
-  }
+      NotificationResponse notificationResponse) {}
 
   Future<bool> areNotificationsAllowed() async {
     if (Platform.isAndroid) {
