@@ -12,6 +12,7 @@ import '../../app/bloc/navigation_event.dart';
 import '../../app/data_repository/settings_repository.dart';
 import '../../app/view/app_view_elements.dart';
 import '../../notifications/bloc/notification_bloc.dart';
+import '../../settings/bloc/settings_bloc.dart';
 import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
@@ -41,21 +42,34 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        leading: HeaderButton(
-            icon: Icons.menu,
+    var settings = context.read<SettingsRepo>();
+    Widget notificationsStatusWidget;
+    return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
+      if (!settings.notificationsEnabled) {
+        notificationsStatusWidget = HeaderButton(
+            icon: Icons.notifications_off,
             function: () =>
-                context.read<NavBloc>().add(OpenSettingsPageEvent())),
-        title: Text(title),
-        actions: [
-          HeaderButton(
-              icon: Icons.refresh,
-              function: () => context
-                  .read<AlertsBloc>()
-                  .add(FetchAlerts(forceRefreshNow: true))),
-        ]);
+                context.read<NavBloc>().add(OpenGeneralSettingsPageEvent()));
+      } else {
+        notificationsStatusWidget = Container();
+      }
+      return AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          leading: HeaderButton(
+              icon: Icons.menu,
+              function: () =>
+                  context.read<NavBloc>().add(OpenSettingsPageEvent())),
+          title: Text(title),
+          actions: [
+            notificationsStatusWidget,
+            HeaderButton(
+                icon: Icons.refresh,
+                function: () => context
+                    .read<AlertsBloc>()
+                    .add(FetchAlerts(forceRefreshNow: true)))
+          ]);
+    });
   }
 
   @override
