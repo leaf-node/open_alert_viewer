@@ -28,16 +28,13 @@ class OAVapp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var database = LocalDatabase();
     return MultiRepositoryProvider(
         providers: [
-          RepositoryProvider(create: (context) => LocalDatabase()),
-          RepositoryProvider(
-              create: (context) =>
-                  SettingsRepo(db: context.read<LocalDatabase>())),
+          RepositoryProvider(create: (context) => SettingsRepo(db: database)),
           RepositoryProvider(
               create: (context) => AppRepo(
-                  db: context.read<LocalDatabase>(),
-                  settings: context.read<SettingsRepo>())),
+                  db: database, settings: context.read<SettingsRepo>())),
           RepositoryProvider(
               create: (context) =>
                   NotificationRepo(settings: context.read<SettingsRepo>())),
