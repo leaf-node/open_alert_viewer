@@ -117,6 +117,9 @@ class AppRepo {
     List<Alert> freshAlerts = [];
     var lastFetched = DateTime.now();
     var timeout = _settings.syncTimeout;
+    var oldSyncFailures = _alerts
+        .where((oldAlert) => oldAlert.kind == AlertType.syncFailure)
+        .toList();
     for (var source in _alertSources) {
       var sourceFuture = source.fetchAlerts();
       if (timeout > 0) {
@@ -136,21 +139,57 @@ class AppRepo {
         });
       }
       incoming.add(sourceFuture);
-      incoming.last.then((List<Alert> alerts) {
-        freshAlerts.addAll(alerts);
+      incoming.last.then((List<Alert> newAlerts) {
+        var updatedAlerts = updateSyncFailureAges(newAlerts, oldSyncFailures);
         _alerts = _alerts.where((alert) => alert.source != source.id).toList();
-        _alerts.addAll(alerts);
-        _alerts.sort((a, b) => a.age.compareTo(b.age));
+        _alerts.addAll(updatedAlerts);
+        _alerts.sort(_alertSort);
         controller.add(_alerts);
+        freshAlerts.addAll(updatedAlerts);
       });
     }
     await Future.wait(incoming);
     _alerts = freshAlerts;
-    _alerts.sort((a, b) => a.age.compareTo(b.age));
+    _alerts.sort(_alertSort);
     controller.add(_alerts);
     _cacheAlerts();
     _settings.lastFetched = lastFetched;
     controller.close();
+  }
+
+  List<Alert> updateSyncFailureAges(
+      List<Alert> alerts, List<Alert> oldSyncFailures) {
+    return alerts.map((alert) {
+      if (alert.kind == AlertType.syncFailure) {
+        var oldAlerts = oldSyncFailures
+            .where((oldAlert) => oldAlert.source == alert.source)
+            .toList();
+        if (oldAlerts.isEmpty) {
+          return alert;
+        }
+        var newAge =
+            oldAlerts[0].age + DateTime.now().difference(_settings.lastFetched);
+        return Alert(
+            source: alert.source,
+            kind: alert.kind,
+            hostname: alert.hostname,
+            service: alert.service,
+            message: alert.message,
+            age: newAge);
+      }
+      return alert;
+    }).toList();
+  }
+
+  int _alertSort(Alert a, Alert b) {
+    if ((a.kind == b.kind) ||
+        (a.kind != AlertType.syncFailure && b.kind != AlertType.syncFailure)) {
+      return a.age.compareTo(b.age);
+    } else if (a.kind == AlertType.syncFailure) {
+      return -1;
+    } else {
+      return 1;
+    }
   }
 
   void _cacheAlerts() {
