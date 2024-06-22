@@ -85,7 +85,9 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    _settings.userLastLooked = _settings.lastFetched;
+    if (ModalRoute.of(context)?.isCurrent ?? false) {
+      _settings.userLastLooked = _settings.lastFetched;
+    }
   }
 
   @override
