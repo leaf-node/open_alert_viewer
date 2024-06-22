@@ -7,8 +7,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../app/bloc/navigation_bloc.dart';
-import '../../app/bloc/navigation_event.dart';
+import '../../navigation/bloc/navigation_bloc.dart';
+import '../../navigation/bloc/navigation_event.dart';
 import '../../app/data_repository/app_repository.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import '../bloc/splash_bloc.dart';
