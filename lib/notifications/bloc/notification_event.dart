@@ -34,8 +34,8 @@ final class RemoveNotificationEvent extends NotificationEvent {
 
 final class ShowFilteredNotificationsEvent extends NotificationEvent {
   ShowFilteredNotificationsEvent(
-      {required this.timeSincePrevFetch, required this.alerts});
+      {required this.timeSince, required this.alerts});
 
-  final Duration timeSincePrevFetch;
+  final Duration timeSince;
   final List<Alert> alerts;
 }

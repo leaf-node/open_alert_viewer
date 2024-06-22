@@ -9,22 +9,15 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
-import '../../app/data_repository/settings_repository.dart';
-import '../../notifications/bloc/notification_bloc.dart';
 import '../../app/data_repository/app_repository.dart';
 import '../model/alerts.dart';
 import 'alerts_event.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
-  AlertsBloc(
-      {required AppRepo repo,
-      required SettingsRepo settings,
-      required NotificationBloc notifier})
+  AlertsBloc({required AppRepo repo})
       : _alerts = [],
         _repo = repo,
-        _settings = settings,
-        _notifierBloc = notifier,
         super(AlertsInit()) {
     on<AddAlertSource>(_addSource);
     on<UpdateAlertSource>(_updateSource);
@@ -36,8 +29,6 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
 
   List<Alert> _alerts;
   final AppRepo _repo;
-  final SettingsRepo _settings;
-  final NotificationBloc _notifierBloc;
 
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
@@ -71,7 +62,6 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   }
 
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
-    DateTime prevFetch = _settings.lastFetched;
     StreamController<List<Alert>> controller = StreamController();
     _repo.fetchAlerts(
         controller: controller, forceRefreshNow: event.forceRefreshNow);
@@ -80,8 +70,5 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
       emit(AlertsFetching(alerts: _alerts, sources: _repo.alertSources));
     }
     emit(AlertsFetched(alerts: _alerts, sources: _repo.alertSources));
-    _notifierBloc.add(ShowFilteredNotificationsEvent(
-        timeSincePrevFetch: _settings.lastFetched.difference(prevFetch),
-        alerts: _alerts));
   }
 }

@@ -26,6 +26,9 @@ class SettingsRepo {
       _getSetting<bool>("notifications_enabled", false);
   set notificationsEnabled(value) =>
       _setSetting<bool>("notifications_enabled", value);
+  DateTime get userLastLooked => _getSetting<DateTime>(
+      "user_last_looked", DateTime.fromMillisecondsSinceEpoch(0));
+  set userLastLooked(value) => _setSetting<DateTime>("user_last_looked", value);
 
   T _getSetting<T>(String name, T defaultValue) {
     String storedValue = _db.getSetting(setting: name);

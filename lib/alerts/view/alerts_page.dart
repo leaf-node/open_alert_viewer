@@ -9,7 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/bloc/navigation_bloc.dart';
 import '../../app/bloc/navigation_event.dart';
+import '../../app/data_repository/settings_repository.dart';
 import '../../app/view/app_view_elements.dart';
+import '../../notifications/bloc/notification_bloc.dart';
 import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
@@ -67,10 +69,24 @@ class AlertsList extends StatefulWidget {
   State<AlertsList> createState() => _AlertsListState();
 }
 
-class _AlertsListState extends State<AlertsList> {
+class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
   _AlertsListState() : refreshKey = GlobalKey<RefreshIndicatorState>();
 
   final GlobalKey<RefreshIndicatorState> refreshKey;
+  late SettingsRepo _settings;
+
+  @override
+  void initState() {
+    super.initState();
+    _settings = context.read<SettingsRepo>();
+    WidgetsBinding.instance.addObserver(this);
+    _settings.userLastLooked = _settings.lastFetched;
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _settings.userLastLooked = _settings.lastFetched;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +109,10 @@ class _AlertsListState extends State<AlertsList> {
           alertWidgets.add(AlertWidget(alert: alert));
         }
         child = ListView(children: alertWidgets);
+        context.read<NotificationBloc>().add(ShowFilteredNotificationsEvent(
+            timeSince:
+                _settings.lastFetched.difference(_settings.userLastLooked),
+            alerts: state.alerts));
       }
       return RefreshIndicator(
           onRefresh: () async {

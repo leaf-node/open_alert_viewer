@@ -62,7 +62,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     int newSyncFailureCount = 0, newDownCount = 0, newErrorCount = 0;
     List<String> messages = [];
     for (var alert in event.alerts) {
-      if (alert.age.compareTo(event.timeSincePrevFetch) >= 0) {
+      if (alert.age.compareTo(event.timeSince) >= 0) {
         continue;
       }
       if (alert.kind == AlertType.syncFailure) {
