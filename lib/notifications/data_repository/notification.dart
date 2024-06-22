@@ -126,10 +126,9 @@ class NotificationRepo {
         await _startForegroundService(
             isAppVisible: isAppVisible ?? (result != null));
       }
-      if (!_settings.notificationsRequested || askAgain) {
-        _settings.notificationsRequested = true;
-        _settings.notificationsEnabled = true;
-      }
+    } else if (!_settings.notificationsRequested || askAgain) {
+      _settings.notificationsRequested = true;
+      _settings.notificationsEnabled = true;
     }
     callback();
   }
