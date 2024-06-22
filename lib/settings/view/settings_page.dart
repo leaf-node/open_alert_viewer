@@ -198,6 +198,7 @@ class GeneralSettingsList extends StatelessWidget {
               if (settings.notificationsEnabled) {
                 settingsBloc.add(SettingsPushEvent(
                     newSettings: {"notificationsEnabled": false}));
+                context.read<NotificationBloc>().add(RemoveNotificationEvent());
               } else {
                 context
                     .read<NotificationBloc>()
