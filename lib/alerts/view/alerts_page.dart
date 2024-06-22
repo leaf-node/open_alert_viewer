@@ -91,6 +91,12 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
   }
 
   @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     context.read<TimerBloc>().add(StartTimerIntervalEvent(callback: (timer) {
       context.read<AlertsBloc>().add(FetchAlerts(forceRefreshNow: true));
