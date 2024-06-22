@@ -75,7 +75,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       }
     }
     if (newSyncFailureCount > 0) {
-      messages.add("$newSyncFailureCount Sync Failures");
+      messages.add(
+          "$newSyncFailureCount New Sync Failure${newSyncFailureCount == 1 ? "" : "s"}");
     }
     if (newDownCount > 0) {
       messages.add("$newDownCount Newly Down");
