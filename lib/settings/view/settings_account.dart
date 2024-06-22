@@ -72,6 +72,7 @@ class _AccountFormState extends State<AccountForm> {
   void dispose() {
     super.dispose();
     nameController.dispose();
+    typeController.dispose();
     urlController.dispose();
     userController.dispose();
     passwordController.dispose();
