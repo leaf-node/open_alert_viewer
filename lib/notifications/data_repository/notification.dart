@@ -73,22 +73,23 @@ class NotificationRepo {
     var sincePriorFetch =
         _settings.lastFetched.difference(_settings.priorFetch);
     int newSyncFailureCount = 0, newDownCount = 0, newErrorCount = 0;
-    int brandNew = 0;
+    int brandNew = 0, brandNewInc = 0;
     List<String> messages = [];
     for (var alert in alerts) {
       if (alert.age.compareTo(sinceLooked) > 0) {
         continue;
       }
+      brandNewInc = (alert.age.compareTo(sincePriorFetch) <= 0) ? 1 : 0;
       if (alert.kind == AlertType.syncFailure) {
         newSyncFailureCount += 1;
+        brandNew += brandNewInc;
       } else if (alert.kind == AlertType.down ||
           alert.kind == AlertType.unreachable) {
         newDownCount += 1;
+        brandNew += brandNewInc;
       } else if (alert.kind == AlertType.error) {
         newErrorCount += 1;
-      }
-      if (alert.age.compareTo(sincePriorFetch) <= 0) {
-        brandNew += 1;
+        brandNew += brandNewInc;
       }
     }
     if (newSyncFailureCount > 0) {
