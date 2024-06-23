@@ -21,8 +21,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         super(NotificationInitial()) {
     on<InitializeNotificationEvent>(_initialize);
     on<RequestAndEnableNotificationEvent>(_requestAndEnableNotifications);
-    on<ShowNotificationEvent>(_showNotification);
-    on<RemoveNotificationEvent>(_removeNotification);
     on<DisableNotificationsEvent>(_disableNotifications);
     on<ShowFilteredNotificationsEvent>(_showFilteredNotifications);
   }
@@ -44,26 +42,9 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         isAppVisible: event.isAppVisible);
   }
 
-  Future<void> _showNotification(
-      ShowNotificationEvent event, Emitter<NotificationState> emit) async {
-    if (_settings.notificationsEnabled) {
-      await _notifier.showNotification(message: event.message);
-      emit(NotificationShown());
-    }
-  }
-
-  Future<void> _removeNotification(
-      RemoveNotificationEvent event, Emitter<NotificationState> emit) async {
-    if (_settings.notificationsEnabled) {
-      await _notifier.removeNotification();
-      emit(NotificationRemoved());
-    }
-  }
-
   Future<void> _disableNotifications(
       DisableNotificationsEvent event, Emitter<NotificationState> emit) async {
     if (_settings.notificationsEnabled) {
-      add(RemoveNotificationEvent());
       await _notifier.stopForegroundService();
       emit(NotificationsDisabled());
     }
@@ -71,36 +52,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   Future<void> _showFilteredNotifications(ShowFilteredNotificationsEvent event,
       Emitter<NotificationState> emit) async {
-    int newSyncFailureCount = 0, newDownCount = 0, newErrorCount = 0;
-    List<String> messages = [];
-    for (var alert in event.alerts) {
-      if (alert.age.compareTo(event.timeSince) >= 0) {
-        continue;
-      }
-      if (alert.kind == AlertType.syncFailure) {
-        newSyncFailureCount += 1;
-      } else if (alert.kind == AlertType.down ||
-          alert.kind == AlertType.unreachable) {
-        newDownCount += 1;
-      } else if (alert.kind == AlertType.error) {
-        newErrorCount += 1;
-      }
-    }
-    if (newSyncFailureCount > 0) {
-      messages.add(
-          "$newSyncFailureCount New Sync Failure${newSyncFailureCount == 1 ? "" : "s"}");
-    }
-    if (newDownCount > 0) {
-      messages.add("$newDownCount Newly Down");
-    }
-    if (newErrorCount > 0) {
-      messages.add("$newErrorCount New Error${newErrorCount == 1 ? "" : "s"}");
-    }
-
-    if (messages.isNotEmpty) {
-      add(ShowNotificationEvent(message: messages.join(", ")));
-    } else {
-      add(RemoveNotificationEvent());
-    }
+    await _notifier.showFilteredNotifications(
+        alerts: event.alerts, timeSince: event.timeSince);
+    emit(NotificationsUpdated());
   }
 }

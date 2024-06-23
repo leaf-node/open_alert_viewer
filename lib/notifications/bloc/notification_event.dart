@@ -23,16 +23,6 @@ final class RequestAndEnableNotificationEvent extends NotificationEvent {
   final bool? isAppVisible;
 }
 
-final class ShowNotificationEvent extends NotificationEvent {
-  ShowNotificationEvent({required this.message});
-
-  final String message;
-}
-
-final class RemoveNotificationEvent extends NotificationEvent {
-  RemoveNotificationEvent();
-}
-
 final class DisableNotificationsEvent extends NotificationEvent {
   DisableNotificationsEvent();
 }

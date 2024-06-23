@@ -8,6 +8,7 @@ import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../../alerts/model/alerts.dart';
 import '../../app/data_repository/settings_repository.dart';
 
 class NotificationRepo {
@@ -44,14 +45,49 @@ class NotificationRepo {
         linux: LinuxNotificationDetails(), android: androidNotificationDetails);
   }
 
-  Future<void> showNotification({required String message}) async {
+  Future<void> _showNotification({required String message}) async {
     await _flutterLocalNotificationsPlugin.show(
         0, 'Open Alert Viewer', message, _notificationDetails,
         payload: 'Open alerts page');
   }
 
-  Future<void> removeNotification() async {
+  Future<void> _removeNotification() async {
     await _flutterLocalNotificationsPlugin.cancel(0);
+  }
+
+  Future<void> showFilteredNotifications(
+      {required List<Alert> alerts, required Duration timeSince}) async {
+    int newSyncFailureCount = 0, newDownCount = 0, newErrorCount = 0;
+    List<String> messages = [];
+    for (var alert in alerts) {
+      if (alert.age.compareTo(timeSince) >= 0) {
+        continue;
+      }
+      if (alert.kind == AlertType.syncFailure) {
+        newSyncFailureCount += 1;
+      } else if (alert.kind == AlertType.down ||
+          alert.kind == AlertType.unreachable) {
+        newDownCount += 1;
+      } else if (alert.kind == AlertType.error) {
+        newErrorCount += 1;
+      }
+    }
+    if (newSyncFailureCount > 0) {
+      messages.add(
+          "$newSyncFailureCount New Sync Failure${newSyncFailureCount == 1 ? "" : "s"}");
+    }
+    if (newDownCount > 0) {
+      messages.add("$newDownCount Newly Down");
+    }
+    if (newErrorCount > 0) {
+      messages.add("$newErrorCount New Error${newErrorCount == 1 ? "" : "s"}");
+    }
+
+    if (messages.isNotEmpty) {
+      await _showNotification(message: messages.join(", "));
+    } else {
+      await _removeNotification();
+    }
   }
 
   void _onDidReceiveNotificationResponse(
@@ -102,6 +138,7 @@ class NotificationRepo {
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.stopForegroundService();
+      await _removeNotification();
     }
   }
 

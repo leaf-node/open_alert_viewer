@@ -135,12 +135,6 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
           alertWidgets.add(AlertWidget(alert: alert));
         }
         child = ListView(children: alertWidgets);
-        if (state is AlertsFetched) {
-          context.read<NotificationBloc>().add(ShowFilteredNotificationsEvent(
-              timeSince:
-                  _settings.lastFetched.difference(_settings.userLastLooked),
-              alerts: state.alerts));
-        }
       }
       return RefreshIndicator(
           onRefresh: () async {

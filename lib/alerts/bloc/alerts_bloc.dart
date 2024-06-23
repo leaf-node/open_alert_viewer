@@ -10,14 +10,21 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 import '../../app/data_repository/app_repository.dart';
+import '../../app/data_repository/settings_repository.dart';
+import '../../notifications/data_repository/notification.dart';
 import '../model/alerts.dart';
 import 'alerts_event.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
-  AlertsBloc({required AppRepo repo})
+  AlertsBloc(
+      {required AppRepo repo,
+      required NotificationRepo notifier,
+      required SettingsRepo settings})
       : _alerts = [],
         _repo = repo,
+        _notifier = notifier,
+        _settings = settings,
         super(AlertsInit()) {
     on<AddAlertSource>(_addSource);
     on<UpdateAlertSource>(_updateSource);
@@ -29,6 +36,8 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
 
   List<Alert> _alerts;
   final AppRepo _repo;
+  final NotificationRepo _notifier;
+  final SettingsRepo _settings;
 
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
@@ -70,5 +79,8 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
       emit(AlertsFetching(alerts: _alerts, sources: _repo.alertSources));
     }
     emit(AlertsFetched(alerts: _alerts, sources: _repo.alertSources));
+    _notifier.showFilteredNotifications(
+        alerts: _alerts,
+        timeSince: _settings.lastFetched.difference(_settings.userLastLooked));
   }
 }
