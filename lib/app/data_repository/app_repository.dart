@@ -153,6 +153,7 @@ class AppRepo {
     _alerts.sort(_alertSort);
     controller.add(_alerts);
     _cacheAlerts();
+    _settings.priorFetch = _settings.lastFetched;
     _settings.lastFetched = lastFetched;
     controller.close();
   }

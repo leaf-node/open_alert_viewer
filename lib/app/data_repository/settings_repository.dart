@@ -29,6 +29,9 @@ class SettingsRepo {
   DateTime get userLastLooked => _getSetting<DateTime>(
       "user_last_looked", DateTime.fromMillisecondsSinceEpoch(0));
   set userLastLooked(value) => _setSetting<DateTime>("user_last_looked", value);
+  DateTime get priorFetch => _getSetting<DateTime>(
+      "prior_fetch_time", DateTime.fromMillisecondsSinceEpoch(0));
+  set priorFetch(value) => _setSetting<DateTime>("prior_fetch_time", value);
 
   T _getSetting<T>(String name, T defaultValue) {
     String storedValue = _db.getSetting(setting: name);
