@@ -26,11 +26,3 @@ final class RequestAndEnableNotificationEvent extends NotificationEvent {
 final class DisableNotificationsEvent extends NotificationEvent {
   DisableNotificationsEvent();
 }
-
-final class ShowFilteredNotificationsEvent extends NotificationEvent {
-  ShowFilteredNotificationsEvent(
-      {required this.timeSince, required this.alerts});
-
-  final Duration timeSince;
-  final List<Alert> alerts;
-}

@@ -79,8 +79,11 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
       emit(AlertsFetching(alerts: _alerts, sources: _repo.alertSources));
     }
     emit(AlertsFetched(alerts: _alerts, sources: _repo.alertSources));
-    _notifier.showFilteredNotifications(
-        alerts: _alerts,
-        timeSince: _settings.lastFetched.difference(_settings.userLastLooked));
+    if (_settings.notificationsEnabled) {
+      await _notifier.showFilteredNotifications(
+          alerts: _alerts,
+          timeSince:
+              _settings.lastFetched.difference(_settings.userLastLooked));
+    }
   }
 }

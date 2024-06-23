@@ -142,7 +142,7 @@ class NotificationRepo {
     }
   }
 
-  Future<void> requestAndEnableNotifications(
+  Future<bool> requestAndEnableNotifications(
       {required bool askAgain,
       required void Function() callback,
       bool? isAppVisible}) async {
@@ -170,5 +170,6 @@ class NotificationRepo {
       _settings.notificationsEnabled = true;
     }
     callback();
+    return _settings.notificationsEnabled;
   }
 }

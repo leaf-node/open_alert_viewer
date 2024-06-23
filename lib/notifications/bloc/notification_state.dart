@@ -12,6 +12,6 @@ abstract class NotificationState {
 
 final class NotificationInitial extends NotificationState {}
 
-final class NotificationsUpdated extends NotificationState {}
+final class NotificationsEnabled extends NotificationState {}
 
 final class NotificationsDisabled extends NotificationState {}
