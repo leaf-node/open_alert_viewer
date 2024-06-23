@@ -44,16 +44,16 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   Future<void> _disableNotifications(
       DisableNotificationsEvent event, Emitter<NotificationState> emit) async {
-    if (_settings.notificationsEnabled) {
-      await _notifier.stopForegroundService();
-      emit(NotificationsDisabled());
-    }
+    await _notifier.stopForegroundService();
+    emit(NotificationsDisabled());
   }
 
   Future<void> _showFilteredNotifications(ShowFilteredNotificationsEvent event,
       Emitter<NotificationState> emit) async {
-    await _notifier.showFilteredNotifications(
-        alerts: event.alerts, timeSince: event.timeSince);
-    emit(NotificationsUpdated());
+    if (_settings.notificationsEnabled) {
+      await _notifier.showFilteredNotifications(
+          alerts: event.alerts, timeSince: event.timeSince);
+      emit(NotificationsUpdated());
+    }
   }
 }
