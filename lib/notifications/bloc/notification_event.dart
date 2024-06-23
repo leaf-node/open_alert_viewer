@@ -25,3 +25,7 @@ final class RequestAndEnableNotificationEvent extends NotificationEvent {
 final class DisableNotificationsEvent extends NotificationEvent {
   DisableNotificationsEvent();
 }
+
+final class UpdateLastCheckTime extends NotificationEvent {
+  UpdateLastCheckTime();
+}
