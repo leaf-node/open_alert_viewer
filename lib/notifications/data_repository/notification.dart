@@ -28,6 +28,9 @@ class NotificationRepo {
   final AndroidInitializationSettings _initializationSettingsAndroid;
   late InitializationSettings _initializationSettings;
   late NotificationDetails _notificationDetails;
+  final List<int> activeNotificationIds = [];
+  final int idForStiky = 1;
+  final int startingId = 2;
 
   Future<void> initialize() async {
     _initializationSettings = InitializationSettings(
@@ -48,13 +51,20 @@ class NotificationRepo {
   }
 
   Future<void> _showNotification({required String message}) async {
+    await _removeLastNotification();
+    int newId = activeNotificationIds.lastOrNull ?? startingId;
     await _flutterLocalNotificationsPlugin.show(
-        0, 'Open Alert Viewer', message, _notificationDetails,
+        newId, 'Open Alert Viewer', message, _notificationDetails,
         payload: 'Open alerts page');
+    activeNotificationIds.add(newId);
   }
 
-  Future<void> _removeNotification() async {
-    await _flutterLocalNotificationsPlugin.cancel(0);
+  Future<void> _removeLastNotification() async {
+    int? latestId = activeNotificationIds.lastOrNull;
+    if (latestId != null) {
+      await _flutterLocalNotificationsPlugin.cancel(latestId);
+      activeNotificationIds.removeLast();
+    }
   }
 
   Future<void> showFilteredNotifications(
@@ -88,7 +98,7 @@ class NotificationRepo {
     if (messages.isNotEmpty) {
       await _showNotification(message: messages.join(", "));
     } else {
-      await _removeNotification();
+      await _removeLastNotification();
     }
   }
 
@@ -112,7 +122,8 @@ class NotificationRepo {
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.getActiveNotifications();
-      if ((activeAlerts?.where((alert) => alert.id == 1).isEmpty ?? true)) {
+      if ((activeAlerts?.where((alert) => alert.id == idForStiky).isEmpty ??
+          true)) {
         const androidNotificationDetails = AndroidNotificationDetails(
             "Open Alert Viewer Sticky Alerts", "Sticky Alerts",
             icon: "@drawable/notification_icon",
@@ -146,8 +157,8 @@ class NotificationRepo {
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.stopForegroundService();
-      await _removeNotification();
     }
+    await _removeLastNotification();
   }
 
   Future<bool> requestAndEnableNotifications(
