@@ -127,8 +127,12 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
     return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
       List<Widget> alertWidgets = [];
       Widget child;
+      bool? isFetching;
       if (state is AlertsFetching) {
+        isFetching = true;
         refreshKey.currentState?.show();
+      } else if (state is AlertsFetching) {
+        isFetching = false;
       }
       if (state.sources.isEmpty) {
         child = const EmptyPane(
@@ -143,7 +147,11 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       }
       return RefreshIndicator(
           onRefresh: () async {
-            context.read<AlertsBloc>().add(FetchAlerts(forceRefreshNow: true));
+            if (isFetching != true) {
+              context
+                  .read<AlertsBloc>()
+                  .add(FetchAlerts(forceRefreshNow: true));
+            }
             await context.read<AlertsBloc>().stream.firstWhere(
                   (state) => state is! AlertsFetching,
                 );
