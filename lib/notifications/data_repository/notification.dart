@@ -79,15 +79,15 @@ class NotificationRepo {
             "Open Alert Viewer Sticky Alerts", "Sticky Alerts",
             icon: "@drawable/notification_icon",
             channelDescription: "Foreground Service Notification",
-            importance: Importance.max,
-            priority: Priority.high,
+            importance: Importance.min,
+            priority: Priority.min,
             silent: true,
             ticker: "Sticky Alerts");
         await _flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
-            ?.startForegroundService(
-                1, 'Open Alerts Viewer', 'Periodically checking alerts',
+            ?.startForegroundService(1, 'Periodically checking for new alerts',
+                'Running at configured interval',
                 notificationDetails: androidNotificationDetails,
                 foregroundServiceTypes: {
               AndroidServiceForegroundType.foregroundServiceTypeDataSync
