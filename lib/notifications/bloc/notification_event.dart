@@ -16,11 +16,10 @@ final class InitializeNotificationEvent extends NotificationEvent {
 
 final class RequestAndEnableNotificationEvent extends NotificationEvent {
   RequestAndEnableNotificationEvent(
-      {required this.askAgain, required this.callback, this.isAppVisible});
+      {required this.askAgain, required this.callback});
 
   final bool askAgain;
   final void Function() callback;
-  final bool? isAppVisible;
 }
 
 final class DisableNotificationsEvent extends NotificationEvent {

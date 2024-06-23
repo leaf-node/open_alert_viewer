@@ -206,7 +206,6 @@ class GeneralSettingsList extends StatelessWidget {
                     .read<NotificationBloc>()
                     .add(RequestAndEnableNotificationEvent(
                         askAgain: true,
-                        isAppVisible: true,
                         callback: () {
                           settingsBloc.add(SettingsPushEvent(newSettings: {
                             "notificationsEnabled":

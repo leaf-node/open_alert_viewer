@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../alerts/model/alerts.dart';
@@ -104,8 +106,8 @@ class NotificationRepo {
     return true;
   }
 
-  Future<void> _startForegroundService({required bool isAppVisible}) async {
-    if (Platform.isAndroid && _settings.notificationsEnabled && isAppVisible) {
+  Future<void> _startForegroundService() async {
+    if (Platform.isAndroid && _settings.notificationsEnabled) {
       var activeAlerts = await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
@@ -119,15 +121,21 @@ class NotificationRepo {
             priority: Priority.min,
             silent: true,
             ticker: "Sticky Alerts");
-        await _flutterLocalNotificationsPlugin
-            .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>()
-            ?.startForegroundService(1, 'Periodically checking for new alerts',
-                'Running at configured interval',
-                notificationDetails: androidNotificationDetails,
-                foregroundServiceTypes: {
-              AndroidServiceForegroundType.foregroundServiceTypeDataSync
-            });
+        try {
+          await _flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>()
+              ?.startForegroundService(
+                  1,
+                  'Periodically checking for new alerts',
+                  'Running at configured interval',
+                  notificationDetails: androidNotificationDetails,
+                  foregroundServiceTypes: {
+                AndroidServiceForegroundType.foregroundServiceTypeDataSync
+              });
+        } on PlatformException catch (e) {
+          log(e.message.toString());
+        }
       }
     }
   }
@@ -162,8 +170,7 @@ class NotificationRepo {
         }
       }
       if (_settings.notificationsEnabled) {
-        await _startForegroundService(
-            isAppVisible: isAppVisible ?? (result != null));
+        await _startForegroundService();
       }
     } else if (!_settings.notificationsRequested || askAgain) {
       _settings.notificationsRequested = true;

@@ -31,9 +31,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       RequestAndEnableNotificationEvent event,
       Emitter<NotificationState> emit) async {
     var enabled = await _notifier.requestAndEnableNotifications(
-        askAgain: event.askAgain,
-        callback: event.callback,
-        isAppVisible: event.isAppVisible);
+        askAgain: event.askAgain, callback: event.callback);
     if (enabled) {
       emit(NotificationsEnabled());
     }

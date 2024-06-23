@@ -95,6 +95,8 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
     _settings = context.read<SettingsRepo>();
     WidgetsBinding.instance.addObserver(this);
     _settings.userLastLooked = _settings.lastFetched;
+    context.read<NotificationBloc>().add(
+        RequestAndEnableNotificationEvent(askAgain: false, callback: () {}));
   }
 
   @override
@@ -103,8 +105,8 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       _settings.userLastLooked = _settings.lastFetched;
     }
     if (state == AppLifecycleState.resumed && _settings.notificationsEnabled) {
-      context.read<NotificationBloc>().add(RequestAndEnableNotificationEvent(
-          askAgain: false, callback: () {}, isAppVisible: true));
+      context.read<NotificationBloc>().add(
+          RequestAndEnableNotificationEvent(askAgain: false, callback: () {}));
     }
   }
 
