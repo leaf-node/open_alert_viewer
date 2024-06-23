@@ -89,7 +89,7 @@ class NotificationRepo {
           "$newSyncFailureCount New Sync Failure${newSyncFailureCount == 1 ? "" : "s"}");
     }
     if (newDownCount > 0) {
-      messages.add("$newDownCount Newly Down");
+      messages.add("$newDownCount Recently Down");
     }
     if (newErrorCount > 0) {
       messages.add("$newErrorCount New Error${newErrorCount == 1 ? "" : "s"}");
