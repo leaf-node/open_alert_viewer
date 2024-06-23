@@ -17,7 +17,7 @@ class NotificationRepo {
         _initializationSettingsLinux =
             const LinuxInitializationSettings(defaultActionName: 'Launch app'),
         _initializationSettingsAndroid =
-            const AndroidInitializationSettings('@mipmap/launcher_icon');
+            const AndroidInitializationSettings('@drawable/notification_icon');
 
   final SettingsRepo _settings;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
@@ -35,6 +35,7 @@ class NotificationRepo {
     const description = "Status Notifications";
     const androidNotificationDetails = AndroidNotificationDetails(
         "Open Alert Viewer", "Alerts",
+        icon: "@drawable/notification_icon",
         channelDescription: description,
         importance: Importance.max,
         priority: Priority.high,
@@ -76,6 +77,7 @@ class NotificationRepo {
       if ((activeAlerts?.where((alert) => alert.id == 1).isEmpty ?? true)) {
         const androidNotificationDetails = AndroidNotificationDetails(
             "Open Alert Viewer Sticky Alerts", "Sticky Alerts",
+            icon: "@drawable/notification_icon",
             channelDescription: "Foreground Service Notification",
             importance: Importance.max,
             priority: Priority.high,
