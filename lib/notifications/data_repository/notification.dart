@@ -38,7 +38,7 @@ class NotificationRepo {
         android: _initializationSettingsAndroid);
     await _flutterLocalNotificationsPlugin.initialize(_initializationSettings,
         onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse);
-    const description = "Status Notifications";
+    const description = "Alert Notifications";
     const androidNotificationDetails = AndroidNotificationDetails(
         "Open Alert Viewer", "Alerts",
         icon: "@drawable/notification_icon",
@@ -132,14 +132,15 @@ class NotificationRepo {
           ?.getActiveNotifications();
       if ((activeAlerts?.where((alert) => alert.id == idForStiky).isEmpty ??
           true)) {
-        const androidNotificationDetails = AndroidNotificationDetails(
-            "Open Alert Viewer Sticky Alerts", "Sticky Alerts",
+        var description = "Background Work";
+        var androidNotificationDetails = AndroidNotificationDetails(
+            "Open Alert Viewer Background Work", description,
             icon: "@drawable/notification_icon",
-            channelDescription: "Foreground Service Notification",
+            channelDescription: "Allow Fetching Data in Background",
             importance: Importance.min,
             priority: Priority.min,
             silent: true,
-            ticker: "Sticky Alerts");
+            ticker: description);
         try {
           await _flutterLocalNotificationsPlugin
               .resolvePlatformSpecificImplementation<
