@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="open_alert_viewer"
+        android:label="Open Alert Viewer"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
