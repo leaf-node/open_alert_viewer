@@ -161,8 +161,6 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       if (state.sources.isEmpty) {
         child = const EmptyPane(
             icon: Icons.login, text: "Please configure an account");
-      } else if (state.alerts.isEmpty) {
-        child = const EmptyPane(icon: Icons.check, text: "No alerts here!");
       } else {
         List<bool> filter = _settings.alertFilter;
         for (var alert in state.alerts) {
@@ -170,7 +168,15 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
             alertWidgets.add(AlertWidget(alert: alert));
           }
         }
-        child = ListView(children: alertWidgets);
+        if (alertWidgets.isEmpty) {
+          String caveat = " ";
+          if (filter.any((val) => val == false)) {
+            caveat = " (filtered) ";
+          }
+          child = EmptyPane(icon: Icons.check, text: "No${caveat}alerts here!");
+        } else {
+          child = ListView(children: alertWidgets);
+        }
       }
       return RefreshIndicator(
           onRefresh: () async {
