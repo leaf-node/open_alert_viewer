@@ -34,6 +34,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           _settingsRepo.notificationsRequested = newSetting;
         case "notificationsEnabled":
           _settingsRepo.notificationsEnabled = newSetting;
+        case "alertFilter":
+          _settingsRepo.alertFilter = newSetting;
+        case "setAlertFilterAt":
+          bool value;
+          int index;
+          (value, index) = newSetting as (bool, int);
+          _settingsRepo.setAlertFilterAt(value, index);
         case _:
           throw "Unsupported setting: $setting";
       }

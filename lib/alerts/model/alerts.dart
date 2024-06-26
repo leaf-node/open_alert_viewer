@@ -5,16 +5,20 @@
  */
 
 enum AlertType {
-  okay,
-  warning,
-  error,
-  pending,
-  unknown,
-  up,
-  unreachable,
-  down,
-  hostPending,
-  syncFailure
+  okay(name: "Okay"),
+  warning(name: "Warning"),
+  error(name: "Error"),
+  pending(name: "Pending"),
+  unknown(name: "Unknown"),
+  up(name: "Up"),
+  unreachable(name: "Unreachable"),
+  down(name: "Down"),
+  hostPending(name: "Host Pending"),
+  syncFailure(name: "Sync Failure");
+
+  const AlertType({required this.name});
+
+  final String name;
 }
 
 class Alert {

@@ -4,6 +4,9 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:convert';
+
+import '../../alerts/model/alerts.dart';
 import '../data_source/database.dart';
 
 class SettingsRepo {
@@ -32,8 +35,13 @@ class SettingsRepo {
   DateTime get priorFetch => _getSetting<DateTime>(
       "prior_fetch_time", DateTime.fromMillisecondsSinceEpoch(0));
   set priorFetch(value) => _setSetting<DateTime>("prior_fetch_time", value);
+  List<bool> get alertFilter => _getSetting<List<bool>>("alert_filter", [true],
+      opt: AlertType.values.length);
+  set alertFilter(value) => _setSetting<List<bool>>("alert_filter", value);
+  void setAlertFilterAt(bool value, int index) =>
+      _setListAt<bool>("alert_filter", value, [true], index);
 
-  T _getSetting<T>(String name, T defaultValue) {
+  T _getSetting<T>(String name, T defaultValue, {int? opt}) {
     String storedValue = _db.getSetting(setting: name);
     T value;
     try {
@@ -46,6 +54,8 @@ class SettingsRepo {
       } else if (T == DateTime) {
         value =
             DateTime.fromMillisecondsSinceEpoch(int.parse(storedValue)) as T;
+      } else if (T == List<bool>) {
+        value = List<bool>.from(jsonDecode(storedValue)) as T;
       } else {
         value = defaultValue;
       }
@@ -54,9 +64,15 @@ class SettingsRepo {
     }
     if (T == DateTime && (value as DateTime).compareTo(DateTime.now()) > 0) {
       value = defaultValue;
-    }
-    if (T == int && (value == 0 || value as int < -1)) {
+    } else if (T == int && (value == 0 || value as int < -1)) {
       value = defaultValue;
+    } else if (T == List<bool>) {
+      int oldLength = (value as List).length;
+      if (opt != null && opt > oldLength) {
+        for (var i = oldLength; i < opt; i++) {
+          (value as List).add((defaultValue as List)[0]);
+        }
+      }
     }
     return value;
   }
@@ -65,7 +81,17 @@ class SettingsRepo {
     if (T == DateTime) {
       _setSetting<int>(name, (newValue as DateTime).millisecondsSinceEpoch);
       return;
+    } else if (T == List<bool>) {
+      _setSetting<String>(name, jsonEncode(newValue as List));
+      return;
     }
     _db.setSetting(setting: name, value: newValue.toString());
+  }
+
+  void _setListAt<T>(String name, T newValue, List<T> defaultValue, int index) {
+    List<T> currentSetting =
+        _getSetting<List<T>>(name, defaultValue, opt: index + 1);
+    currentSetting[index] = newValue;
+    _setSetting<List<T>>(name, currentSetting);
   }
 }

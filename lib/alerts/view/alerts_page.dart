@@ -140,8 +140,11 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       } else if (state.alerts.isEmpty) {
         child = const EmptyPane(icon: Icons.check, text: "No alerts here!");
       } else {
+        List<bool> filter = _settings.alertFilter;
         for (var alert in state.alerts) {
-          alertWidgets.add(AlertWidget(alert: alert));
+          if (filter[alert.kind.index]) {
+            alertWidgets.add(AlertWidget(alert: alert));
+          }
         }
         child = ListView(children: alertWidgets);
       }

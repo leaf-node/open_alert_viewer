@@ -161,7 +161,7 @@ class GeneralSettingsList extends StatelessWidget {
             title: "Refresh Interval",
             subtitle: refreshIntervalSubtitle,
             onTap: () async {
-              int? result = await _settingsDialogBuilder<int>(
+              int? result = await _settingsRadioDialogBuilder<int>(
                   context: context,
                   text: "Refresh Interval",
                   priorSetting: settings.refreshInterval,
@@ -179,7 +179,7 @@ class GeneralSettingsList extends StatelessWidget {
             title: "Sync Timeout",
             subtitle: syncTimeoutSubtitle,
             onTap: () async {
-              int? result = await _settingsDialogBuilder<int>(
+              int? result = await _settingsRadioDialogBuilder<int>(
                   context: context,
                   text: "Sync Timeout",
                   priorSetting: settings.syncTimeout,
@@ -213,13 +213,23 @@ class GeneralSettingsList extends StatelessWidget {
                           }));
                         }));
               }
-            })
+            }),
+        MenuItem(
+            icon: Icons.filter_alt_outlined,
+            title: "Alerts Filter",
+            onTap: () async {
+              await _settingsCheckBoxDialogBuilder<bool>(
+                  context: context,
+                  text: "Alerts Filter",
+                  priorSetting: settings.alertFilter,
+                  valueListBuilder: listFiltered);
+            }),
       ]);
     });
   }
 }
 
-Future _settingsDialogBuilder<T>(
+Future _settingsRadioDialogBuilder<T>(
     {required BuildContext context,
     required String text,
     required T? priorSetting,
@@ -238,28 +248,59 @@ Future _settingsDialogBuilder<T>(
       });
 }
 
-List<SettingsEnumValue> listRefreshFrequencies<T>({T? priorSetting}) {
+Future _settingsCheckBoxDialogBuilder<T>(
+    {required BuildContext context,
+    required String text,
+    required List<bool> priorSetting,
+    required Function({required List<bool> priorSetting})
+        valueListBuilder}) async {
+  return await showDialog<T>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            child: SizedBox(
+                width: 300,
+                child: ListView(shrinkWrap: true, children: [
+                  Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: valueListBuilder(priorSetting: priorSetting))
+                ])));
+      });
+}
+
+List<SettingsRadioEnumValue> listRefreshFrequencies<T>({T? priorSetting}) {
   return [
     for (var option in RefreshFrequencies.values)
-      SettingsEnumValue<T>(
+      SettingsRadioEnumValue<T>(
           title: option.text,
           value: option.value as T,
           priorSetting: priorSetting)
   ];
 }
 
-List<SettingsEnumValue> listSyncTimeouts<T>({T? priorSetting}) {
+List<SettingsRadioEnumValue> listSyncTimeouts<T>({T? priorSetting}) {
   return [
     for (var option in SyncTimeouts.values)
-      SettingsEnumValue<T>(
+      SettingsRadioEnumValue<T>(
           title: option.text,
           value: option.value as T,
           priorSetting: priorSetting)
   ];
 }
 
-class SettingsEnumValue<T> extends StatelessWidget {
-  const SettingsEnumValue(
+List<SettingsCheckBoxEnumValue> listFiltered(
+    {required List<bool> priorSetting}) {
+  return [
+    for (var option in AlertType.values)
+      SettingsCheckBoxEnumValue(
+          title: option.name,
+          value: priorSetting[option.index],
+          index: option.index)
+  ];
+}
+
+class SettingsRadioEnumValue<T> extends StatelessWidget {
+  const SettingsRadioEnumValue(
       {super.key,
       required this.title,
       required this.value,
@@ -277,6 +318,43 @@ class SettingsEnumValue<T> extends StatelessWidget {
         groupValue: priorSetting,
         onChanged: (T? value) {
           Navigator.of(context).pop(value);
+        });
+  }
+}
+
+class SettingsCheckBoxEnumValue extends StatefulWidget {
+  const SettingsCheckBoxEnumValue(
+      {super.key,
+      required this.title,
+      required this.value,
+      required this.index});
+
+  final String title;
+  final bool value;
+  final int index;
+
+  @override
+  State<SettingsCheckBoxEnumValue> createState() =>
+      _SettingsCheckBoxEnumValueState();
+}
+
+class _SettingsCheckBoxEnumValueState extends State<SettingsCheckBoxEnumValue> {
+  bool? value;
+
+  @override
+  Widget build(BuildContext context) {
+    value = value ?? widget.value;
+    return CheckboxListTile(
+        title: Text(widget.title),
+        value: value,
+        onChanged: (bool? newValue) {
+          if (newValue != null) {
+            context.read<SettingsBloc>().add(SettingsPushEvent(
+                newSettings: {"setAlertFilterAt": (newValue, widget.index)}));
+            setState(() {
+              value = newValue;
+            });
+          }
         });
   }
 }
