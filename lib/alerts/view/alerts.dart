@@ -17,13 +17,13 @@ enum AlertTypeView {
       template: "%s [%s]: OKAY: %s",
       numArgs: 3),
   warning(
-      icon: Icons.error_outline, // circular icon
+      icon: Icons.warning_amber_outlined, // triangular icon
       bgColor: Color(0xFFF9A825), // yellow800
       fgColor: Colors.black,
       template: "%s [%s]: WARNING: %s",
       numArgs: 3),
   error(
-      icon: Icons.warning_amber_outlined, // triangular icon
+      icon: Icons.error_outline, // circular icon
       bgColor: Color(0xFFC62828), // red800
       fgColor: Colors.white,
       template: "%s [%s]: ERROR: %s",
