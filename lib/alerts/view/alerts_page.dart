@@ -17,6 +17,7 @@ import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
 import '../bloc/timer_bloc.dart';
+import '../model/alerts.dart';
 import 'alerts.dart';
 
 class AlertsPage extends StatelessWidget {
@@ -44,6 +45,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     var settings = context.read<SettingsRepo>();
     Widget notificationsStatusWidget;
+    Widget filterStatusWidget;
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
       if (!settings.notificationsEnabled) {
         notificationsStatusWidget = HeaderButton(
@@ -52,6 +54,27 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
                 context.read<NavBloc>().add(OpenGeneralSettingsPageEvent()));
       } else {
         notificationsStatusWidget = Container();
+      }
+      List<bool> filter = settings.alertFilter;
+      bool isImportantShown = true;
+      for (var kind in [
+        AlertType.error,
+        AlertType.down,
+        AlertType.unreachable,
+        AlertType.syncFailure
+      ]) {
+        if (filter[kind.index] == false) {
+          isImportantShown = false;
+          break;
+        }
+      }
+      if (!isImportantShown) {
+        filterStatusWidget = HeaderButton(
+            icon: Icons.filter_alt_off_outlined,
+            onPressed: () =>
+                context.read<NavBloc>().add(OpenGeneralSettingsPageEvent()));
+      } else {
+        filterStatusWidget = Container();
       }
       return AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
@@ -62,6 +85,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
                   context.read<NavBloc>().add(OpenSettingsPageEvent())),
           title: Text(title),
           actions: [
+            filterStatusWidget,
             notificationsStatusWidget,
             HeaderButton(
                 icon: Icons.refresh,
