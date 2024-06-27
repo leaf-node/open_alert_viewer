@@ -50,6 +50,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       "syncTimeout": _settingsRepo.syncTimeout,
       "notificationsRequested": _settingsRepo.notificationsRequested,
       "notificationsEnabled": _settingsRepo.notificationsEnabled,
+      "alertFilter": _settingsRepo.alertFilter,
     }));
   }
 }

@@ -60,7 +60,12 @@ class SettingsRepo {
         value = defaultValue;
       }
     } catch (e) {
-      value = defaultValue;
+      if (name == "alert_filter") {
+        value = [false, true, true, false, true, false, true, true, false, true]
+            as T;
+      } else {
+        value = defaultValue;
+      }
     }
     if (T == DateTime && (value as DateTime).compareTo(DateTime.now()) > 0) {
       value = defaultValue;
