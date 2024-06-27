@@ -33,7 +33,7 @@ class LocalDatabase {
 
   Future<void> migrate() async {
     if (!_isOpen) {
-      open();
+      await open();
     }
     if (!_checkIfTableExists(name: "settings") ||
         getSetting(setting: "migration_version") == "") {

@@ -24,11 +24,12 @@ import 'settings/view/settings_page.dart';
 import 'splash/view/splash_page.dart';
 
 class OAVapp extends StatelessWidget {
-  const OAVapp({super.key});
+  const OAVapp({super.key, required this.database});
+
+  final LocalDatabase database;
 
   @override
   Widget build(BuildContext context) {
-    var database = LocalDatabase();
     return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(create: (context) => SettingsRepo(db: database)),
@@ -74,51 +75,73 @@ class _OAVappViewState extends State<OAVappView> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Open Alert Viewer',
-      navigatorKey: _navigatorKey,
-      builder: (context, child) {
-        return BlocListener<NavBloc, NavState>(
-            listener: (context, state) {
-              switch (state) {
-                case ShowAlertsPage():
-                  _navigator.pushAndRemoveUntil(
-                      AlertsPage.route(title: 'Open Alert Viewer'),
-                      (_) => false);
-                case ShowSettingsPage():
-                  _navigator.push(SettingsPage.route(title: "OAV Settings"));
-                case ShowGeneralSettingsPage():
-                  _navigator.push(
-                      GeneralSettingsPage.route(title: "OAV General Settings"));
-                case ShowAccountSettingsPage():
-                  _navigator.push(AccountSettingsPage.route(
-                      title: "OAV Account Settings", source: state.source));
-              }
-            },
-            child: child);
-      },
-      onGenerateRoute: (_) => SplashPage.route(title: 'Open Alert Viewer'),
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.lightBlue,
-          secondary: const Color(0xFF224488),
-          onSurface: const Color(0xFF444444),
+    return BlocBuilder<SettingsBloc, SettingsState>(
+        buildWhen: (oldState, state) {
+      if (oldState is! SettingsChanged ||
+          (state is SettingsChanged &&
+              (state.settings["darkMode"] != oldState.settings["darkMoode"]))) {
+        return true;
+      }
+      return false;
+    }, builder: (context, state) {
+      int darkModeSetting;
+      if (state is SettingsChanged) {
+        darkModeSetting = state.settings["darkMode"] as int;
+      } else {
+        darkModeSetting = 1;
+      }
+      var systemBrightness = MediaQuery.of(context).platformBrightness;
+      bool darkMode = switch (darkModeSetting) {
+        0 => false,
+        1 => true,
+        _ => (systemBrightness == Brightness.dark)
+      };
+      return MaterialApp(
+        title: 'Open Alert Viewer',
+        navigatorKey: _navigatorKey,
+        builder: (context, child) {
+          return BlocListener<NavBloc, NavState>(
+              listener: (context, state) {
+                switch (state) {
+                  case ShowAlertsPage():
+                    _navigator.pushAndRemoveUntil(
+                        AlertsPage.route(title: 'Open Alert Viewer'),
+                        (_) => false);
+                  case ShowSettingsPage():
+                    _navigator.push(SettingsPage.route(title: "OAV Settings"));
+                  case ShowGeneralSettingsPage():
+                    _navigator.push(GeneralSettingsPage.route(
+                        title: "OAV General Settings"));
+                  case ShowAccountSettingsPage():
+                    _navigator.push(AccountSettingsPage.route(
+                        title: "OAV Account Settings", source: state.source));
+                }
+              },
+              child: child);
+        },
+        onGenerateRoute: (_) => SplashPage.route(title: 'Open Alert Viewer'),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.lightBlue,
+            secondary: const Color(0xFF224488),
+            onSurface: const Color(0xFF444444),
+          ),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorScheme: const ColorScheme.dark(
-            primary: Color(0xFF224488),
-            onPrimary: Colors.white,
-            secondary: Color(0xFF66AAFF),
-            onSurface: Color(0xFFBBBBBB)),
-        brightness: Brightness.dark,
-        useMaterial3: true,
-      ),
-      themeMode: ThemeMode.dark,
-      debugShowCheckedModeBanner: false,
-      scrollBehavior: CustomScrollBehavior(),
-    );
+        darkTheme: ThemeData(
+          colorScheme: const ColorScheme.dark(
+              primary: Color(0xFF224488),
+              onPrimary: Colors.white,
+              secondary: Color(0xFF66AAFF),
+              onSurface: Color(0xFFBBBBBB)),
+          brightness: Brightness.dark,
+          useMaterial3: true,
+        ),
+        themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+        debugShowCheckedModeBanner: false,
+        scrollBehavior: CustomScrollBehavior(),
+      );
+    });
   }
 }
 

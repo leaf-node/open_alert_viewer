@@ -11,7 +11,6 @@ import '../data_source/database.dart';
 
 class SettingsRepo {
   SettingsRepo({required LocalDatabase db}) : _db = db;
-
   final LocalDatabase _db;
 
   DateTime get lastFetched => _getSetting<DateTime>(
@@ -40,6 +39,8 @@ class SettingsRepo {
   set alertFilter(value) => _setSetting<List<bool>>("alert_filter", value);
   void setAlertFilterAt(bool value, int index) =>
       _setListAt<bool>("alert_filter", value, [true], index);
+  int get darkMode => _getSetting<int>("dark_mode", -1);
+  set darkMode(value) => _setSetting<int>("dark_mode", value);
 
   T _getSetting<T>(String name, T defaultValue, {int? opt}) {
     String storedValue = _db.getSetting(setting: name);
@@ -69,7 +70,8 @@ class SettingsRepo {
     }
     if (T == DateTime && (value as DateTime).compareTo(DateTime.now()) > 0) {
       value = defaultValue;
-    } else if (T == int && (value == 0 || value as int < -1)) {
+    } else if ((name == "refresh_interval" || name == "sync_timeout") &&
+        (value == 0 || value as int < -1)) {
       value = defaultValue;
     } else if (T == List<bool>) {
       int oldLength = (value as List).length;

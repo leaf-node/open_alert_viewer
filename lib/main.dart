@@ -5,9 +5,12 @@
  */
 
 import 'package:flutter/material.dart';
+import 'app/data_source/database.dart';
 
 import 'app.dart';
 
 Future<void> main() async {
-  runApp(const OAVapp());
+  var db = LocalDatabase();
+  await db.migrate();
+  runApp(OAVapp(database: db));
 }

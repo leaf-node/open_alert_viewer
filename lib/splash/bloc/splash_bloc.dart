@@ -12,8 +12,7 @@ import 'splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
   SplashBloc({required AppRepo appRepo, required NotificationBloc notifier})
-      : _appRepo = appRepo,
-        _notifier = notifier,
+      : _notifier = notifier,
         super(SplashInit()) {
     on<InitSplashEvent>(_splashInit);
     on<RunningSplashEvent>(_splashRunning);
@@ -22,7 +21,6 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     add(RunningSplashEvent());
   }
 
-  final AppRepo _appRepo;
   final NotificationBloc _notifier;
 
   void _splashInit(SplashEvent event, Emitter<SplashState> emit) {
@@ -31,8 +29,6 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
   void _splashRunning(SplashEvent event, Emitter<SplashState> emit) async {
     emit(SplashRunning());
-    await _appRepo.open();
-    await _appRepo.migrate();
     _notifier.add(InitializeNotificationEvent());
     _notifier.add(
         RequestAndEnableNotificationEvent(askAgain: false, callback: () {}));

@@ -41,6 +41,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           int index;
           (value, index) = newSetting as (bool, int);
           _settingsRepo.setAlertFilterAt(value, index);
+        case "darkMode":
+          _settingsRepo.darkMode = newSetting;
         case _:
           throw "Unsupported setting: $setting";
       }
@@ -51,6 +53,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       "notificationsRequested": _settingsRepo.notificationsRequested,
       "notificationsEnabled": _settingsRepo.notificationsEnabled,
       "alertFilter": _settingsRepo.alertFilter,
+      "darkMode": _settingsRepo.darkMode,
     }));
   }
 }

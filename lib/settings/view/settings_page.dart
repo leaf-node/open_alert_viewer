@@ -126,6 +126,17 @@ enum SyncTimeouts {
   final int value;
 }
 
+enum ColorModes {
+  oneMinute("Auto", -1),
+  fiveMinutes("Light Mode", 0),
+  threeMinutes("Dark Mode", 1);
+
+  const ColorModes(this.text, this.value);
+
+  final String text;
+  final int value;
+}
+
 class GeneralSettingsList extends StatelessWidget {
   const GeneralSettingsList({super.key});
 
@@ -154,6 +165,14 @@ class GeneralSettingsList extends StatelessWidget {
       }();
       String notificationsEnabledSubtitle = () {
         return settings.notificationsEnabled ? "Enabled" : "Disabled";
+      }();
+      String darkModeSubtitle = () {
+        for (var option in ColorModes.values) {
+          if (option.value == settings.darkMode) {
+            return option.text;
+          }
+        }
+        return "Unknown";
       }();
       return ListView(children: [
         MenuItem(
@@ -223,6 +242,21 @@ class GeneralSettingsList extends StatelessWidget {
                   text: "Alerts Filter",
                   priorSetting: settings.alertFilter,
                   valueListBuilder: listFiltered);
+            }),
+        MenuItem(
+            icon: Icons.contrast,
+            title: "Dark Mode",
+            subtitle: darkModeSubtitle,
+            onTap: () async {
+              int? result = await _settingsRadioDialogBuilder<int>(
+                  context: context,
+                  text: "Dark Mode",
+                  priorSetting: settings.darkMode,
+                  valueListBuilder: listColorModes);
+              if (result != null) {
+                settingsBloc
+                    .add(SettingsPushEvent(newSettings: {"darkMode": result}));
+              }
             }),
       ]);
     });
@@ -296,6 +330,16 @@ List<SettingsCheckBoxEnumValue> listFiltered(
           title: option.name,
           value: priorSetting[option.index],
           index: option.index)
+  ];
+}
+
+List<SettingsRadioEnumValue> listColorModes<T>({T? priorSetting}) {
+  return [
+    for (var option in ColorModes.values)
+      SettingsRadioEnumValue<T>(
+          title: option.text,
+          value: option.value as T,
+          priorSetting: priorSetting)
   ];
 }
 
