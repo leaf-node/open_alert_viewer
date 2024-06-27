@@ -10,6 +10,7 @@ import 'app/data_source/database.dart';
 import 'app.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   var db = LocalDatabase();
   await db.migrate();
   runApp(OAVapp(database: db));
