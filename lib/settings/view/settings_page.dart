@@ -259,6 +259,16 @@ class GeneralSettingsList extends StatelessWidget {
               }
             }),
         MenuItem(
+            icon: Icons.battery_saver_outlined,
+            title: "Battery Optimization",
+            onTap: () async {
+              await _settingsTextDialogBuilder(
+                  context: context,
+                  text: "Please visit https://dontkillmyapp.com for a list of "
+                      "steps particular to your phone model.",
+                  cancellable: false);
+            }),
+        MenuItem(
             icon: Icons.article_outlined,
             title: "License Info",
             onTap: () async {
@@ -308,6 +318,37 @@ Future _settingsCheckBoxDialogBuilder<T>(
       });
 }
 
+Future _settingsTextDialogBuilder(
+    {required BuildContext context,
+    required String text,
+    required bool cancellable}) async {
+  return await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            child: SizedBox(
+                width: 300,
+                child: ListView(shrinkWrap: true, children: [
+                  Column(mainAxisSize: MainAxisSize.min, children: [
+                    Padding(
+                        padding: const EdgeInsets.all(15), child: Text(text)),
+                    Row(children: [
+                      if (cancellable == true)
+                        SettingsButton<bool>(
+                            text: "Cancel",
+                            retVal: false,
+                            color: Theme.of(context).colorScheme.error),
+                      SettingsButton<bool>(
+                          text: "Okay",
+                          retVal: true,
+                          color: Theme.of(context).colorScheme.secondary),
+                    ]),
+                    const Padding(padding: EdgeInsets.only(bottom: 15))
+                  ])
+                ])));
+      });
+}
+
 List<SettingsRadioEnumValue> listRefreshFrequencies<T>({T? priorSetting}) {
   return [
     for (var option in RefreshFrequencies.values)
@@ -347,6 +388,27 @@ List<SettingsRadioEnumValue> listColorModes<T>({T? priorSetting}) {
           value: option.value as T,
           priorSetting: priorSetting)
   ];
+}
+
+class SettingsButton<T> extends StatelessWidget {
+  const SettingsButton(
+      {super.key,
+      required this.text,
+      required this.retVal,
+      required this.color});
+
+  final String text;
+  final T retVal;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Center(
+            child: TextButton(
+                onPressed: () => Navigator.of(context).pop(retVal),
+                child: Text(text, style: TextStyle(color: color)))));
+  }
 }
 
 class SettingsRadioEnumValue<T> extends StatelessWidget {
