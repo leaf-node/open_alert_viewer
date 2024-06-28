@@ -258,6 +258,12 @@ class GeneralSettingsList extends StatelessWidget {
                     .add(SettingsPushEvent(newSettings: {"darkMode": result}));
               }
             }),
+        MenuItem(
+            icon: Icons.article_outlined,
+            title: "License Info",
+            onTap: () async {
+              context.read<NavBloc>().add(OpenLicensingPageEvent());
+            }),
       ]);
     });
   }

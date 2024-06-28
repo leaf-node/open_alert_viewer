@@ -19,6 +19,7 @@ import 'app/data_repository/settings_repository.dart';
 import 'notifications/bloc/notification_bloc.dart';
 import 'notifications/data_repository/notification.dart';
 import 'settings/bloc/settings_bloc.dart';
+import 'settings/view/licensing_page.dart';
 import 'settings/view/settings_account.dart';
 import 'settings/view/settings_page.dart';
 import 'splash/view/splash_page.dart';
@@ -115,6 +116,9 @@ class _OAVappViewState extends State<OAVappView> {
                   case ShowAccountSettingsPage():
                     _navigator.push(AccountSettingsPage.route(
                         title: "OAV Account Settings", source: state.source));
+                  case ShowLicensingPage():
+                    _navigator.push(
+                        LicensingPage.route(title: "License Information"));
                 }
               },
               child: child);

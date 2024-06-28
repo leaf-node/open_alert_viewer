@@ -31,3 +31,7 @@ final class ShowAccountSettingsPage extends NavState {
 
   final AlertSource? source;
 }
+
+final class ShowLicensingPage extends NavState {
+  ShowLicensingPage();
+}

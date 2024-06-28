@@ -21,3 +21,5 @@ final class OpenAccountSettingsPageEvent implements NavEvent {
 
   final AlertSource? source;
 }
+
+final class OpenLicensingPageEvent implements NavEvent {}
