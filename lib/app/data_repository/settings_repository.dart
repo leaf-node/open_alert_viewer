@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 okaycode.dev LLC and Open Alert Viewer Authors
+ * SPDX-FileCopyrightText: 2024 okaycode.dev LLC and Open Alert Viewer authors
  *
  * SPDX-License-Identifier: MIT
  */
