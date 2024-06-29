@@ -55,7 +55,7 @@ class NotificationRepo {
     int newId = activeNotificationIds.lastOrNull ?? startingId;
     await _flutterLocalNotificationsPlugin.show(
         newId, 'Open Alert Viewer', message, _notificationDetails,
-        payload: 'Open alerts page');
+        payload: 'Open the alerts page'); // not implemented yet
     activeNotificationIds.add(newId);
   }
 
