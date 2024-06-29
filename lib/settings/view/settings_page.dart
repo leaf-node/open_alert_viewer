@@ -4,8 +4,12 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_event.dart';
@@ -258,16 +262,27 @@ class GeneralSettingsList extends StatelessWidget {
                     .add(SettingsPushEvent(newSettings: {"darkMode": result}));
               }
             }),
-        MenuItem(
-            icon: Icons.battery_saver_outlined,
-            title: "Battery Optimization",
-            onTap: () async {
-              await _settingsTextDialogBuilder(
-                  context: context,
-                  text: "Please visit https://dontkillmyapp.com for a list of "
-                      "steps particular to your phone model.",
-                  cancellable: false);
-            }),
+        if (Platform.isAndroid)
+          MenuItem(
+              icon: Icons.battery_saver_outlined,
+              title: "Battery Optimization",
+              onTap: () async {
+                bool result = await _settingsTextDialogBuilder(
+                    context: context,
+                    text: "For guidance on how to disable battery optimization "
+                        "on your Android device, please confirm this message "
+                        "to continue.",
+                    okayText: "Open Browser",
+                    cancellable: true);
+                if (result == true) {
+                  var uri = Uri.parse("https://dontkillmyapp.com");
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri);
+                  } else {
+                    log("Error launching URL: https://dontkillmyapp.com");
+                  }
+                }
+              }),
         MenuItem(
             icon: Icons.article_outlined,
             title: "License Info",
@@ -321,7 +336,8 @@ Future _settingsCheckBoxDialogBuilder<T>(
 Future _settingsTextDialogBuilder(
     {required BuildContext context,
     required String text,
-    required bool cancellable}) async {
+    required bool cancellable,
+    String? okayText}) async {
   return await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -339,7 +355,7 @@ Future _settingsTextDialogBuilder(
                             retVal: false,
                             color: Theme.of(context).colorScheme.error),
                       SettingsButton<bool>(
-                          text: "Okay",
+                          text: okayText ?? "Okay",
                           retVal: true,
                           color: Theme.of(context).colorScheme.secondary),
                     ]),
