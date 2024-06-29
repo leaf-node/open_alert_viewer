@@ -214,3 +214,11 @@ Copyright (c) 2020 Simon Binder
 License: MIT
 
 
+url_launcher
+------------
+
+Copyright 2013 The Flutter Authors. All rights reserved.
+
+License: Google BSD 3-Clause
+
+
