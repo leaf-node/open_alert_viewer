@@ -7,7 +7,7 @@ documentation, including all of the following:
 Open Alert Viewer License (MIT)
 ===============================
 
-Copyright 2024 Andrew Engelbrecht <andrew@sourceflow.dev>
+Copyright 2024 okaycode.dev LLC and Open Alert Viewer authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the “Software”), to deal in

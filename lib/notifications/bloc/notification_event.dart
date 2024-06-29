@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Andrew Engelbrecht <andrew@sourceflow.dev>
+ * SPDX-FileCopyrightText: 2024 okaycode.dev LLC and Open Alert Viewer Authors
  *
  * SPDX-License-Identifier: MIT
  */
