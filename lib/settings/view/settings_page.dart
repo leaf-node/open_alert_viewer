@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:app_settings/app_settings.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_event.dart';
@@ -237,6 +238,13 @@ class GeneralSettingsList extends StatelessWidget {
                         }));
               }
             }),
+        if (Platform.isAndroid && settings.notificationsEnabled)
+          MenuItem(
+              icon: Icons.music_note_outlined,
+              title: "Notification Sound",
+              onTap: () async {
+                AppSettings.openAppSettings(type: AppSettingsType.notification);
+              }),
         MenuItem(
             icon: Icons.filter_alt_outlined,
             title: "Alerts Filter",

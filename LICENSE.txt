@@ -113,6 +113,14 @@ to you under this License for this implementation shall terminate as
 of the date such litigation is filed.
 
 
+app_settings
+------------
+
+Copyright (c) 2019 Daniel Spencer
+
+License: MIT
+
+
 bloc
 ----
 
