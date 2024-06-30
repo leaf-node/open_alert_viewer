@@ -169,7 +169,9 @@ class GeneralSettingsList extends StatelessWidget {
         return "Every ${settings.syncTimeout} seconds";
       }();
       String notificationsEnabledSubtitle = () {
-        return settings.notificationsEnabled ? "Enabled" : "Disabled";
+        var state =
+            settings.notificationsEnabled ? "Enabled within app" : "Disabled";
+        return state;
       }();
       String darkModeSubtitle = () {
         for (var option in ColorModes.values) {
@@ -241,7 +243,7 @@ class GeneralSettingsList extends StatelessWidget {
         if (Platform.isAndroid && settings.notificationsEnabled)
           MenuItem(
               icon: Icons.music_note_outlined,
-              title: "Notification Sound",
+              title: "System Settings",
               onTap: () async {
                 AppSettings.openAppSettings(type: AppSettingsType.notification);
               }),
