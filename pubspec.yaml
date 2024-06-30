@@ -41,6 +41,7 @@ dependencies:
   flutter_local_notifications: ^17.1.2
   url_launcher: ^6.3.0
   app_settings: ^5.1.1
+  audioplayers: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -71,8 +72,9 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - lib/app/db_migrations/version_0.sql
     - LICENSE.txt
+    - lib/app/db_migrations/version_0.sql
+    - assets/sound/alarm.ogg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

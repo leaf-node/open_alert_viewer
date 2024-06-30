@@ -4,6 +4,7 @@ we ask that you use a different name than "Open Alert Viwer", and to change
 the application ID. Please include this message in the licensing
 documentation, including the all of the following license text:
 
+
 Open Alert Viewer License (MIT)
 ===============================
 
@@ -121,6 +122,14 @@ Copyright (c) 2019 Daniel Spencer
 License: MIT
 
 
+audioplayers
+------------
+
+Copyright (c) 2017 Luan Nico
+
+License: MIT
+
+
 bloc
 ----
 
@@ -234,5 +243,16 @@ url_launcher
 Copyright 2013 The Flutter Authors. All rights reserved.
 
 License: Google BSD 3-Clause
+
+
+Audio
+=====
+
+alarm.ogg
+---------
+
+<https://opengameart.org/content/short-alarm>
+
+License: CC0
 
 

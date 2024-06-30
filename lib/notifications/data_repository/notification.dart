@@ -9,6 +9,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 import '../../alerts/model/alerts.dart';
 import '../../app/data_repository/settings_repository.dart';
@@ -31,6 +32,7 @@ class NotificationRepo {
   final List<int> activeNotificationIds = [];
   final int idForStiky = 1;
   final int startingId = 2;
+  final player = AudioPlayer();
 
   Future<void> initialize() async {
     _initializationSettings = InitializationSettings(
@@ -57,6 +59,9 @@ class NotificationRepo {
         newId, 'Open Alert Viewer', message, _notificationDetails,
         payload: 'Open the alerts page'); // not implemented yet
     activeNotificationIds.add(newId);
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      player.play(AssetSource("sound/alarm.ogg"));
+    }
   }
 
   Future<void> _removeLastNotification() async {
