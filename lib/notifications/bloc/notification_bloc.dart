@@ -5,6 +5,7 @@
  */
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:open_alert_viewer/app/data_repository/settings_repository.dart';
 
 import '../data_repository/notification.dart';
@@ -19,7 +20,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         _settings = settings,
         super(NotificationInitial()) {
     on<InitializeNotificationEvent>(_initialize);
-    on<RequestAndEnableNotificationEvent>(_requestAndEnableNotifications);
+    on<RequestAndEnableNotificationEvent>(_requestAndEnableNotifications,
+        transformer: droppable());
     on<DisableNotificationsEvent>(_disableNotifications);
     on<UpdateLastCheckTime>(_updateLastCheckTime);
   }
