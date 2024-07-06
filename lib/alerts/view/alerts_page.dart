@@ -155,7 +155,7 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       if (state is AlertsFetching) {
         isFetching = true;
         refreshKey.currentState?.show();
-      } else if (state is AlertsFetching) {
+      } else if (state is AlertsFetched) {
         isFetching = false;
       }
       if (state.sources.isEmpty) {
