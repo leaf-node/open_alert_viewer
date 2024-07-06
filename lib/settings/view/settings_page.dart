@@ -275,8 +275,7 @@ class GeneralSettingsList extends StatelessWidget {
                 bool result = await _settingsTextDialogBuilder(
                     context: context,
                     text: "For guidance on how to disable battery optimization "
-                        "on your Android device, please confirm this message "
-                        "to continue.",
+                        "on your Android device, please confirm this message.",
                     okayText: "Open Browser",
                     cancellable: true);
                 if (result == true) {
