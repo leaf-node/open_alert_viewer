@@ -22,7 +22,6 @@ import 'settings/bloc/settings_bloc.dart';
 import 'settings/view/licensing_page.dart';
 import 'settings/view/settings_account.dart';
 import 'settings/view/settings_page.dart';
-import 'splash/view/splash_page.dart';
 
 class OAVapp extends StatelessWidget {
   const OAVapp(
@@ -123,7 +122,7 @@ class _OAVappViewState extends State<OAVappView> {
               },
               child: child);
         },
-        onGenerateRoute: (_) => SplashPage.route(title: 'Open Alert Viewer'),
+        onGenerateRoute: (_) => AlertsPage.route(title: 'Open Alert Viewer'),
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.lightBlue,

@@ -140,7 +140,6 @@ class NotificationRepo {
         false) {
       return;
     }
-
     var androidNotificationDetails = const AndroidNotificationDetails(
       stickyNotificationChannelId,
       stickyNotificationChannelName,

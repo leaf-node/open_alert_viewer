@@ -8,8 +8,6 @@ import '../../alerts/model/alerts.dart';
 
 abstract class NavEvent {}
 
-final class OpenSplashPageEvent implements NavEvent {}
-
 final class OpenAlertsPageEvent implements NavEvent {}
 
 final class OpenSettingsPageEvent implements NavEvent {}

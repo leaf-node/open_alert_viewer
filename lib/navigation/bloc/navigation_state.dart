@@ -10,10 +10,6 @@ abstract class NavState {
   const NavState();
 }
 
-final class ShowSplashPage extends NavState {
-  ShowSplashPage();
-}
-
 final class ShowAlertsPage extends NavState {
   ShowAlertsPage();
 }
