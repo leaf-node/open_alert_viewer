@@ -7,10 +7,9 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:open_alert_viewer/notifications/data_repository/notification.dart';
-
 import '../../alerts/data_source/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
+import '../../notifications/data_repository/notification.dart';
 import '../data_source/database.dart';
 import 'settings_repository.dart';
 
@@ -41,6 +40,7 @@ class AppRepo {
   List<AlertSource> _alertSources;
   List<Alert> _alerts;
   Timer? _timer;
+  bool _fetching = false;
 
   List<AlertSource> get alertSources {
     _refreshSources();
@@ -113,18 +113,24 @@ class AppRepo {
   }
 
   Future<void> fetchAlerts({required bool forceRefreshNow}) async {
+    if (_fetching) {
+      return;
+    }
+    _fetching = true;
     int interval = _settings.refreshInterval;
     _fetchCachedAlerts();
     _controller.add(AlertsAndStatus(alerts: _alerts, done: false));
     if (!forceRefreshNow) {
       if (interval == -1) {
         _controller.add(AlertsAndStatus(alerts: _alerts, done: true));
+        _fetching = false;
         return;
       }
       var maxCacheAge = Duration(minutes: interval);
       var lastFetched = _settings.lastFetched;
       if (maxCacheAge.compareTo(DateTime.now().difference(lastFetched)) >= 0) {
         _controller.add(AlertsAndStatus(alerts: _alerts, done: true));
+        _fetching = false;
         return;
       }
     }
@@ -173,6 +179,7 @@ class AppRepo {
     _settings.lastFetched = lastFetched;
     _controller.add(AlertsAndStatus(alerts: _alerts, done: true));
     _notifier.showFilteredNotifications(alerts: _alerts);
+    _fetching = false;
   }
 
   List<Alert> _updateSyncFailureAges(
