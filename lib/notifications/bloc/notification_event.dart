@@ -10,10 +10,6 @@ abstract class NotificationEvent {
   const NotificationEvent();
 }
 
-final class InitializeNotificationEvent extends NotificationEvent {
-  InitializeNotificationEvent();
-}
-
 final class RequestAndEnableNotificationEvent extends NotificationEvent {
   RequestAndEnableNotificationEvent(
       {required this.askAgain, required this.callback});

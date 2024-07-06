@@ -16,7 +16,6 @@ import '../../settings/bloc/settings_bloc.dart';
 import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
-import '../bloc/timer_bloc.dart';
 import '../model/alerts.dart';
 import 'alerts.dart';
 
@@ -145,9 +144,6 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    context.read<TimerBloc>().add(StartTimerIntervalEvent(callback: (timer) {
-      context.read<AlertsBloc>().add(FetchAlerts(forceRefreshNow: true));
-    }));
     return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
       List<Widget> alertWidgets = [];
       Widget child;

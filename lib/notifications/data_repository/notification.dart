@@ -4,72 +4,75 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../alerts/model/alerts.dart';
 import '../../app/data_repository/settings_repository.dart';
 
+const stickyNotificationChannelId = "Open Alert Viewer Background Work";
+const stickyNotificationChannelName = "Background Work";
+const stickyNotificationChannelDescription =
+    "Allow Fetching Data in Background";
+const stickyNotificationId = 1;
+const stickyNotificationTitle = "Periodically checking for new alerts";
+const stickyNotificationContent = "Running at configured interval";
+
+const alertsNotificationId = 2;
+const alertsNotificationTitle = "Open Alert Viewer";
+const alertsNotificationChannelId = "Open Alert Viewer";
+const alertsNotificationChannelName = "Alerts";
+const alertsNotificationChannelDescription = "Alert Notifications";
+
+const notificationIcon = "@drawable/notification_icon";
+
 class NotificationRepo {
   NotificationRepo({required SettingsRepo settings})
       : _settings = settings,
-        _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin(),
-        _initializationSettingsLinux =
-            const LinuxInitializationSettings(defaultActionName: 'Launch app'),
-        _initializationSettingsAndroid =
-            const AndroidInitializationSettings('@drawable/notification_icon');
+        _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin() {
+    var initializationSettingsLinux =
+        const LinuxInitializationSettings(defaultActionName: "Launch app");
+    var initializationSettingsAndroid =
+        const AndroidInitializationSettings(notificationIcon);
+    _initializationSettings = InitializationSettings(
+        linux: initializationSettingsLinux,
+        android: initializationSettingsAndroid);
+  }
 
   final SettingsRepo _settings;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
-  final LinuxInitializationSettings _initializationSettingsLinux;
-  final AndroidInitializationSettings _initializationSettingsAndroid;
   late InitializationSettings _initializationSettings;
   late NotificationDetails _notificationDetails;
-  final List<int> activeNotificationIds = [];
-  final int idForStiky = 1;
-  final int startingId = 2;
   final player = AudioPlayer();
 
-  Future<void> initialize() async {
-    _initializationSettings = InitializationSettings(
-        linux: _initializationSettingsLinux,
-        android: _initializationSettingsAndroid);
-    await _flutterLocalNotificationsPlugin.initialize(_initializationSettings,
-        onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse);
-    const description = "Alert Notifications";
+  Future<void> initializeAlertNotifications() async {
+    await _flutterLocalNotificationsPlugin.initialize(_initializationSettings);
+    const linuxNotificationDetails = LinuxNotificationDetails();
     const androidNotificationDetails = AndroidNotificationDetails(
-        "Open Alert Viewer", "Alerts",
-        icon: "@drawable/notification_icon",
-        channelDescription: description,
+        alertsNotificationChannelId, alertsNotificationChannelName,
+        icon: notificationIcon,
+        channelDescription: alertsNotificationChannelDescription,
         importance: Importance.max,
-        priority: Priority.high,
-        ticker: description);
+        priority: Priority.high);
     _notificationDetails = const NotificationDetails(
-        linux: LinuxNotificationDetails(), android: androidNotificationDetails);
+        linux: linuxNotificationDetails, android: androidNotificationDetails);
   }
 
   Future<void> _showNotification({required String message}) async {
-    await _removeLastNotification();
-    int newId = activeNotificationIds.lastOrNull ?? startingId;
-    await _flutterLocalNotificationsPlugin.show(
-        newId, 'Open Alert Viewer', message, _notificationDetails,
-        payload: 'Open the alerts page'); // not implemented yet
-    activeNotificationIds.add(newId);
+    if (!_settings.notificationsEnabled) {
+      return;
+    }
+    await _flutterLocalNotificationsPlugin.show(alertsNotificationId,
+        alertsNotificationTitle, message, _notificationDetails);
     if (!Platform.isAndroid && !Platform.isIOS) {
       player.play(AssetSource("sound/alarm.ogg"));
     }
   }
 
-  Future<void> _removeLastNotification() async {
-    int? latestId = activeNotificationIds.lastOrNull;
-    if (latestId != null) {
-      await _flutterLocalNotificationsPlugin.cancel(latestId);
-      activeNotificationIds.removeLast();
-    }
+  Future<void> _removeAlertNotification() async {
+    await _flutterLocalNotificationsPlugin.cancel(alertsNotificationId);
   }
 
   Future<void> showFilteredNotifications({required List<Alert> alerts}) async {
@@ -111,12 +114,9 @@ class NotificationRepo {
     if (brandNew > 0) {
       await _showNotification(message: messages.join(", "));
     } else if (messages.isEmpty) {
-      await _removeLastNotification();
+      await _removeAlertNotification();
     }
   }
-
-  void _onDidReceiveNotificationResponse(
-      NotificationResponse notificationResponse) {}
 
   Future<bool> areNotificationsAllowed() async {
     if (Platform.isAndroid) {
@@ -129,50 +129,47 @@ class NotificationRepo {
     return true;
   }
 
-  Future<void> _startForegroundService() async {
-    if (Platform.isAndroid && _settings.notificationsEnabled) {
-      var activeAlerts = await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.getActiveNotifications();
-      if ((activeAlerts?.where((alert) => alert.id == idForStiky).isEmpty ??
-          true)) {
-        var description = "Background Work";
-        var androidNotificationDetails = AndroidNotificationDetails(
-            "Open Alert Viewer Background Work", description,
-            icon: "@drawable/notification_icon",
-            channelDescription: "Allow Fetching Data in Background",
-            importance: Importance.min,
-            priority: Priority.min,
-            silent: true,
-            ticker: description);
-        try {
-          await _flutterLocalNotificationsPlugin
-              .resolvePlatformSpecificImplementation<
-                  AndroidFlutterLocalNotificationsPlugin>()
-              ?.startForegroundService(
-                  1,
-                  'Periodically checking for new alerts',
-                  'Running at configured interval',
-                  notificationDetails: androidNotificationDetails,
-                  foregroundServiceTypes: {
-                AndroidServiceForegroundType.foregroundServiceTypeDataSync
-              });
-        } on PlatformException catch (e) {
-          log(e.message.toString());
-        }
-      }
+  Future<void> _startAnroidStickyNotification() async {
+    var activeAlerts = await _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.getActiveNotifications();
+    if (activeAlerts
+            ?.where((alert) => alert.id == stickyNotificationId)
+            .isNotEmpty ??
+        false) {
+      return;
     }
+
+    var androidNotificationDetails = const AndroidNotificationDetails(
+      stickyNotificationChannelId,
+      stickyNotificationChannelName,
+      icon: notificationIcon,
+      channelDescription: stickyNotificationChannelDescription,
+      ongoing: true,
+      importance: Importance.low,
+      priority: Priority.low,
+      silent: true,
+    );
+    await _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.startForegroundService(stickyNotificationId, stickyNotificationTitle,
+            stickyNotificationContent,
+            notificationDetails: androidNotificationDetails,
+            foregroundServiceTypes: {
+          AndroidServiceForegroundType.foregroundServiceTypeDataSync
+        });
   }
 
-  Future<void> stopForegroundService() async {
+  Future<void> disableNotifications() async {
     if (Platform.isAndroid) {
       await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.stopForegroundService();
     }
-    await _removeLastNotification();
+    await _removeAlertNotification();
   }
 
   Future<bool> requestAndEnableNotifications(
@@ -195,7 +192,7 @@ class NotificationRepo {
         }
       }
       if (_settings.notificationsEnabled) {
-        await _startForegroundService();
+        _startAnroidStickyNotification();
       }
     } else if (!_settings.notificationsRequested || askAgain) {
       _settings.notificationsRequested = true;

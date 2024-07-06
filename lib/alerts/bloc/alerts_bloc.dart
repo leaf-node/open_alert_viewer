@@ -10,8 +10,6 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 import '../../app/data_repository/app_repository.dart';
-import '../../app/data_repository/settings_repository.dart';
-import '../../notifications/data_repository/notification.dart';
 import '../model/alerts.dart';
 import 'alerts_event.dart';
 import 'alerts_state.dart';
@@ -19,25 +17,23 @@ import 'alerts_state.dart';
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   AlertsBloc(
       {required AppRepo repo,
-      required NotificationRepo notifier,
-      required SettingsRepo settings})
+      required StreamController<AlertsAndStatus> controller})
       : _alerts = [],
         _repo = repo,
-        _notifier = notifier,
-        _settings = settings,
+        _controller = controller,
         super(AlertsInit()) {
+    on<ListenForAlerts>(_listenForAlerts);
     on<AddAlertSource>(_addSource);
     on<UpdateAlertSource>(_updateSource);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
 
-    add(FetchAlerts(forceRefreshNow: false));
+    add(ListenForAlerts());
   }
 
   List<Alert> _alerts;
   final AppRepo _repo;
-  final NotificationRepo _notifier;
-  final SettingsRepo _settings;
+  final StreamController<AlertsAndStatus> _controller;
 
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
@@ -71,16 +67,18 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   }
 
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
-    StreamController<List<Alert>> controller = StreamController();
-    _repo.fetchAlerts(
-        controller: controller, forceRefreshNow: event.forceRefreshNow);
-    await for (var alerts in controller.stream) {
-      _alerts = alerts;
-      emit(AlertsFetching(alerts: _alerts, sources: _repo.alertSources));
-    }
-    emit(AlertsFetched(alerts: _alerts, sources: _repo.alertSources));
-    if (_settings.notificationsEnabled) {
-      await _notifier.showFilteredNotifications(alerts: _alerts);
-    }
+    _repo.fetchAlerts(forceRefreshNow: event.forceRefreshNow);
+  }
+
+  Future<void> _listenForAlerts(
+      ListenForAlerts event, Emitter<AlertState> emit) async {
+    await emit.forEach(_controller.stream, onData: (data) {
+      _alerts = data.alerts;
+      if (!data.done) {
+        return AlertsFetching(alerts: _alerts, sources: _repo.alertSources);
+      } else {
+        return AlertsFetched(alerts: _alerts, sources: _repo.alertSources);
+      }
+    });
   }
 }

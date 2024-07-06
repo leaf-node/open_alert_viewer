@@ -29,7 +29,6 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
   void _splashRunning(SplashEvent event, Emitter<SplashState> emit) async {
     emit(SplashRunning());
-    _notifier.add(InitializeNotificationEvent());
     _notifier.add(
         RequestAndEnableNotificationEvent(askAgain: false, callback: () {}));
     await Future.delayed(const Duration(seconds: 1));

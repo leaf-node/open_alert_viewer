@@ -7,22 +7,40 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:open_alert_viewer/notifications/data_repository/notification.dart';
+
 import '../../alerts/data_source/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
 import '../data_source/database.dart';
 import 'settings_repository.dart';
 
+class AlertsAndStatus {
+  const AlertsAndStatus({required this.alerts, required this.done});
+
+  final List<Alert> alerts;
+  final bool done;
+}
+
 class AppRepo {
-  AppRepo({required LocalDatabase db, required SettingsRepo settings})
+  AppRepo(
+      {required LocalDatabase db,
+      required SettingsRepo settings,
+      required NotificationRepo notifier,
+      required StreamController<AlertsAndStatus> controller})
       : _db = db,
         _settings = settings,
+        _notifier = notifier,
+        _controller = controller,
         _alertSources = [],
         _alerts = [];
 
   final LocalDatabase _db;
   final SettingsRepo _settings;
+  final NotificationRepo _notifier;
+  final StreamController<AlertsAndStatus> _controller;
   List<AlertSource> _alertSources;
   List<Alert> _alerts;
+  Timer? _timer;
 
   List<AlertSource> get alertSources {
     _refreshSources();
@@ -94,21 +112,19 @@ class AppRepo {
     return _db.checkUniqueSource(id: id, name: name);
   }
 
-  void fetchAlerts(
-      {required StreamController<List<Alert>> controller,
-      required bool forceRefreshNow}) async {
+  Future<void> fetchAlerts({required bool forceRefreshNow}) async {
     int interval = _settings.refreshInterval;
-    fetchCachedAlerts();
-    controller.add(_alerts);
+    _fetchCachedAlerts();
+    _controller.add(AlertsAndStatus(alerts: _alerts, done: false));
     if (!forceRefreshNow) {
       if (interval == -1) {
-        controller.close();
+        _controller.add(AlertsAndStatus(alerts: _alerts, done: true));
         return;
       }
       var maxCacheAge = Duration(minutes: interval);
       var lastFetched = _settings.lastFetched;
       if (maxCacheAge.compareTo(DateTime.now().difference(lastFetched)) >= 0) {
-        controller.close();
+        _controller.add(AlertsAndStatus(alerts: _alerts, done: true));
         return;
       }
     }
@@ -140,25 +156,26 @@ class AppRepo {
       }
       incoming.add(sourceFuture);
       incoming.last.then((List<Alert> newAlerts) {
-        var updatedAlerts = updateSyncFailureAges(newAlerts, oldSyncFailures);
+        var updatedAlerts = _updateSyncFailureAges(newAlerts, oldSyncFailures);
         _alerts = _alerts.where((alert) => alert.source != source.id).toList();
         _alerts.addAll(updatedAlerts);
         _alerts.sort(_alertSort);
-        controller.add(_alerts);
+        _controller.add(AlertsAndStatus(alerts: _alerts, done: false));
         freshAlerts.addAll(updatedAlerts);
       });
     }
     await Future.wait(incoming);
     _alerts = freshAlerts;
     _alerts.sort(_alertSort);
-    controller.add(_alerts);
+    _controller.add(AlertsAndStatus(alerts: _alerts, done: false));
     _cacheAlerts();
     _settings.priorFetch = _settings.lastFetched;
     _settings.lastFetched = lastFetched;
-    controller.close();
+    _controller.add(AlertsAndStatus(alerts: _alerts, done: true));
+    _notifier.showFilteredNotifications(alerts: _alerts);
   }
 
-  List<Alert> updateSyncFailureAges(
+  List<Alert> _updateSyncFailureAges(
       List<Alert> alerts, List<Alert> oldSyncFailures) {
     return alerts.map((alert) {
       if (alert.kind == AlertType.syncFailure) {
@@ -209,7 +226,7 @@ class AppRepo {
     _db.insertIntoAlertsCache(alerts: serialized);
   }
 
-  List<Alert> fetchCachedAlerts() {
+  List<Alert> _fetchCachedAlerts() {
     List<Alert> alerts = [];
     List<Map<String, dynamic>> serializedList = _db.fetchCachedAlerts();
     for (var serialized in serializedList) {
@@ -224,5 +241,27 @@ class AppRepo {
     }
     _alerts = alerts;
     return alerts;
+  }
+
+  Future<void> startTimer() async {
+    if (_timer != null) {
+      return;
+    }
+    fetchAlerts(forceRefreshNow: false);
+    var nextFetchIn = _settings.lastFetched
+        .add(Duration(minutes: _settings.refreshInterval))
+        .difference(DateTime.now());
+    Future.delayed(nextFetchIn, () {
+      refreshTimer();
+    });
+  }
+
+  void refreshTimer() {
+    _timer?.cancel();
+    _timer =
+        Timer.periodic(Duration(minutes: _settings.refreshInterval), (timer) {
+      fetchAlerts(forceRefreshNow: true);
+    });
+    fetchAlerts(forceRefreshNow: true);
   }
 }

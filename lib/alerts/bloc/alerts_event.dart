@@ -8,6 +8,8 @@ abstract class AlertEvent {
   const AlertEvent();
 }
 
+final class ListenForAlerts implements AlertEvent {}
+
 final class FetchAlerts implements AlertEvent {
   FetchAlerts({required this.forceRefreshNow});
 

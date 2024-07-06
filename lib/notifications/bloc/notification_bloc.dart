@@ -19,7 +19,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       : _notifier = notifier,
         _settings = settings,
         super(NotificationInitial()) {
-    on<InitializeNotificationEvent>(_initialize);
     on<RequestAndEnableNotificationEvent>(_requestAndEnableNotifications,
         transformer: droppable());
     on<DisableNotificationsEvent>(_disableNotifications);
@@ -28,11 +27,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   final NotificationRepo _notifier;
   final SettingsRepo _settings;
-
-  Future<void> _initialize(InitializeNotificationEvent event,
-      Emitter<NotificationState> emit) async {
-    await _notifier.initialize();
-  }
 
   Future<void> _requestAndEnableNotifications(
       RequestAndEnableNotificationEvent event,
@@ -44,9 +38,9 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     }
   }
 
-  Future<void> _disableNotifications(
+  void _disableNotifications(
       DisableNotificationsEvent event, Emitter<NotificationState> emit) async {
-    await _notifier.stopForegroundService();
+    await _notifier.disableNotifications();
     emit(NotificationsDisabled());
   }
 
