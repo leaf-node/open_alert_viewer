@@ -129,7 +129,10 @@ class NotificationRepo {
     return true;
   }
 
-  Future<void> _startAnroidStickyNotification() async {
+  Future<void> startAnroidStickyNotification() async {
+    if (!Platform.isAndroid || !_settings.notificationsEnabled) {
+      return;
+    }
     var activeAlerts = await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
@@ -191,7 +194,7 @@ class NotificationRepo {
         }
       }
       if (_settings.notificationsEnabled) {
-        _startAnroidStickyNotification();
+        startAnroidStickyNotification();
       }
     } else if (!_settings.notificationsRequested || askAgain) {
       _settings.notificationsRequested = true;

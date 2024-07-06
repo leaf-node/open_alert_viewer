@@ -24,8 +24,7 @@ Future<void> main() async {
   var appRepo = AppRepo(
       db: db, settings: settings, notifier: notifier, controller: controller);
   await notifier.initializeAlertNotifications();
-  await notifier.requestAndEnableNotifications(
-      askAgain: false, callback: () {});
+  await notifier.startAnroidStickyNotification();
   await appRepo.startTimer();
   runApp(OAVapp(
       settings: settings,
