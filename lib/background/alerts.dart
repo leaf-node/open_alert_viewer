@@ -5,111 +5,40 @@
  */
 
 import 'dart:async';
-import 'dart:developer';
 
-import '../../alerts/data_source/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
-import '../../notifications/data_repository/notification.dart';
-import '../data_source/database.dart';
-import 'settings_repository.dart';
+import '../app/data_source/database.dart';
+import '../app/data_repository/settings_repository.dart';
+import 'background.dart';
+import 'notifications.dart';
+import 'sources.dart';
 
-class AlertsAndStatus {
-  const AlertsAndStatus({required this.alerts, required this.done});
-
-  final List<Alert> alerts;
-  final bool done;
-}
-
-class AppRepo {
-  AppRepo(
+class AlertsRepo {
+  AlertsRepo(
       {required LocalDatabase db,
       required SettingsRepo settings,
-      required NotificationRepo notifier,
-      required StreamController<AlertsAndStatus> controller})
+      required SourcesRepo sourcesRepo,
+      required NotificationRepo notifier})
       : _db = db,
+        _sourcesRepo = sourcesRepo,
         _settings = settings,
         _notifier = notifier,
-        _controller = controller,
         _alertSources = [],
         _alerts = [];
 
   final LocalDatabase _db;
   final SettingsRepo _settings;
+  final SourcesRepo _sourcesRepo;
   final NotificationRepo _notifier;
-  final StreamController<AlertsAndStatus> _controller;
+  late StreamController<IsolateMessage> _alertStream;
   List<AlertSource> _alertSources;
   List<Alert> _alerts;
   Timer? _timer;
   bool _fetching = false;
 
-  List<AlertSource> get alertSources {
-    _refreshSources();
-    return _alertSources;
-  }
-
-  Future<void> open() async {
-    await _db.open();
-  }
-
-  Future<void> migrate() async {
-    await _db.migrate();
-  }
-
-  void close() {
-    _db.close();
-  }
-
-  void _refreshSources() {
-    List<AlertSource> sources = [];
-    List<Map<String, dynamic>> sourcesData = _db.listSources();
-    Function alertSource;
-    for (var source in sourcesData) {
-      List<dynamic> values = source.values.toList();
-      var id = values[0] as int;
-      var name = values[1] as String;
-      int type;
-      try {
-        type = values[2] as int;
-      } catch (e) {
-        log("Unsupported source id: '${values[2]}'. Removing source.");
-        removeSource(id: id);
-        continue;
-      }
-      var url = values[3] as String;
-      var username = values[4] as String;
-      var password = values[5] as String;
-
-      switch (type) {
-        case 0:
-          alertSource = RandomAlerts.new;
-        default:
-          throw "Unsupported source id: $type";
-      }
-      sources.add(alertSource(
-          id: id,
-          type: type,
-          name: name,
-          url: url,
-          username: username,
-          password: password));
-    }
-    _alertSources = sources;
-  }
-
-  int addSource({required List<String> source}) {
-    return _db.addSource(source: source);
-  }
-
-  bool updateSource({required int id, required List<Object> values}) {
-    return _db.updateSource(id: id, values: values);
-  }
-
-  void removeSource({required int id}) {
-    _db.removeSource(id: id);
-  }
-
-  bool checkUniqueSource({int? id, required String name}) {
-    return _db.checkUniqueSource(id: id, name: name);
+  void init(StreamController<IsolateMessage> alertStream) async {
+    _alertStream = alertStream;
+    startTimer();
   }
 
   Future<void> fetchAlerts({required bool forceRefreshNow}) async {
@@ -119,22 +48,25 @@ class AppRepo {
     _fetching = true;
     int interval = _settings.refreshInterval;
     _fetchCachedAlerts();
-    _controller.add(AlertsAndStatus(alerts: _alerts, done: false));
+    _alertSources = _sourcesRepo.alertSources;
+    _alertStream.add(IsolateMessage(
+        name: "alerts fetching", alerts: _alerts, sources: _alertSources));
     if (!forceRefreshNow) {
       if (interval == -1) {
-        _controller.add(AlertsAndStatus(alerts: _alerts, done: true));
+        _alertStream
+            .add(IsolateMessage(name: "alerts fetched", alerts: _alerts));
         _fetching = false;
         return;
       }
       var maxCacheAge = Duration(minutes: interval);
       var lastFetched = _settings.lastFetched;
       if (maxCacheAge.compareTo(DateTime.now().difference(lastFetched)) >= 0) {
-        _controller.add(AlertsAndStatus(alerts: _alerts, done: true));
+        _alertStream
+            .add(IsolateMessage(name: "alerts fetched", alerts: _alerts));
         _fetching = false;
         return;
       }
     }
-    _refreshSources();
     List<Future<List<Alert>>> incoming = [];
     List<Alert> freshAlerts = [];
     var lastFetched = DateTime.now();
@@ -166,19 +98,21 @@ class AppRepo {
         _alerts = _alerts.where((alert) => alert.source != source.id).toList();
         _alerts.addAll(updatedAlerts);
         _alerts.sort(_alertSort);
-        _controller.add(AlertsAndStatus(alerts: _alerts, done: false));
+        _alertStream
+            .add(IsolateMessage(name: "alerts fetching", alerts: _alerts));
         freshAlerts.addAll(updatedAlerts);
       });
     }
     await Future.wait(incoming);
     _alerts = freshAlerts;
     _alerts.sort(_alertSort);
-    _controller.add(AlertsAndStatus(alerts: _alerts, done: false));
+    _alertStream.add(IsolateMessage(name: "alerts fetching", alerts: _alerts));
     _cacheAlerts();
     _settings.priorFetch = _settings.lastFetched;
     _settings.lastFetched = lastFetched;
-    _controller.add(AlertsAndStatus(alerts: _alerts, done: true));
-    _notifier.showFilteredNotifications(alerts: _alerts);
+    _alertStream.add(IsolateMessage(name: "alerts fetched", alerts: _alerts));
+    _notifier.showFilteredNotifications(
+        alerts: _alerts, alertStream: _alertStream);
     _fetching = false;
   }
 
@@ -250,7 +184,7 @@ class AppRepo {
     return alerts;
   }
 
-  Future<void> startTimer() async {
+  void startTimer() {
     if (_timer != null) {
       return;
     }

@@ -5,16 +5,18 @@
  */
 
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:ui';
+import 'package:open_alert_viewer/app/data_source/database.dart';
+import 'package:open_alert_viewer/settings/data_repository/account_repository.dart';
 
 import 'alerts/bloc/alerts_bloc.dart';
 import 'alerts/view/alerts_page.dart';
+import 'background/background.dart';
 import 'navigation/bloc/navigation_bloc.dart';
 import 'navigation/bloc/navigation_state.dart';
-import 'app/data_repository/app_repository.dart';
 import 'app/data_repository/settings_repository.dart';
 import 'notifications/bloc/notification_bloc.dart';
 import 'notifications/data_repository/notification.dart';
@@ -26,37 +28,37 @@ import 'settings/view/settings_page.dart';
 class OAVapp extends StatelessWidget {
   const OAVapp(
       {super.key,
-      required this.settings,
-      required this.repo,
-      required this.notifier,
-      required this.controller});
+      required this.db,
+      required this.bgWorker,
+      required this.alertStream});
 
-  final SettingsRepo settings;
-  final AppRepo repo;
-  final NotificationRepo notifier;
-  final StreamController<AlertsAndStatus> controller;
+  final LocalDatabase db;
+  final BackgroundWorker bgWorker;
+  final StreamController<IsolateMessage> alertStream;
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
         providers: [
-          RepositoryProvider.value(value: settings),
-          RepositoryProvider.value(value: repo),
-          RepositoryProvider.value(value: notifier)
+          RepositoryProvider(create: (context) => SettingsRepo(db: db)),
+          RepositoryProvider(create: (context) => AccountsRepo(db: db)),
+          RepositoryProvider(
+              create: (context) => StickyNotificationRepo(
+                  settings: context.read<SettingsRepo>())),
         ],
         child: MultiBlocProvider(providers: [
           BlocProvider(create: (context) => NavBloc()),
           BlocProvider(
               create: (context) => NotificationBloc(
-                  notifier: context.read<NotificationRepo>(),
-                  settings: context.read<SettingsRepo>())),
+                  notifier: context.read<StickyNotificationRepo>(),
+                  settings: context.read<SettingsRepo>(),
+                  bgWorker: bgWorker)),
           BlocProvider(
-              create: (context) => AlertsBloc(
-                  repo: context.read<AppRepo>(), controller: controller)),
+              create: (context) =>
+                  AlertsBloc(bgWorker: bgWorker, alertStream: alertStream)),
           BlocProvider(
               create: (context) => SettingsBloc(
-                  settings: context.read<SettingsRepo>(),
-                  repo: context.read<AppRepo>())),
+                  settings: context.read<SettingsRepo>(), bgWorker: bgWorker)),
         ], child: const OAVappView()));
   }
 }

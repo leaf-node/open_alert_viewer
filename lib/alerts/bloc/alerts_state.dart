@@ -14,7 +14,7 @@ abstract class AlertState {
 }
 
 final class AlertsInit extends AlertState {
-  AlertsInit() : super(alerts: const [], sources: const []);
+  AlertsInit({required super.alerts, required super.sources});
 }
 
 final class AlertsFetching extends AlertState {

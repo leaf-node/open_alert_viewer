@@ -6,8 +6,9 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:open_alert_viewer/app/data_repository/settings_repository.dart';
 
+import '../../app/data_repository/settings_repository.dart';
+import '../../background/background.dart';
 import '../data_repository/notification.dart';
 
 part 'notification_event.dart';
@@ -15,9 +16,12 @@ part 'notification_state.dart';
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   NotificationBloc(
-      {required NotificationRepo notifier, required SettingsRepo settings})
+      {required StickyNotificationRepo notifier,
+      required SettingsRepo settings,
+      required BackgroundWorker bgWorker})
       : _notifier = notifier,
         _settings = settings,
+        _bgWorker = bgWorker,
         super(NotificationInitial()) {
     on<RequestAndEnableNotificationEvent>(_requestAndEnableNotifications,
         transformer: droppable());
@@ -25,8 +29,9 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     on<UpdateLastCheckTime>(_updateLastCheckTime);
   }
 
-  final NotificationRepo _notifier;
+  final StickyNotificationRepo _notifier;
   final SettingsRepo _settings;
+  final BackgroundWorker _bgWorker;
 
   Future<void> _requestAndEnableNotifications(
       RequestAndEnableNotificationEvent event,
@@ -34,13 +39,16 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     var enabled = await _notifier.requestAndEnableNotifications(
         askAgain: event.askAgain, callback: event.callback);
     if (enabled) {
+      await _bgWorker
+          .makeRequest(const IsolateMessage(name: "enable notifications"));
       emit(NotificationsEnabled());
     }
   }
 
   void _disableNotifications(
       DisableNotificationsEvent event, Emitter<NotificationState> emit) async {
-    await _notifier.disableNotifications();
+    await _bgWorker
+        .makeRequest(const IsolateMessage(name: "disable notifications"));
     emit(NotificationsDisabled());
   }
 

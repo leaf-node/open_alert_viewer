@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_event.dart';
 import '../../alerts/model/alerts.dart';
-import '../../app/data_repository/app_repository.dart';
+import '../data_repository/account_repository.dart';
 import 'settings_components.dart';
 
 class AccountSettingsPage extends StatelessWidget {
@@ -100,7 +100,7 @@ class _AccountFormState extends State<AccountForm> {
                         return "Please enter a name";
                       }
                       return context
-                              .read<AppRepo>()
+                              .read<AccountsRepo>()
                               .checkUniqueSource(id: id, name: value)
                           ? null
                           : "Name already used";

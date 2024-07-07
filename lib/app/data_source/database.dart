@@ -22,6 +22,8 @@ class LocalDatabase {
       log('App data directory: ${path.path}/');
 
       _db = sqlite3.open("${path.path}/oav_data.sqlite3");
+      _db.execute("PRAGMA journal_mode=WAL;");
+      _db.execute("PRAGMA busy_timeout = 5000;");
       _isOpen = true;
     }
   }

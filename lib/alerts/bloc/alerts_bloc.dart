@@ -5,80 +5,83 @@
  */
 
 import 'dart:async';
+import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
-import '../../app/data_repository/app_repository.dart';
+import '../../background/background.dart';
 import '../model/alerts.dart';
 import 'alerts_event.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   AlertsBloc(
-      {required AppRepo repo,
-      required StreamController<AlertsAndStatus> controller})
-      : _alerts = [],
-        _repo = repo,
-        _controller = controller,
-        super(AlertsInit()) {
+      {required BackgroundWorker bgWorker,
+      required StreamController<IsolateMessage> alertStream})
+      : _bgWorker = bgWorker,
+        _alertStream = alertStream,
+        super(AlertsInit(alerts: [], sources: [])) {
     on<ListenForAlerts>(_listenForAlerts);
     on<AddAlertSource>(_addSource);
     on<UpdateAlertSource>(_updateSource);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
-
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      player = AudioPlayer();
+    }
     add(ListenForAlerts());
   }
 
-  List<Alert> _alerts;
-  final AppRepo _repo;
-  final StreamController<AlertsAndStatus> _controller;
+  final BackgroundWorker _bgWorker;
+  final StreamController<IsolateMessage> _alertStream;
+  late AudioPlayer? player;
 
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
-    var result = _repo.addSource(source: event.source);
-    if (result >= 0) {
-      emit(SourcesChanged(alerts: _alerts, sources: _repo.alertSources));
-      add(FetchAlerts(forceRefreshNow: true));
-    } else {
-      emit(
-          SourcesListUpdateError(alerts: _alerts, sources: _repo.alertSources));
-    }
+    _bgWorker.makeRequest(
+        IsolateMessage(name: "add source", sourceStrings: event.source));
   }
 
   Future<void> _updateSource(
       UpdateAlertSource event, Emitter<AlertState> emit) async {
-    var success = _repo.updateSource(id: event.id, values: event.source);
-    if (success) {
-      emit(SourcesChanged(alerts: _alerts, sources: _repo.alertSources));
-      add(FetchAlerts(forceRefreshNow: true));
-    } else {
-      emit(
-          SourcesListUpdateError(alerts: _alerts, sources: _repo.alertSources));
-    }
+    _bgWorker.makeRequest(IsolateMessage(
+        name: "update source", id: event.id, sourceStrings: event.source));
   }
 
   Future<void> _removeSource(
       RemoveAlertSource event, Emitter<AlertState> emit) async {
-    _repo.removeSource(id: event.id);
-    emit(SourcesChanged(alerts: _alerts, sources: _repo.alertSources));
-    add(FetchAlerts(forceRefreshNow: true));
+    _bgWorker.makeRequest(IsolateMessage(name: "remove source", id: event.id));
   }
 
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
-    _repo.fetchAlerts(forceRefreshNow: event.forceRefreshNow);
+    _bgWorker.makeRequest(IsolateMessage(
+        name: "fetch alerts", forceRefreshNow: event.forceRefreshNow));
   }
 
   Future<void> _listenForAlerts(
       ListenForAlerts event, Emitter<AlertState> emit) async {
-    await emit.forEach(_controller.stream, onData: (data) {
-      _alerts = data.alerts;
-      if (!data.done) {
-        return AlertsFetching(alerts: _alerts, sources: _repo.alertSources);
+    List<Alert> alerts = [];
+    List<AlertSource> sources = [];
+    await for (final data in _alertStream.stream) {
+      alerts = data.alerts ?? alerts;
+      sources = data.sources ?? sources;
+      if (data.name == "alerts init") {
+        emit(AlertsInit(alerts: alerts, sources: sources));
+      } else if (data.name == "alerts fetching") {
+        emit(AlertsFetching(alerts: alerts, sources: sources));
+      } else if (data.name == "alerts fetched") {
+        emit(AlertsFetched(alerts: alerts, sources: sources));
+      } else if (data.name == "sources changed") {
+        emit(SourcesChanged(alerts: alerts, sources: sources));
+      } else if (data.name == "play desktop sound") {
+        if (!Platform.isAndroid && !Platform.isIOS) {
+          player?.play(AssetSource("sound/alarm.ogg"));
+        }
       } else {
-        return AlertsFetched(alerts: _alerts, sources: _repo.alertSources);
+        throw "OAV Invalid message name: ${data.name}";
       }
-    });
+    }
   }
 }
