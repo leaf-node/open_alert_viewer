@@ -33,22 +33,14 @@ class NotificationRepo {
   NotificationRepo({required SettingsRepo settings})
       : _settings = settings,
         _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin() {
-    var initializationSettingsLinux =
-        const LinuxInitializationSettings(defaultActionName: "Launch app");
-    var initializationSettingsAndroid =
-        const AndroidInitializationSettings(notificationIcon);
-    _initializationSettings = InitializationSettings(
-        linux: initializationSettingsLinux,
-        android: initializationSettingsAndroid);
-  }
-
-  final SettingsRepo _settings;
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
-  late InitializationSettings _initializationSettings;
-  late NotificationDetails _notificationDetails;
-
-  Future<void> initializeAlertNotifications() async {
-    await _flutterLocalNotificationsPlugin.initialize(_initializationSettings);
+    _stickyAndroidNotificationDetails = const AndroidNotificationDetails(
+        stickyNotificationChannelId, stickyNotificationChannelName,
+        icon: notificationIcon,
+        channelDescription: stickyNotificationChannelDescription,
+        ongoing: true,
+        importance: Importance.low,
+        priority: Priority.low,
+        silent: true);
     const linuxNotificationDetails = LinuxNotificationDetails();
     const androidNotificationDetails = AndroidNotificationDetails(
         alertsNotificationChannelId, alertsNotificationChannelName,
@@ -58,6 +50,42 @@ class NotificationRepo {
         priority: Priority.high);
     _notificationDetails = const NotificationDetails(
         linux: linuxNotificationDetails, android: androidNotificationDetails);
+  }
+
+  final SettingsRepo _settings;
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
+  late AndroidNotificationDetails _stickyAndroidNotificationDetails;
+  late NotificationDetails _notificationDetails;
+
+  Future<void> initializeAlertNotifications() async {
+    if (Platform.isLinux) {
+      var initializationSettingsLinux =
+          const LinuxInitializationSettings(defaultActionName: "Launch app");
+      var initializationSettings =
+          InitializationSettings(linux: initializationSettingsLinux);
+      await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    } else if (Platform.isAndroid) {
+      const AndroidNotificationChannel stickyChannel =
+          AndroidNotificationChannel(
+              stickyNotificationChannelId, stickyNotificationChannelName,
+              description: stickyNotificationChannelDescription,
+              importance: Importance.low);
+      const AndroidNotificationChannel alertChannel =
+          AndroidNotificationChannel(
+              alertsNotificationChannelId, alertsNotificationChannelName,
+              description: alertsNotificationChannelDescription,
+              importance: Importance.max);
+      await _flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(stickyChannel);
+      await _flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(alertChannel);
+    } else {
+      throw "Unsupported platform, for notifications.";
+    }
   }
 
   Future<void> _showNotification({required String message}) async {
@@ -132,22 +160,12 @@ class NotificationRepo {
         false) {
       return;
     }
-    var androidNotificationDetails = const AndroidNotificationDetails(
-      stickyNotificationChannelId,
-      stickyNotificationChannelName,
-      icon: notificationIcon,
-      channelDescription: stickyNotificationChannelDescription,
-      ongoing: true,
-      importance: Importance.low,
-      priority: Priority.low,
-      silent: true,
-    );
     await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.startForegroundService(stickyNotificationId, stickyNotificationTitle,
             stickyNotificationContent,
-            notificationDetails: androidNotificationDetails,
+            notificationDetails: _stickyAndroidNotificationDetails,
             foregroundServiceTypes: {
           AndroidServiceForegroundType.foregroundServiceTypeDataSync
         });
