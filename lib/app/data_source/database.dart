@@ -16,10 +16,12 @@ class LocalDatabase {
   bool _isOpen;
   late Database _db;
 
-  Future<void> open() async {
+  Future<void> open({bool? showPath}) async {
     if (!_isOpen) {
       final path = await getApplicationSupportDirectory();
-      log('App data directory: ${path.path}/');
+      if (showPath ?? false) {
+        log('App data directory: ${path.path}/');
+      }
 
       _db = sqlite3.open("${path.path}/oav_data.sqlite3");
       _db.execute("PRAGMA journal_mode=WAL;");
@@ -33,9 +35,9 @@ class LocalDatabase {
     _isOpen = false;
   }
 
-  Future<void> migrate() async {
+  Future<void> migrate({bool? showPath}) async {
     if (!_isOpen) {
-      await open();
+      await open(showPath: showPath);
     }
     if (!_checkIfTableExists(name: "settings") ||
         getSetting(setting: "migration_version") == "") {

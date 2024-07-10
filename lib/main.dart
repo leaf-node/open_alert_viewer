@@ -15,7 +15,7 @@ import 'background/background.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var db = LocalDatabase();
-  await db.migrate();
+  await db.migrate(showPath: true);
   var alertStream = StreamController<IsolateMessage>();
   var bgWorker = BackgroundWorker(alertStream: alertStream);
   await bgWorker.spawn();
