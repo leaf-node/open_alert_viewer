@@ -1,4 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="internalOnly">
     <application
         android:label="Open Alert Viewer"
         android:name="${applicationName}"
@@ -35,9 +37,25 @@
          android:exported="false"
          android:stopWithTask="false"
          android:foregroundServiceType="dataSync" />
+         <service
+            android:name="com.flux.flutter_boot_receiver.BootHandlerService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            />
+        <receiver
+            android:enabled="true"
+            android:exported="true"
+            android:name="com.flux.flutter_boot_receiver.BootBroadcastReceiver"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility?hl=en and
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.

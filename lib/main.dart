@@ -5,14 +5,25 @@
  */
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_boot_receiver/flutter_boot_receiver.dart';
 
 import 'app.dart';
 import 'app/data_source/database.dart';
 import 'background/background.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isAndroid) {
+    await BootReceiver.initialize(startApp);
+  }
+  await startApp();
+}
+
+@pragma('vm:entry-point')
+Future<void> startApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   var db = LocalDatabase();
   await db.migrate(showPath: true);

@@ -13,7 +13,7 @@ import '../../app/data_repository/settings_repository.dart';
 class StickyNotificationRepo {
   StickyNotificationRepo({required SettingsRepo settings})
       : _settings = settings,
-        _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin() {}
+        _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   final SettingsRepo _settings;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
