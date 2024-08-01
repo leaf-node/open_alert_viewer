@@ -154,6 +154,14 @@ Copyright (c) 2024 Felix Angelov
 License: MIT
 
 
+flutter_boot_receiver
+------------
+
+Copyright (c) 2024 Ahsan Sarwar
+
+License: MIT
+
+
 flutter_local_notifications (BSD 3-Clause)
 ------------------------------------------
 
