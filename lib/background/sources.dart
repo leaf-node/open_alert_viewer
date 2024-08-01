@@ -31,9 +31,10 @@ class SourcesRepo {
         removeSource(id: id);
         continue;
       }
-      var url = values[3] as String;
-      var username = values[4] as String;
-      var password = values[5] as String;
+      var baseURL = values[3] as String;
+      var path = values[4] as String;
+      var username = values[5] as String;
+      var password = values[6] as String;
 
       switch (type) {
         case 0:
@@ -45,7 +46,8 @@ class SourcesRepo {
           id: id,
           type: type,
           name: name,
-          url: url,
+          baseURL: baseURL,
+          path: path,
           username: username,
           password: password));
     }

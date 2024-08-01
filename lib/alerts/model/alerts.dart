@@ -43,7 +43,8 @@ abstract class AlertSource {
       {required this.id,
       required this.name,
       required this.type,
-      required this.url,
+      required this.baseURL,
+      required this.path,
       required this.username,
       required this.password});
 
@@ -52,7 +53,8 @@ abstract class AlertSource {
   final int id;
   final String name;
   final int type;
-  final String url;
+  final String baseURL;
+  final String path;
   final String username;
   final String password;
 }

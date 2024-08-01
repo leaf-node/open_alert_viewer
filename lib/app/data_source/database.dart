@@ -106,23 +106,24 @@ class LocalDatabase {
 
   List<Map<String, dynamic>> listSources() {
     return fetchFromTable(
-        query: "SELECT id, name, type, url, username, password FROM sources;",
+        query:
+            "SELECT id, name, type, base_url, path, username, password FROM sources;",
         values: []);
   }
 
   int addSource({required List<String> source}) {
     return insertIntoTable(query: '''
       INSERT INTO sources
-        (name, type, url, username, password)
-        VALUES (?, ?, ?, ?, ?);
+        (name, type, base_url, path, username, password)
+        VALUES (?, ?, ?, ?, ?, ?);
     ''', values: [source]);
   }
 
   bool updateSource({required int id, required List<Object> values}) {
     return updateTable(query: '''
       UPDATE sources SET
-        (name, type, url, username, password)
-        = (?, ?, ?, ?, ?) WHERE id = ?;
+        (name, type, base_url, path, username, password)
+        = (?, ?, ?, ?, ?, ?) WHERE id = ?;
     ''', values: [...values, id]);
   }
 

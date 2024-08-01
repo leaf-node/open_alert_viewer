@@ -79,7 +79,7 @@ class AlertsRepo {
       if (timeout > 0) {
         sourceFuture =
             sourceFuture.timeout(Duration(seconds: timeout), onTimeout: () {
-          String host = Uri.parse(source.url).host;
+          String host = Uri.parse(source.baseURL).host;
           host = (host.isEmpty) ? source.name : host;
           return Future.value([
             Alert(

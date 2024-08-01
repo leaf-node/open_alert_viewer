@@ -46,7 +46,8 @@ class AccountForm extends StatefulWidget {
 class _AccountFormState extends State<AccountForm> {
   final nameController = TextEditingController();
   final typeController = TextEditingController();
-  final urlController = TextEditingController();
+  final baseURLController = TextEditingController();
+  final pathController = TextEditingController();
   final userController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -56,13 +57,15 @@ class _AccountFormState extends State<AccountForm> {
     if (widget.source == null) {
       nameController.text = "";
       typeController.text = "0";
-      urlController.text = "";
+      baseURLController.text = "";
+      pathController.text = "";
       userController.text = "";
       passwordController.text = "";
     } else {
       nameController.text = widget.source!.name;
       typeController.text = widget.source!.type.toString();
-      urlController.text = widget.source!.url;
+      baseURLController.text = widget.source!.baseURL;
+      pathController.text = widget.source!.path;
       userController.text = widget.source!.username;
       passwordController.text = widget.source!.password;
     }
@@ -73,7 +76,8 @@ class _AccountFormState extends State<AccountForm> {
     super.dispose();
     nameController.dispose();
     typeController.dispose();
-    urlController.dispose();
+    baseURLController.dispose();
+    pathController.dispose();
     userController.dispose();
     passwordController.dispose();
   }
@@ -105,7 +109,7 @@ class _AccountFormState extends State<AccountForm> {
                           ? null
                           : "Name already used";
                     }),
-                AccountField(title: "Base URL", controller: urlController),
+                AccountField(title: "Base URL", controller: baseURLController),
                 AccountField(title: "User Name", controller: userController),
                 AccountField(title: "Password", controller: passwordController),
                 const SizedBox(height: 20),
@@ -142,7 +146,8 @@ class _AccountFormState extends State<AccountForm> {
                                         .add(AddAlertSource(source: [
                                           nameController.text,
                                           typeController.text,
-                                          urlController.text,
+                                          baseURLController.text,
+                                          pathController.text,
                                           userController.text,
                                           passwordController.text
                                         ]));
@@ -153,7 +158,8 @@ class _AccountFormState extends State<AccountForm> {
                                                 source: [
                                               nameController.text,
                                               typeController.text,
-                                              urlController.text,
+                                              baseURLController.text,
+                                              pathController.text,
                                               userController.text,
                                               passwordController.text
                                             ]));

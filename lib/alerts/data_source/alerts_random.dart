@@ -13,7 +13,8 @@ class RandomAlerts implements AlertSource {
       {required this.id,
       required this.name,
       required this.type,
-      required this.url,
+      required this.baseURL,
+      required this.path,
       required this.username,
       required this.password})
       : _randomSeed = Random(DateTime.now().microsecondsSinceEpoch),
@@ -26,7 +27,9 @@ class RandomAlerts implements AlertSource {
   @override
   final int type;
   @override
-  final String url;
+  final String baseURL;
+  @override
+  final String path;
   @override
   final String username;
   @override
