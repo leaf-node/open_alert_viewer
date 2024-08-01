@@ -10,9 +10,7 @@ CREATE TABLE IF NOT EXISTS sources (
     type INTEGER NOT NULL,
     url TEXT NOT NULL,
     username TEXT NOT NULL,
-    password TEXT NOT NULL,
-
-    UNIQUE(type, url, username, password)
+    password TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS settings (
