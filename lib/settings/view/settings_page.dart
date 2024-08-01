@@ -293,6 +293,19 @@ class GeneralSettingsList extends StatelessWidget {
             onTap: () async {
               context.read<NavBloc>().add(OpenLicensingPageEvent());
             }),
+        MenuItem(
+            icon: Icons.support_outlined,
+            title: "Online Support",
+            onTap: () async {
+              var uri = Uri.parse(
+                  "https://github.com/okaycode-dev/open_alert_viewer/issues");
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri);
+              } else {
+                log("Error launching URL: "
+                    "https://github.com/okaycode-dev/open_alert_viewer/issues");
+              }
+            }),
       ]);
     });
   }
