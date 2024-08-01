@@ -30,6 +30,7 @@ class AlertsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () => showLatestModal(context));
     return Scaffold(
         appBar: AlertsHeader(title: title), body: const AlertsList());
   }

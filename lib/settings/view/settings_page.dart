@@ -16,6 +16,7 @@ import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_event.dart';
 import '../../alerts/bloc/alerts_state.dart';
 import '../../alerts/model/alerts.dart';
+import '../../app/view/app_view_elements.dart';
 import '../../navigation/bloc/navigation_bloc.dart';
 import '../../navigation/bloc/navigation_event.dart';
 import '../../app/data_repository/settings_repository.dart';
@@ -272,7 +273,7 @@ class GeneralSettingsList extends StatelessWidget {
               icon: Icons.battery_saver_outlined,
               title: "Battery Optimization",
               onTap: () async {
-                bool result = await _settingsTextDialogBuilder(
+                bool result = await textDialogBuilder(
                     context: context,
                     text: "For guidance on how to disable battery optimization "
                         "on your Android device, please confirm this message.",
@@ -350,38 +351,6 @@ Future _settingsCheckBoxDialogBuilder<T>(
       });
 }
 
-Future _settingsTextDialogBuilder(
-    {required BuildContext context,
-    required String text,
-    required bool cancellable,
-    String? okayText}) async {
-  return await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-            child: SizedBox(
-                width: 300,
-                child: ListView(shrinkWrap: true, children: [
-                  Column(mainAxisSize: MainAxisSize.min, children: [
-                    Padding(
-                        padding: const EdgeInsets.all(15), child: Text(text)),
-                    Row(children: [
-                      if (cancellable == true)
-                        SettingsButton<bool>(
-                            text: "Cancel",
-                            retVal: false,
-                            color: Theme.of(context).colorScheme.error),
-                      SettingsButton<bool>(
-                          text: okayText ?? "Okay",
-                          retVal: true,
-                          color: Theme.of(context).colorScheme.secondary),
-                    ]),
-                    const Padding(padding: EdgeInsets.only(bottom: 15))
-                  ])
-                ])));
-      });
-}
-
 List<SettingsRadioEnumValue> listRefreshFrequencies<T>({T? priorSetting}) {
   return [
     for (var option in RefreshFrequencies.values)
@@ -421,27 +390,6 @@ List<SettingsRadioEnumValue> listColorModes<T>({T? priorSetting}) {
           value: option.value as T,
           priorSetting: priorSetting)
   ];
-}
-
-class SettingsButton<T> extends StatelessWidget {
-  const SettingsButton(
-      {super.key,
-      required this.text,
-      required this.retVal,
-      required this.color});
-
-  final String text;
-  final T retVal;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-        child: Center(
-            child: TextButton(
-                onPressed: () => Navigator.of(context).pop(retVal),
-                child: Text(text, style: TextStyle(color: color)))));
-  }
 }
 
 class SettingsRadioEnumValue<T> extends StatelessWidget {

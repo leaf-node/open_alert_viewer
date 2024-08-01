@@ -41,6 +41,8 @@ class SettingsRepo {
       _setListAt<bool>("alert_filter", value, [true], index);
   int get darkMode => _getSetting<int>("dark_mode", -1);
   set darkMode(value) => _setSetting<int>("dark_mode", value);
+  int get latestModalShown => _getSetting<int>("latest_modal_shown", 0);
+  set latestModalShown(value) => _setSetting<int>("latest_modal_shown", value);
 
   T _getSetting<T>(String name, T defaultValue, {int? opt}) {
     String storedValue = _db.getSetting(setting: name);
