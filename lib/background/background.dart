@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: MIT
  * 
- * Based on BSD-3 Clause code from:
+ * Based on BSD 3-Clause code from:
  * <https://dart.dev/language/isolates#complete-example>
  */
 
