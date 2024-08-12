@@ -6,11 +6,20 @@
 
 import 'dart:developer';
 
-import 'package:open_alert_viewer/alerts/data_source/alerts_nag.dart';
-
+import '../../alerts/data_source/alerts_invalid.dart';
+import '../../alerts/data_source/alerts_nag.dart';
 import '../../alerts/data_source/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/data_source/database.dart';
+
+enum SourceIntMap {
+  invalid(-1),
+  demo(0),
+  nag(1);
+
+  const SourceIntMap(this.val);
+  final int val;
+}
 
 class SourcesRepo {
   SourcesRepo({required LocalDatabase db}) : _db = db;
@@ -38,13 +47,14 @@ class SourcesRepo {
       var username = values[5] as String;
       var password = values[6] as String;
 
-      switch (type) {
-        case 0:
+      var enumType = SourceIntMap.values.singleWhere((e) => e.val == type);
+      switch (enumType) {
+        case SourceIntMap.demo:
           alertSource = RandomAlerts.new;
-        case 1:
+        case SourceIntMap.nag:
           alertSource = NagAlerts.new;
-        default:
-          throw "Unsupported source id: $type";
+        case SourceIntMap.invalid:
+          alertSource = InvalidAlerts.new;
       }
       sources.add(alertSource(
           id: id,
@@ -76,9 +86,11 @@ class SourcesRepo {
     int type;
     var baseURL = values[2];
     if (baseURL == "demo") {
-      type = 0; // random alerts
+      type = SourceIntMap.demo.val;
+    } else if (baseURL == "nag") {
+      type = SourceIntMap.nag.val;
     } else {
-      type = 1; // Nag alerts
+      type = SourceIntMap.invalid.val;
     }
     values[1] = type.toString();
     return values;
