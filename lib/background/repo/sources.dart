@@ -68,13 +68,14 @@ class SourcesRepo {
     return sources;
   }
 
-  int addSource({required List<String> values}) {
-    values = _getSourceTypeAndPath(values: values);
+  Future<int> addSource({required List<String> values}) async {
+    values = await _getSourceTypeAndPath(values: values);
     return _db.addSource(values: values);
   }
 
-  bool updateSource({required int id, required List<String> values}) {
-    values = _getSourceTypeAndPath(values: values);
+  Future<bool> updateSource(
+      {required int id, required List<String> values}) async {
+    values = await _getSourceTypeAndPath(values: values);
     return _db.updateSource(id: id, values: values);
   }
 
@@ -82,7 +83,8 @@ class SourcesRepo {
     _db.removeSource(id: id);
   }
 
-  List<String> _getSourceTypeAndPath({required List<String> values}) {
+  Future<List<String>> _getSourceTypeAndPath(
+      {required List<String> values}) async {
     int type;
     var baseURL = values[2];
     if (baseURL == "demo") {
