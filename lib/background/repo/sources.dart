@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'dart:developer';
-
 import '../../alerts/data_source/alerts_invalid.dart';
 import '../../alerts/data_source/alerts_nag.dart';
 import '../../alerts/data_source/alerts_random.dart';
@@ -38,9 +36,7 @@ class SourcesRepo {
       try {
         type = values[2] as int;
       } catch (e) {
-        log("Unsupported source id: '${values[2]}'. Removing source.");
-        removeSource(id: id);
-        continue;
+        type = -1;
       }
       var baseURL = values[3] as String;
       var path = values[4] as String;
