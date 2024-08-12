@@ -15,9 +15,9 @@ import 'package:flutter/services.dart';
 import '../alerts/model/alerts.dart';
 import '../app/data_repository/settings_repository.dart';
 import '../app/data_source/database.dart';
-import './alerts.dart';
-import './notifications.dart';
-import './sources.dart';
+import 'repo/alerts.dart';
+import 'repo/notifications.dart';
+import 'repo/sources.dart';
 
 class IsolateMessage {
   const IsolateMessage(

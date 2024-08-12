@@ -6,10 +6,10 @@
 
 import 'dart:async';
 
-import '../../alerts/model/alerts.dart';
-import '../app/data_source/database.dart';
-import '../app/data_repository/settings_repository.dart';
-import 'background.dart';
+import '../../../alerts/model/alerts.dart';
+import '../../app/data_source/database.dart';
+import '../../app/data_repository/settings_repository.dart';
+import '../background.dart';
 import 'notifications.dart';
 import 'sources.dart';
 

@@ -6,9 +6,9 @@
 
 import 'dart:developer';
 
-import '../alerts/data_source/alerts_random.dart';
-import '../alerts/model/alerts.dart';
-import '../app/data_source/database.dart';
+import '../../alerts/data_source/alerts_random.dart';
+import '../../alerts/model/alerts.dart';
+import '../../app/data_source/database.dart';
 
 class SourcesRepo {
   SourcesRepo({required LocalDatabase db}) : _db = db;
