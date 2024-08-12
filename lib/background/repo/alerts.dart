@@ -50,19 +50,21 @@ class AlertsRepo {
     _fetchCachedAlerts();
     _alertSources = _sourcesRepo.alertSources;
     _alertStream.add(IsolateMessage(
-        name: "alerts fetching", alerts: _alerts, sources: _alertSources));
+        name: MessageName.alertsFetching,
+        alerts: _alerts,
+        sources: _alertSources));
     if (!forceRefreshNow) {
       if (interval == -1) {
-        _alertStream
-            .add(IsolateMessage(name: "alerts fetched", alerts: _alerts));
+        _alertStream.add(
+            IsolateMessage(name: MessageName.alertsFetched, alerts: _alerts));
         _fetching = false;
         return;
       }
       var maxCacheAge = Duration(minutes: interval);
       var lastFetched = _settings.lastFetched;
       if (maxCacheAge.compareTo(DateTime.now().difference(lastFetched)) >= 0) {
-        _alertStream
-            .add(IsolateMessage(name: "alerts fetched", alerts: _alerts));
+        _alertStream.add(
+            IsolateMessage(name: MessageName.alertsFetched, alerts: _alerts));
         _fetching = false;
         return;
       }
@@ -98,19 +100,21 @@ class AlertsRepo {
         _alerts = _alerts.where((alert) => alert.source != source.id).toList();
         _alerts.addAll(updatedAlerts);
         _alerts.sort(_alertSort);
-        _alertStream
-            .add(IsolateMessage(name: "alerts fetching", alerts: _alerts));
+        _alertStream.add(
+            IsolateMessage(name: MessageName.alertsFetching, alerts: _alerts));
         freshAlerts.addAll(updatedAlerts);
       });
     }
     await Future.wait(incoming);
     _alerts = freshAlerts;
     _alerts.sort(_alertSort);
-    _alertStream.add(IsolateMessage(name: "alerts fetching", alerts: _alerts));
+    _alertStream
+        .add(IsolateMessage(name: MessageName.alertsFetching, alerts: _alerts));
     _cacheAlerts();
     _settings.priorFetch = _settings.lastFetched;
     _settings.lastFetched = lastFetched;
-    _alertStream.add(IsolateMessage(name: "alerts fetched", alerts: _alerts));
+    _alertStream
+        .add(IsolateMessage(name: MessageName.alertsFetched, alerts: _alerts));
     _notifier.showFilteredNotifications(
         alerts: _alerts, alertStream: _alertStream);
     _fetching = false;

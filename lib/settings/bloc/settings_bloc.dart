@@ -32,7 +32,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       switch (setting) {
         case "refreshInterval":
           _settingsRepo.refreshInterval = newSetting;
-          _bgWorker.makeRequest(const IsolateMessage(name: "refresh timer"));
+          _bgWorker.makeRequest(
+              const IsolateMessage(name: MessageName.refreshTimer));
         case "syncTimeout":
           _settingsRepo.syncTimeout = newSetting;
         case "notificationsRequested":

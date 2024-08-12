@@ -19,6 +19,22 @@ import 'repo/alerts.dart';
 import 'repo/notifications.dart';
 import 'repo/sources.dart';
 
+enum MessageName {
+  alertsInit,
+  alertsFetching,
+  alertsFetched,
+  fetchAlerts,
+  refreshTimer,
+  addSource,
+  updateSource,
+  removeSource,
+  enableNotifications,
+  disableNotifications,
+  playDesktopSound,
+  sourcesChanged,
+  sourcesFailure,
+}
+
 class IsolateMessage {
   const IsolateMessage(
       {required this.name,
@@ -27,7 +43,7 @@ class IsolateMessage {
       this.sourceStrings,
       this.sources,
       this.forceRefreshNow});
-  final String name;
+  final MessageName name;
   final int? id;
   final List<Alert>? alerts;
   final List<String>? sourceStrings;
@@ -97,24 +113,24 @@ class BackgroundWorker {
     });
     receivePort.listen((dynamic message) async {
       if (message is IsolateMessage) {
-        if (message.name == "fetch alerts") {
+        if (message.name == MessageName.fetchAlerts) {
           alertsRepo.fetchAlerts(
               forceRefreshNow: message.forceRefreshNow ?? false);
-        } else if (message.name == "refresh timer") {
+        } else if (message.name == MessageName.refreshTimer) {
           alertsRepo.refreshTimer();
-        } else if (message.name == "add source") {
+        } else if (message.name == MessageName.addSource) {
           var result = sourcesRepo.addSource(source: message.sourceStrings!);
           _sourcesChangeResult(port, (result >= 0));
-        } else if (message.name == "update source") {
+        } else if (message.name == MessageName.updateSource) {
           var result = sourcesRepo.updateSource(
               id: message.id!, values: message.sourceStrings!);
           _sourcesChangeResult(port, result);
-        } else if (message.name == "remove source") {
+        } else if (message.name == MessageName.removeSource) {
           sourcesRepo.removeSource(id: message.id!);
           _sourcesChangeResult(port, true);
-        } else if (message.name == "enable notifications") {
+        } else if (message.name == MessageName.enableNotifications) {
           notifier.startAnroidStickyNotification();
-        } else if (message.name == "disable notifications") {
+        } else if (message.name == MessageName.disableNotifications) {
           notifier.disableNotifications();
         } else {
           throw "Invalid message name: $message";
@@ -127,10 +143,10 @@ class BackgroundWorker {
 
   static void _sourcesChangeResult(SendPort port, bool success) {
     if (success) {
-      port.send(const IsolateMessage(name: "sources changed"));
+      port.send(const IsolateMessage(name: MessageName.sourcesChanged));
       alertsRepo.fetchAlerts(forceRefreshNow: true);
     } else {
-      port.send(const IsolateMessage(name: "sources failure"));
+      port.send(const IsolateMessage(name: MessageName.sourcesFailure));
     }
   }
 }

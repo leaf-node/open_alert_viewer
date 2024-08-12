@@ -140,7 +140,8 @@ class NotificationRepo {
 
     if (brandNew > 0) {
       await _showNotification(message: messages.join(", "));
-      alertStream?.add(const IsolateMessage(name: "play desktop sound"));
+      alertStream
+          ?.add(const IsolateMessage(name: MessageName.playDesktopSound));
     } else if (messages.isEmpty) {
       await _removeAlertNotification();
     }

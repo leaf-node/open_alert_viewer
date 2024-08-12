@@ -39,16 +39,16 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     var enabled = await _notifier.requestAndEnableNotifications(
         askAgain: event.askAgain, callback: event.callback);
     if (enabled) {
-      await _bgWorker
-          .makeRequest(const IsolateMessage(name: "enable notifications"));
+      await _bgWorker.makeRequest(
+          const IsolateMessage(name: MessageName.enableNotifications));
       emit(NotificationsEnabled());
     }
   }
 
   void _disableNotifications(
       DisableNotificationsEvent event, Emitter<NotificationState> emit) async {
-    await _bgWorker
-        .makeRequest(const IsolateMessage(name: "disable notifications"));
+    await _bgWorker.makeRequest(
+        const IsolateMessage(name: MessageName.disableNotifications));
     emit(NotificationsDisabled());
   }
 

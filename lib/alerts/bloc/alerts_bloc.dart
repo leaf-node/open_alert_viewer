@@ -40,24 +40,27 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
 
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
-    _bgWorker.makeRequest(
-        IsolateMessage(name: "add source", sourceStrings: event.source));
+    _bgWorker.makeRequest(IsolateMessage(
+        name: MessageName.addSource, sourceStrings: event.source));
   }
 
   Future<void> _updateSource(
       UpdateAlertSource event, Emitter<AlertState> emit) async {
     _bgWorker.makeRequest(IsolateMessage(
-        name: "update source", id: event.id, sourceStrings: event.source));
+        name: MessageName.updateSource,
+        id: event.id,
+        sourceStrings: event.source));
   }
 
   Future<void> _removeSource(
       RemoveAlertSource event, Emitter<AlertState> emit) async {
-    _bgWorker.makeRequest(IsolateMessage(name: "remove source", id: event.id));
+    _bgWorker.makeRequest(
+        IsolateMessage(name: MessageName.removeSource, id: event.id));
   }
 
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
     _bgWorker.makeRequest(IsolateMessage(
-        name: "fetch alerts", forceRefreshNow: event.forceRefreshNow));
+        name: MessageName.fetchAlerts, forceRefreshNow: event.forceRefreshNow));
   }
 
   Future<void> _listenForAlerts(
@@ -67,15 +70,15 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     await for (final data in _alertStream.stream) {
       alerts = data.alerts ?? alerts;
       sources = data.sources ?? sources;
-      if (data.name == "alerts init") {
+      if (data.name == MessageName.alertsInit) {
         emit(AlertsInit(alerts: alerts, sources: sources));
-      } else if (data.name == "alerts fetching") {
+      } else if (data.name == MessageName.alertsFetching) {
         emit(AlertsFetching(alerts: alerts, sources: sources));
-      } else if (data.name == "alerts fetched") {
+      } else if (data.name == MessageName.alertsFetched) {
         emit(AlertsFetched(alerts: alerts, sources: sources));
-      } else if (data.name == "sources changed") {
+      } else if (data.name == MessageName.sourcesChanged) {
         emit(SourcesChanged(alerts: alerts, sources: sources));
-      } else if (data.name == "play desktop sound") {
+      } else if (data.name == MessageName.playDesktopSound) {
         if (!Platform.isAndroid && !Platform.isIOS) {
           player?.play(AssetSource("sound/alarm.ogg"));
         }
