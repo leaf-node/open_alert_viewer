@@ -6,6 +6,8 @@
 
 import 'dart:developer';
 
+import 'package:open_alert_viewer/alerts/data_source/alerts_nag.dart';
+
 import '../../alerts/data_source/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/data_source/database.dart';
@@ -39,6 +41,8 @@ class SourcesRepo {
       switch (type) {
         case 0:
           alertSource = RandomAlerts.new;
+        case 1:
+          alertSource = NagAlerts.new;
         default:
           throw "Unsupported source id: $type";
       }
@@ -54,15 +58,29 @@ class SourcesRepo {
     return sources;
   }
 
-  int addSource({required List<String> source}) {
-    return _db.addSource(source: source);
+  int addSource({required List<String> values}) {
+    values = _getSourceTypeAndPath(values: values);
+    return _db.addSource(values: values);
   }
 
-  bool updateSource({required int id, required List<Object> values}) {
+  bool updateSource({required int id, required List<String> values}) {
+    values = _getSourceTypeAndPath(values: values);
     return _db.updateSource(id: id, values: values);
   }
 
   void removeSource({required int id}) {
     _db.removeSource(id: id);
+  }
+
+  List<String> _getSourceTypeAndPath({required List<String> values}) {
+    int type;
+    var baseURL = values[2];
+    if (baseURL == "demo") {
+      type = 0; // random alerts
+    } else {
+      type = 1; // Nag alerts
+    }
+    values[1] = type.toString();
+    return values;
   }
 }

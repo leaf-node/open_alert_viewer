@@ -111,12 +111,12 @@ class LocalDatabase {
         values: []);
   }
 
-  int addSource({required List<String> source}) {
+  int addSource({required List<String> values}) {
     return insertIntoTable(query: '''
       INSERT INTO sources
         (name, type, base_url, path, username, password)
         VALUES (?, ?, ?, ?, ?, ?);
-    ''', values: [source]);
+    ''', values: [values]);
   }
 
   bool updateSource({required int id, required List<Object> values}) {

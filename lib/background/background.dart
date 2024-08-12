@@ -119,7 +119,7 @@ class BackgroundWorker {
         } else if (message.name == MessageName.refreshTimer) {
           alertsRepo.refreshTimer();
         } else if (message.name == MessageName.addSource) {
-          var result = sourcesRepo.addSource(source: message.sourceStrings!);
+          var result = sourcesRepo.addSource(values: message.sourceStrings!);
           _sourcesChangeResult(port, (result >= 0));
         } else if (message.name == MessageName.updateSource) {
           var result = sourcesRepo.updateSource(
