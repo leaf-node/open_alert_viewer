@@ -4,8 +4,11 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'package:http/http.dart' as http;
+
 import '../../alerts/data_source/alerts_invalid.dart';
 import '../../alerts/data_source/alerts_nag.dart';
+import '../../alerts/data_source/alerts_prom.dart';
 import '../../alerts/data_source/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/data_source/database.dart';
@@ -13,7 +16,8 @@ import '../../app/data_source/database.dart';
 enum SourceIntMap {
   invalid(-1),
   demo(0),
-  nag(1);
+  nag(1),
+  prom(2);
 
   const SourceIntMap(this.val);
   final int val;
@@ -49,6 +53,8 @@ class SourcesRepo {
           alertSource = RandomAlerts.new;
         case SourceIntMap.nag:
           alertSource = NagAlerts.new;
+        case SourceIntMap.prom:
+          alertSource = PromAlerts.new;
         case SourceIntMap.invalid:
           alertSource = InvalidAlerts.new;
       }
@@ -81,16 +87,44 @@ class SourcesRepo {
 
   Future<List<String>> _getSourceTypeAndPath(
       {required List<String> values}) async {
+    late Function uriBuilder;
     int type;
     var baseURL = values[2];
-    if (baseURL == "demo") {
-      type = SourceIntMap.demo.val;
-    } else if (baseURL == "nag") {
-      type = SourceIntMap.nag.val;
-    } else {
+    var path = values[3];
+    if (baseURL == "") {
       type = SourceIntMap.invalid.val;
+      path = "";
+    } else if (baseURL == "demo") {
+      type = SourceIntMap.demo.val;
+      path = "";
+    } else {
+      if (RegExp(r"^https?://").hasMatch(baseURL)) {
+        uriBuilder = _simpleParse;
+      } else if (RegExp(r"^localhost(:[^@:]*|/)").hasMatch(baseURL)) {
+        uriBuilder = Uri.http;
+      } else {
+        uriBuilder = Uri.https;
+      }
+      try {
+        var promPath = "/api/v2/alerts";
+        var response = await http.get(uriBuilder(baseURL, promPath));
+        if (response.statusCode == 200) {
+          type = SourceIntMap.prom.val;
+          path = promPath;
+        } else {
+          type = SourceIntMap.nag.val;
+        }
+      } catch (e) {
+        type = SourceIntMap.invalid.val;
+        path = "";
+      }
     }
     values[1] = type.toString();
+    values[3] = path.toString();
     return values;
+  }
+
+  Uri _simpleParse(String base, String path) {
+    return Uri.parse(base + path);
   }
 }

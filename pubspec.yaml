@@ -43,6 +43,7 @@ dependencies:
   app_settings: ^5.1.1
   audioplayers: ^6.0.0
   flutter_boot_receiver: ^1.2.0
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:
