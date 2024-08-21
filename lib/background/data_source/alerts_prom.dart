@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: MIT
  */
 
-import '../model/alerts.dart';
+import '../../alerts/model/alerts.dart';
 
-class InvalidAlerts implements AlertSource {
-  InvalidAlerts(
+class PromAlerts implements AlertSource {
+  PromAlerts(
       {required this.id,
       required this.name,
       required this.type,
@@ -41,8 +41,7 @@ class InvalidAlerts implements AlertSource {
           kind: AlertType.syncFailure,
           hostname: name,
           service: "OAV",
-          message: "Error finding / connecting to your account. "
-              "Try editing the account details.",
+          message: "Placeholder Prom alert...",
           age: Duration.zero)
     ];
     _alerts = nextAlerts;

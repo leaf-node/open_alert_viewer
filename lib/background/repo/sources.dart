@@ -6,10 +6,10 @@
 
 import 'package:http/http.dart' as http;
 
-import '../../alerts/data_source/alerts_invalid.dart';
-import '../../alerts/data_source/alerts_nag.dart';
-import '../../alerts/data_source/alerts_prom.dart';
-import '../../alerts/data_source/alerts_random.dart';
+import '../data_source/alerts_invalid.dart';
+import '../data_source/alerts_nag.dart';
+import '../data_source/alerts_prom.dart';
+import '../data_source/alerts_random.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/data_source/database.dart';
 

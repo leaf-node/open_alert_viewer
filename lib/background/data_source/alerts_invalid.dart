@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: MIT
  */
 
-import '../model/alerts.dart';
+import '../../alerts/model/alerts.dart';
 
-class NagAlerts implements AlertSource {
-  NagAlerts(
+class InvalidAlerts implements AlertSource {
+  InvalidAlerts(
       {required this.id,
       required this.name,
       required this.type,
@@ -41,7 +41,8 @@ class NagAlerts implements AlertSource {
           kind: AlertType.syncFailure,
           hostname: name,
           service: "OAV",
-          message: "Placeholder Nag alert...",
+          message: "Error finding / connecting to your account. "
+              "Try editing the account details.",
           age: Duration.zero)
     ];
     _alerts = nextAlerts;

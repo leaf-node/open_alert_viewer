@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: MIT
  */
 
-import '../model/alerts.dart';
+import '../../alerts/model/alerts.dart';
 
-class PromAlerts implements AlertSource {
-  PromAlerts(
+class NagAlerts implements AlertSource {
+  NagAlerts(
       {required this.id,
       required this.name,
       required this.type,
@@ -41,7 +41,7 @@ class PromAlerts implements AlertSource {
           kind: AlertType.syncFailure,
           hostname: name,
           service: "OAV",
-          message: "Placeholder Prom alert...",
+          message: "Placeholder Nag alert...",
           age: Duration.zero)
     ];
     _alerts = nextAlerts;
