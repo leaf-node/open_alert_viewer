@@ -27,8 +27,7 @@ Future<void> startApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   var db = LocalDatabase();
   await db.migrate(showPath: true);
-  var alertStream = StreamController<IsolateMessage>();
-  var bgWorker = BackgroundWorker(alertStream: alertStream);
+  var bgWorker = BackgroundWorker();
   await bgWorker.spawn();
-  runApp(OAVapp(db: db, bgWorker: bgWorker, alertStream: alertStream));
+  runApp(OAVapp(db: db, bgWorker: bgWorker));
 }

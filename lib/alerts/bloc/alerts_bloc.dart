@@ -17,11 +17,8 @@ import 'alerts_event.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
-  AlertsBloc(
-      {required BackgroundWorker bgWorker,
-      required StreamController<IsolateMessage> alertStream})
+  AlertsBloc({required BackgroundWorker bgWorker})
       : _bgWorker = bgWorker,
-        _alertStream = alertStream,
         super(AlertsInit(alerts: [], sources: [])) {
     on<ListenForAlerts>(_listenForAlerts);
     on<AddAlertSource>(_addSource);
@@ -35,7 +32,6 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   }
 
   final BackgroundWorker _bgWorker;
-  final StreamController<IsolateMessage> _alertStream;
   late AudioPlayer? player;
 
   Future<void> _addSource(
@@ -67,7 +63,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
       ListenForAlerts event, Emitter<AlertState> emit) async {
     List<Alert> alerts = [];
     List<AlertSource> sources = [];
-    await for (final data in _alertStream.stream) {
+    await for (final data in _bgWorker.alertStream.stream) {
       alerts = data.alerts ?? alerts;
       sources = data.sources ?? sources;
       if (data.name == MessageName.alertsInit) {

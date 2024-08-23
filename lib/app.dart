@@ -4,16 +4,14 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/app/data_source/database.dart';
-import 'package:open_alert_viewer/settings/data_repository/account_repository.dart';
 
 import 'alerts/bloc/alerts_bloc.dart';
 import 'alerts/view/alerts_page.dart';
+import 'app/data_source/database.dart';
 import 'background/background.dart';
 import 'navigation/bloc/navigation_bloc.dart';
 import 'navigation/bloc/navigation_state.dart';
@@ -21,20 +19,16 @@ import 'app/data_repository/settings_repository.dart';
 import 'notifications/bloc/notification_bloc.dart';
 import 'notifications/data_repository/notification.dart';
 import 'settings/bloc/settings_bloc.dart';
+import 'settings/data_repository/account_repository.dart';
 import 'settings/view/licensing_page.dart';
 import 'settings/view/settings_account.dart';
 import 'settings/view/settings_page.dart';
 
 class OAVapp extends StatelessWidget {
-  const OAVapp(
-      {super.key,
-      required this.db,
-      required this.bgWorker,
-      required this.alertStream});
+  const OAVapp({super.key, required this.db, required this.bgWorker});
 
   final LocalDatabase db;
   final BackgroundWorker bgWorker;
-  final StreamController<IsolateMessage> alertStream;
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +47,7 @@ class OAVapp extends StatelessWidget {
                   notifier: context.read<StickyNotificationRepo>(),
                   settings: context.read<SettingsRepo>(),
                   bgWorker: bgWorker)),
-          BlocProvider(
-              create: (context) =>
-                  AlertsBloc(bgWorker: bgWorker, alertStream: alertStream)),
+          BlocProvider(create: (context) => AlertsBloc(bgWorker: bgWorker)),
           BlocProvider(
               create: (context) => SettingsBloc(
                   settings: context.read<SettingsRepo>(), bgWorker: bgWorker)),

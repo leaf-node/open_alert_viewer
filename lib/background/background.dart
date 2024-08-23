@@ -52,10 +52,9 @@ class IsolateMessage {
 }
 
 class BackgroundWorker {
-  BackgroundWorker({required StreamController<IsolateMessage> alertStream})
-      : _alertStream = alertStream;
+  BackgroundWorker();
 
-  final StreamController<IsolateMessage> _alertStream;
+  final alertStream = StreamController<IsolateMessage>();
   final Completer<void> _isolateReady = Completer.sync();
   late SendPort _sendPort;
   static late LocalDatabase db;
@@ -81,7 +80,7 @@ class BackgroundWorker {
       _sendPort = message;
       _isolateReady.complete();
     } else if (message is IsolateMessage) {
-      _alertStream.add(message);
+      alertStream.add(message);
     } else {
       throw "Invalid message type: $message";
     }
