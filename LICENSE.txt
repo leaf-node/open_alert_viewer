@@ -1,5 +1,5 @@
 
-Open Alert Viewer is open source / libre software. If you fork this project,
+Open Alert Viewer is libre / open source software. If you fork this project,
 we ask that you use a different name than "Open Alert Viwer", and to change
 the application ID. Please include this message in the licensing
 documentation, including the all of the following license text:
