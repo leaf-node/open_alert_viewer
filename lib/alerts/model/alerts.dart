@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'package:http/http.dart' as http;
+
 enum AlertType {
   okay(name: "Okay"),
   warning(name: "Warning"),
@@ -49,6 +51,24 @@ abstract class AlertSource {
       required this.password});
 
   Future<List<Alert>> fetchAlerts();
+
+  static Future<(int, String)> fetchData(String baseURL, String path) async {
+    Function uriBuilder;
+
+    if (RegExp(r"^https?://").hasMatch(baseURL)) {
+      uriBuilder = _simpleParse;
+    } else if (RegExp(r"^localhost(:[^@:]*|/)").hasMatch(baseURL)) {
+      uriBuilder = Uri.http;
+    } else {
+      uriBuilder = Uri.https;
+    }
+    var response = await http.get(uriBuilder(baseURL, path));
+    return (response.statusCode, response.body);
+  }
+
+  static Uri _simpleParse(String base, String path) {
+    return Uri.parse(base + path);
+  }
 
   final int id;
   final String name;

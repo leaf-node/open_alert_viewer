@@ -4,13 +4,11 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'package:http/http.dart' as http;
-
+import '../../alerts/model/alerts.dart';
 import '../data_source/alerts_invalid.dart';
 import '../data_source/alerts_nag.dart';
 import '../data_source/alerts_prom.dart';
 import '../data_source/alerts_random.dart';
-import '../../alerts/model/alerts.dart';
 import '../../app/data_source/database.dart';
 
 enum SourceIntMap {
@@ -87,7 +85,6 @@ class SourcesRepo {
 
   Future<List<String>> _getSourceTypeAndPath(
       {required List<String> values}) async {
-    late Function uriBuilder;
     int type;
     var baseURL = values[2];
     var path = values[3];
@@ -98,17 +95,11 @@ class SourcesRepo {
       type = SourceIntMap.demo.val;
       path = "";
     } else {
-      if (RegExp(r"^https?://").hasMatch(baseURL)) {
-        uriBuilder = _simpleParse;
-      } else if (RegExp(r"^localhost(:[^@:]*|/)").hasMatch(baseURL)) {
-        uriBuilder = Uri.http;
-      } else {
-        uriBuilder = Uri.https;
-      }
       try {
+        int code;
         var promPath = "/api/v2/alerts";
-        var response = await http.get(uriBuilder(baseURL, promPath));
-        if (response.statusCode == 200) {
+        (code, _) = await AlertSource.fetchData(baseURL, promPath);
+        if (code == 200) {
           type = SourceIntMap.prom.val;
           path = promPath;
         } else {
@@ -122,9 +113,5 @@ class SourcesRepo {
     values[1] = type.toString();
     values[3] = path.toString();
     return values;
-  }
-
-  Uri _simpleParse(String base, String path) {
-    return Uri.parse(base + path);
   }
 }
