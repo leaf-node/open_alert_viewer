@@ -194,6 +194,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
+http
+----
+
+Copyright 2014, the Dart project authors.
+
+License: Google BSD 3-Clause
+
+
 path_provider
 -------------
 
@@ -251,6 +259,15 @@ url_launcher
 Copyright 2013 The Flutter Authors. All rights reserved.
 
 License: Google BSD 3-Clause
+
+
+yaml
+----
+
+Copyright (c) 2014, the Dart project authors.
+Copyright (c) 2006, Kirill Simonov.
+
+License: MIT
 
 
 Audio
