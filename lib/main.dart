@@ -8,7 +8,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_boot_receiver/flutter_boot_receiver.dart';
+import 'package:yaml/yaml.dart';
 
 import 'app.dart';
 import 'app/data_source/database.dart';
@@ -27,7 +29,9 @@ Future<void> startApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   var db = LocalDatabase();
   await db.migrate(showPath: true);
+  String appVersion =
+      loadYaml(await rootBundle.loadString("pubspec.yaml"))["version"];
   var bgWorker = BackgroundWorker();
-  await bgWorker.spawn();
+  await bgWorker.spawn(appVersion: appVersion);
   runApp(OAVapp(db: db, bgWorker: bgWorker));
 }

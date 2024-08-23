@@ -44,6 +44,7 @@ dependencies:
   audioplayers: ^6.0.0
   flutter_boot_receiver: ^1.2.0
   http: ^1.2.2
+  yaml: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +76,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - LICENSE.txt
+    - pubspec.yaml
     - lib/app/db_migrations/version_0.sql
     - assets/sound/alarm.ogg
 

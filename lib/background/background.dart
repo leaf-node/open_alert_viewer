@@ -54,6 +54,7 @@ class IsolateMessage {
 class BackgroundWorker {
   BackgroundWorker();
 
+  static late String appVersion;
   final alertStream = StreamController<IsolateMessage>();
   final Completer<void> _isolateReady = Completer.sync();
   late SendPort _sendPort;
@@ -63,11 +64,11 @@ class BackgroundWorker {
   static late AlertsRepo alertsRepo;
   static late NotificationRepo notifier;
 
-  Future<void> spawn() async {
+  Future<void> spawn({required String appVersion}) async {
     final receivePort = ReceivePort();
     receivePort.listen(_handleResponsesFromIsolate);
-    await Isolate.spawn(
-        _startRemoteIsolate, (receivePort.sendPort, RootIsolateToken.instance));
+    await Isolate.spawn(_startRemoteIsolate,
+        (receivePort.sendPort, RootIsolateToken.instance, appVersion));
   }
 
   Future<void> makeRequest(IsolateMessage message) async {
@@ -86,13 +87,16 @@ class BackgroundWorker {
     }
   }
 
-  static void _startRemoteIsolate((SendPort, RootIsolateToken?) init) async {
+  static void _startRemoteIsolate(
+      (SendPort, RootIsolateToken?, String) init) async {
     SendPort port;
     RootIsolateToken token;
-    (port, token!) = init;
+    String appVersion;
+    (port, token!, appVersion) = init;
     final receivePort = ReceivePort();
     port.send(receivePort.sendPort);
     BackgroundIsolateBinaryMessenger.ensureInitialized(token);
+    BackgroundWorker.appVersion = appVersion;
     db = LocalDatabase();
     await db.open();
     settings = SettingsRepo(db: db);
