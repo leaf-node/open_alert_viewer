@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 enum AlertType {
@@ -52,17 +54,24 @@ abstract class AlertSource {
 
   Future<List<Alert>> fetchAlerts();
 
-  static Future<(int, String)> fetchData(String baseURL, String path) async {
+  static Future<(int, String)> fetchData(
+      String baseURL, String path, String username, String password) async {
     Function uriBuilder;
-
+    Map<String, String> headers;
+    headers = {};
     if (RegExp(r"^https?://").hasMatch(baseURL)) {
       uriBuilder = _simpleParse;
-    } else if (RegExp(r"^localhost(:[^@:]*|/)").hasMatch(baseURL)) {
+    } else if (RegExp(r"^localhost(:[0-9]*)?(/.*)?$").hasMatch(baseURL)) {
       uriBuilder = Uri.http;
     } else {
       uriBuilder = Uri.https;
     }
-    var response = await http.get(uriBuilder(baseURL, path));
+    if (username != "" || password != "") {
+      var basicAuth =
+          "Basic ${base64.encode(utf8.encode("$username:$password"))}";
+      headers["authorization"] = basicAuth;
+    } else {}
+    var response = await http.get(uriBuilder(baseURL, path), headers: headers);
     return (response.statusCode, response.body);
   }
 
