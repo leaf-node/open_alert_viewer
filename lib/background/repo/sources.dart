@@ -98,11 +98,10 @@ class SourcesRepo {
       path = "";
     } else {
       try {
-        int code;
         var promPath = "/api/v2/alerts";
-        (code, _) =
+        var response =
             await AlertSource.fetchData(baseURL, promPath, username, password);
-        if (code == 200) {
+        if (response.statusCode == 200) {
           type = SourceIntMap.prom.val;
           path = promPath;
         } else {

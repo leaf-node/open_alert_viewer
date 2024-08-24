@@ -56,7 +56,7 @@ abstract class AlertSource {
 
   Future<List<Alert>> fetchAlerts();
 
-  static Future<(int, String)> fetchData(
+  static Future<http.Response> fetchData(
       String baseURL, String path, String username, String password) async {
     Function uriBuilder;
     Map<String, String> headers;
@@ -75,8 +75,13 @@ abstract class AlertSource {
           "Basic ${base64.encode(utf8.encode("$username:$password"))}";
       headers["authorization"] = basicAuth;
     }
-    var response = await http.get(uriBuilder(baseURL, path), headers: headers);
-    return (response.statusCode, response.body);
+    var response = await http
+        .get(uriBuilder(baseURL, path), headers: headers)
+        .timeout(Duration(seconds: BackgroundWorker.settings.syncTimeout),
+            onTimeout: () {
+      return http.Response("Error", 408);
+    });
+    return response;
   }
 
   static Uri _simpleParse(String base, String path) {
