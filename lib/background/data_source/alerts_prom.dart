@@ -5,6 +5,9 @@
  */
 
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:http/http.dart';
 
 import '../../alerts/model/alerts.dart';
 
@@ -37,44 +40,46 @@ class PromAlerts implements AlertSource {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
+    Response response;
     List<Alert> nextAlerts;
     PromAlertsData alertDatum;
     nextAlerts = [];
     try {
-      var response =
-          await AlertSource.fetchData(baseURL, path, username, password);
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        for (var datum in data) {
-          alertDatum = PromAlertsData.fromJSON(datum);
-          nextAlerts.add(Alert(
-              source: id,
-              kind: AlertType.error,
-              hostname: alertDatum.labels['instance']!,
-              service: alertDatum.labels['alertname']!,
-              message: alertDatum.annotations['summary']!,
-              age: DateTime.now()
-                  .difference(DateTime.parse(alertDatum.startsAt))));
-        }
-      } else if (response.statusCode == 408) {
-        nextAlerts = [
-          Alert(
-              source: id,
-              kind: AlertType.syncFailure,
-              hostname: name,
-              service: "OAV",
-              message: "Timeout while trying to fetch alerts... check settings",
-              age: Duration.zero)
-        ];
-      }
-    } catch (e) {
+      response = await AlertSource.fetchData(baseURL, path, username, password);
+    } on SocketException catch (e) {
       nextAlerts = [
         Alert(
             source: id,
             kind: AlertType.syncFailure,
             hostname: name,
             service: "OAV",
-            message: "Error fetching alerts",
+            message: "Error fetching alerts: ${e.message}",
+            age: Duration.zero)
+      ];
+      _alerts = nextAlerts;
+      return _alerts;
+    }
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      for (var datum in data) {
+        alertDatum = PromAlertsData.fromJSON(datum);
+        nextAlerts.add(Alert(
+            source: id,
+            kind: AlertType.error,
+            hostname: alertDatum.labels['instance']!,
+            service: alertDatum.labels['alertname']!,
+            message: alertDatum.annotations['summary']!,
+            age: DateTime.now()
+                .difference(DateTime.parse(alertDatum.startsAt))));
+      }
+    } else {
+      nextAlerts = [
+        Alert(
+            source: id,
+            kind: AlertType.syncFailure,
+            hostname: name,
+            service: "OAV",
+            message: "Error fetching alerts: ${response.body}",
             age: Duration.zero)
       ];
     }
@@ -100,7 +105,7 @@ class PromAlertsData {
         updatedAt: data["updatedAt"],
         endsAt: data["endsAt"],
         generatorURL: data["generatorURL"],
-        annotations: data["annotations"],
+        annotations: mapConvert(data["annotations"]),
         labels: mapConvert(data["labels"]));
   }
 

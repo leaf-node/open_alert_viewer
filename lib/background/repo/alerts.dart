@@ -5,6 +5,7 @@
  */
 
 import 'dart:async';
+import 'dart:developer';
 
 import '../../../alerts/model/alerts.dart';
 import '../../app/data_source/database.dart';
@@ -89,11 +90,25 @@ class AlertsRepo {
                 kind: AlertType.syncFailure,
                 hostname: host,
                 service: source.name,
-                message: "Connection Timed Out",
+                message: "Connection Timed Out... check settings",
                 age: Duration.zero)
           ]);
         });
       }
+      sourceFuture = sourceFuture.onError((TypeError error, StackTrace trace) {
+        log(error.toString());
+        log(trace.toString());
+        return Future.value([
+          Alert(
+              source: source.id,
+              kind: AlertType.syncFailure,
+              hostname: source.name,
+              service: "OAV",
+              message: "Error fetching alerts. "
+                  "Please open an issue using \"Online Support\" in the settings menu.",
+              age: Duration.zero)
+        ]);
+      });
       incoming.add(sourceFuture);
       incoming.last.then((List<Alert> newAlerts) {
         var updatedAlerts = _updateSyncFailureAges(newAlerts, oldSyncFailures);
