@@ -5,6 +5,7 @@
  */
 
 import '../../alerts/model/alerts.dart';
+import '../../app/data_source/network_fetch.dart';
 import '../data_source/alerts_invalid.dart';
 import '../data_source/alerts_nag.dart';
 import '../data_source/alerts_prom.dart';

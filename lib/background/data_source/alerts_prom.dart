@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 
 import '../../alerts/model/alerts.dart';
+import '../../app/data_source/network_fetch.dart';
 
 class PromAlerts with NetworkFetch implements AlertSource {
   PromAlerts(
