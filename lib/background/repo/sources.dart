@@ -105,7 +105,7 @@ class SourcesRepo {
           type = SourceIntMap.prom.val;
           path = promPath;
         } else {
-          type = SourceIntMap.nag.val;
+          type = SourceIntMap.invalid.val;
         }
       } catch (e) {
         type = SourceIntMap.invalid.val;
