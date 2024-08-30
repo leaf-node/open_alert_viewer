@@ -79,7 +79,7 @@ abstract class AlertSource {
         .get(uriBuilder(baseURL, path), headers: headers)
         .timeout(Duration(seconds: BackgroundWorker.settings.syncTimeout),
             onTimeout: () {
-      return http.Response("Timeout Error", 408);
+      return http.Response("408 Client Timeout", 408);
     });
     return response;
   }

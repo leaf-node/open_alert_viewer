@@ -73,28 +73,11 @@ class AlertsRepo {
     List<Future<List<Alert>>> incoming = [];
     List<Alert> freshAlerts = [];
     var lastFetched = DateTime.now();
-    var timeout = _settings.syncTimeout;
     var oldSyncFailures = _alerts
         .where((oldAlert) => oldAlert.kind == AlertType.syncFailure)
         .toList();
     for (var source in _alertSources) {
       var sourceFuture = source.fetchAlerts();
-      if (timeout > 0) {
-        sourceFuture =
-            sourceFuture.timeout(Duration(seconds: timeout), onTimeout: () {
-          String host = Uri.parse(source.baseURL).host;
-          host = (host.isEmpty) ? source.name : host;
-          return Future.value([
-            Alert(
-                source: source.id,
-                kind: AlertType.syncFailure,
-                hostname: host,
-                service: source.name,
-                message: "Connection Timed Out... check settings",
-                age: Duration.zero)
-          ]);
-        });
-      }
       sourceFuture = sourceFuture.onError((TypeError error, StackTrace trace) {
         log(error.toString());
         log(trace.toString());
