@@ -11,7 +11,7 @@ import 'package:http/http.dart';
 
 import '../../alerts/model/alerts.dart';
 
-class PromAlerts implements AlertSource {
+class PromAlerts with NetworkFetch implements AlertSource {
   PromAlerts(
       {required this.id,
       required this.name,
@@ -45,7 +45,7 @@ class PromAlerts implements AlertSource {
     PromAlertsData alertDatum;
     nextAlerts = [];
     try {
-      response = await AlertSource.fetchData(baseURL, path, username, password);
+      response = await networkFetch(baseURL, path, username, password);
     } on SocketException catch (e) {
       nextAlerts = [
         Alert(

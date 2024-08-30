@@ -21,7 +21,7 @@ enum SourceIntMap {
   final int val;
 }
 
-class SourcesRepo {
+class SourcesRepo with NetworkFetch {
   SourcesRepo({required LocalDatabase db}) : _db = db;
 
   final LocalDatabase _db;
@@ -100,7 +100,7 @@ class SourcesRepo {
       try {
         var promPath = "/api/v2/alerts";
         var response =
-            await AlertSource.fetchData(baseURL, promPath, username, password);
+            await networkFetch(baseURL, promPath, username, password);
         if (response.statusCode == 200) {
           type = SourceIntMap.prom.val;
           path = promPath;

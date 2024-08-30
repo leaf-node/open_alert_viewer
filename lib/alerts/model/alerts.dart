@@ -56,7 +56,17 @@ abstract class AlertSource {
 
   Future<List<Alert>> fetchAlerts();
 
-  static Future<http.Response> fetchData(
+  final int id;
+  final String name;
+  final int type;
+  final String baseURL;
+  final String path;
+  final String username;
+  final String password;
+}
+
+mixin NetworkFetch {
+  Future<http.Response> networkFetch(
       String baseURL, String path, String username, String password) async {
     Function uriBuilder;
     Map<String, String> headers;
@@ -84,15 +94,7 @@ abstract class AlertSource {
     return response;
   }
 
-  static Uri _simpleParse(String base, String path) {
+  Uri _simpleParse(String base, String path) {
     return Uri.parse(base + path);
   }
-
-  final int id;
-  final String name;
-  final int type;
-  final String baseURL;
-  final String path;
-  final String username;
-  final String password;
 }
