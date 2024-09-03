@@ -308,6 +308,18 @@ class GeneralSettingsList extends StatelessWidget {
                 log("Error launching URL: $link");
               }
             }),
+        MenuItem(
+            icon: Icons.volunteer_activism_outlined,
+            title: "Donate",
+            onTap: () async {
+              var link = "https://buymeacoffee.com/okaycode.dev";
+              var uri = Uri.parse(link);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri);
+              } else {
+                log("Error launching URL: $link");
+              }
+            }),
       ]);
     });
   }
