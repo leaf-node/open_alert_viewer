@@ -167,11 +167,6 @@ class GeneralSettingsList extends StatelessWidget {
         }
         return "Every ${settings.syncTimeout} seconds";
       }();
-      String notificationsEnabledSubtitle = () {
-        var state =
-            settings.notificationsEnabled ? "Enabled within app" : "Disabled";
-        return state;
-      }();
       String darkModeSubtitle = () {
         for (var option in ColorModes.values) {
           if (option.value == settings.darkMode) {
@@ -213,9 +208,13 @@ class GeneralSettingsList extends StatelessWidget {
               }
             }),
         MenuItem(
-            icon: Icons.notifications_outlined,
+            icon: settings.notificationsEnabled
+                ? Icons.notifications_outlined
+                : Icons.notifications_off,
             title: "Notifications",
-            subtitle: notificationsEnabledSubtitle,
+            subtitle: settings.notificationsEnabled
+                ? "Enabled within app"
+                : "Disabled",
             onTap: () async {
               if (settings.notificationsEnabled) {
                 settingsBloc.add(SettingsPushEvent(
