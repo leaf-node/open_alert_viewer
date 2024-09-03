@@ -273,6 +273,7 @@ class GeneralSettingsList extends StatelessWidget {
               icon: Icons.battery_saver_outlined,
               title: "Battery Optimization",
               onTap: () async {
+                var link = "https://dontkillmyapp.com";
                 bool result = await textDialogBuilder(
                     context: context,
                     text: "For guidance on how to disable battery optimization "
@@ -280,11 +281,11 @@ class GeneralSettingsList extends StatelessWidget {
                     okayText: "Open Browser",
                     cancellable: true);
                 if (result == true) {
-                  var uri = Uri.parse("https://dontkillmyapp.com");
+                  var uri = Uri.parse(link);
                   if (await canLaunchUrl(uri)) {
                     await launchUrl(uri);
                   } else {
-                    log("Error launching URL: https://dontkillmyapp.com");
+                    log("Error launching URL: $link");
                   }
                 }
               }),
@@ -298,13 +299,13 @@ class GeneralSettingsList extends StatelessWidget {
             icon: Icons.support_outlined,
             title: "Online Support",
             onTap: () async {
-              var uri = Uri.parse(
-                  "https://github.com/okaycode-dev/open_alert_viewer/issues");
+              var link =
+                  "https://github.com/okaycode-dev/open_alert_viewer/issues";
+              var uri = Uri.parse(link);
               if (await canLaunchUrl(uri)) {
                 await launchUrl(uri);
               } else {
-                log("Error launching URL: "
-                    "https://github.com/okaycode-dev/open_alert_viewer/issues");
+                log("Error launching URL: $link");
               }
             }),
       ]);
