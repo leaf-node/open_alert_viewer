@@ -80,7 +80,8 @@ class PromAlerts with NetworkFetch implements AlertSource {
             kind: AlertType.syncFailure,
             hostname: name,
             service: "OAV",
-            message: "Error fetching alerts: ${response.body}",
+            message: "Error fetching alerts: HTTP status code "
+                "${response.statusCode}",
             age: Duration.zero)
       ];
     }
