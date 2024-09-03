@@ -13,17 +13,17 @@ import '../../background/background.dart';
 mixin NetworkFetch {
   Future<http.Response> networkFetch(
       String baseURL, String path, String username, String password) async {
-    Function uriBuilder;
+    String prefix;
     Map<String, String> headers;
     headers = {
       "User-Agent": "open_alert_viewer/${BackgroundWorker.appVersion}"
     };
     if (RegExp(r"^https?://").hasMatch(baseURL)) {
-      uriBuilder = _simpleParse;
+      prefix = "";
     } else if (RegExp(r"^localhost(:[0-9]*)?(/.*)?$").hasMatch(baseURL)) {
-      uriBuilder = Uri.http;
+      prefix = "http://";
     } else {
-      uriBuilder = Uri.https;
+      prefix = "https://";
     }
     if (username != "" || password != "") {
       var basicAuth =
@@ -31,15 +31,11 @@ mixin NetworkFetch {
       headers["authorization"] = basicAuth;
     }
     var response = await http
-        .get(uriBuilder(baseURL, path), headers: headers)
+        .get(Uri.parse(prefix + baseURL + path), headers: headers)
         .timeout(Duration(seconds: BackgroundWorker.settings.syncTimeout),
             onTimeout: () {
       return http.Response("408 Client Timeout", 408);
     });
     return response;
-  }
-
-  Uri _simpleParse(String base, String path) {
-    return Uri.parse(base + path);
   }
 }
