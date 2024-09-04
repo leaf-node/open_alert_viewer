@@ -192,12 +192,11 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       return RefreshIndicator(
           onRefresh: () async {
             if (isFetching != true) {
+              var stream = context.read<AlertsBloc>().stream;
               context
                   .read<AlertsBloc>()
                   .add(FetchAlerts(forceRefreshNow: true));
-              await context.read<AlertsBloc>().stream.firstWhere(
-                    (state) => state is! AlertsFetching,
-                  );
+              await stream.firstWhere((state) => state is! AlertsFetching);
             }
           },
           key: refreshKey,
