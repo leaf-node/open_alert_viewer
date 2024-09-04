@@ -64,12 +64,24 @@ class PromAlerts with NetworkFetch implements AlertSource {
       var data = json.decode(response.body);
       for (var datum in data) {
         alertDatum = PromAlertsData.fromJSON(datum);
+        var severity = alertDatum.labels['severity'] ?? "";
+        var type = alertDatum.labels['oav_type'] ?? "";
+        AlertType kind;
+        if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
+          kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
+              ? AlertType.down
+              : AlertType.error;
+        } else if (RegExp(r"^(warning)$").hasMatch(severity)) {
+          kind = AlertType.warning;
+        } else {
+          kind = AlertType.unknown;
+        }
         nextAlerts.add(Alert(
             source: id,
-            kind: AlertType.error,
-            hostname: alertDatum.labels['instance']!,
-            service: alertDatum.labels['alertname']!,
-            message: alertDatum.annotations['summary']!,
+            kind: kind,
+            hostname: alertDatum.labels['instance'] ?? "",
+            service: alertDatum.labels['alertname'] ?? "",
+            message: alertDatum.annotations['summary'] ?? "",
             age: DateTime.now()
                 .difference(DateTime.parse(alertDatum.startsAt))));
       }
