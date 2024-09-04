@@ -130,7 +130,7 @@ class _AccountFormState extends State<AccountForm> {
                                       okayText: "Remove",
                                       cancellable: true,
                                       reverseColors: true);
-                                  if (result) {
+                                  if (context.mounted && result) {
                                     context.read<AlertsBloc>().add(
                                         RemoveAlertSource(
                                             id: widget.source!.id));
