@@ -29,10 +29,13 @@ Future textDialogBuilder(
     {required BuildContext context,
     required String text,
     required bool cancellable,
+    bool? reverseColors,
     String? okayText}) async {
   return await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
+        var dangerColor = Theme.of(context).colorScheme.error;
+        var safeColor = Theme.of(context).colorScheme.secondary;
         return Dialog(
             child: SizedBox(
                 width: 300,
@@ -45,11 +48,14 @@ Future textDialogBuilder(
                         SettingsButton<bool>(
                             text: "Cancel",
                             retVal: false,
-                            color: Theme.of(context).colorScheme.error),
+                            color: reverseColors ?? false
+                                ? safeColor
+                                : dangerColor),
                       SettingsButton<bool>(
                           text: okayText ?? "Okay",
                           retVal: true,
-                          color: Theme.of(context).colorScheme.secondary),
+                          color:
+                              reverseColors ?? false ? dangerColor : safeColor),
                     ]),
                     const Padding(padding: EdgeInsets.only(bottom: 15))
                   ])

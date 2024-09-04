@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_event.dart';
 import '../../alerts/model/alerts.dart';
+import '../../app/view/app_view_elements.dart';
 import '../data_repository/account_repository.dart';
 import 'settings_components.dart';
 
@@ -120,12 +121,22 @@ class _AccountFormState extends State<AccountForm> {
                   Expanded(
                       child: Center(
                           child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (widget.source != null) {
-                                  context.read<AlertsBloc>().add(
-                                      RemoveAlertSource(id: widget.source!.id));
+                                  bool result = await textDialogBuilder(
+                                      context: context,
+                                      text:
+                                          "Are you sure you want to remove this account?",
+                                      okayText: "Remove",
+                                      cancellable: true,
+                                      reverseColors: true);
+                                  if (result) {
+                                    context.read<AlertsBloc>().add(
+                                        RemoveAlertSource(
+                                            id: widget.source!.id));
+                                    Navigator.of(context).pop();
+                                  }
                                 }
-                                Navigator.of(context).pop();
                               },
                               child: Text(() {
                                 if (widget.source == null) {
