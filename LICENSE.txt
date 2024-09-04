@@ -155,7 +155,7 @@ License: MIT
 
 
 flutter_boot_receiver
-------------
+---------------------
 
 Copyright (c) 2024 Ahsan Sarwar
 
