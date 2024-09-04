@@ -41,8 +41,8 @@ class InvalidAlerts implements AlertSource {
           kind: AlertType.syncFailure,
           hostname: name,
           service: "OAV",
-          message: "Error finding / connecting to your account. "
-              "Try editing the account details.",
+          message: "Error finding / connecting to a compatible account. "
+              "Try editing your account details.",
           age: Duration.zero)
     ];
     _alerts = nextAlerts;
