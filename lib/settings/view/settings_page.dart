@@ -247,7 +247,7 @@ class GeneralSettingsList extends StatelessWidget {
               icon: settings.soundEnabled
                   ? Icons.music_note_outlined
                   : Icons.music_off_outlined,
-              title: "Sound Settings",
+              title: "Play Sound",
               subtitle:
                   settings.soundEnabled ? "Enabled within app" : "Disabled",
               onTap: () async {
