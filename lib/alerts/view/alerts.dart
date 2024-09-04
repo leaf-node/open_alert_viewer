@@ -14,61 +14,61 @@ enum AlertTypeView {
       icon: Icons.check,
       bgColor: Color(0xFF2E7D32), // green800
       fgColor: Colors.white,
-      template: "%s [%s]: OKAY: %s",
+      template: "OKAY [%s] %s: %s",
       numArgs: 3),
   warning(
       icon: Icons.warning_amber_outlined, // triangular icon
       bgColor: Color(0xFFF9A825), // yellow800
       fgColor: Colors.black,
-      template: "%s [%s]: WARNING: %s",
+      template: "WARNING [%s] %s: %s",
       numArgs: 3),
   error(
       icon: Icons.error_outline, // circular icon
       bgColor: Color(0xFFC62828), // red800
       fgColor: Colors.white,
-      template: "%s [%s]: ERROR: %s",
+      template: "ERROR [%s] %s: %s",
       numArgs: 3),
   pending(
       icon: Icons.more_horiz,
       bgColor: Color(0xFF444444), // dark gray
       fgColor: Color(0xFFBBBBBB), // light gray
-      template: "%s [%s]: PENDING",
+      template: "PENDING [%s] %s",
       numArgs: 2),
   unknown(
       icon: Icons.question_mark,
       bgColor: Color(0xFF3C111A), // dark red
       fgColor: Colors.white,
-      template: "%s [%s]: UNKNOWN: %s",
+      template: "UNKNOWN [%s] %s: %s",
       numArgs: 3),
   up(
       icon: Icons.check,
       bgColor: Color(0xFF2E7D32), // green800
       fgColor: Colors.white,
-      template: "%s: UP",
+      template: "UP: %s",
       numArgs: 1),
   unreachable(
       icon: Icons.close,
       bgColor: Color(0xFF222222), // dark gray
       fgColor: Colors.white,
-      template: "%s: UNREACHABLE",
+      template: "UNREACHABLE: %s",
       numArgs: 1),
   down(
       icon: Icons.keyboard_double_arrow_down,
       bgColor: Color(0xFF111111), // darker gray
       fgColor: Colors.white,
-      template: "%s: DOWN",
+      template: "DOWN: %s",
       numArgs: 1),
   hostPending(
       icon: Icons.more_horiz,
       bgColor: Color(0xFF444444), // dark gray
       fgColor: Color(0xFFBBBBBB), // light gray
-      template: "%s: PENDING",
+      template: "PENDING: %s",
       numArgs: 1),
   syncFailure(
       icon: Icons.mobiledata_off,
       bgColor: Color(0xFF111111), // darker gray
       fgColor: Color(0xFFC65656), // less saturated red800
-      template: "%s: [%s] SYNC FAILURE: %s",
+      template: "SYNC FAILURE [%s] %s: %s",
       numArgs: 3);
 
   const AlertTypeView(
@@ -118,9 +118,9 @@ class AlertWidget extends StatelessWidget {
     if (numArgs == 1) {
       return sprintf(template, [alert.hostname]);
     } else if (numArgs == 2) {
-      return sprintf(template, [alert.hostname, alert.service]);
+      return sprintf(template, [alert.service, alert.hostname]);
     } else {
-      return sprintf(template, [alert.hostname, alert.service, alert.message]);
+      return sprintf(template, [alert.service, alert.hostname, alert.message]);
     }
   }
 
