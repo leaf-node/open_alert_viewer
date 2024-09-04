@@ -195,10 +195,10 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
               context
                   .read<AlertsBloc>()
                   .add(FetchAlerts(forceRefreshNow: true));
+              await context.read<AlertsBloc>().stream.firstWhere(
+                    (state) => state is! AlertsFetching,
+                  );
             }
-            await context.read<AlertsBloc>().stream.firstWhere(
-                  (state) => state is! AlertsFetching,
-                );
           },
           key: refreshKey,
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
