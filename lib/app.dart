@@ -44,7 +44,7 @@ class OAVapp extends StatelessWidget {
           BlocProvider(create: (context) => NavBloc()),
           BlocProvider(
               create: (context) => NotificationBloc(
-                  notifier: context.read<StickyNotificationRepo>(),
+                  notificationRepo: context.read<StickyNotificationRepo>(),
                   settings: context.read<SettingsRepo>(),
                   bgWorker: bgWorker)),
           BlocProvider(create: (context) => AlertsBloc(bgWorker: bgWorker)),

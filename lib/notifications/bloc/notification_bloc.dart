@@ -16,10 +16,10 @@ part 'notification_state.dart';
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   NotificationBloc(
-      {required StickyNotificationRepo notifier,
+      {required StickyNotificationRepo notificationRepo,
       required SettingsRepo settings,
       required BackgroundWorker bgWorker})
-      : _notifier = notifier,
+      : _notificationRepo = notificationRepo,
         _settings = settings,
         _bgWorker = bgWorker,
         super(NotificationInitial()) {
@@ -30,14 +30,14 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     on<UpdateLastCheckTime>(_updateLastCheckTime);
   }
 
-  final StickyNotificationRepo _notifier;
+  final StickyNotificationRepo _notificationRepo;
   final SettingsRepo _settings;
   final BackgroundWorker _bgWorker;
 
   Future<void> _requestAndEnableNotifications(
       RequestAndEnableNotificationEvent event,
       Emitter<NotificationState> emit) async {
-    var enabled = await _notifier.requestAndEnableNotifications(
+    var enabled = await _notificationRepo.requestAndEnableNotifications(
         askAgain: event.askAgain, callback: event.callback);
     if (enabled) {
       await _bgWorker.makeRequest(
