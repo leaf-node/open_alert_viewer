@@ -90,7 +90,7 @@ Future<void> showLatestModal(BuildContext context) async {
     textDialogBuilder(
         context: context,
         text: "Open Alert Viewer is an early access application, "
-            "and there may still be a few errors. Please "
+            "so you may run into a few coding errors. Please "
             "report any issues via the \"Online Support\" menu item "
             "in the app settings. Thank you!",
         cancellable: false);
