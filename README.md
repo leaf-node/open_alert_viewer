@@ -12,7 +12,7 @@ License: MIT
 ## Prometheus configuration
 
 Prometheus doesn't seem to have a strict standard for categorization of alert
-types, so this app depends on a couple configurations on your server.
+types, so this app depends on a couple configurations on your server:
 
 1. In files imported by the Prometheus `rule_files` directive, ensure that
    warning alerts have the label `severity:` set to `warning`, and the rest are
