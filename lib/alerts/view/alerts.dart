@@ -14,74 +14,74 @@ enum AlertTypeView {
       icon: Icons.check,
       bgColor: Color(0xFF2E7D32), // green800
       fgColor: Colors.white,
-      template: "OKAY [%s] %s: %s",
+      title: "OKAY",
       numArgs: 3),
   warning(
       icon: Icons.warning_amber_outlined, // triangular icon
       bgColor: Color(0xFFF9A825), // yellow800
       fgColor: Colors.black,
-      template: "WARNING [%s] %s: %s",
+      title: "WARNING",
       numArgs: 3),
   error(
       icon: Icons.error_outline, // circular icon
       bgColor: Color(0xFFC62828), // red800
       fgColor: Colors.white,
-      template: "ERROR [%s] %s: %s",
+      title: "ERROR",
       numArgs: 3),
   pending(
       icon: Icons.more_horiz,
       bgColor: Color(0xFF444444), // dark gray
       fgColor: Color(0xFFBBBBBB), // light gray
-      template: "PENDING [%s] %s",
+      title: "PENDING",
       numArgs: 2),
   unknown(
       icon: Icons.question_mark,
       bgColor: Color(0xFF3C111A), // dark red
       fgColor: Colors.white,
-      template: "UNKNOWN [%s] %s: %s",
+      title: "UNKNOWN",
       numArgs: 3),
   up(
       icon: Icons.check,
       bgColor: Color(0xFF2E7D32), // green800
       fgColor: Colors.white,
-      template: "UP: %s",
+      title: "UP",
       numArgs: 1),
   unreachable(
       icon: Icons.close,
       bgColor: Color(0xFF222222), // dark gray
       fgColor: Colors.white,
-      template: "UNREACHABLE: %s",
+      title: "UNREACHABLE",
       numArgs: 1),
   down(
       icon: Icons.keyboard_double_arrow_down,
       bgColor: Color(0xFF111111), // darker gray
       fgColor: Colors.white,
-      template: "DOWN: %s",
+      title: "DOWN",
       numArgs: 1),
   hostPending(
       icon: Icons.more_horiz,
       bgColor: Color(0xFF444444), // dark gray
       fgColor: Color(0xFFBBBBBB), // light gray
-      template: "PENDING: %s",
+      title: "PENDING",
       numArgs: 1),
   syncFailure(
       icon: Icons.mobiledata_off,
       bgColor: Color(0xFF111111), // darker gray
       fgColor: Color(0xFFC65656), // less saturated red800
-      template: "SYNC FAILURE [%s] %s: %s",
+      title: "SYNC FAILURE",
       numArgs: 3);
 
   const AlertTypeView(
       {required this.icon,
       required this.bgColor,
       required this.fgColor,
-      required this.template,
+      required this.title,
       required this.numArgs});
 
   final IconData icon;
   final Color bgColor;
   final Color fgColor;
-  final String template;
+  final String title;
   final int numArgs;
 }
 
@@ -109,18 +109,19 @@ class AlertWidget extends StatelessWidget {
         iconColor: viewKind.fgColor,
         textColor: viewKind.fgColor,
         tileColor: viewKind.bgColor,
-        title: Text(_printMessage(viewKind.template, viewKind.numArgs)),
+        title: Text(_printMessage(viewKind.title, viewKind.numArgs)),
         subtitle: Text(_prettyPrintAge()),
         leading: Icon(viewKind.icon));
   }
 
-  String _printMessage(template, numArgs) {
+  String _printMessage(title, numArgs) {
     if (numArgs == 1) {
-      return sprintf(template, [alert.hostname]);
+      return sprintf("$title: %s", [alert.hostname]);
     } else if (numArgs == 2) {
-      return sprintf(template, [alert.service, alert.hostname]);
+      return sprintf("$title [%s] %s", [alert.service, alert.hostname]);
     } else {
-      return sprintf(template, [alert.service, alert.hostname, alert.message]);
+      return sprintf(
+          "$title [%s] %s: %s", [alert.service, alert.hostname, alert.message]);
     }
   }
 
