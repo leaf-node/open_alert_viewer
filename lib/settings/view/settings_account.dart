@@ -111,7 +111,10 @@ class _AccountFormState extends State<AccountForm> {
                     }),
                 AccountField(title: "Base URL", controller: baseURLController),
                 AccountField(title: "User Name", controller: userController),
-                AccountField(title: "Password", controller: passwordController),
+                AccountField(
+                    title: "Password",
+                    controller: passwordController,
+                    passwordField: true),
                 const SizedBox(height: 20),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Expanded(
@@ -185,16 +188,31 @@ class _AccountFormState extends State<AccountForm> {
   }
 }
 
-class AccountField extends StatelessWidget {
+class AccountField extends StatefulWidget {
   const AccountField(
       {super.key,
       required this.title,
       required this.controller,
-      this.validator});
+      this.validator,
+      this.passwordField});
 
   final String title;
   final TextEditingController controller;
   final FormFieldValidator<String>? validator;
+  final bool? passwordField;
+
+  @override
+  State<AccountField> createState() => _AccountFieldState();
+}
+
+class _AccountFieldState extends State<AccountField> {
+  late bool _textVisible;
+
+  @override
+  void initState() {
+    super.initState();
+    _textVisible = !(widget.passwordField ?? false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -203,9 +221,22 @@ class AccountField extends StatelessWidget {
         child: Align(
             alignment: Alignment.topCenter,
             child: TextFormField(
-                controller: controller,
+                controller: widget.controller,
                 onSaved: (String? value) {},
-                decoration: InputDecoration(labelText: title),
-                validator: validator)));
+                decoration: InputDecoration(
+                  labelText: widget.title,
+                  suffixIcon: widget.passwordField ?? false
+                      ? IconButton(
+                          icon: Icon(_textVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
+                            setState(() => _textVisible = !_textVisible);
+                          },
+                        )
+                      : null,
+                ),
+                obscureText: !_textVisible,
+                validator: widget.validator)));
   }
 }
