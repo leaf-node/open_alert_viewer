@@ -30,6 +30,7 @@ enum MessageName {
   removeSource,
   enableNotifications,
   disableNotifications,
+  toggleSounds,
   playDesktopSound,
   sourcesChanged,
   sourcesFailure,
@@ -136,6 +137,8 @@ class BackgroundWorker {
           notifier.startAnroidStickyNotification();
         } else if (message.name == MessageName.disableNotifications) {
           notifier.disableNotifications();
+        } else if (message.name == MessageName.toggleSounds) {
+          notifier.updateAlertDetails();
         } else {
           throw "Invalid message name: $message";
         }

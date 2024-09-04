@@ -43,6 +43,8 @@ class SettingsRepo {
   set darkMode(value) => _setSetting<int>("dark_mode", value);
   int get latestModalShown => _getSetting<int>("latest_modal_shown", 0);
   set latestModalShown(value) => _setSetting<int>("latest_modal_shown", value);
+  bool get soundEnabled => _getSetting<bool>("sound_enabled", true);
+  set soundEnabled(value) => _setSetting<bool>("sound_enabled", value);
 
   T _getSetting<T>(String name, T defaultValue, {int? opt}) {
     String storedValue = _db.getSetting(setting: name);

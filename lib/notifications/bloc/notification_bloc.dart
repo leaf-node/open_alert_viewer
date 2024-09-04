@@ -26,6 +26,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     on<RequestAndEnableNotificationEvent>(_requestAndEnableNotifications,
         transformer: droppable());
     on<DisableNotificationsEvent>(_disableNotifications);
+    on<ToggleSounds>(_toggleIntegratedAlertSounds);
     on<UpdateLastCheckTime>(_updateLastCheckTime);
   }
 
@@ -50,6 +51,13 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     await _bgWorker.makeRequest(
         const IsolateMessage(name: MessageName.disableNotifications));
     emit(NotificationsDisabled());
+  }
+
+  void _toggleIntegratedAlertSounds(
+      ToggleSounds event, Emitter<NotificationState> emit) async {
+    await _bgWorker
+        .makeRequest(const IsolateMessage(name: MessageName.toggleSounds));
+    emit(SoundsToggled());
   }
 
   Future<void> _updateLastCheckTime(

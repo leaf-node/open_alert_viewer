@@ -41,15 +41,7 @@ class NotificationRepo {
         importance: Importance.low,
         priority: Priority.low,
         silent: true);
-    const linuxNotificationDetails = LinuxNotificationDetails();
-    const androidNotificationDetails = AndroidNotificationDetails(
-        alertsNotificationChannelId, alertsNotificationChannelName,
-        icon: notificationIcon,
-        channelDescription: alertsNotificationChannelDescription,
-        importance: Importance.max,
-        priority: Priority.high);
-    _notificationDetails = const NotificationDetails(
-        linux: linuxNotificationDetails, android: androidNotificationDetails);
+    updateAlertDetails();
   }
 
   final SettingsRepo _settings;
@@ -84,7 +76,7 @@ class NotificationRepo {
               AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(alertChannel);
     } else {
-      throw "Unsupported platform, for notifications.";
+      throw "Unsupported platform for notifications.";
     }
   }
 
@@ -140,8 +132,10 @@ class NotificationRepo {
 
     if (brandNew > 0) {
       await _showNotification(message: messages.join(", "));
-      alertStream
-          ?.add(const IsolateMessage(name: MessageName.playDesktopSound));
+      if (_settings.soundEnabled && !Platform.isAndroid && !Platform.isIOS) {
+        alertStream
+            ?.add(const IsolateMessage(name: MessageName.playDesktopSound));
+      }
     } else if (messages.isEmpty) {
       await _removeAlertNotification();
     }
@@ -180,5 +174,18 @@ class NotificationRepo {
           ?.stopForegroundService();
     }
     await _removeAlertNotification();
+  }
+
+  Future<void> updateAlertDetails() async {
+    const linuxNotificationDetails = LinuxNotificationDetails();
+    var androidNotificationDetails = AndroidNotificationDetails(
+        alertsNotificationChannelId, alertsNotificationChannelName,
+        icon: notificationIcon,
+        channelDescription: alertsNotificationChannelDescription,
+        importance: Importance.max,
+        priority: Priority.high,
+        silent: !_settings.soundEnabled);
+    _notificationDetails = NotificationDetails(
+        linux: linuxNotificationDetails, android: androidNotificationDetails);
   }
 }

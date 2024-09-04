@@ -237,10 +237,23 @@ class GeneralSettingsList extends StatelessWidget {
             }),
         if (Platform.isAndroid && settings.notificationsEnabled)
           MenuItem(
-              icon: Icons.music_note_outlined,
+              icon: Icons.tune,
               title: "System Settings",
               onTap: () async {
                 AppSettings.openAppSettings(type: AppSettingsType.notification);
+              }),
+        if (settings.notificationsEnabled)
+          MenuItem(
+              icon: settings.soundEnabled
+                  ? Icons.music_note_outlined
+                  : Icons.music_off_outlined,
+              title: "Sound Settings",
+              subtitle:
+                  settings.soundEnabled ? "Enabled within app" : "Disabled",
+              onTap: () async {
+                settingsBloc.add(SettingsPushEvent(
+                    newSettings: {"soundEnabled": !settings.soundEnabled}));
+                context.read<NotificationBloc>().add(ToggleSounds());
               }),
         MenuItem(
             icon: Icons.filter_alt_outlined,

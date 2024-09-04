@@ -45,6 +45,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     var settings = context.read<SettingsRepo>();
     Widget notificationsStatusWidget;
+    Widget soundStatusWidget;
     Widget filterStatusWidget;
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
       if (!settings.notificationsEnabled) {
@@ -54,6 +55,14 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
                 context.read<NavBloc>().add(OpenGeneralSettingsPageEvent()));
       } else {
         notificationsStatusWidget = Container();
+      }
+      if (!settings.soundEnabled && settings.notificationsEnabled) {
+        soundStatusWidget = HeaderButton(
+            icon: Icons.music_off_outlined,
+            onPressed: () =>
+                context.read<NavBloc>().add(OpenGeneralSettingsPageEvent()));
+      } else {
+        soundStatusWidget = Container();
       }
       List<bool> filter = settings.alertFilter;
       bool isImportantShown = true;
@@ -86,6 +95,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
           title: Text(title),
           actions: [
             filterStatusWidget,
+            soundStatusWidget,
             notificationsStatusWidget,
             HeaderButton(
                 icon: Icons.refresh,

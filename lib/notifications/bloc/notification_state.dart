@@ -15,3 +15,5 @@ final class NotificationInitial extends NotificationState {}
 final class NotificationsEnabled extends NotificationState {}
 
 final class NotificationsDisabled extends NotificationState {}
+
+final class SoundsToggled extends NotificationState {}

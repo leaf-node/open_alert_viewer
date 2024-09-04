@@ -40,6 +40,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           _settingsRepo.notificationsRequested = newSetting;
         case "notificationsEnabled":
           _settingsRepo.notificationsEnabled = newSetting;
+        case "soundEnabled":
+          _settingsRepo.soundEnabled = newSetting;
         case "alertFilter":
           _settingsRepo.alertFilter = newSetting;
         case "setAlertFilterAt":
@@ -58,6 +60,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       "syncTimeout": _settingsRepo.syncTimeout,
       "notificationsRequested": _settingsRepo.notificationsRequested,
       "notificationsEnabled": _settingsRepo.notificationsEnabled,
+      "soundEnabled": _settingsRepo.soundEnabled,
       "alertFilter": _settingsRepo.alertFilter,
       "darkMode": _settingsRepo.darkMode,
     }));
