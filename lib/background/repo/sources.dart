@@ -99,12 +99,14 @@ class SourcesRepo with NetworkFetch {
       path = "";
     } else {
       try {
+        var promBaseURL = baseURL.replaceFirst(RegExp(r"/#/alerts/?$"), "");
         var promPath = "/api/v2/alerts";
         var response =
-            await networkFetch(baseURL, promPath, username, password);
+            await networkFetch(promBaseURL, promPath, username, password);
         if (response.statusCode == 200) {
           type = SourceIntMap.prom.val;
           path = promPath;
+          baseURL = promBaseURL;
         } else {
           type = SourceIntMap.invalid.val;
         }
@@ -114,7 +116,8 @@ class SourcesRepo with NetworkFetch {
       }
     }
     values[1] = type.toString();
-    values[3] = path.toString();
+    values[2] = baseURL;
+    values[3] = path;
     return values;
   }
 }
