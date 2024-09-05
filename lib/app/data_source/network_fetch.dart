@@ -13,11 +13,26 @@ import '../../background/background.dart';
 mixin NetworkFetch {
   Future<http.Response> networkFetch(
       String baseURL, String path, String username, String password) async {
-    String prefix;
     Map<String, String> headers;
     headers = {
       "User-Agent": "open_alert_viewer/${BackgroundWorker.appVersion}"
     };
+    if (username != "" || password != "") {
+      var basicAuth =
+          "Basic ${base64.encode(utf8.encode("$username:$password"))}";
+      headers["authorization"] = basicAuth;
+    }
+    var response = await http
+        .get(Uri.parse(generateURL(baseURL, path)), headers: headers)
+        .timeout(Duration(seconds: BackgroundWorker.settings.syncTimeout),
+            onTimeout: () {
+      return http.Response("408 Client Timeout", 408);
+    });
+    return response;
+  }
+
+  String generateURL(String baseURL, String path) {
+    String prefix;
     if (RegExp(r"^https?://").hasMatch(baseURL)) {
       prefix = "";
     } else if (RegExp(r"^localhost(:[0-9]*)?(/.*)?$").hasMatch(baseURL)) {
@@ -25,17 +40,6 @@ mixin NetworkFetch {
     } else {
       prefix = "https://";
     }
-    if (username != "" || password != "") {
-      var basicAuth =
-          "Basic ${base64.encode(utf8.encode("$username:$password"))}";
-      headers["authorization"] = basicAuth;
-    }
-    var response = await http
-        .get(Uri.parse(prefix + baseURL + path), headers: headers)
-        .timeout(Duration(seconds: BackgroundWorker.settings.syncTimeout),
-            onTimeout: () {
-      return http.Response("408 Client Timeout", 408);
-    });
-    return response;
+    return prefix + baseURL + path;
   }
 }
