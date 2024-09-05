@@ -6,7 +6,7 @@ requires access to a compatible third party back end service that monitors your
 network.
 
 Currently this project is in its early stages, with the goal of adding
-additional back end alerting services.
+support for additional back end alerting services.
 
 ## Back end support:
 
