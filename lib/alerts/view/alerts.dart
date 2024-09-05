@@ -109,21 +109,25 @@ class AlertWidget extends StatelessWidget {
     };
 
     return ListTile(
-        iconColor: viewKind.fgColor,
-        textColor: viewKind.fgColor,
-        tileColor: viewKind.bgColor,
-        title: Text(_printMessage(viewKind.title, viewKind.numArgs)),
-        subtitle: Text(_prettyPrintAge()),
-        leading: Icon(viewKind.icon),
-        onTap: () async {
-          var link = alert.url;
-          var uri = Uri.parse(link);
-          if (await canLaunchUrl(uri)) {
-            await launchUrl(uri);
-          } else {
-            log("Error launching URL: $link");
-          }
-        });
+      iconColor: viewKind.fgColor,
+      textColor: viewKind.fgColor,
+      tileColor: viewKind.bgColor,
+      title: Text(_printMessage(viewKind.title, viewKind.numArgs)),
+      subtitle: Text(_prettyPrintAge()),
+      leading: Row(mainAxisSize: MainAxisSize.min, children: [
+        IconButton(
+            icon: const Icon(Icons.link_outlined),
+            onPressed: () async {
+              var uri = Uri.parse(alert.url);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri);
+              } else {
+                log("Error launching URL: ${alert.url}");
+              }
+            }),
+        Icon(viewKind.icon)
+      ]),
+    );
   }
 
   String _printMessage(title, numArgs) {
