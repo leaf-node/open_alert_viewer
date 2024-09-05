@@ -89,7 +89,7 @@ class AlertsRepo {
               service: "OAV",
               message: "Error fetching alerts. "
                   "Please open an issue using \"Online Support\" in the settings menu.",
-              url: "https://github.com/okaycode-dev/open_alert_viewer/issues",
+              url: "https://github.com/okaycode-dev/open_alert_viewer",
               age: Duration.zero)
         ]);
       });

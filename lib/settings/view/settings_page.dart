@@ -313,8 +313,7 @@ class GeneralSettingsList extends StatelessWidget {
             icon: Icons.support_outlined,
             title: "Online Support",
             onTap: () async {
-              var link =
-                  "https://github.com/okaycode-dev/open_alert_viewer/issues";
+              var link = "https://github.com/okaycode-dev/open_alert_viewer";
               var uri = Uri.parse(link);
               if (await canLaunchUrl(uri)) {
                 await launchUrl(uri);
