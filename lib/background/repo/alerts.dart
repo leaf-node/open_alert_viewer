@@ -61,7 +61,7 @@ class AlertsRepo {
         _fetching = false;
         return;
       }
-      var maxCacheAge = Duration(minutes: interval);
+      var maxCacheAge = Duration(seconds: interval);
       var lastFetched = _settings.lastFetched;
       if (maxCacheAge.compareTo(DateTime.now().difference(lastFetched)) >= 0) {
         _alertStream.add(
@@ -196,7 +196,7 @@ class AlertsRepo {
     }
     fetchAlerts(forceRefreshNow: false);
     var nextFetchIn = _settings.lastFetched
-        .add(Duration(minutes: _settings.refreshInterval))
+        .add(Duration(seconds: _settings.refreshInterval))
         .difference(DateTime.now());
     Future.delayed(nextFetchIn, () {
       refreshTimer();
@@ -206,7 +206,7 @@ class AlertsRepo {
   void refreshTimer() {
     _timer?.cancel();
     _timer =
-        Timer.periodic(Duration(minutes: _settings.refreshInterval), (timer) {
+        Timer.periodic(Duration(seconds: _settings.refreshInterval), (timer) {
       fetchAlerts(forceRefreshNow: true);
     });
     fetchAlerts(forceRefreshNow: true);

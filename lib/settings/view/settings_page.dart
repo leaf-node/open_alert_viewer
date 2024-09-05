@@ -100,13 +100,15 @@ class SettingsList extends StatelessWidget {
 }
 
 enum RefreshFrequencies {
-  oneMinute("Every Minute", 1),
-  threeMinutes("Every 3 Minutes", 3),
-  fiveMinutes("Every 5 Minutes", 5),
-  fifteenMinutes("Every 15 Minutes", 15),
-  thirtyMinutes("Every 30 Minutes", 30),
-  oneHour("Every Hour", 60),
-  twoHours("Every 2 Hours", 120),
+  fifteenSeconds("Every 15 Seconds", 15),
+  thirtySeconds("Every 30 Seconds", 30),
+  oneMinute("Every Minute", 1 * 60),
+  threeMinutes("Every 3 Minutes", 3 * 60),
+  fiveMinutes("Every 5 Minutes", 5 * 60),
+  fifteenMinutes("Every 15 Minutes", 15 * 60),
+  thirtyMinutes("Every 30 Minutes", 30 * 60),
+  oneHour("Every Hour", 60 * 60),
+  twoHours("Every 2 Hours", 120 * 60),
   off("Off", -1);
 
   const RefreshFrequencies(this.text, this.value);
@@ -157,7 +159,7 @@ class GeneralSettingsList extends StatelessWidget {
             return option.text;
           }
         }
-        return "Every ${settings.refreshInterval} minutes";
+        return "Every ${settings.refreshInterval} seconds";
       }();
       String syncTimeoutSubtitle = () {
         for (var option in SyncTimeouts.values) {
