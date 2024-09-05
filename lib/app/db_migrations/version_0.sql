@@ -27,5 +27,6 @@ CREATE TABLE IF NOT EXISTS alerts_cache (
     hostname TEXT NOT NULL,
     service TEXT NOT NULL,
     message TEXT NOT NULL,
+    url TEXT NOT NULL,
     age INTEGER NOT NULL
 );

@@ -49,6 +49,7 @@ class RandomAlerts implements AlertSource {
           hostname: "example.com",
           service: "fizz buzz",
           message: "foo bar baz",
+          url: "https://example.com",
           age: Duration(seconds: _randomSeed.nextInt(60 * 10))));
     }
     // simulate network timeout

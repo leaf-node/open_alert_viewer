@@ -55,6 +55,7 @@ class PromAlerts with NetworkFetch implements AlertSource {
             hostname: name,
             service: "OAV",
             message: "Error fetching alerts: ${e.message}",
+            url: generateURL(baseURL, path),
             age: Duration.zero)
       ];
       _alerts = nextAlerts;
@@ -82,6 +83,7 @@ class PromAlerts with NetworkFetch implements AlertSource {
             hostname: alertDatum.labels['instance'] ?? "",
             service: alertDatum.labels['alertname'] ?? "",
             message: alertDatum.annotations['summary'] ?? "",
+            url: alertDatum.generatorURL,
             age: DateTime.now()
                 .difference(DateTime.parse(alertDatum.startsAt))));
       }
@@ -94,6 +96,7 @@ class PromAlerts with NetworkFetch implements AlertSource {
             service: "OAV",
             message: "Error fetching alerts: HTTP status code "
                 "${response.statusCode}",
+            url: generateURL(baseURL, path),
             age: Duration.zero)
       ];
     }

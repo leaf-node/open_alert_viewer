@@ -145,7 +145,7 @@ class LocalDatabase {
 
   List<Map<String, dynamic>> fetchCachedAlerts() {
     return fetchFromTable(
-        query: '''SELECT id, source, kind, hostname, service, message, age
+        query: '''SELECT id, source, kind, hostname, service, message, url, age
             FROM alerts_cache;''', values: []);
   }
 
@@ -156,8 +156,8 @@ class LocalDatabase {
   void insertIntoAlertsCache({required List<List<Object>> alerts}) {
     insertIntoTable(query: '''
         INSERT INTO alerts_cache
-          (source, kind, hostname, service, message, age)
-          VALUES (?, ?, ?, ?, ?, ?);''', values: alerts);
+          (source, kind, hostname, service, message, url, age)
+          VALUES (?, ?, ?, ?, ?, ?, ?);''', values: alerts);
   }
 
   List<String> listSettings() {

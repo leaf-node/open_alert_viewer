@@ -89,6 +89,7 @@ class AlertsRepo {
               service: "OAV",
               message: "Error fetching alerts. "
                   "Please open an issue using \"Online Support\" in the settings menu.",
+              url: "https://github.com/okaycode-dev/open_alert_viewer/issues",
               age: Duration.zero)
         ]);
       });
@@ -136,6 +137,7 @@ class AlertsRepo {
             hostname: alert.hostname,
             service: alert.service,
             message: alert.message,
+            url: alert.url,
             age: newAge);
       }
       return alert;
@@ -162,6 +164,7 @@ class AlertsRepo {
         alert.hostname,
         alert.service,
         alert.message,
+        alert.url,
         alert.age.inSeconds
       ]);
     }
@@ -177,6 +180,7 @@ class AlertsRepo {
         source: serialized["source"] as int,
         kind: AlertType.values[serialized["kind"] as int],
         message: serialized["message"] as String,
+        url: serialized["url"] as String,
         hostname: serialized["hostname"] as String,
         service: serialized["service"] as String,
         age: Duration(seconds: serialized["age"] as int),

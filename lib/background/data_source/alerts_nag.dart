@@ -5,8 +5,9 @@
  */
 
 import '../../alerts/model/alerts.dart';
+import '../../app/data_source/network_fetch.dart';
 
-class NagAlerts implements AlertSource {
+class NagAlerts with NetworkFetch implements AlertSource {
   NagAlerts(
       {required this.id,
       required this.name,
@@ -42,6 +43,7 @@ class NagAlerts implements AlertSource {
           hostname: name,
           service: "OAV",
           message: "Placeholder Nag alert...",
+          url: generateURL(baseURL, path),
           age: Duration.zero)
     ];
     _alerts = nextAlerts;

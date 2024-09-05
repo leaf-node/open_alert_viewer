@@ -28,6 +28,7 @@ class Alert {
       required this.hostname,
       required this.service,
       required this.message,
+      required this.url,
       required this.age});
 
   final int source;
@@ -35,6 +36,7 @@ class Alert {
   final String hostname;
   final String service;
   final String message;
+  final String url;
   final Duration age;
 }
 

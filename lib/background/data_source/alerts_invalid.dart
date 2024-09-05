@@ -4,9 +4,11 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'package:open_alert_viewer/app/data_source/network_fetch.dart';
+
 import '../../alerts/model/alerts.dart';
 
-class InvalidAlerts implements AlertSource {
+class InvalidAlerts with NetworkFetch implements AlertSource {
   InvalidAlerts(
       {required this.id,
       required this.name,
@@ -43,6 +45,7 @@ class InvalidAlerts implements AlertSource {
           service: "OAV",
           message: "Error finding / connecting to a compatible account. "
               "Try editing your account details.",
+          url: generateURL(baseURL, path),
           age: Duration.zero)
     ];
     _alerts = nextAlerts;

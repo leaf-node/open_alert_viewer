@@ -4,8 +4,11 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../model/alerts.dart';
 
@@ -111,7 +114,16 @@ class AlertWidget extends StatelessWidget {
         tileColor: viewKind.bgColor,
         title: Text(_printMessage(viewKind.title, viewKind.numArgs)),
         subtitle: Text(_prettyPrintAge()),
-        leading: Icon(viewKind.icon));
+        leading: Icon(viewKind.icon),
+        onTap: () async {
+          var link = alert.url;
+          var uri = Uri.parse(link);
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri);
+          } else {
+            log("Error launching URL: $link");
+          }
+        });
   }
 
   String _printMessage(title, numArgs) {
