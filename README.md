@@ -1,13 +1,24 @@
 # Open Alert Viewer
 
-A server and network alert client that will be able to display active alerts on
-your Android phone or Linux desktop, with the opportunity for wider support in
-the future.
+Open Alert Viewer is a libre, open source app for system administrators that
+displays server and network alerts on Android phones and Linux desktops. It
+requires access to a compatible third party back end service that monitors your
+network.
 
-Currently this project is under development, with the goal of building an MVP
-and incrementally growing the number of compatible back end alerting services.
+Currently this project is in its early stages, with the goal of adding
+additional back end alerting services.
 
-License: MIT
+## Back end support:
+
+### Alert services
+
+* Prometheus Alertmanager
+* (More planned)
+
+### Authentication
+
+* Basic Authentication
+* (More planned)
 
 ## Prometheus configuration
 
@@ -22,8 +33,12 @@ types, so this app depends on a couple configurations on your server:
 1. For down host checks, you should also make sure that alerts are labeled with
    the custom label: `oav_type:` `ping` or `icmp`.
 
-The parsing of both of these labels in this app is case *sensitive*.
+The parsing of both of these labels in this app is case sensitive.
 
 When setting up your account in the app, enter the base address of your
 Alertmanager service, not Prometheus itself.
+
+## License
+
+License: MIT
 
