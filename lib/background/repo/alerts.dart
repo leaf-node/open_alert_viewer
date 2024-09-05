@@ -78,9 +78,9 @@ class AlertsRepo {
         .toList();
     for (var source in _alertSources) {
       var sourceFuture = source.fetchAlerts();
-      sourceFuture = sourceFuture.onError((TypeError error, StackTrace trace) {
-        log(error.toString());
-        log(trace.toString());
+      sourceFuture = sourceFuture.catchError((Object exception) {
+        log("Error fetching alerts:");
+        log(exception.toString());
         return Future.value([
           Alert(
               source: source.id,
