@@ -16,7 +16,7 @@ class SettingsRepo {
   DateTime get lastFetched => _getSetting<DateTime>(
       "last_fetch_time", DateTime.fromMillisecondsSinceEpoch(0));
   set lastFetched(value) => _setSetting<DateTime>("last_fetch_time", value);
-  int get refreshInterval => _getSetting<int>("refresh_interval", 1);
+  int get refreshInterval => _getSetting<int>("refresh_interval", 60);
   set refreshInterval(value) => _setSetting<int>("refresh_interval", value);
   int get syncTimeout => _getSetting<int>("sync_timeout", 10);
   set syncTimeout(value) => _setSetting<int>("sync_timeout", value);
