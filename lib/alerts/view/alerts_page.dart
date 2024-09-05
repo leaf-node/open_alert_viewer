@@ -160,6 +160,7 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
+      var stream = context.read<AlertsBloc>().stream;
       List<Widget> alertWidgets = [];
       Widget child;
       if (state is AlertsFetching) {
@@ -185,16 +186,14 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
           child = ListView(children: alertWidgets);
         }
       }
-      var stream = context.read<AlertsBloc>().stream;
       return RefreshIndicator(
           onRefresh: () async {
             if (state is! AlertsFetching) {
               context
                   .read<AlertsBloc>()
                   .add(FetchAlerts(forceRefreshNow: true));
-            } else {
-              await stream.firstWhere((state) => state is! AlertsFetching);
             }
+            await stream.firstWhere((state) => state is! AlertsFetching);
           },
           key: refreshKey,
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
