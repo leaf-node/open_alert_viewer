@@ -8,7 +8,7 @@ network.
 Currently this project is in its early stages, with the goal of adding
 support for additional back end alerting services.
 
-## Back end support:
+## Back end support
 
 ### Alert services
 
@@ -51,7 +51,9 @@ You can move or copy the `bundle` directory anywhere on your file system, but
 internal structure should remain the same. If you want to put the binary in
 your path, make a symlink.
 
-## Prometheus configuration
+## Back end configuration
+
+### Prometheus
 
 Prometheus doesn't seem to have a strict standard for categorization of alert
 types, so this app depends on a couple configurations on your server:
