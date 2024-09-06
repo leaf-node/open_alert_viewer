@@ -8,7 +8,7 @@ network.
 Currently this project is in its early stages, with the goal of adding
 support for additional back end alerting services.
 
-## Back end support
+## Back end compatibility
 
 ### Alert services
 
