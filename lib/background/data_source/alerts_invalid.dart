@@ -45,7 +45,7 @@ class InvalidAlerts with NetworkFetch implements AlertSource {
           service: "OAV",
           message: "Error finding / connecting to a compatible account. "
               "Try editing your account details.",
-          url: generateURL(baseURL, path),
+          url: generateURL(baseURL, ""),
           age: Duration.zero)
     ];
     _alerts = nextAlerts;
