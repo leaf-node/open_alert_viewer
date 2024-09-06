@@ -101,7 +101,7 @@ class BackgroundWorker {
         Alert(
             source: 0,
             kind: AlertType.syncFailure,
-            hostname: "Open Alert Viewer",
+            hostname: "Open Alert Viewer version ${SettingsRepo.appVersion}",
             service: "Stack Trace",
             message: message.toString(),
             url: "https://github.com/okaycode-dev/open_alert_viewer/issues",

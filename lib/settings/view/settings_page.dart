@@ -305,7 +305,7 @@ class GeneralSettingsList extends StatelessWidget {
               }),
         MenuItem(
             icon: Icons.article_outlined,
-            title: "License Info",
+            title: "App and License Info",
             onTap: () async {
               context.read<NavBloc>().add(OpenLicensingPageEvent());
             }),

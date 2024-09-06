@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../app/data_repository/settings_repository.dart';
 import 'settings_components.dart';
 
 class LicensingPage extends StatelessWidget {
@@ -61,7 +62,8 @@ class _LicensingInfoState extends State<LicensingInfo> {
               padding: const EdgeInsets.all(15),
               child: ListView(children: [
                 Text(
-                  _text,
+                  "Open Alert Viewer\n\nversion: "
+                  "${SettingsRepo.appVersion}\n$_text",
                   style: const TextStyle(fontFamily: "monospace"),
                 )
               ]));
