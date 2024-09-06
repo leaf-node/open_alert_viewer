@@ -99,7 +99,8 @@ class SourcesRepo with NetworkFetch {
       path = "";
     } else {
       try {
-        var promBaseURL = baseURL.replaceFirst(RegExp(r"/#/alerts/?$"), "");
+        var promBaseURL = baseURL.replaceFirst(
+            RegExp(r"(/#/alerts/?|/api/v2/alerts/?)$"), "");
         var promPath = "/api/v2/alerts";
         var response =
             await networkFetch(promBaseURL, promPath, username, password);
