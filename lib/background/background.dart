@@ -68,8 +68,9 @@ class BackgroundWorker {
   Future<void> spawn({required String appVersion}) async {
     final receivePort = ReceivePort();
     receivePort.listen(_handleResponsesFromIsolate);
-    await Isolate.spawn(_startRemoteIsolate,
+    var isolate = await Isolate.spawn(_startRemoteIsolate,
         (receivePort.sendPort, RootIsolateToken.instance, appVersion));
+    isolate.addErrorListener(receivePort.sendPort);
   }
 
   Future<void> makeRequest(IsolateMessage message) async {
@@ -83,6 +84,30 @@ class BackgroundWorker {
       _isolateReady.complete();
     } else if (message is IsolateMessage) {
       alertStream.add(message);
+    } else if (message is List<dynamic>) {
+      alertStream.add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
+        const Alert(
+            source: 0,
+            kind: AlertType.syncFailure,
+            hostname: "Open Alert Viewer",
+            service: "Background Isolate",
+            message: "Oh no! The background isolate has stopped. "
+                "Please check whether an app upgrade is available and "
+                "resolves this issue. If that does not help, "
+                "please take a screen shot, and submit it using "
+                "the link icon to the left so we can help resolve the "
+                "problem. Sorry for the inconvenience.",
+            url: "https://github.com/okaycode-dev/open_alert_viewer/issues",
+            age: Duration.zero),
+        Alert(
+            source: 0,
+            kind: AlertType.syncFailure,
+            hostname: "Open Alert Viewer",
+            service: "Stack Trace",
+            message: message.toString(),
+            url: "https://github.com/okaycode-dev/open_alert_viewer/issues",
+            age: Duration.zero),
+      ]));
     } else {
       throw "Invalid message type: $message";
     }

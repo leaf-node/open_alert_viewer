@@ -161,30 +161,29 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
       var stream = context.read<AlertsBloc>().stream;
-      List<Widget> alertWidgets = [];
-      Widget child;
       if (state is AlertsFetching) {
         refreshKey.currentState?.show();
       }
-      if (state.sources.isEmpty) {
+      List<Widget> alertWidgets = [];
+      Widget child;
+      List<bool> filter = _settings.alertFilter;
+      for (var alert in state.alerts) {
+        if (filter[alert.kind.index]) {
+          alertWidgets.add(AlertWidget(alert: alert));
+        }
+      }
+      // this goes first to show any error messages even if `sources` is empty
+      if (alertWidgets.isNotEmpty) {
+        child = ListView(children: alertWidgets);
+      } else if (state.sources.isEmpty) {
         child = const EmptyPane(
             icon: Icons.login, text: "Please configure an account");
       } else {
-        List<bool> filter = _settings.alertFilter;
-        for (var alert in state.alerts) {
-          if (filter[alert.kind.index]) {
-            alertWidgets.add(AlertWidget(alert: alert));
-          }
+        String caveat = " ";
+        if (filter.any((val) => val == false)) {
+          caveat = " (filtered) ";
         }
-        if (alertWidgets.isEmpty) {
-          String caveat = " ";
-          if (filter.any((val) => val == false)) {
-            caveat = " (filtered) ";
-          }
-          child = EmptyPane(icon: Icons.check, text: "No${caveat}alerts here!");
-        } else {
-          child = ListView(children: alertWidgets);
-        }
+        child = EmptyPane(icon: Icons.check, text: "No${caveat}alerts here!");
       }
       return RefreshIndicator(
           onRefresh: () async {
