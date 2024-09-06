@@ -77,6 +77,8 @@ flutter:
   assets:
     - LICENSE.txt
     - pubspec.yaml
+    - .git/HEAD
+    - .git/refs/heads/
     - lib/app/db_migrations/version_0.sql
     - assets/sound/alarm.ogg
 
