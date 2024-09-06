@@ -20,6 +20,28 @@ support for additional back end alerting services.
 * Basic Authentication
 * (More planned)
 
+## Build instructions
+
+### Android
+
+```
+cd open_alert_viewer
+flutter build apk
+adb install build/app/outputs/flutter-apk/app-release.apk
+```
+
+### Linux
+
+```
+cd open_alert_viewer
+flutter build linux
+./build/linux/x64/release/bundle/open_alert_viewer
+```
+
+You can move or copy the `bundle` directory anywhere on your file system, but
+internal structure should remain the same. If you want to put the binary in
+your path, make a symlink.
+
 ## Prometheus configuration
 
 Prometheus doesn't seem to have a strict standard for categorization of alert
