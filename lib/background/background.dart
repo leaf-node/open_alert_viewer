@@ -55,7 +55,6 @@ class IsolateMessage {
 class BackgroundWorker {
   BackgroundWorker();
 
-  static late String appVersion;
   final alertStream = StreamController<IsolateMessage>();
   final Completer<void> _isolateReady = Completer.sync();
   late SendPort _sendPort;
@@ -122,9 +121,9 @@ class BackgroundWorker {
     final receivePort = ReceivePort();
     port.send(receivePort.sendPort);
     BackgroundIsolateBinaryMessenger.ensureInitialized(token);
-    BackgroundWorker.appVersion = appVersion;
     db = LocalDatabase();
     await db.open();
+    SettingsRepo.appVersion = appVersion;
     settings = SettingsRepo(db: db);
     sourcesRepo = SourcesRepo(db: db);
     notifier = NotificationRepo(settings: settings);

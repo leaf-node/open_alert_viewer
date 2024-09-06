@@ -25,13 +25,19 @@ import 'settings/view/settings_account.dart';
 import 'settings/view/settings_page.dart';
 
 class OAVapp extends StatelessWidget {
-  const OAVapp({super.key, required this.db, required this.bgWorker});
+  const OAVapp(
+      {super.key,
+      required this.appVersion,
+      required this.db,
+      required this.bgWorker});
 
+  final String appVersion;
   final LocalDatabase db;
   final BackgroundWorker bgWorker;
 
   @override
   Widget build(BuildContext context) {
+    SettingsRepo.appVersion = appVersion;
     return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(create: (context) => SettingsRepo(db: db)),

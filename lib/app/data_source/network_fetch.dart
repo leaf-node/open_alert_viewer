@@ -9,14 +9,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../background/background.dart';
+import '../data_repository/settings_repository.dart';
 
 mixin NetworkFetch {
   Future<http.Response> networkFetch(
       String baseURL, String path, String username, String password) async {
     Map<String, String> headers;
-    headers = {
-      "User-Agent": "open_alert_viewer/${BackgroundWorker.appVersion}"
-    };
+    headers = {"User-Agent": "open_alert_viewer/${SettingsRepo.appVersion}"};
     if (username != "" || password != "") {
       var basicAuth =
           "Basic ${base64.encode(utf8.encode("$username:$password"))}";

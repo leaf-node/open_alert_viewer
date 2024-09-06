@@ -11,6 +11,7 @@ import '../data_source/database.dart';
 
 class SettingsRepo {
   SettingsRepo({required LocalDatabase db}) : _db = db;
+  static late String appVersion;
   final LocalDatabase _db;
 
   DateTime get lastFetched => _getSetting<DateTime>(

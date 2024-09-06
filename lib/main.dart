@@ -33,5 +33,5 @@ Future<void> startApp() async {
       loadYaml(await rootBundle.loadString("pubspec.yaml"))["version"];
   var bgWorker = BackgroundWorker();
   await bgWorker.spawn(appVersion: appVersion);
-  runApp(OAVapp(db: db, bgWorker: bgWorker));
+  runApp(OAVapp(appVersion: appVersion, db: db, bgWorker: bgWorker));
 }
