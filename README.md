@@ -22,6 +22,12 @@ support for additional back end alerting services.
 
 ## Build instructions
 
+### Dependencies
+
+* [Flutter](https://docs.flutter.dev/get-started/install)
+* OpenJDK ~17 (or similar)
+* Gstreamer and headers (for Linux)
+
 ### Android
 
 ```
@@ -33,6 +39,8 @@ adb install build/app/outputs/flutter-apk/app-release.apk
 ### Linux
 
 ```
+sudo apt install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+
 cd open_alert_viewer
 flutter build linux
 ./build/linux/x64/release/bundle/open_alert_viewer
