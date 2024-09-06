@@ -12,7 +12,7 @@ support for additional back end alerting services.
 
 ### Alert services
 
-* Prometheus Alertmanager ([configuration](#prometheus-configuration))
+* Prometheus Alertmanager ([configuration](#prometheus))
 * Demo data (set base URL to `demo`)
 * (More planned)
 
