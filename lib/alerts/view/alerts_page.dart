@@ -175,6 +175,8 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       // this goes first to show any error messages even if `sources` is empty
       if (alertWidgets.isNotEmpty) {
         child = ListView(children: alertWidgets);
+      } else if (state is AlertsInit) {
+        child = Container();
       } else if (state.sources.isEmpty) {
         child = const EmptyPane(
             icon: Icons.login, text: "Please configure an account");
