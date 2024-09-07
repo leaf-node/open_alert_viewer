@@ -34,6 +34,7 @@ enum MessageName {
   playDesktopSound,
   sourcesChanged,
   sourcesFailure,
+  showRefreshIndicator,
 }
 
 enum MessageDestination {
@@ -50,7 +51,8 @@ class IsolateMessage {
       this.alerts,
       this.sourceStrings,
       this.sources,
-      this.forceRefreshNow});
+      this.forceRefreshNow,
+      this.alreadyFetching});
   final MessageName name;
   final MessageDestination? destination;
   final int? id;
@@ -58,6 +60,7 @@ class IsolateMessage {
   final List<String>? sourceStrings;
   final List<AlertSource>? sources;
   final bool? forceRefreshNow;
+  final bool? alreadyFetching;
 }
 
 class BackgroundWorker {

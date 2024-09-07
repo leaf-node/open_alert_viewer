@@ -55,6 +55,11 @@ class AlertsRepo {
         destination: MessageDestination.alerts,
         alerts: _alerts,
         sources: _alertSources));
+    _outboundStream.add(const IsolateMessage(
+        name: MessageName.showRefreshIndicator,
+        destination: MessageDestination.refreshIcon,
+        forceRefreshNow: false,
+        alreadyFetching: true));
     if (!forceRefreshNow) {
       if (interval == -1) {
         _outboundStream.add(IsolateMessage(

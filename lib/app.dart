@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'alerts/bloc/alerts_bloc.dart';
+import 'alerts/bloc/refresh_bloc.dart';
 import 'alerts/view/alerts_page.dart';
 import 'app/data_source/database.dart';
 import 'background/background.dart';
@@ -53,6 +54,8 @@ class OAVapp extends StatelessWidget {
                   notificationRepo: context.read<StickyNotificationRepo>(),
                   settings: context.read<SettingsRepo>(),
                   bgWorker: bgWorker)),
+          BlocProvider(
+              create: (context) => RefreshIconBloc(bgWorker: bgWorker)),
           BlocProvider(create: (context) => AlertsBloc(bgWorker: bgWorker)),
           BlocProvider(
               create: (context) => SettingsBloc(

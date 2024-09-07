@@ -16,6 +16,7 @@ import '../../settings/bloc/settings_bloc.dart';
 import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
+import '../bloc/refresh_bloc.dart';
 import '../model/alerts.dart';
 import 'alerts.dart';
 
@@ -106,8 +107,8 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
                 onPressed: () {
                   context.read<NotificationBloc>().add(UpdateLastCheckTime());
                   context
-                      .read<AlertsBloc>()
-                      .add(FetchAlerts(forceRefreshNow: true));
+                      .read<RefreshIconBloc>()
+                      .add(RefreshIconNow(forceRefreshNow: true));
                 })
           ]);
     });
@@ -159,11 +160,12 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
-      var stream = context.read<AlertsBloc>().stream;
-      if (state is AlertsFetching) {
+    return BlocListener<RefreshIconBloc, RefreshIconState>(
+        listener: (context, state) {
+      if (state is RefreshIconTriggered) {
         refreshKey.currentState?.show();
       }
+    }, child: BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
       List<Widget> alertWidgets = [];
       Widget child;
       List<bool> filter = _settings.alertFilter;
@@ -189,17 +191,30 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       }
       return RefreshIndicator(
           onRefresh: () async {
-            if (state is! AlertsFetching) {
+            bool forceRefreshNow = true;
+            bool alreadyFetching = false;
+            var refreshIconState = context.read<RefreshIconBloc>().state;
+            if (refreshIconState is RefreshIconTriggered) {
+              forceRefreshNow = refreshIconState.forceRefreshNow;
+              alreadyFetching = refreshIconState.alreadyFetching;
+            }
+            var stream = context.read<AlertsBloc>().stream;
+            if (!alreadyFetching) {
               context
                   .read<AlertsBloc>()
-                  .add(FetchAlerts(forceRefreshNow: true));
+                  .add(FetchAlerts(forceRefreshNow: forceRefreshNow));
+              await stream.firstWhere((state) => state is! AlertsFetching);
+            } else if (state is! AlertsFetched) {
+              await stream.firstWhere((state) => state is! AlertsFetching);
             }
-            await stream.firstWhere((state) => state is! AlertsFetching);
+            if (context.mounted) {
+              context.read<RefreshIconBloc>().add(RefreshIconFinish());
+            }
           },
           key: refreshKey,
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
           child: child);
-    });
+    }));
   }
 }
 
