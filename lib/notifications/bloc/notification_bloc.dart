@@ -85,7 +85,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           player?.play(AssetSource("sound/alarm.ogg"));
         }
       } else {
-        throw "OAV Invalid 'notifications' stream message name: ${message.name}";
+        throw Exception(
+            "OAV Invalid 'notifications' stream message name: ${message.name}");
       }
     }
   }

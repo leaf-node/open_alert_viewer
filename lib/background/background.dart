@@ -122,7 +122,7 @@ class BackgroundWorker {
             age: Duration.zero),
       ]));
     } else {
-      throw "Invalid message type: $message";
+      throw Exception("Invalid message type: $message");
     }
   }
 
@@ -182,10 +182,10 @@ class BackgroundWorker {
         } else if (message.name == MessageName.toggleSounds) {
           notifier.updateAlertDetails();
         } else {
-          throw "Invalid message name: $message";
+          throw Exception("Invalid message name: $message");
         }
       } else {
-        throw "Invalid message type: $message";
+        throw Exception("Invalid message type: $message");
       }
     });
   }

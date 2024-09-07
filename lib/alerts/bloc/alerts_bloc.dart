@@ -70,7 +70,8 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
       } else if (data.name == MessageName.sourcesChanged) {
         emit(SourcesChanged(alerts: alerts, sources: sources));
       } else {
-        throw "OAV Invalid 'alert' stream message name: ${data.name}";
+        throw Exception(
+            "OAV Invalid 'alert' stream message name: ${data.name}");
       }
     }
   }

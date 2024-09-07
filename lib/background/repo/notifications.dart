@@ -76,7 +76,7 @@ class NotificationRepo {
               AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(alertChannel);
     } else {
-      throw "Unsupported platform for notifications.";
+      throw Exception("Unsupported platform for notifications.");
     }
   }
 

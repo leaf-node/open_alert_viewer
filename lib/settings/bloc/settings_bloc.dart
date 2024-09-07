@@ -52,7 +52,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         case "darkMode":
           _settingsRepo.darkMode = newSetting;
         case _:
-          throw "Unsupported setting: $setting";
+          throw Exception("Unsupported setting: $setting");
       }
     }
     emit(SettingsChanged(settings: {
