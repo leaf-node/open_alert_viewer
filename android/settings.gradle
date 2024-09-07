@@ -1,8 +1,5 @@
 import org.apache.tools.ant.DirectoryScanner
 
-DirectoryScanner.removeDefaultExclude('**/.git')
-DirectoryScanner.removeDefaultExclude('**/.git/**')
-
 pluginManagement {
     def flutterSdkPath = {
         def properties = new Properties()
@@ -29,3 +26,7 @@ plugins {
 }
 
 include ":app"
+
+DirectoryScanner.removeDefaultExclude('**/.git')
+DirectoryScanner.removeDefaultExclude('**/.git/**')
+
