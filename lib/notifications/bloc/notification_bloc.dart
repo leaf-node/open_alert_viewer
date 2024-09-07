@@ -4,6 +4,10 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
@@ -28,11 +32,17 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     on<DisableNotificationsEvent>(_disableNotifications);
     on<ToggleSounds>(_toggleIntegratedAlertSounds);
     on<UpdateLastCheckTime>(_updateLastCheckTime);
+    on<ListenForNotificationEvents>(_listenForNotificationEvents);
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      player = AudioPlayer();
+    }
+    add(ListenForNotificationEvents());
   }
 
   final StickyNotificationRepo _notificationRepo;
   final SettingsRepo _settings;
   final BackgroundWorker _bgWorker;
+  late AudioPlayer? player;
 
   Future<void> _requestAndEnableNotifications(
       RequestAndEnableNotificationEvent event,
@@ -63,5 +73,20 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   Future<void> _updateLastCheckTime(
       UpdateLastCheckTime event, Emitter<NotificationState> emit) async {
     _settings.userLastLooked = _settings.lastFetched;
+  }
+
+  Future<void> _listenForNotificationEvents(ListenForNotificationEvents event,
+      Emitter<NotificationState> emit) async {
+    await for (final message
+        in _bgWorker.isolateStreams[MessageDestination.notifications]!.stream) {
+      if (message.name == MessageName.playDesktopSound) {
+        log("here");
+        if (!Platform.isAndroid && !Platform.isIOS) {
+          player?.play(AssetSource("sound/alarm.ogg"));
+        }
+      } else {
+        throw "OAV Invalid 'notifications' stream message name: ${message.name}";
+      }
+    }
   }
 }

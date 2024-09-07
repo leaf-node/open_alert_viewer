@@ -133,8 +133,9 @@ class NotificationRepo {
     if (brandNew > 0) {
       await _showNotification(message: messages.join(", "));
       if (_settings.soundEnabled && !Platform.isAndroid && !Platform.isIOS) {
-        alertStream
-            ?.add(const IsolateMessage(name: MessageName.playDesktopSound));
+        alertStream?.add(const IsolateMessage(
+            name: MessageName.playDesktopSound,
+            destination: MessageDestination.notifications));
       }
     } else if (messages.isEmpty) {
       await _removeAlertNotification();

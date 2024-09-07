@@ -5,9 +5,7 @@
  */
 
 import 'dart:async';
-import 'dart:io';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
@@ -25,14 +23,10 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     on<UpdateAlertSource>(_updateSource);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
-    if (!Platform.isAndroid && !Platform.isIOS) {
-      player = AudioPlayer();
-    }
     add(ListenForAlerts());
   }
 
   final BackgroundWorker _bgWorker;
-  late AudioPlayer? player;
 
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
@@ -75,10 +69,6 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
         emit(AlertsFetched(alerts: alerts, sources: sources));
       } else if (data.name == MessageName.sourcesChanged) {
         emit(SourcesChanged(alerts: alerts, sources: sources));
-      } else if (data.name == MessageName.playDesktopSound) {
-        if (!Platform.isAndroid && !Platform.isIOS) {
-          player?.play(AssetSource("sound/alarm.ogg"));
-        }
       } else {
         throw "OAV Invalid 'alert' stream message name: ${data.name}";
       }

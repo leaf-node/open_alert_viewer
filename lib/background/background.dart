@@ -151,6 +151,10 @@ class BackgroundWorker {
         notifier: notifier);
     alertsRepo.init(outboundStream);
     outboundStream.stream.listen((event) {
+      if (event.destination == null) {
+        throw Exception(
+            "Background worker sending message without destination");
+      }
       port.send(event);
     });
     receivePort.listen((dynamic message) async {
