@@ -63,7 +63,8 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
       ListenForAlerts event, Emitter<AlertState> emit) async {
     List<Alert> alerts = [];
     List<AlertSource> sources = [];
-    await for (final data in _bgWorker.alertStream.stream) {
+    await for (final data
+        in _bgWorker.isolateStreams[MessageDestination.alerts]!.stream) {
       alerts = data.alerts ?? alerts;
       sources = data.sources ?? sources;
       if (data.name == MessageName.alertsInit) {
@@ -79,7 +80,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
           player?.play(AssetSource("sound/alarm.ogg"));
         }
       } else {
-        throw "OAV Invalid message name: ${data.name}";
+        throw "OAV Invalid 'alert' stream message name: ${data.name}";
       }
     }
   }

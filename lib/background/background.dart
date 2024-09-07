@@ -36,15 +36,23 @@ enum MessageName {
   sourcesFailure,
 }
 
+enum MessageDestination {
+  alerts,
+  notifications,
+  refreshIcon,
+}
+
 class IsolateMessage {
   const IsolateMessage(
       {required this.name,
+      this.destination,
       this.id,
       this.alerts,
       this.sourceStrings,
       this.sources,
       this.forceRefreshNow});
   final MessageName name;
+  final MessageDestination? destination;
   final int? id;
   final List<Alert>? alerts;
   final List<String>? sourceStrings;
@@ -53,9 +61,14 @@ class IsolateMessage {
 }
 
 class BackgroundWorker {
-  BackgroundWorker();
+  BackgroundWorker() {
+    for (var destination in MessageDestination.values) {
+      isolateStreams[destination] = StreamController<IsolateMessage>();
+    }
+  }
 
-  final alertStream = StreamController<IsolateMessage>();
+  final Map<MessageDestination, StreamController<IsolateMessage>>
+      isolateStreams = {};
   final Completer<void> _isolateReady = Completer.sync();
   late SendPort _sendPort;
   static late LocalDatabase db;
@@ -82,9 +95,10 @@ class BackgroundWorker {
       _sendPort = message;
       _isolateReady.complete();
     } else if (message is IsolateMessage) {
-      alertStream.add(message);
+      isolateStreams[message.destination]?.add(message);
     } else if (message is List<dynamic>) {
-      alertStream.add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
+      isolateStreams[MessageDestination.alerts]!
+          .add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
         const Alert(
             source: 0,
             kind: AlertType.syncFailure,
@@ -129,14 +143,14 @@ class BackgroundWorker {
     notifier = NotificationRepo(settings: settings);
     await notifier.initializeAlertNotifications();
     await notifier.startAnroidStickyNotification();
-    var bgAlertStream = StreamController<IsolateMessage>();
+    var outboundStream = StreamController<IsolateMessage>();
     alertsRepo = AlertsRepo(
         db: db,
         settings: settings,
         sourcesRepo: sourcesRepo,
         notifier: notifier);
-    alertsRepo.init(bgAlertStream);
-    bgAlertStream.stream.listen((event) {
+    alertsRepo.init(outboundStream);
+    outboundStream.stream.listen((event) {
       port.send(event);
     });
     receivePort.listen((dynamic message) async {

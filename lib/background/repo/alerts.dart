@@ -31,14 +31,14 @@ class AlertsRepo {
   final SettingsRepo _settings;
   final SourcesRepo _sourcesRepo;
   final NotificationRepo _notifier;
-  late StreamController<IsolateMessage> _alertStream;
+  late StreamController<IsolateMessage> _outboundStream;
   List<AlertSource> _alertSources;
   List<Alert> _alerts;
   Timer? _timer;
   bool _fetching = false;
 
-  void init(StreamController<IsolateMessage> alertStream) async {
-    _alertStream = alertStream;
+  void init(StreamController<IsolateMessage> outboundStream) async {
+    _outboundStream = outboundStream;
     startTimer();
   }
 
@@ -50,22 +50,27 @@ class AlertsRepo {
     int interval = _settings.refreshInterval;
     _fetchCachedAlerts();
     _alertSources = _sourcesRepo.alertSources;
-    _alertStream.add(IsolateMessage(
+    _outboundStream.add(IsolateMessage(
         name: MessageName.alertsFetching,
+        destination: MessageDestination.alerts,
         alerts: _alerts,
         sources: _alertSources));
     if (!forceRefreshNow) {
       if (interval == -1) {
-        _alertStream.add(
-            IsolateMessage(name: MessageName.alertsFetched, alerts: _alerts));
+        _outboundStream.add(IsolateMessage(
+            name: MessageName.alertsFetched,
+            destination: MessageDestination.alerts,
+            alerts: _alerts));
         _fetching = false;
         return;
       }
       var maxCacheAge = Duration(seconds: interval);
       var lastFetched = _settings.lastFetched;
       if (maxCacheAge.compareTo(DateTime.now().difference(lastFetched)) >= 0) {
-        _alertStream.add(
-            IsolateMessage(name: MessageName.alertsFetched, alerts: _alerts));
+        _outboundStream.add(IsolateMessage(
+            name: MessageName.alertsFetched,
+            destination: MessageDestination.alerts,
+            alerts: _alerts));
         _fetching = false;
         return;
       }
@@ -99,23 +104,29 @@ class AlertsRepo {
         _alerts = _alerts.where((alert) => alert.source != source.id).toList();
         _alerts.addAll(updatedAlerts);
         _alerts.sort(_alertSort);
-        _alertStream.add(
-            IsolateMessage(name: MessageName.alertsFetching, alerts: _alerts));
+        _outboundStream.add(IsolateMessage(
+            name: MessageName.alertsFetching,
+            destination: MessageDestination.alerts,
+            alerts: _alerts));
         freshAlerts.addAll(updatedAlerts);
       });
     }
     await Future.wait(incoming);
     _alerts = freshAlerts;
     _alerts.sort(_alertSort);
-    _alertStream
-        .add(IsolateMessage(name: MessageName.alertsFetching, alerts: _alerts));
+    _outboundStream.add(IsolateMessage(
+        name: MessageName.alertsFetching,
+        destination: MessageDestination.alerts,
+        alerts: _alerts));
     _cacheAlerts();
     _settings.priorFetch = _settings.lastFetched;
     _settings.lastFetched = lastFetched;
-    _alertStream
-        .add(IsolateMessage(name: MessageName.alertsFetched, alerts: _alerts));
+    _outboundStream.add(IsolateMessage(
+        name: MessageName.alertsFetched,
+        destination: MessageDestination.alerts,
+        alerts: _alerts));
     _notifier.showFilteredNotifications(
-        alerts: _alerts, alertStream: _alertStream);
+        alerts: _alerts, alertStream: _outboundStream);
     _fetching = false;
   }
 
