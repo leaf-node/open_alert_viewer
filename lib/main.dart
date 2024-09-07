@@ -36,15 +36,19 @@ Future<void> startApp() async {
 }
 
 Future<String> getVersion() async {
-  String gitVersion;
-  final pubspecVersion =
-      loadYaml(await rootBundle.loadString("pubspec.yaml"))["version"];
-  var head = await rootBundle.loadString('.git/HEAD');
-  if (head.startsWith('ref: ')) {
-    final branchName = head.split('ref: refs/heads/').last.trim();
-    gitVersion = await rootBundle.loadString('.git/refs/heads/$branchName');
-  } else {
-    gitVersion = head;
+  try {
+    String gitVersion;
+    final pubspecVersion =
+        loadYaml(await rootBundle.loadString("pubspec.yaml"))["version"];
+    var head = await rootBundle.loadString('.git/HEAD');
+    if (head.startsWith('ref: refs/heads/')) {
+      final branchName = head.split('ref: refs/heads/').last.trim();
+      gitVersion = await rootBundle.loadString('.git/refs/heads/$branchName');
+    } else {
+      gitVersion = head;
+    }
+    return "$pubspecVersion-${gitVersion.substring(0, 8)}";
+  } catch (e) {
+    return "version-unknown";
   }
-  return "$pubspecVersion-${gitVersion.substring(0, 8)}";
 }
