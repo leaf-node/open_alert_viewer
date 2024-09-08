@@ -5,6 +5,7 @@
  */
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 import '../../background/background.dart';
 
@@ -15,7 +16,7 @@ class RefreshIconBloc extends Bloc<RefreshIconEvent, RefreshIconState> {
   RefreshIconBloc({required bgWorker})
       : _bgWorker = bgWorker,
         super(RefresIconInitial()) {
-    on<RefreshIconNow>(_refreshIconNow);
+    on<RefreshIconNow>(_refreshIconNow, transformer: droppable());
     on<RefreshIconFinish>(_refreshFinish);
     on<ListenForRefreshIcon>(_listenForRefreshIcon);
     add(ListenForRefreshIcon());
