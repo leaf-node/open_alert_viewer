@@ -9,11 +9,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_alert_viewer/alerts/bloc/refresh_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:app_settings/app_settings.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
-import '../../alerts/bloc/alerts_event.dart';
 import '../../alerts/bloc/alerts_state.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/view/app_view_elements.dart';
@@ -152,7 +152,7 @@ class GeneralSettingsList extends StatelessWidget {
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
       var settings = context.read<SettingsRepo>();
       var settingsBloc = context.read<SettingsBloc>();
-      var alertsBloc = context.read<AlertsBloc>();
+      var refreshIconBloc = context.read<RefreshIconBloc>();
       String refreshIntervalSubtitle = () {
         for (var option in RefreshFrequencies.values) {
           if (option.value == settings.refreshInterval) {
@@ -206,7 +206,7 @@ class GeneralSettingsList extends StatelessWidget {
               if (result != null) {
                 settingsBloc.add(
                     SettingsPushEvent(newSettings: {"syncTimeout": result}));
-                alertsBloc.add(FetchAlerts(forceRefreshNow: true));
+                refreshIconBloc.add(RefreshIconNow(forceRefreshNow: true));
               }
             }),
         MenuItem(
