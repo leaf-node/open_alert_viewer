@@ -17,16 +17,15 @@ final class FetchAlerts implements AlertEvent {
 }
 
 final class AddAlertSource implements AlertEvent {
-  AddAlertSource({required this.source});
+  AddAlertSource({required this.sourceMap});
 
-  final List<String> source;
+  final Map<String, Object> sourceMap;
 }
 
 final class UpdateAlertSource implements AlertEvent {
-  UpdateAlertSource({required this.id, required this.source});
+  UpdateAlertSource({required this.sourceMap});
 
-  final int id;
-  final List<String> source;
+  final Map<String, Object> sourceMap;
 }
 
 final class RemoveAlertSource implements AlertEvent {

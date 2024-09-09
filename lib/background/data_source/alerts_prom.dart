@@ -12,31 +12,17 @@ import 'package:http/http.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/data_source/network_fetch.dart';
 
-class PromAlerts with NetworkFetch implements AlertSource {
+class PromAlerts extends AlertSource with NetworkFetch {
   PromAlerts(
-      {required this.id,
-      required this.name,
-      required this.type,
-      required this.baseURL,
-      required this.path,
-      required this.username,
-      required this.password})
+      {required super.id,
+      required super.name,
+      required super.type,
+      required super.baseURL,
+      required super.path,
+      required super.username,
+      required super.password})
       : _alerts = [];
 
-  @override
-  final int id;
-  @override
-  final String name;
-  @override
-  final int type;
-  @override
-  final String baseURL;
-  @override
-  final String path;
-  @override
-  final String username;
-  @override
-  final String password;
   List<Alert> _alerts;
 
   @override
@@ -115,19 +101,15 @@ class PromAlertsData {
       required this.annotations,
       required this.labels});
 
-  factory PromAlertsData.fromJSON(Map<String, dynamic> data) {
+  factory PromAlertsData.fromJSON(Map<String, Object> data) {
     return PromAlertsData(
-        fingerprint: data["fingerprint"],
-        startsAt: data["startsAt"],
-        updatedAt: data["updatedAt"],
-        endsAt: data["endsAt"],
-        generatorURL: data["generatorURL"],
-        annotations: mapConvert(data["annotations"]),
-        labels: mapConvert(data["labels"]));
-  }
-
-  static Map<String, T> mapConvert<T>(Map<String, dynamic> data) {
-    return {for (var MapEntry(:key, :value) in data.entries) key: value as T};
+        fingerprint: data["fingerprint"] as String,
+        startsAt: data["startsAt"] as String,
+        updatedAt: data["updatedAt"] as String,
+        endsAt: data["endsAt"] as String,
+        generatorURL: data["generatorURL"] as String,
+        annotations: data["annotations"] as Map<String, String>,
+        labels: data["labels"] as Map<String, String>);
   }
 
   final String fingerprint;

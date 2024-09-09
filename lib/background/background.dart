@@ -49,7 +49,7 @@ class IsolateMessage {
       this.destination,
       this.id,
       this.alerts,
-      this.sourceStrings,
+      this.sourceMap,
       this.sources,
       this.forceRefreshNow,
       this.alreadyFetching});
@@ -57,7 +57,7 @@ class IsolateMessage {
   final MessageDestination? destination;
   final int? id;
   final List<Alert>? alerts;
-  final List<String>? sourceStrings;
+  final Map<String, Object>? sourceMap;
   final List<AlertSource>? sources;
   final bool? forceRefreshNow;
   final bool? alreadyFetching;
@@ -99,7 +99,7 @@ class BackgroundWorker {
       _isolateReady.complete();
     } else if (message is IsolateMessage) {
       isolateStreams[message.destination]?.add(message);
-    } else if (message is List<dynamic>) {
+    } else if (message is List<Object>) {
       isolateStreams[MessageDestination.alerts]!
           .add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
         const Alert(
@@ -168,12 +168,11 @@ class BackgroundWorker {
         } else if (message.name == MessageName.refreshTimer) {
           alertsRepo.refreshTimer();
         } else if (message.name == MessageName.addSource) {
-          var result =
-              await sourcesRepo.addSource(values: message.sourceStrings!);
+          var result = await sourcesRepo.addSource(source: message.sourceMap!);
           _sourcesChangeResult(port, (result >= 0));
         } else if (message.name == MessageName.updateSource) {
-          var result = await sourcesRepo.updateSource(
-              id: message.id!, values: message.sourceStrings!);
+          var result =
+              await sourcesRepo.updateSource(source: message.sourceMap!);
           _sourcesChangeResult(port, result);
         } else if (message.name == MessageName.removeSource) {
           sourcesRepo.removeSource(id: message.id!);

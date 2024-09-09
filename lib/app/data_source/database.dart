@@ -50,9 +50,9 @@ class LocalDatabase {
 
   // Generic querying methods
 
-  List<Map<String, dynamic>> fetchFromTable(
+  List<Map<String, Object>> fetchFromTable(
       {required String query, required List<Object> values}) {
-    return _db.select(query, values) as List<Map<String, dynamic>>;
+    return _db.select(query, values) as List<Map<String, Object>>;
   }
 
   void removeFromTable({required String query, required List<Object> values}) {
@@ -104,27 +104,44 @@ class LocalDatabase {
 
   // App-specific queries
 
-  List<Map<String, dynamic>> listSources() {
+  List<Map<String, Object>> listSources() {
     return fetchFromTable(
         query:
             "SELECT id, name, type, base_url, path, username, password FROM sources;",
         values: []);
   }
 
-  int addSource({required List<String> values}) {
+  int addSource({required Map<String, Object> source}) {
     return insertIntoTable(query: '''
       INSERT INTO sources
         (name, type, base_url, path, username, password)
         VALUES (?, ?, ?, ?, ?, ?);
-    ''', values: [values]);
+    ''', values: [
+      [
+        source["name"]!,
+        source["type"]!,
+        source["base_url"]!,
+        source["path"]!,
+        source["username"]!,
+        source["password"]!,
+      ]
+    ]);
   }
 
-  bool updateSource({required int id, required List<Object> values}) {
+  bool updateSource({required Map<String, Object> source}) {
     return updateTable(query: '''
       UPDATE sources SET
         (name, type, base_url, path, username, password)
         = (?, ?, ?, ?, ?, ?) WHERE id = ?;
-    ''', values: [...values, id]);
+    ''', values: [
+      source["name"]!,
+      source["type"]!,
+      source["base_url"]!,
+      source["path"]!,
+      source["username"]!,
+      source["password"]!,
+      source["id"]!
+    ]);
   }
 
   void removeSource({required int id}) {
@@ -143,7 +160,7 @@ class LocalDatabase {
     return true;
   }
 
-  List<Map<String, dynamic>> fetchCachedAlerts() {
+  List<Map<String, Object>> fetchCachedAlerts() {
     return fetchFromTable(
         query: '''SELECT id, source, kind, hostname, service, message, url, age
             FROM alerts_cache;''', values: []);
@@ -158,16 +175,6 @@ class LocalDatabase {
         INSERT INTO alerts_cache
           (source, kind, hostname, service, message, url, age)
           VALUES (?, ?, ?, ?, ?, ?, ?);''', values: alerts);
-  }
-
-  List<String> listSettings() {
-    List<String> settings = [];
-    var results =
-        fetchFromTable(query: "SELECT key from settings;", values: []);
-    for (var row in results) {
-      settings.add(row["key"] as String);
-    }
-    return settings;
   }
 
   String getSetting({required String setting}) {

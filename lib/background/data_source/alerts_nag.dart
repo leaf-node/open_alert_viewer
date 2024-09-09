@@ -7,31 +7,17 @@
 import '../../alerts/model/alerts.dart';
 import '../../app/data_source/network_fetch.dart';
 
-class NagAlerts with NetworkFetch implements AlertSource {
+class NagAlerts extends AlertSource with NetworkFetch {
   NagAlerts(
-      {required this.id,
-      required this.name,
-      required this.type,
-      required this.baseURL,
-      required this.path,
-      required this.username,
-      required this.password})
+      {required super.id,
+      required super.name,
+      required super.type,
+      required super.baseURL,
+      required super.path,
+      required super.username,
+      required super.password})
       : _alerts = [];
 
-  @override
-  final int id;
-  @override
-  final String name;
-  @override
-  final int type;
-  @override
-  final String baseURL;
-  @override
-  final String path;
-  @override
-  final String username;
-  @override
-  final String password;
   List<Alert> _alerts;
 
   @override

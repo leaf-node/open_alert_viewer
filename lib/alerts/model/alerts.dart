@@ -59,4 +59,16 @@ abstract class AlertSource {
   final String path;
   final String username;
   final String password;
+
+  Map<String, Object> toMap() {
+    return {
+      "id": id,
+      "name": name,
+      "type": type,
+      "baseURL": baseURL,
+      "path": path,
+      "username": username,
+      "password": password
+    };
+  }
 }

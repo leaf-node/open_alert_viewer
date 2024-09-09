@@ -190,7 +190,7 @@ class AlertsRepo {
 
   List<Alert> _fetchCachedAlerts() {
     List<Alert> alerts = [];
-    List<Map<String, dynamic>> serializedList = _db.fetchCachedAlerts();
+    List<Map<String, Object>> serializedList = _db.fetchCachedAlerts();
     for (var serialized in serializedList) {
       alerts.add(Alert(
         source: serialized["source"] as int,

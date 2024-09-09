@@ -8,32 +8,18 @@ import 'dart:math';
 
 import '../../alerts/model/alerts.dart';
 
-class RandomAlerts implements AlertSource {
+class RandomAlerts extends AlertSource {
   RandomAlerts(
-      {required this.id,
-      required this.name,
-      required this.type,
-      required this.baseURL,
-      required this.path,
-      required this.username,
-      required this.password})
+      {required super.id,
+      required super.name,
+      required super.type,
+      required super.baseURL,
+      required super.path,
+      required super.username,
+      required super.password})
       : _randomSeed = Random(DateTime.now().microsecondsSinceEpoch),
         _alerts = [];
 
-  @override
-  final int id;
-  @override
-  final String name;
-  @override
-  final int type;
-  @override
-  final String baseURL;
-  @override
-  final String path;
-  @override
-  final String username;
-  @override
-  final String password;
   final Random _randomSeed;
   List<Alert> _alerts;
 

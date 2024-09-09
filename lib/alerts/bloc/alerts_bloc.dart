@@ -31,15 +31,13 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
     _bgWorker.makeRequest(IsolateMessage(
-        name: MessageName.addSource, sourceStrings: event.source));
+        name: MessageName.addSource, sourceMap: event.sourceMap));
   }
 
   Future<void> _updateSource(
       UpdateAlertSource event, Emitter<AlertState> emit) async {
     _bgWorker.makeRequest(IsolateMessage(
-        name: MessageName.updateSource,
-        id: event.id,
-        sourceStrings: event.source));
+        name: MessageName.updateSource, sourceMap: event.sourceMap));
   }
 
   Future<void> _removeSource(
