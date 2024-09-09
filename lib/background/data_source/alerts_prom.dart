@@ -11,6 +11,7 @@ import 'package:http/http.dart';
 
 import '../../alerts/model/alerts.dart';
 import '../../app/data_source/network_fetch.dart';
+import '../../app/util/util.dart';
 
 class PromAlerts extends AlertSource with NetworkFetch {
   PromAlerts(
@@ -50,7 +51,7 @@ class PromAlerts extends AlertSource with NetworkFetch {
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       for (var datum in data) {
-        alertDatum = PromAlertsData.fromJSON(datum);
+        alertDatum = PromAlertsData.fromJSON(Util.mapConvert(datum));
         var severity = alertDatum.labels['severity'] ?? "";
         var type = alertDatum.labels['oav_type'] ?? "";
         AlertType kind;
@@ -108,8 +109,9 @@ class PromAlertsData {
         updatedAt: data["updatedAt"] as String,
         endsAt: data["endsAt"] as String,
         generatorURL: data["generatorURL"] as String,
-        annotations: data["annotations"] as Map<String, String>,
-        labels: data["labels"] as Map<String, String>);
+        annotations:
+            Util.mapConvert(data["annotations"] as Map<String, dynamic>),
+        labels: Util.mapConvert(data["labels"] as Map<String, dynamic>));
   }
 
   final String fingerprint;

@@ -10,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 
+import '../util/util.dart';
+
 class LocalDatabase {
   LocalDatabase() : _isOpen = false;
 
@@ -52,7 +54,8 @@ class LocalDatabase {
 
   List<Map<String, Object>> _fetchFromTable(
       {required String query, required List<Object> values}) {
-    return _db.select(query, values) as List<Map<String, Object>>;
+    final results = _db.select(query, values);
+    return [for (var result in results) Util.mapConvert(result)];
   }
 
   void _removeFromTable({required String query, required List<Object> values}) {

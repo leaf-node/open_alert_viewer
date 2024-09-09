@@ -99,7 +99,7 @@ class BackgroundWorker {
       _isolateReady.complete();
     } else if (message is IsolateMessage) {
       isolateStreams[message.destination]?.add(message);
-    } else if (message is List<Object>) {
+    } else if (message is List<dynamic>) {
       isolateStreams[MessageDestination.alerts]!
           .add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
         const Alert(

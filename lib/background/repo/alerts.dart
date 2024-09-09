@@ -5,7 +5,6 @@
  */
 
 import 'dart:async';
-import 'dart:developer';
 
 import '../../../alerts/model/alerts.dart';
 import '../../app/data_source/database.dart';
@@ -88,9 +87,13 @@ class AlertsRepo {
         .toList();
     for (var source in _alertSources) {
       var sourceFuture = source.fetchAlerts();
-      sourceFuture = sourceFuture.catchError((Object exception) {
-        log("Error fetching alerts:");
-        log(exception.toString());
+      sourceFuture = sourceFuture.catchError((Object error) {
+        String message;
+        if (error is Error) {
+          message = "${error.toString()}\n${error.stackTrace.toString()}";
+        } else {
+          message = error.toString();
+        }
         return Future.value([
           Alert(
               source: source.id,
@@ -99,6 +102,14 @@ class AlertsRepo {
               service: "OAV",
               message: "Error fetching alerts. "
                   "Please open an issue using \"Online Support\" in the settings menu.",
+              url: "https://github.com/okaycode-dev/open_alert_viewer",
+              age: Duration.zero),
+          Alert(
+              source: source.id,
+              kind: AlertType.syncFailure,
+              hostname: source.name,
+              service: "OAV",
+              message: message,
               url: "https://github.com/okaycode-dev/open_alert_viewer",
               age: Duration.zero)
         ]);

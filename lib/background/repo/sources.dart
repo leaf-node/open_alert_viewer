@@ -53,7 +53,7 @@ class SourcesRepo with NetworkFetch {
           id: source["id"],
           type: type,
           name: source["name"],
-          baseURL: source["baseURL"],
+          baseURL: source["base_url"],
           path: source["path"],
           username: source["username"],
           password: source["password"]));
