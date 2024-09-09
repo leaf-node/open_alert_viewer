@@ -50,16 +50,16 @@ class LocalDatabase {
 
   // Generic querying methods
 
-  List<Map<String, Object>> fetchFromTable(
+  List<Map<String, Object>> _fetchFromTable(
       {required String query, required List<Object> values}) {
     return _db.select(query, values) as List<Map<String, Object>>;
   }
 
-  void removeFromTable({required String query, required List<Object> values}) {
+  void _removeFromTable({required String query, required List<Object> values}) {
     _db.execute(query, values);
   }
 
-  int insertIntoTable(
+  int _insertIntoTable(
       {required String query, required List<List<Object>> values}) {
     _db.execute("BEGIN TRANSACTION;");
     try {
@@ -79,7 +79,7 @@ class LocalDatabase {
     return _db.lastInsertRowId;
   }
 
-  bool updateTable({required String query, required List<Object> values}) {
+  bool _updateTable({required String query, required List<Object> values}) {
     try {
       _db.execute(query, values);
     } on SqliteException catch (e) {
@@ -105,14 +105,14 @@ class LocalDatabase {
   // App-specific queries
 
   List<Map<String, Object>> listSources() {
-    return fetchFromTable(
+    return _fetchFromTable(
         query:
             "SELECT id, name, type, base_url, path, username, password FROM sources;",
         values: []);
   }
 
   int addSource({required Map<String, Object> source}) {
-    return insertIntoTable(query: '''
+    return _insertIntoTable(query: '''
       INSERT INTO sources
         (name, type, base_url, path, username, password)
         VALUES (?, ?, ?, ?, ?, ?);
@@ -129,7 +129,7 @@ class LocalDatabase {
   }
 
   bool updateSource({required Map<String, Object> source}) {
-    return updateTable(query: '''
+    return _updateTable(query: '''
       UPDATE sources SET
         (name, type, base_url, path, username, password)
         = (?, ?, ?, ?, ?, ?) WHERE id = ?;
@@ -145,12 +145,12 @@ class LocalDatabase {
   }
 
   void removeSource({required int id}) {
-    removeFromTable(query: "DELETE FROM sources WHERE id = ?;", values: [id]);
+    _removeFromTable(query: "DELETE FROM sources WHERE id = ?;", values: [id]);
   }
 
   bool checkUniqueSource({int? id, required String name}) {
     var rows =
-        fetchFromTable(query: "SELECT id, name FROM sources;", values: []);
+        _fetchFromTable(query: "SELECT id, name FROM sources;", values: []);
     for (var row in rows) {
       var rowid = row["id"] as int;
       if (id != rowid && name == row["name"] as String) {
@@ -161,24 +161,24 @@ class LocalDatabase {
   }
 
   List<Map<String, Object>> fetchCachedAlerts() {
-    return fetchFromTable(
+    return _fetchFromTable(
         query: '''SELECT id, source, kind, hostname, service, message, url, age
             FROM alerts_cache;''', values: []);
   }
 
   void removeCachedAlerts() {
-    removeFromTable(query: "DELETE FROM alerts_cache;", values: []);
+    _removeFromTable(query: "DELETE FROM alerts_cache;", values: []);
   }
 
   void insertIntoAlertsCache({required List<List<Object>> alerts}) {
-    insertIntoTable(query: '''
+    _insertIntoTable(query: '''
         INSERT INTO alerts_cache
           (source, kind, hostname, service, message, url, age)
           VALUES (?, ?, ?, ?, ?, ?, ?);''', values: alerts);
   }
 
   String getSetting({required String setting}) {
-    var results = fetchFromTable(
+    var results = _fetchFromTable(
         query: "SELECT value from settings where key = ?;", values: [setting]);
     return switch (results.length) {
       0 => "",
@@ -187,16 +187,16 @@ class LocalDatabase {
   }
 
   void setSetting({required String setting, required String value}) {
-    var results = fetchFromTable(
+    var results = _fetchFromTable(
         query: "SELECT value from settings WHERE key = ?;", values: [setting]);
     if (results.isEmpty) {
-      insertIntoTable(
+      _insertIntoTable(
           query: "INSERT INTO settings (key, value) VALUES (?, ?);",
           values: [
             [setting, value]
           ]);
     } else {
-      updateTable(
+      _updateTable(
           query: "UPDATE settings SET value = ? WHERE key = ?;",
           values: [value, setting]);
     }
