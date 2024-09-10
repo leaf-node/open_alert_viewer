@@ -110,7 +110,7 @@ class LocalDatabase {
 
   List<AlertSourceData> listSources() {
     List<Map<String, Object>> valuesArray = _fetchFromTable(query: '''
-      "SELECT
+      SELECT
         id, name, type, base_url, path, username, password, failing, last_seen
       FROM sources;
     ''', values: []);
