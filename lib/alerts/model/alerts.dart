@@ -61,7 +61,7 @@ class AlertSourceData {
   String username;
   String password;
   bool failing;
-  int lastSeen;
+  DateTime lastSeen;
 }
 
 abstract class AlertSource {

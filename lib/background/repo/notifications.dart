@@ -99,8 +99,8 @@ class NotificationRepo {
     var lastFetched = _settings.lastFetched;
     Map<int, Duration> sinceLooked = {};
     for (var source in sources) {
-      sinceLooked[source.sourceData.id!] = lastFetched.difference(
-          DateTime.fromMillisecondsSinceEpoch(source.sourceData.lastSeen));
+      sinceLooked[source.sourceData.id!] =
+          lastFetched.difference(source.sourceData.lastSeen);
     }
     var sincePriorFetch =
         _settings.lastFetched.difference(_settings.priorFetch);

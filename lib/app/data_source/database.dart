@@ -126,7 +126,8 @@ class LocalDatabase {
         username: values["username"] as String,
         password: values["password"] as String,
         failing: failing,
-        lastSeen: values["last_seen"] as int,
+        lastSeen:
+            DateTime.fromMillisecondsSinceEpoch(values["last_seen"] as int),
       ));
     }
     return sources;
@@ -146,7 +147,7 @@ class LocalDatabase {
         sourceData.username,
         sourceData.password,
         sourceData.failing,
-        sourceData.lastSeen,
+        sourceData.lastSeen.millisecondsSinceEpoch,
       ]
     ]);
   }
@@ -164,7 +165,7 @@ class LocalDatabase {
       sourceData.username,
       sourceData.password,
       sourceData.failing,
-      sourceData.lastSeen,
+      sourceData.lastSeen.millisecondsSinceEpoch,
       sourceData.id!,
     ]);
   }

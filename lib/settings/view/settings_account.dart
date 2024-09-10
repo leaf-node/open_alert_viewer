@@ -85,6 +85,7 @@ class _AccountFormState extends State<AccountForm> {
 
   @override
   Widget build(BuildContext context) {
+    final epoch = DateTime.fromMillisecondsSinceEpoch(0);
     return Form(
         autovalidateMode: AutovalidateMode.always,
         onChanged: () => (),
@@ -155,20 +156,20 @@ class _AccountFormState extends State<AccountForm> {
                               onPressed: () {
                                 if (Form.of(context).validate()) {
                                   if (widget.source == null) {
-                                    context.read<AlertsBloc>().add(
-                                        AddAlertSource(
+                                    context
+                                        .read<AlertsBloc>()
+                                        .add(AddAlertSource(
                                             sourceData: AlertSourceData(
-                                                id: null,
-                                                name: nameController.text,
-                                                type: int.parse(
-                                                    typeController.text),
-                                                baseURL: baseURLController.text,
-                                                path: pathController.text,
-                                                username: userController.text,
-                                                password:
-                                                    passwordController.text,
-                                                failing: false,
-                                                lastSeen: 0)));
+                                          id: null,
+                                          name: nameController.text,
+                                          type: int.parse(typeController.text),
+                                          baseURL: baseURLController.text,
+                                          path: pathController.text,
+                                          username: userController.text,
+                                          password: passwordController.text,
+                                          failing: false,
+                                          lastSeen: epoch,
+                                        )));
                                   } else {
                                     context
                                         .read<AlertsBloc>()
@@ -186,7 +187,7 @@ class _AccountFormState extends State<AccountForm> {
                                               false,
                                           lastSeen: widget.source?.sourceData
                                                   .lastSeen ??
-                                              0,
+                                              epoch,
                                         )));
                                   }
                                   Navigator.of(context).pop();
