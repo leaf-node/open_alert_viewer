@@ -96,13 +96,17 @@ class NotificationRepo {
       {required List<Alert> alerts,
       required List<AlertSource> sources,
       StreamController<IsolateMessage>? alertStream}) async {
-    var lastFetched = _settings.lastFetched;
     Map<int, Duration> sinceLooked = {};
     for (var source in sources) {
       sinceLooked[source.sourceData.id!] =
-          lastFetched.difference(source.sourceData.lastSeen);
+          source.sourceData.lastFetch.difference(source.sourceData.lastSeen);
     }
-    var sincePriorFetch =
+    Map<int, Duration> sincePriorFetch = {};
+    for (var source in sources) {
+      sincePriorFetch[source.sourceData.id!] =
+          source.sourceData.lastFetch.difference(source.sourceData.priorFetch);
+    }
+    Duration globalPriorFetch =
         _settings.lastFetched.difference(_settings.priorFetch);
     int newSyncFailureCount = 0, newDownCount = 0, newErrorCount = 0;
     int brandNew = 0, brandNewInc = 0;
@@ -111,7 +115,12 @@ class NotificationRepo {
       if (alert.age.compareTo(sinceLooked[alert.source]!) > 0) {
         continue;
       }
-      brandNewInc = (alert.age.compareTo(sincePriorFetch) <= 0) ? 1 : 0;
+      if (alert.kind == AlertType.syncFailure) {
+        brandNewInc = (alert.age.compareTo(globalPriorFetch) <= 0) ? 1 : 0;
+      } else {
+        brandNewInc =
+            (alert.age.compareTo(sincePriorFetch[alert.source]!) <= 0) ? 1 : 0;
+      }
       if (alert.kind == AlertType.syncFailure) {
         newSyncFailureCount += 1;
         brandNew += brandNewInc;

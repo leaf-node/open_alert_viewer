@@ -81,7 +81,7 @@ class AlertsRepo {
     }
     List<Future<List<Alert>>> incoming = [];
     List<Alert> freshAlerts = [];
-    var lastFetched = DateTime.now();
+    var currentFetch = DateTime.now();
     var oldSyncFailures = _alerts
         .where((oldAlert) => oldAlert.kind == AlertType.syncFailure)
         .toList();
@@ -147,8 +147,15 @@ class AlertsRepo {
         destination: MessageDestination.alerts,
         alerts: _alerts));
     _cacheAlerts();
+    for (var source in _alertSources) {
+      if (!source.sourceData.failing) {
+        source.sourceData.priorFetch = source.sourceData.lastFetch;
+        source.sourceData.lastFetch = currentFetch;
+        _sourcesRepo.updateSource(sourceData: source.sourceData);
+      }
+    }
     _settings.priorFetch = _settings.lastFetched;
-    _settings.lastFetched = lastFetched;
+    _settings.lastFetched = currentFetch;
     _outboundStream.add(IsolateMessage(
         name: MessageName.alertsFetched,
         destination: MessageDestination.alerts,

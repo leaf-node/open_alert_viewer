@@ -13,7 +13,9 @@ CREATE TABLE IF NOT EXISTS sources (
     username TEXT NOT NULL,
     password TEXT NOT NULL,
     failing BOOLEAN NOT NULL,
-    last_seen INTEGER NOT NULL
+    last_seen INTEGER NOT NULL,
+    prior_fetch INTEGER NOT NULL,
+    last_fetch INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS settings (

@@ -169,6 +169,8 @@ class _AccountFormState extends State<AccountForm> {
                                           password: passwordController.text,
                                           failing: false,
                                           lastSeen: epoch,
+                                          priorFetch: epoch,
+                                          lastFetch: epoch,
                                         )));
                                   } else {
                                     context
@@ -186,6 +188,12 @@ class _AccountFormState extends State<AccountForm> {
                                                   .source?.sourceData.failing ??
                                               false,
                                           lastSeen: widget.source?.sourceData
+                                                  .lastSeen ??
+                                              epoch,
+                                          priorFetch: widget.source?.sourceData
+                                                  .lastSeen ??
+                                              epoch,
+                                          lastFetch: widget.source?.sourceData
                                                   .lastSeen ??
                                               epoch,
                                         )));

@@ -143,7 +143,7 @@ class BackgroundWorker {
     await db.open();
     SettingsRepo.appVersion = appVersion;
     settings = SettingsRepo(db: db);
-    sourcesRepo = SourcesRepo(db: db);
+    sourcesRepo = SourcesRepo(db: db, settings: settings);
     notifier = NotificationRepo(settings: settings);
     await notifier.initializeAlertNotifications();
     await notifier.startAnroidStickyNotification();

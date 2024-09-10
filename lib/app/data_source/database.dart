@@ -111,7 +111,8 @@ class LocalDatabase {
   List<AlertSourceData> listSources() {
     List<Map<String, Object>> valuesArray = _fetchFromTable(query: '''
       SELECT
-        id, name, type, base_url, path, username, password, failing, last_seen
+        id, name, type, base_url, path, username, password,
+          failing, last_seen, prior_fetch, last_fetch
       FROM sources;
     ''', values: []);
     var sources = <AlertSourceData>[];
@@ -128,6 +129,10 @@ class LocalDatabase {
         failing: failing,
         lastSeen:
             DateTime.fromMillisecondsSinceEpoch(values["last_seen"] as int),
+        priorFetch:
+            DateTime.fromMillisecondsSinceEpoch(values["prior_fetch"] as int),
+        lastFetch:
+            DateTime.fromMillisecondsSinceEpoch(values["last_fetch"] as int),
       ));
     }
     return sources;
@@ -136,8 +141,9 @@ class LocalDatabase {
   int addSource({required AlertSourceData sourceData}) {
     return _insertIntoTable(query: '''
       INSERT INTO sources
-        (name, type, base_url, path, username, password, failing, last_seen)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+        (name, type, base_url, path, username, password,
+          failing, last_seen, prior_fetch, last_fetch)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     ''', values: [
       [
         sourceData.name,
@@ -148,6 +154,8 @@ class LocalDatabase {
         sourceData.password,
         sourceData.failing,
         sourceData.lastSeen.millisecondsSinceEpoch,
+        sourceData.priorFetch.millisecondsSinceEpoch,
+        sourceData.lastFetch.millisecondsSinceEpoch,
       ]
     ]);
   }
@@ -155,8 +163,9 @@ class LocalDatabase {
   bool updateSource({required AlertSourceData sourceData}) {
     return _updateTable(query: '''
       UPDATE sources SET
-        (name, type, base_url, path, username, password, failing, last_seen)
-        = (?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
+        (name, type, base_url, path, username, password,
+          failing, last_seen, prior_fetch, last_fetch)
+        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
     ''', values: [
       sourceData.name,
       sourceData.type,
@@ -166,6 +175,8 @@ class LocalDatabase {
       sourceData.password,
       sourceData.failing,
       sourceData.lastSeen.millisecondsSinceEpoch,
+      sourceData.priorFetch.millisecondsSinceEpoch,
+      sourceData.lastFetch.millisecondsSinceEpoch,
       sourceData.id!,
     ]);
   }

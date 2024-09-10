@@ -51,6 +51,8 @@ class AlertSourceData {
     required this.password,
     required this.failing,
     required this.lastSeen,
+    required this.priorFetch,
+    required this.lastFetch,
   });
 
   int? id;
@@ -62,6 +64,8 @@ class AlertSourceData {
   String password;
   bool failing;
   DateTime lastSeen;
+  DateTime priorFetch;
+  DateTime lastFetch;
 }
 
 abstract class AlertSource {
