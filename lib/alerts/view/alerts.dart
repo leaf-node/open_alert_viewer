@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../app/util/util.dart';
 import '../model/alerts.dart';
 
 enum AlertTypeView {
@@ -113,7 +114,7 @@ class AlertWidget extends StatelessWidget {
       textColor: viewKind.fgColor,
       tileColor: viewKind.bgColor,
       title: Text(_printMessage(viewKind.title, viewKind.numArgs)),
-      subtitle: Text(_prettyPrintAge()),
+      subtitle: Text(Util.prettyPrintDuration(alert.age)),
       leading: Row(mainAxisSize: MainAxisSize.min, children: [
         IconButton(
             icon: const Icon(Icons.link_outlined),
@@ -139,21 +140,5 @@ class AlertWidget extends StatelessWidget {
       return sprintf(
           "$title [%s] %s: %s", [alert.service, alert.hostname, alert.message]);
     }
-  }
-
-  String _prettyPrintAge() {
-    String ageStr;
-
-    int seconds = alert.age.inSeconds.floor() % 60;
-    int minutes = alert.age.inMinutes.floor() % 60;
-    int hours = alert.age.inHours.floor() % 24;
-    int days = alert.age.inDays.floor();
-
-    ageStr = (days > 0) ? "${days}d " : "";
-    ageStr += (days > 0 || hours > 0) ? "${hours}h " : "";
-    ageStr += (days > 0 || hours > 0 || minutes > 0) ? "${minutes}m " : "";
-    ageStr += "${seconds}s";
-
-    return ageStr;
   }
 }
