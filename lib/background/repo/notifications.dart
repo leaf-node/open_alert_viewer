@@ -97,31 +97,37 @@ class NotificationRepo {
       {required List<Alert> alerts,
       required List<AlertSource> sources,
       StreamController<IsolateMessage>? alertStream}) async {
-    Map<int, Duration> sinceLooked = {};
+    Map<int, Duration> sinceLookedPerSource = {};
     for (var source in sources) {
-      sinceLooked[source.sourceData.id!] =
+      sinceLookedPerSource[source.sourceData.id!] =
           source.sourceData.lastFetch.difference(source.sourceData.lastSeen);
     }
-    Map<int, Duration> sincePriorFetch = {};
+    Map<int, Duration> sincePriorFetchPerSource = {};
     for (var source in sources) {
-      sincePriorFetch[source.sourceData.id!] =
+      sincePriorFetchPerSource[source.sourceData.id!] =
           source.sourceData.lastFetch.difference(source.sourceData.priorFetch);
     }
-    Duration globalPriorFetch =
+    Duration globalSinceLooked =
+        _settings.lastFetched.difference(_settings.lastSeen);
+    Duration globalSincePriorFetch =
         _settings.lastFetched.difference(_settings.priorFetch);
+    Duration sinceLooked;
+    Duration sincePriorFetch;
     int newSyncFailureCount = 0, newDownCount = 0, newErrorCount = 0;
     int brandNew = 0, brandNewInc = 0;
     List<String> messages = [];
     for (var alert in alerts) {
-      if (alert.age.compareTo(sinceLooked[alert.source]!) > 0) {
+      if (alert.kind == AlertType.syncFailure) {
+        sinceLooked = globalSinceLooked;
+        sincePriorFetch = globalSincePriorFetch;
+      } else {
+        sinceLooked = sinceLookedPerSource[alert.source]!;
+        sincePriorFetch = sincePriorFetchPerSource[alert.source]!;
+      }
+      if (alert.age.compareTo(sinceLooked) > 0) {
         continue;
       }
-      if (alert.kind == AlertType.syncFailure) {
-        brandNewInc = (alert.age.compareTo(globalPriorFetch) <= 0) ? 1 : 0;
-      } else {
-        brandNewInc =
-            (alert.age.compareTo(sincePriorFetch[alert.source]!) <= 0) ? 1 : 0;
-      }
+      brandNewInc = (alert.age.compareTo(sincePriorFetch) <= 0) ? 1 : 0;
       if (alert.kind == AlertType.syncFailure) {
         newSyncFailureCount += 1;
         brandNew += brandNewInc;

@@ -71,6 +71,7 @@ class SourcesRepo with NetworkFetch {
   }
 
   void updateLastSeen() {
+    _settings.lastSeen = _settings.lastFetched;
     for (var source in alertSources) {
       if (!source.sourceData.failing) {
         source.sourceData.lastSeen = _settings.lastFetched;

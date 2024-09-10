@@ -29,6 +29,9 @@ class SettingsRepo {
       _getSetting<bool>("notifications_enabled", false);
   set notificationsEnabled(value) =>
       _setSetting<bool>("notifications_enabled", value);
+  DateTime get lastSeen => _getSetting<DateTime>(
+      "last_seen", DateTime.fromMillisecondsSinceEpoch(0));
+  set lastSeen(value) => _setSetting<DateTime>("last_seen", value);
   DateTime get priorFetch => _getSetting<DateTime>(
       "prior_fetch_time", DateTime.fromMillisecondsSinceEpoch(0));
   set priorFetch(value) => _setSetting<DateTime>("prior_fetch_time", value);
