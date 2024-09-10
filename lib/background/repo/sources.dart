@@ -64,8 +64,11 @@ class SourcesRepo with NetworkFetch {
     return _db.addSource(sourceData: sourceData);
   }
 
-  Future<bool> updateSource({required AlertSourceData sourceData}) async {
-    sourceData = await _getSourceTypeAndPath(sourcesData: sourceData);
+  Future<bool> updateSource(
+      {required AlertSourceData sourceData, bool? reIntialize}) async {
+    if (reIntialize ?? false) {
+      sourceData = await _getSourceTypeAndPath(sourcesData: sourceData);
+    }
     return _db.updateSource(sourceData: sourceData);
   }
 

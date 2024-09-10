@@ -173,8 +173,8 @@ class BackgroundWorker {
               await sourcesRepo.addSource(sourceData: message.sourceData!);
           _sourcesChangeResult(port, (result >= 0));
         } else if (message.name == MessageName.updateSource) {
-          var result =
-              await sourcesRepo.updateSource(sourceData: message.sourceData!);
+          var result = await sourcesRepo.updateSource(
+              sourceData: message.sourceData!, reIntialize: true);
           _sourcesChangeResult(port, result);
         } else if (message.name == MessageName.removeSource) {
           sourcesRepo.removeSource(id: message.id!);

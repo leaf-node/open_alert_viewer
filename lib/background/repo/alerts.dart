@@ -88,8 +88,6 @@ class AlertsRepo {
     for (var source in _alertSources) {
       var sourceFuture = source.fetchAlerts();
       sourceFuture = sourceFuture.catchError((Object error) {
-        source.sourceData.failing = true;
-        _sourcesRepo.updateSource(sourceData: source.sourceData);
         String message;
         if (error is Error) {
           message = "${error.toString()}\n${error.stackTrace.toString()}";
@@ -118,8 +116,14 @@ class AlertsRepo {
       });
       incoming.add(sourceFuture);
       incoming.last.then((List<Alert> newAlerts) {
-        if (newAlerts.isEmpty || newAlerts[0].kind != AlertType.syncFailure) {
+        bool priorValue = source.sourceData.failing;
+        if (newAlerts.isNotEmpty &&
+            newAlerts[0].kind == AlertType.syncFailure) {
+          source.sourceData.failing = true;
+        } else {
           source.sourceData.failing = false;
+        }
+        if (source.sourceData.failing != priorValue) {
           _sourcesRepo.updateSource(sourceData: source.sourceData);
         }
         var updatedAlerts = _updateSyncFailureAges(newAlerts, oldSyncFailures);
