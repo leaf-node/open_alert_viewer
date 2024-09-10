@@ -94,16 +94,21 @@ class NotificationRepo {
 
   Future<void> showFilteredNotifications(
       {required List<Alert> alerts,
+      required List<AlertSource> sources,
       StreamController<IsolateMessage>? alertStream}) async {
-    var sinceLooked =
-        _settings.lastFetched.difference(_settings.userLastLooked);
+    var lastFetched = _settings.lastFetched;
+    Map<int, Duration> sinceLooked = {};
+    for (var source in sources) {
+      sinceLooked[source.sourceData.id!] = lastFetched.difference(
+          DateTime.fromMillisecondsSinceEpoch(source.sourceData.lastSeen));
+    }
     var sincePriorFetch =
         _settings.lastFetched.difference(_settings.priorFetch);
     int newSyncFailureCount = 0, newDownCount = 0, newErrorCount = 0;
     int brandNew = 0, brandNewInc = 0;
     List<String> messages = [];
     for (var alert in alerts) {
-      if (alert.age.compareTo(sinceLooked) > 0) {
+      if (alert.age.compareTo(sinceLooked[alert.source]!) > 0) {
         continue;
       }
       brandNewInc = (alert.age.compareTo(sincePriorFetch) <= 0) ? 1 : 0;

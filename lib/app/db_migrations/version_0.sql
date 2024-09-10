@@ -11,7 +11,9 @@ CREATE TABLE IF NOT EXISTS sources (
     base_url TEXT NOT NULL,
     path TEXT NOT NULL,
     username TEXT NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    failing BOOLEAN NOT NULL,
+    last_seen INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS settings (

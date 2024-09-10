@@ -155,18 +155,20 @@ class _AccountFormState extends State<AccountForm> {
                               onPressed: () {
                                 if (Form.of(context).validate()) {
                                   if (widget.source == null) {
-                                    context
-                                        .read<AlertsBloc>()
-                                        .add(AddAlertSource(
+                                    context.read<AlertsBloc>().add(
+                                        AddAlertSource(
                                             sourceData: AlertSourceData(
-                                          id: null,
-                                          name: nameController.text,
-                                          type: int.parse(typeController.text),
-                                          baseURL: baseURLController.text,
-                                          path: pathController.text,
-                                          username: userController.text,
-                                          password: passwordController.text,
-                                        )));
+                                                id: null,
+                                                name: nameController.text,
+                                                type: int.parse(
+                                                    typeController.text),
+                                                baseURL: baseURLController.text,
+                                                path: pathController.text,
+                                                username: userController.text,
+                                                password:
+                                                    passwordController.text,
+                                                failing: false,
+                                                lastSeen: 0)));
                                   } else {
                                     context
                                         .read<AlertsBloc>()
@@ -179,6 +181,12 @@ class _AccountFormState extends State<AccountForm> {
                                           path: pathController.text,
                                           username: userController.text,
                                           password: passwordController.text,
+                                          failing: widget
+                                                  .source?.sourceData.failing ??
+                                              false,
+                                          lastSeen: widget.source?.sourceData
+                                                  .lastSeen ??
+                                              0,
                                         )));
                                   }
                                   Navigator.of(context).pop();

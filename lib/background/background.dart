@@ -179,6 +179,8 @@ class BackgroundWorker {
         } else if (message.name == MessageName.removeSource) {
           sourcesRepo.removeSource(id: message.id!);
           _sourcesChangeResult(port, true);
+        } else if (message.name == MessageName.updateLastSeen) {
+          sourcesRepo.updateLastSeen();
         } else if (message.name == MessageName.enableNotifications) {
           notifier.startAnroidStickyNotification();
         } else if (message.name == MessageName.disableNotifications) {

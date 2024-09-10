@@ -88,6 +88,8 @@ class AlertsRepo {
     for (var source in _alertSources) {
       var sourceFuture = source.fetchAlerts();
       sourceFuture = sourceFuture.catchError((Object error) {
+        source.sourceData.failing = true;
+        _sourcesRepo.updateSource(sourceData: source.sourceData);
         String message;
         if (error is Error) {
           message = "${error.toString()}\n${error.stackTrace.toString()}";
@@ -101,8 +103,8 @@ class AlertsRepo {
               hostname: source.sourceData.name,
               service: "OAV",
               message: "Error fetching alerts. "
-                  "Please open an issue using \"Online Support\" in the settings menu.",
-              url: "https://github.com/okaycode-dev/open_alert_viewer",
+                  "Please open an issue using the link icon to the left.",
+              url: "https://github.com/okaycode-dev/open_alert_viewer/issues",
               age: Duration.zero),
           Alert(
               source: source.sourceData.id!,
@@ -110,12 +112,16 @@ class AlertsRepo {
               hostname: source.sourceData.name,
               service: "OAV",
               message: message,
-              url: "https://github.com/okaycode-dev/open_alert_viewer",
+              url: "https://github.com/okaycode-dev/open_alert_viewer/issues",
               age: Duration.zero)
         ]);
       });
       incoming.add(sourceFuture);
       incoming.last.then((List<Alert> newAlerts) {
+        if (newAlerts.isEmpty || newAlerts[0].kind != AlertType.syncFailure) {
+          source.sourceData.failing = false;
+          _sourcesRepo.updateSource(sourceData: source.sourceData);
+        }
         var updatedAlerts = _updateSyncFailureAges(newAlerts, oldSyncFailures);
         _alerts = _alerts
             .where((alert) => alert.source != source.sourceData.id)
@@ -144,7 +150,7 @@ class AlertsRepo {
         destination: MessageDestination.alerts,
         alerts: _alerts));
     _notifier.showFilteredNotifications(
-        alerts: _alerts, alertStream: _outboundStream);
+        alerts: _alerts, sources: _alertSources, alertStream: _outboundStream);
     _fetching = false;
   }
 

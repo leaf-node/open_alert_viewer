@@ -41,14 +41,17 @@ class Alert {
 }
 
 class AlertSourceData {
-  AlertSourceData(
-      {required this.id,
-      required this.name,
-      required this.type,
-      required this.baseURL,
-      required this.path,
-      required this.username,
-      required this.password});
+  AlertSourceData({
+    required this.id,
+    required this.name,
+    required this.type,
+    required this.baseURL,
+    required this.path,
+    required this.username,
+    required this.password,
+    required this.failing,
+    required this.lastSeen,
+  });
 
   int? id;
   String name;
@@ -57,6 +60,8 @@ class AlertSourceData {
   String path;
   String username;
   String password;
+  bool failing;
+  int lastSeen;
 }
 
 abstract class AlertSource {

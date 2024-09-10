@@ -26,10 +26,6 @@ final class ToggleSounds extends NotificationEvent {
   ToggleSounds();
 }
 
-final class UpdateLastCheckTime extends NotificationEvent {
-  UpdateLastCheckTime();
-}
-
 final class ListenForNotificationEvents extends NotificationEvent {
   ListenForNotificationEvents();
 }

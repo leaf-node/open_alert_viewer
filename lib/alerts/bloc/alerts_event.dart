@@ -35,3 +35,7 @@ final class RemoveAlertSource implements AlertEvent {
 
   final int id;
 }
+
+final class UpdateLastSeen implements AlertEvent {
+  UpdateLastSeen();
+}

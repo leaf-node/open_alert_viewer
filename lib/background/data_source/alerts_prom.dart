@@ -14,9 +14,7 @@ import '../../app/data_source/network_fetch.dart';
 import '../../app/util/util.dart';
 
 class PromAlerts extends AlertSource with NetworkFetch {
-  PromAlerts({
-    required super.sourceData,
-  }) : _alerts = [];
+  PromAlerts({required super.sourceData}) : _alerts = [];
 
   List<Alert> _alerts;
 

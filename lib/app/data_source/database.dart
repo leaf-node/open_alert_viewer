@@ -109,29 +109,34 @@ class LocalDatabase {
   // App-specific queries
 
   List<AlertSourceData> listSources() {
-    List<Map<String, Object>> valuesArray = _fetchFromTable(
-        query:
-            "SELECT id, name, type, base_url, path, username, password FROM sources;",
-        values: []);
-    return [
-      for (var values in valuesArray)
-        AlertSourceData(
-          id: values["id"] as int,
-          name: values["name"] as String,
-          type: values["type"] as int,
-          baseURL: values["base_url"] as String,
-          path: values["path"] as String,
-          username: values["username"] as String,
-          password: values["password"] as String,
-        )
-    ];
+    List<Map<String, Object>> valuesArray = _fetchFromTable(query: '''
+      "SELECT
+        id, name, type, base_url, path, username, password, failing, last_seen
+      FROM sources;
+    ''', values: []);
+    var sources = <AlertSourceData>[];
+    for (var values in valuesArray) {
+      var failing = switch (values["failing"]) { 0 => false, 1 || _ => true };
+      sources.add(AlertSourceData(
+        id: values["id"] as int,
+        name: values["name"] as String,
+        type: values["type"] as int,
+        baseURL: values["base_url"] as String,
+        path: values["path"] as String,
+        username: values["username"] as String,
+        password: values["password"] as String,
+        failing: failing,
+        lastSeen: values["last_seen"] as int,
+      ));
+    }
+    return sources;
   }
 
   int addSource({required AlertSourceData sourceData}) {
     return _insertIntoTable(query: '''
       INSERT INTO sources
-        (name, type, base_url, path, username, password)
-        VALUES (?, ?, ?, ?, ?, ?);
+        (name, type, base_url, path, username, password, failing, last_seen)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     ''', values: [
       [
         sourceData.name,
@@ -140,6 +145,8 @@ class LocalDatabase {
         sourceData.path,
         sourceData.username,
         sourceData.password,
+        sourceData.failing,
+        sourceData.lastSeen,
       ]
     ]);
   }
@@ -147,8 +154,8 @@ class LocalDatabase {
   bool updateSource({required AlertSourceData sourceData}) {
     return _updateTable(query: '''
       UPDATE sources SET
-        (name, type, base_url, path, username, password)
-        = (?, ?, ?, ?, ?, ?) WHERE id = ?;
+        (name, type, base_url, path, username, password, failing, last_seen)
+        = (?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
     ''', values: [
       sourceData.name,
       sourceData.type,
@@ -156,6 +163,8 @@ class LocalDatabase {
       sourceData.path,
       sourceData.username,
       sourceData.password,
+      sourceData.failing,
+      sourceData.lastSeen,
       sourceData.id!,
     ]);
   }

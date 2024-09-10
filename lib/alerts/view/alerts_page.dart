@@ -105,7 +105,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
             HeaderButton(
                 icon: Icons.refresh,
                 onPressed: () {
-                  context.read<NotificationBloc>().add(UpdateLastCheckTime());
+                  context.read<AlertsBloc>().add(UpdateLastSeen());
                   context
                       .read<RefreshIconBloc>()
                       .add(RefreshIconNow(forceRefreshNow: true));
@@ -136,7 +136,7 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
     super.initState();
     _settings = context.read<SettingsRepo>();
     WidgetsBinding.instance.addObserver(this);
-    context.read<NotificationBloc>().add(UpdateLastCheckTime());
+    context.read<AlertsBloc>().add(UpdateLastSeen());
     context.read<NotificationBloc>().add(
         RequestAndEnableNotificationEvent(askAgain: false, callback: () {}));
   }
@@ -144,7 +144,7 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (ModalRoute.of(context)?.isCurrent ?? false) {
-      context.read<NotificationBloc>().add(UpdateLastCheckTime());
+      context.read<AlertsBloc>().add(UpdateLastSeen());
     }
     if (state == AppLifecycleState.resumed && _settings.notificationsEnabled) {
       context.read<NotificationBloc>().add(

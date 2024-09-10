@@ -29,16 +29,11 @@ class SourcesRepo with NetworkFetch {
 
   List<AlertSource> get alertSources {
     List<AlertSource> sources = [];
-    List<AlertSourceData> sourcesData = _db.listSources();
+    List<AlertSourceData> sourceDataArray = _db.listSources();
     AlertSource Function({required AlertSourceData sourceData}) alertSource;
-    for (var source in sourcesData) {
-      int type;
-      try {
-        type = source.type;
-      } catch (e) {
-        type = -1;
-      }
-      var enumType = SourceIntMap.values.singleWhere((e) => e.val == type);
+    for (var sourceData in sourceDataArray) {
+      var enumType =
+          SourceIntMap.values.singleWhere((e) => e.val == sourceData.type);
       switch (enumType) {
         case SourceIntMap.demo:
           alertSource = RandomAlerts.new;
@@ -51,13 +46,15 @@ class SourcesRepo with NetworkFetch {
       }
       sources.add(alertSource(
           sourceData: AlertSourceData(
-              id: source.id,
-              type: source.type,
-              name: source.name,
-              baseURL: source.baseURL,
-              path: source.path,
-              username: source.username,
-              password: source.password)));
+              id: sourceData.id,
+              type: sourceData.type,
+              name: sourceData.name,
+              baseURL: sourceData.baseURL,
+              path: sourceData.path,
+              username: sourceData.username,
+              password: sourceData.password,
+              failing: sourceData.failing,
+              lastSeen: sourceData.lastSeen)));
     }
     return sources;
   }
@@ -74,6 +71,15 @@ class SourcesRepo with NetworkFetch {
 
   void removeSource({required int id}) {
     _db.removeSource(id: id);
+  }
+
+  void updateLastSeen() {
+    for (var source in alertSources) {
+      if (!source.sourceData.failing) {
+        source.sourceData.lastSeen = DateTime.now().millisecondsSinceEpoch;
+        updateSource(sourceData: source.sourceData);
+      }
+    }
   }
 
   Future<AlertSourceData> _getSourceTypeAndPath(

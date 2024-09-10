@@ -23,6 +23,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     on<UpdateAlertSource>(_updateSource);
     on<RemoveAlertSource>(_removeSource);
     on<FetchAlerts>(_fetch, transformer: droppable());
+    on<UpdateLastSeen>(_updateLastSeen);
     add(ListenForAlerts());
   }
 
@@ -49,6 +50,12 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
     _bgWorker.makeRequest(IsolateMessage(
         name: MessageName.fetchAlerts, forceRefreshNow: event.forceRefreshNow));
+  }
+
+  Future<void> _updateLastSeen(
+      UpdateLastSeen event, Emitter<AlertState> emit) async {
+    _bgWorker
+        .makeRequest(const IsolateMessage(name: MessageName.updateLastSeen));
   }
 
   Future<void> _listenForAlerts(
