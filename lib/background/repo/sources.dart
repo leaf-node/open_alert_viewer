@@ -44,17 +44,7 @@ class SourcesRepo with NetworkFetch {
         case SourceIntMap.invalid:
           alertSource = InvalidAlerts.new;
       }
-      sources.add(alertSource(
-          sourceData: AlertSourceData(
-              id: sourceData.id,
-              type: sourceData.type,
-              name: sourceData.name,
-              baseURL: sourceData.baseURL,
-              path: sourceData.path,
-              username: sourceData.username,
-              password: sourceData.password,
-              failing: sourceData.failing,
-              lastSeen: sourceData.lastSeen)));
+      sources.add(alertSource(sourceData: sourceData));
     }
     return sources;
   }
