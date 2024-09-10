@@ -231,5 +231,9 @@ class AlertsRepo {
       fetchAlerts(forceRefreshNow: true);
     });
     fetchAlerts(forceRefreshNow: true);
+    if (_settings.notificationsEnabled) {
+      _notifier.disableNotifications();
+      _notifier.startAnroidStickyNotification();
+    }
   }
 }

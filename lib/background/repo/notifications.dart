@@ -11,15 +11,16 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../../alerts/model/alerts.dart';
 import '../../../app/data_repository/settings_repository.dart';
+import '../../app/util/util.dart';
 import '../background.dart';
 
 const stickyNotificationChannelId = "Open Alert Viewer Background Work";
 const stickyNotificationChannelName = "Background Work";
 const stickyNotificationChannelDescription =
-    "Allow Fetching Data in Background";
+    "Allow Fetching Alerts in Background";
 const stickyNotificationId = 1;
 const stickyNotificationTitle = "Periodically checking for new alerts";
-const stickyNotificationContent = "Running at configured interval";
+const stickyNotificationContentStart = "Synchronizing every";
 
 const alertsNotificationId = 2;
 const alertsNotificationTitle = "Open Alert Viewer";
@@ -170,11 +171,15 @@ class NotificationRepo {
         false) {
       return;
     }
+    var duration = Util.prettyPrintDuration(
+        duration: Duration(seconds: _settings.refreshInterval),
+        longForm: true,
+        stripLeadingOne: true);
     await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.startForegroundService(stickyNotificationId, stickyNotificationTitle,
-            stickyNotificationContent,
+            "$stickyNotificationContentStart $duration",
             notificationDetails: _stickyAndroidNotificationDetails,
             foregroundServiceTypes: {
           AndroidServiceForegroundType.foregroundServiceTypeDataSync

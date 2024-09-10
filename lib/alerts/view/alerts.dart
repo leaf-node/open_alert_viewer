@@ -114,7 +114,7 @@ class AlertWidget extends StatelessWidget {
       textColor: viewKind.fgColor,
       tileColor: viewKind.bgColor,
       title: Text(_printMessage(viewKind.title, viewKind.numArgs)),
-      subtitle: Text(Util.prettyPrintDuration(alert.age)),
+      subtitle: Text(Util.prettyPrintDuration(duration: alert.age)),
       leading: Row(mainAxisSize: MainAxisSize.min, children: [
         IconButton(
             icon: const Icon(Icons.link_outlined),
