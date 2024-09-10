@@ -5,6 +5,7 @@
  */
 
 import '../../alerts/model/alerts.dart';
+import '../../app/data_repository/settings_repository.dart';
 import '../../app/data_source/network_fetch.dart';
 import '../data_source/alerts_invalid.dart';
 import '../data_source/alerts_nag.dart';
@@ -23,9 +24,12 @@ enum SourceIntMap {
 }
 
 class SourcesRepo with NetworkFetch {
-  SourcesRepo({required LocalDatabase db}) : _db = db;
+  SourcesRepo({required LocalDatabase db, required SettingsRepo settings})
+      : _db = db,
+        _settings = settings;
 
   final LocalDatabase _db;
+  final SettingsRepo _settings;
 
   List<AlertSource> get alertSources {
     List<AlertSource> sources = [];
@@ -69,7 +73,7 @@ class SourcesRepo with NetworkFetch {
   void updateLastSeen() {
     for (var source in alertSources) {
       if (!source.sourceData.failing) {
-        source.sourceData.lastSeen = DateTime.now().millisecondsSinceEpoch;
+        source.sourceData.lastSeen = _settings.lastFetched;
         updateSource(sourceData: source.sourceData);
       }
     }
