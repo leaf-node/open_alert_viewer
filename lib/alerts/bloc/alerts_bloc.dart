@@ -31,13 +31,13 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
     _bgWorker.makeRequest(IsolateMessage(
-        name: MessageName.addSource, sourceMap: event.sourceMap));
+        name: MessageName.addSource, sourceData: event.sourceData));
   }
 
   Future<void> _updateSource(
       UpdateAlertSource event, Emitter<AlertState> emit) async {
     _bgWorker.makeRequest(IsolateMessage(
-        name: MessageName.updateSource, sourceMap: event.sourceMap));
+        name: MessageName.updateSource, sourceData: event.sourceData));
   }
 
   Future<void> _removeSource(
@@ -55,21 +55,21 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
       ListenForAlerts event, Emitter<AlertState> emit) async {
     List<Alert> alerts = [];
     List<AlertSource> sources = [];
-    await for (final data
+    await for (final sourceData
         in _bgWorker.isolateStreams[MessageDestination.alerts]!.stream) {
-      alerts = data.alerts ?? alerts;
-      sources = data.sources ?? sources;
-      if (data.name == MessageName.alertsInit) {
+      alerts = sourceData.alerts ?? alerts;
+      sources = sourceData.sources ?? sources;
+      if (sourceData.name == MessageName.alertsInit) {
         emit(AlertsInit(alerts: alerts, sources: sources));
-      } else if (data.name == MessageName.alertsFetching) {
+      } else if (sourceData.name == MessageName.alertsFetching) {
         emit(AlertsFetching(alerts: alerts, sources: sources));
-      } else if (data.name == MessageName.alertsFetched) {
+      } else if (sourceData.name == MessageName.alertsFetched) {
         emit(AlertsFetched(alerts: alerts, sources: sources));
-      } else if (data.name == MessageName.sourcesChanged) {
+      } else if (sourceData.name == MessageName.sourcesChanged) {
         emit(SourcesChanged(alerts: alerts, sources: sources));
       } else {
         throw Exception(
-            "OAV Invalid 'alert' stream message name: ${data.name}");
+            "OAV Invalid 'alert' stream message name: ${sourceData.name}");
       }
     }
   }

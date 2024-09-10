@@ -63,12 +63,12 @@ class _AccountFormState extends State<AccountForm> {
       userController.text = "";
       passwordController.text = "";
     } else {
-      nameController.text = widget.source!.name;
-      typeController.text = widget.source!.type.toString();
-      baseURLController.text = widget.source!.baseURL;
-      pathController.text = widget.source!.path;
-      userController.text = widget.source!.username;
-      passwordController.text = widget.source!.password;
+      nameController.text = widget.source!.sourceData.name;
+      typeController.text = widget.source!.sourceData.type.toString();
+      baseURLController.text = widget.source!.sourceData.baseURL;
+      pathController.text = widget.source!.sourceData.path;
+      userController.text = widget.source!.sourceData.username;
+      passwordController.text = widget.source!.sourceData.password;
     }
   }
 
@@ -100,7 +100,7 @@ class _AccountFormState extends State<AccountForm> {
                     controller: nameController,
                     validator: (String? value) {
                       int? id;
-                      id = widget.source?.id;
+                      id = widget.source?.sourceData.id;
                       if (value == null || value == "") {
                         return "Please enter a name";
                       }
@@ -133,7 +133,7 @@ class _AccountFormState extends State<AccountForm> {
                                   if (context.mounted && result) {
                                     context.read<AlertsBloc>().add(
                                         RemoveAlertSource(
-                                            id: widget.source!.id));
+                                            id: widget.source!.sourceData.id!));
                                     Navigator.of(context).pop();
                                   }
                                 }
@@ -157,26 +157,29 @@ class _AccountFormState extends State<AccountForm> {
                                   if (widget.source == null) {
                                     context
                                         .read<AlertsBloc>()
-                                        .add(AddAlertSource(sourceMap: {
-                                          "name": nameController.text,
-                                          "type": typeController.text,
-                                          "base_url": baseURLController.text,
-                                          "path": pathController.text,
-                                          "username": userController.text,
-                                          "password": passwordController.text
-                                        }));
+                                        .add(AddAlertSource(
+                                            sourceData: AlertSourceData(
+                                          id: null,
+                                          name: nameController.text,
+                                          type: int.parse(typeController.text),
+                                          baseURL: baseURLController.text,
+                                          path: pathController.text,
+                                          username: userController.text,
+                                          password: passwordController.text,
+                                        )));
                                   } else {
                                     context
                                         .read<AlertsBloc>()
-                                        .add(UpdateAlertSource(sourceMap: {
-                                          "id": widget.source!.id,
-                                          "name": nameController.text,
-                                          "type": typeController.text,
-                                          "base_url": baseURLController.text,
-                                          "path": pathController.text,
-                                          "username": userController.text,
-                                          "password": passwordController.text
-                                        }));
+                                        .add(UpdateAlertSource(
+                                            sourceData: AlertSourceData(
+                                          id: widget.source!.sourceData.id,
+                                          name: nameController.text,
+                                          type: int.parse(typeController.text),
+                                          baseURL: baseURLController.text,
+                                          path: pathController.text,
+                                          username: userController.text,
+                                          password: passwordController.text,
+                                        )));
                                   }
                                   Navigator.of(context).pop();
                                 }

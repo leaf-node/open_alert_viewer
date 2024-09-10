@@ -35,6 +35,7 @@ enum MessageName {
   sourcesChanged,
   sourcesFailure,
   showRefreshIndicator,
+  updateLastSeen,
 }
 
 enum MessageDestination {
@@ -49,7 +50,7 @@ class IsolateMessage {
       this.destination,
       this.id,
       this.alerts,
-      this.sourceMap,
+      this.sourceData,
       this.sources,
       this.forceRefreshNow,
       this.alreadyFetching});
@@ -57,7 +58,7 @@ class IsolateMessage {
   final MessageDestination? destination;
   final int? id;
   final List<Alert>? alerts;
-  final Map<String, Object>? sourceMap;
+  final AlertSourceData? sourceData;
   final List<AlertSource>? sources;
   final bool? forceRefreshNow;
   final bool? alreadyFetching;
@@ -168,11 +169,12 @@ class BackgroundWorker {
         } else if (message.name == MessageName.refreshTimer) {
           alertsRepo.refreshTimer();
         } else if (message.name == MessageName.addSource) {
-          var result = await sourcesRepo.addSource(source: message.sourceMap!);
+          var result =
+              await sourcesRepo.addSource(sourceData: message.sourceData!);
           _sourcesChangeResult(port, (result >= 0));
         } else if (message.name == MessageName.updateSource) {
           var result =
-              await sourcesRepo.updateSource(source: message.sourceMap!);
+              await sourcesRepo.updateSource(sourceData: message.sourceData!);
           _sourcesChangeResult(port, result);
         } else if (message.name == MessageName.removeSource) {
           sourcesRepo.removeSource(id: message.id!);

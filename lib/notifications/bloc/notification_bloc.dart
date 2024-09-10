@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -80,7 +79,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     await for (final message
         in _bgWorker.isolateStreams[MessageDestination.notifications]!.stream) {
       if (message.name == MessageName.playDesktopSound) {
-        log("here");
         if (!Platform.isAndroid && !Platform.isIOS) {
           player?.play(AssetSource("sound/alarm.ogg"));
         }

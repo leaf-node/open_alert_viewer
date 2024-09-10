@@ -9,15 +9,7 @@ import 'package:open_alert_viewer/app/data_source/network_fetch.dart';
 import '../../alerts/model/alerts.dart';
 
 class InvalidAlerts extends AlertSource with NetworkFetch {
-  InvalidAlerts(
-      {required super.id,
-      required super.name,
-      required super.type,
-      required super.baseURL,
-      required super.path,
-      required super.username,
-      required super.password})
-      : _alerts = [];
+  InvalidAlerts({required super.sourceData}) : _alerts = [];
 
   List<Alert> _alerts;
 
@@ -25,13 +17,13 @@ class InvalidAlerts extends AlertSource with NetworkFetch {
   Future<List<Alert>> fetchAlerts() async {
     List<Alert> nextAlerts = [
       Alert(
-          source: id,
+          source: sourceData.id!,
           kind: AlertType.syncFailure,
-          hostname: name,
+          hostname: sourceData.name,
           service: "OAV",
           message: "Error finding / connecting to a compatible account. "
               "Try editing your account details.",
-          url: generateURL(baseURL, ""),
+          url: generateURL(sourceData.baseURL, ""),
           age: Duration.zero)
     ];
     _alerts = nextAlerts;

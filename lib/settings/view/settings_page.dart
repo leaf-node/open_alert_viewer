@@ -84,7 +84,7 @@ class SettingsList extends StatelessWidget {
         for (AlertSource account in state.sources)
           MenuItem(
               icon: Icons.manage_accounts,
-              title: account.name,
+              title: account.sourceData.name,
               onTap: () => context
                   .read<NavBloc>()
                   .add(OpenAccountSettingsPageEvent(source: account))),

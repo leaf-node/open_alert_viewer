@@ -96,18 +96,18 @@ class AlertsRepo {
         }
         return Future.value([
           Alert(
-              source: source.id,
+              source: source.sourceData.id!,
               kind: AlertType.syncFailure,
-              hostname: source.name,
+              hostname: source.sourceData.name,
               service: "OAV",
               message: "Error fetching alerts. "
                   "Please open an issue using \"Online Support\" in the settings menu.",
               url: "https://github.com/okaycode-dev/open_alert_viewer",
               age: Duration.zero),
           Alert(
-              source: source.id,
+              source: source.sourceData.id!,
               kind: AlertType.syncFailure,
-              hostname: source.name,
+              hostname: source.sourceData.name,
               service: "OAV",
               message: message,
               url: "https://github.com/okaycode-dev/open_alert_viewer",
@@ -117,7 +117,9 @@ class AlertsRepo {
       incoming.add(sourceFuture);
       incoming.last.then((List<Alert> newAlerts) {
         var updatedAlerts = _updateSyncFailureAges(newAlerts, oldSyncFailures);
-        _alerts = _alerts.where((alert) => alert.source != source.id).toList();
+        _alerts = _alerts
+            .where((alert) => alert.source != source.sourceData.id)
+            .toList();
         _alerts.addAll(updatedAlerts);
         _alerts.sort(_alertSort);
         _outboundStream.add(IsolateMessage(
@@ -183,38 +185,13 @@ class AlertsRepo {
   }
 
   void _cacheAlerts() {
-    List<List<Object>> serialized = [];
-    for (var alert in _alerts) {
-      serialized.add([
-        alert.source,
-        alert.kind.index,
-        alert.hostname,
-        alert.service,
-        alert.message,
-        alert.url,
-        alert.age.inSeconds
-      ]);
-    }
     _db.removeCachedAlerts();
-    _db.insertIntoAlertsCache(alerts: serialized);
+    _db.insertIntoAlertsCache(alerts: _alerts);
   }
 
   List<Alert> _fetchCachedAlerts() {
-    List<Alert> alerts = [];
-    List<Map<String, Object>> serializedList = _db.fetchCachedAlerts();
-    for (var serialized in serializedList) {
-      alerts.add(Alert(
-        source: serialized["source"] as int,
-        kind: AlertType.values[serialized["kind"] as int],
-        message: serialized["message"] as String,
-        url: serialized["url"] as String,
-        hostname: serialized["hostname"] as String,
-        service: serialized["service"] as String,
-        age: Duration(seconds: serialized["age"] as int),
-      ));
-    }
-    _alerts = alerts;
-    return alerts;
+    _alerts = _db.fetchCachedAlerts();
+    return _alerts;
   }
 
   void startTimer() {

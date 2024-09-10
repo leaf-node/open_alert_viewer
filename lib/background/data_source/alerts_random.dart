@@ -9,14 +9,7 @@ import 'dart:math';
 import '../../alerts/model/alerts.dart';
 
 class RandomAlerts extends AlertSource {
-  RandomAlerts(
-      {required super.id,
-      required super.name,
-      required super.type,
-      required super.baseURL,
-      required super.path,
-      required super.username,
-      required super.password})
+  RandomAlerts({required super.sourceData})
       : _randomSeed = Random(DateTime.now().microsecondsSinceEpoch),
         _alerts = [];
 
@@ -29,7 +22,7 @@ class RandomAlerts extends AlertSource {
     int count = 20 + _randomSeed.nextInt(20);
     for (int i = 0; i < count; i++) {
       nextAlerts.add(Alert(
-          source: id,
+          source: sourceData.id!,
           kind: AlertType
               .values[_randomSeed.nextInt(AlertType.values.length - 1)],
           hostname: "example.com",

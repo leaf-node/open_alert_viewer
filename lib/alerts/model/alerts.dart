@@ -40,8 +40,8 @@ class Alert {
   final Duration age;
 }
 
-abstract class AlertSource {
-  const AlertSource(
+class AlertSourceData {
+  AlertSourceData(
       {required this.id,
       required this.name,
       required this.type,
@@ -50,25 +50,19 @@ abstract class AlertSource {
       required this.username,
       required this.password});
 
+  int? id;
+  String name;
+  int type;
+  String baseURL;
+  String path;
+  String username;
+  String password;
+}
+
+abstract class AlertSource {
+  const AlertSource({required this.sourceData});
+
   Future<List<Alert>> fetchAlerts();
 
-  final int id;
-  final String name;
-  final int type;
-  final String baseURL;
-  final String path;
-  final String username;
-  final String password;
-
-  Map<String, Object> toMap() {
-    return {
-      "id": id,
-      "name": name,
-      "type": type,
-      "baseURL": baseURL,
-      "path": path,
-      "username": username,
-      "password": password
-    };
-  }
+  final AlertSourceData sourceData;
 }

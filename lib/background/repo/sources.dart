@@ -29,12 +29,12 @@ class SourcesRepo with NetworkFetch {
 
   List<AlertSource> get alertSources {
     List<AlertSource> sources = [];
-    List<Map<String, Object>> sourcesData = _db.listSources();
-    Function alertSource;
+    List<AlertSourceData> sourcesData = _db.listSources();
+    AlertSource Function({required AlertSourceData sourceData}) alertSource;
     for (var source in sourcesData) {
       int type;
       try {
-        type = source["type"] as int;
+        type = source.type;
       } catch (e) {
         type = -1;
       }
@@ -50,64 +50,59 @@ class SourcesRepo with NetworkFetch {
           alertSource = InvalidAlerts.new;
       }
       sources.add(alertSource(
-          id: source["id"],
-          type: type,
-          name: source["name"],
-          baseURL: source["base_url"],
-          path: source["path"],
-          username: source["username"],
-          password: source["password"]));
+          sourceData: AlertSourceData(
+              id: source.id,
+              type: source.type,
+              name: source.name,
+              baseURL: source.baseURL,
+              path: source.path,
+              username: source.username,
+              password: source.password)));
     }
     return sources;
   }
 
-  Future<int> addSource({required Map<String, Object> source}) async {
-    source = await _getSourceTypeAndPath(source: source);
-    return _db.addSource(source: source);
+  Future<int> addSource({required AlertSourceData sourceData}) async {
+    sourceData = await _getSourceTypeAndPath(sourcesData: sourceData);
+    return _db.addSource(sourceData: sourceData);
   }
 
-  Future<bool> updateSource({required Map<String, Object> source}) async {
-    source = await _getSourceTypeAndPath(source: source);
-    return _db.updateSource(source: source);
+  Future<bool> updateSource({required AlertSourceData sourceData}) async {
+    sourceData = await _getSourceTypeAndPath(sourcesData: sourceData);
+    return _db.updateSource(sourceData: sourceData);
   }
 
   void removeSource({required int id}) {
     _db.removeSource(id: id);
   }
 
-  Future<Map<String, Object>> _getSourceTypeAndPath(
-      {required Map<String, Object> source}) async {
-    int type;
-    var path = source["path"] as String;
-    var baseURL = source["base_url"] as String;
-    if (baseURL == "") {
-      type = SourceIntMap.invalid.val;
-      path = "";
-    } else if (baseURL == "demo") {
-      type = SourceIntMap.demo.val;
-      path = "";
+  Future<AlertSourceData> _getSourceTypeAndPath(
+      {required AlertSourceData sourcesData}) async {
+    if (sourcesData.baseURL == "") {
+      sourcesData.type = SourceIntMap.invalid.val;
+      sourcesData.path = "";
+    } else if (sourcesData.baseURL == "demo") {
+      sourcesData.type = SourceIntMap.demo.val;
+      sourcesData.path = "";
     } else {
       try {
-        var promBaseURL = baseURL.replaceFirst(
-            RegExp(r"(/#/alerts/?|/api/v2/alerts/?)$"), "");
+        var promBaseURL = sourcesData.baseURL
+            .replaceFirst(RegExp(r"(/#/alerts/?|/api/v2/alerts/?)$"), "");
         var promPath = "/api/v2/alerts";
-        var response = await networkFetch(promBaseURL, promPath,
-            source["username"] as String, source["password"] as String);
+        var response = await networkFetch(
+            promBaseURL, promPath, sourcesData.username, sourcesData.password);
         if (response.statusCode == 200) {
-          type = SourceIntMap.prom.val;
-          path = promPath;
-          baseURL = promBaseURL;
+          sourcesData.type = SourceIntMap.prom.val;
+          sourcesData.path = promPath;
+          sourcesData.baseURL = promBaseURL;
         } else {
-          type = SourceIntMap.invalid.val;
+          sourcesData.type = SourceIntMap.invalid.val;
         }
       } catch (e) {
-        type = SourceIntMap.invalid.val;
-        path = "";
+        sourcesData.type = SourceIntMap.invalid.val;
+        sourcesData.path = "";
       }
     }
-    source["type"] = type;
-    source["base_url"] = baseURL;
-    source["path"] = path;
-    return source;
+    return sourcesData;
   }
 }

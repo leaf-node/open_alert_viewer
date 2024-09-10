@@ -7,6 +7,7 @@
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
+import 'package:open_alert_viewer/alerts/model/alerts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 
@@ -107,43 +108,55 @@ class LocalDatabase {
 
   // App-specific queries
 
-  List<Map<String, Object>> listSources() {
-    return _fetchFromTable(
+  List<AlertSourceData> listSources() {
+    List<Map<String, Object>> valuesArray = _fetchFromTable(
         query:
             "SELECT id, name, type, base_url, path, username, password FROM sources;",
         values: []);
+    return [
+      for (var values in valuesArray)
+        AlertSourceData(
+          id: values["id"] as int,
+          name: values["name"] as String,
+          type: values["type"] as int,
+          baseURL: values["base_url"] as String,
+          path: values["path"] as String,
+          username: values["username"] as String,
+          password: values["password"] as String,
+        )
+    ];
   }
 
-  int addSource({required Map<String, Object> source}) {
+  int addSource({required AlertSourceData sourceData}) {
     return _insertIntoTable(query: '''
       INSERT INTO sources
         (name, type, base_url, path, username, password)
         VALUES (?, ?, ?, ?, ?, ?);
     ''', values: [
       [
-        source["name"]!,
-        source["type"]!,
-        source["base_url"]!,
-        source["path"]!,
-        source["username"]!,
-        source["password"]!,
+        sourceData.name,
+        sourceData.type,
+        sourceData.baseURL,
+        sourceData.path,
+        sourceData.username,
+        sourceData.password,
       ]
     ]);
   }
 
-  bool updateSource({required Map<String, Object> source}) {
+  bool updateSource({required AlertSourceData sourceData}) {
     return _updateTable(query: '''
       UPDATE sources SET
         (name, type, base_url, path, username, password)
         = (?, ?, ?, ?, ?, ?) WHERE id = ?;
     ''', values: [
-      source["name"]!,
-      source["type"]!,
-      source["base_url"]!,
-      source["path"]!,
-      source["username"]!,
-      source["password"]!,
-      source["id"]!
+      sourceData.name,
+      sourceData.type,
+      sourceData.baseURL,
+      sourceData.path,
+      sourceData.username,
+      sourceData.password,
+      sourceData.id!,
     ]);
   }
 
@@ -163,21 +176,43 @@ class LocalDatabase {
     return true;
   }
 
-  List<Map<String, Object>> fetchCachedAlerts() {
-    return _fetchFromTable(
+  List<Alert> fetchCachedAlerts() {
+    List<Map<String, Object>> alerts = _fetchFromTable(
         query: '''SELECT id, source, kind, hostname, service, message, url, age
             FROM alerts_cache;''', values: []);
+    return [
+      for (var alert in alerts)
+        Alert(
+            source: alert["source"] as int,
+            kind: AlertType.values[alert["kind"] as int],
+            message: alert["message"] as String,
+            url: alert["url"] as String,
+            hostname: alert["hostname"] as String,
+            service: alert["service"] as String,
+            age: Duration(seconds: alert["age"] as int))
+    ];
   }
 
   void removeCachedAlerts() {
     _removeFromTable(query: "DELETE FROM alerts_cache;", values: []);
   }
 
-  void insertIntoAlertsCache({required List<List<Object>> alerts}) {
+  void insertIntoAlertsCache({required List<Alert> alerts}) {
     _insertIntoTable(query: '''
         INSERT INTO alerts_cache
           (source, kind, hostname, service, message, url, age)
-          VALUES (?, ?, ?, ?, ?, ?, ?);''', values: alerts);
+          VALUES (?, ?, ?, ?, ?, ?, ?);''', values: [
+      for (var alert in alerts)
+        [
+          alert.source,
+          alert.kind.index,
+          alert.hostname,
+          alert.service,
+          alert.message,
+          alert.url,
+          alert.age.inSeconds
+        ]
+    ]);
   }
 
   String getSetting({required String setting}) {

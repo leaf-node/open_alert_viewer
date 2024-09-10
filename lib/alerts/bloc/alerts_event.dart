@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import '../model/alerts.dart';
+
 abstract class AlertEvent {
   const AlertEvent();
 }
@@ -17,15 +19,15 @@ final class FetchAlerts implements AlertEvent {
 }
 
 final class AddAlertSource implements AlertEvent {
-  AddAlertSource({required this.sourceMap});
+  AddAlertSource({required this.sourceData});
 
-  final Map<String, Object> sourceMap;
+  final AlertSourceData sourceData;
 }
 
 final class UpdateAlertSource implements AlertEvent {
-  UpdateAlertSource({required this.sourceMap});
+  UpdateAlertSource({required this.sourceData});
 
-  final Map<String, Object> sourceMap;
+  final AlertSourceData sourceData;
 }
 
 final class RemoveAlertSource implements AlertEvent {

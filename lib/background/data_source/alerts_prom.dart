@@ -14,15 +14,9 @@ import '../../app/data_source/network_fetch.dart';
 import '../../app/util/util.dart';
 
 class PromAlerts extends AlertSource with NetworkFetch {
-  PromAlerts(
-      {required super.id,
-      required super.name,
-      required super.type,
-      required super.baseURL,
-      required super.path,
-      required super.username,
-      required super.password})
-      : _alerts = [];
+  PromAlerts({
+    required super.sourceData,
+  }) : _alerts = [];
 
   List<Alert> _alerts;
 
@@ -33,16 +27,17 @@ class PromAlerts extends AlertSource with NetworkFetch {
     PromAlertsData alertDatum;
     nextAlerts = [];
     try {
-      response = await networkFetch(baseURL, path, username, password);
+      response = await networkFetch(sourceData.baseURL, sourceData.path,
+          sourceData.username, sourceData.password);
     } on SocketException catch (e) {
       nextAlerts = [
         Alert(
-            source: id,
+            source: sourceData.id!,
             kind: AlertType.syncFailure,
-            hostname: name,
+            hostname: sourceData.name,
             service: "OAV",
             message: "Error fetching alerts: ${e.message}",
-            url: generateURL(baseURL, path),
+            url: generateURL(sourceData.baseURL, sourceData.path),
             age: Duration.zero)
       ];
       _alerts = nextAlerts;
@@ -65,7 +60,7 @@ class PromAlerts extends AlertSource with NetworkFetch {
           kind = AlertType.unknown;
         }
         nextAlerts.add(Alert(
-            source: id,
+            source: sourceData.id!,
             kind: kind,
             hostname: alertDatum.labels['instance'] ?? "",
             service: alertDatum.labels['alertname'] ?? "",
@@ -77,13 +72,13 @@ class PromAlerts extends AlertSource with NetworkFetch {
     } else {
       nextAlerts = [
         Alert(
-            source: id,
+            source: sourceData.id!,
             kind: AlertType.syncFailure,
-            hostname: name,
+            hostname: sourceData.name,
             service: "OAV",
             message: "Error fetching alerts: HTTP status code "
                 "${response.statusCode}",
-            url: generateURL(baseURL, path),
+            url: generateURL(sourceData.baseURL, sourceData.path),
             age: Duration.zero)
       ];
     }
@@ -102,16 +97,16 @@ class PromAlertsData {
       required this.annotations,
       required this.labels});
 
-  factory PromAlertsData.fromJSON(Map<String, Object> data) {
+  factory PromAlertsData.fromJSON(Map<String, Object> parsed) {
     return PromAlertsData(
-        fingerprint: data["fingerprint"] as String,
-        startsAt: data["startsAt"] as String,
-        updatedAt: data["updatedAt"] as String,
-        endsAt: data["endsAt"] as String,
-        generatorURL: data["generatorURL"] as String,
+        fingerprint: parsed["fingerprint"] as String,
+        startsAt: parsed["startsAt"] as String,
+        updatedAt: parsed["updatedAt"] as String,
+        endsAt: parsed["endsAt"] as String,
+        generatorURL: parsed["generatorURL"] as String,
         annotations:
-            Util.mapConvert(data["annotations"] as Map<String, dynamic>),
-        labels: Util.mapConvert(data["labels"] as Map<String, dynamic>));
+            Util.mapConvert(parsed["annotations"] as Map<String, dynamic>),
+        labels: Util.mapConvert(parsed["labels"] as Map<String, dynamic>));
   }
 
   final String fingerprint;
