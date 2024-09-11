@@ -1,10 +1,10 @@
 
 Open Alert Viewer is libre / open source software, meaning that it respects
-your freedom to run, study, change and share the code. If you do fork this
-project, and make substantial changes, we ask that you use a different name
-than "Open Alert Viewer", and change the logo and application ID. You must
-include this paragraph in the licensing documentation, and the following
-license text:
+your freedom to run, study, change and share the code.
+
+If you distribute a compiled fork of this project, use a different name than
+"Open Alert Viewer", and change the logo and application ID. Include this
+licensing page with the source code and the compiled app.
 
 
 Open Alert Viewer License (MIT)
@@ -35,7 +35,7 @@ Trademarks of third-parties
 
 Aside from Open Alert Viewer itself, neither Open Alert Viewer nor okaycode.dev
 LLC are endorsed by, nor affiliated with, the owners of the software referenced
-in this app, the app's source code, and its documentation.
+in this app, this app's source code, and its documentation.
 
 
 Dependency Licenses
