@@ -26,7 +26,7 @@ support for additional back end alerting services.
 ### Dependencies
 
 * [Flutter](https://docs.flutter.dev/get-started/install)
-* OpenJDK ~17 (or similar)
+* OpenJDK ~17 (or similar, for Android)
 * Gstreamer and headers (for Linux)
 
 ### Android
@@ -66,7 +66,7 @@ types, so this app depends on a couple configurations on your server:
 1. For down host checks, you should also make sure that alerts are labeled with
    the custom label: `oav_type:` `ping` or `icmp`.
 
-This app parses any labels set by Prometheus in a case sensitive way.
+This app parses any labels set by Prometheus in a case-sensitive way.
 
 When setting up your account in the app, enter the base address of your
 Alertmanager service, not Prometheus itself.
