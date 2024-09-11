@@ -30,6 +30,14 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+Trademarks of third-parties
+===========================
+
+Aside from Open Alert Viewer itself, neither Open Alert Viewer nor okaycode.dev
+LLC are endorsed by, nor affiliated with, the owners of the software referenced
+in this app, the app's source code, and its documentation.
+
+
 Dependency Licenses
 ===================
 
