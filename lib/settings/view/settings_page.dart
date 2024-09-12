@@ -365,7 +365,11 @@ List<SettingsCheckBoxEnumValue> listFiltered(
       SettingsCheckBoxEnumValue(
           title: option.name,
           value: priorSetting[option.index],
-          index: option.index)
+          index: option.index,
+          callback: (BuildContext context, bool? newValue, int index) {
+            context.read<SettingsBloc>().add(SettingsPushEvent(
+                newSettings: {"setAlertFilterAt": (newValue, index)}));
+          })
   ];
 }
 
@@ -407,11 +411,13 @@ class SettingsCheckBoxEnumValue extends StatefulWidget {
       {super.key,
       required this.title,
       required this.value,
-      required this.index});
+      required this.index,
+      required this.callback});
 
   final String title;
   final bool value;
   final int index;
+  final Function(BuildContext, bool?, int) callback;
 
   @override
   State<SettingsCheckBoxEnumValue> createState() =>
@@ -429,8 +435,7 @@ class _SettingsCheckBoxEnumValueState extends State<SettingsCheckBoxEnumValue> {
         value: value,
         onChanged: (bool? newValue) {
           if (newValue != null) {
-            context.read<SettingsBloc>().add(SettingsPushEvent(
-                newSettings: {"setAlertFilterAt": (newValue, widget.index)}));
+            widget.callback(context, newValue, widget.index);
             setState(() {
               value = newValue;
             });
