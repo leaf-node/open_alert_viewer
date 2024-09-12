@@ -120,12 +120,12 @@ class _AccountFormState extends State<AccountForm> {
                 const SizedBox(height: 20),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [cancelButton(), acceptButton()])
+                    children: [cancelButton(context), acceptButton(context)])
               ]);
             })));
   }
 
-  Widget cancelButton() {
+  Widget cancelButton(BuildContext context) {
     return Expanded(
         child: Center(
             child: ElevatedButton(
@@ -156,7 +156,7 @@ class _AccountFormState extends State<AccountForm> {
                         fontWeight: FontWeight.bold)))));
   }
 
-  Widget acceptButton() {
+  Widget acceptButton(BuildContext context) {
     return Expanded(
         child: Center(
             child: ElevatedButton(
