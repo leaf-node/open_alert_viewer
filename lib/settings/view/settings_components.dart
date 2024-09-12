@@ -84,3 +84,42 @@ class SettingsHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
+
+Future settingsRadioDialogBuilder<T>(
+    {required BuildContext context,
+    required String text,
+    required T? priorSetting,
+    required Function<T>({T? priorSetting}) valueListBuilder}) async {
+  return await showDialog<T>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            child: SizedBox(
+                width: 300,
+                child: ListView(shrinkWrap: true, children: [
+                  Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: valueListBuilder<T>(priorSetting: priorSetting))
+                ])));
+      });
+}
+
+Future settingsCheckBoxDialogBuilder<T>(
+    {required BuildContext context,
+    required String text,
+    required List<bool> priorSetting,
+    required Function({required List<bool> priorSetting})
+        valueListBuilder}) async {
+  return await showDialog<T>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            child: SizedBox(
+                width: 300,
+                child: ListView(shrinkWrap: true, children: [
+                  Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: valueListBuilder(priorSetting: priorSetting))
+                ])));
+      });
+}

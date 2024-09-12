@@ -183,7 +183,7 @@ class GeneralSettingsList extends StatelessWidget {
             title: "Refresh Interval",
             subtitle: refreshIntervalSubtitle,
             onTap: () async {
-              int? result = await _settingsRadioDialogBuilder<int>(
+              int? result = await settingsRadioDialogBuilder<int>(
                   context: context,
                   text: "Refresh Interval",
                   priorSetting: settings.refreshInterval,
@@ -198,7 +198,7 @@ class GeneralSettingsList extends StatelessWidget {
             title: "Sync Timeout",
             subtitle: syncTimeoutSubtitle,
             onTap: () async {
-              int? result = await _settingsRadioDialogBuilder<int>(
+              int? result = await settingsRadioDialogBuilder<int>(
                   context: context,
                   text: "Sync Timeout",
                   priorSetting: settings.syncTimeout,
@@ -261,7 +261,7 @@ class GeneralSettingsList extends StatelessWidget {
             icon: Icons.filter_alt_outlined,
             title: "Alerts Filter",
             onTap: () async {
-              await _settingsCheckBoxDialogBuilder<bool>(
+              await settingsCheckBoxDialogBuilder<bool>(
                   context: context,
                   text: "Alerts Filter",
                   priorSetting: settings.alertFilter,
@@ -272,7 +272,7 @@ class GeneralSettingsList extends StatelessWidget {
             title: "Dark Mode",
             subtitle: darkModeSubtitle,
             onTap: () async {
-              int? result = await _settingsRadioDialogBuilder<int>(
+              int? result = await settingsRadioDialogBuilder<int>(
                   context: context,
                   text: "Dark Mode",
                   priorSetting: settings.darkMode,
@@ -336,45 +336,6 @@ class GeneralSettingsList extends StatelessWidget {
       ]);
     });
   }
-}
-
-Future _settingsRadioDialogBuilder<T>(
-    {required BuildContext context,
-    required String text,
-    required T? priorSetting,
-    required Function<T>({T? priorSetting}) valueListBuilder}) async {
-  return await showDialog<T>(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-            child: SizedBox(
-                width: 300,
-                child: ListView(shrinkWrap: true, children: [
-                  Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: valueListBuilder<T>(priorSetting: priorSetting))
-                ])));
-      });
-}
-
-Future _settingsCheckBoxDialogBuilder<T>(
-    {required BuildContext context,
-    required String text,
-    required List<bool> priorSetting,
-    required Function({required List<bool> priorSetting})
-        valueListBuilder}) async {
-  return await showDialog<T>(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-            child: SizedBox(
-                width: 300,
-                child: ListView(shrinkWrap: true, children: [
-                  Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: valueListBuilder(priorSetting: priorSetting))
-                ])));
-      });
 }
 
 List<SettingsRadioEnumValue> listRefreshFrequencies<T>({T? priorSetting}) {
