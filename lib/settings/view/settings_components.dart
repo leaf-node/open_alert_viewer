@@ -123,3 +123,64 @@ Future settingsCheckBoxDialogBuilder<T>(
                 ])));
       });
 }
+
+class SettingsRadioEnumValue<T> extends StatelessWidget {
+  const SettingsRadioEnumValue(
+      {super.key,
+      required this.title,
+      required this.value,
+      required this.priorSetting});
+
+  final String title;
+  final T value;
+  final T? priorSetting;
+
+  @override
+  Widget build(BuildContext context) {
+    return RadioListTile<T>(
+        title: Text(title),
+        value: value,
+        groupValue: priorSetting,
+        onChanged: (T? value) {
+          Navigator.of(context).pop(value);
+        });
+  }
+}
+
+class SettingsCheckBoxEnumValue extends StatefulWidget {
+  const SettingsCheckBoxEnumValue(
+      {super.key,
+      required this.title,
+      required this.value,
+      required this.index,
+      required this.callback});
+
+  final String title;
+  final bool value;
+  final int index;
+  final Function(BuildContext, bool?, int) callback;
+
+  @override
+  State<SettingsCheckBoxEnumValue> createState() =>
+      _SettingsCheckBoxEnumValueState();
+}
+
+class _SettingsCheckBoxEnumValueState extends State<SettingsCheckBoxEnumValue> {
+  bool? value;
+
+  @override
+  Widget build(BuildContext context) {
+    value = value ?? widget.value;
+    return CheckboxListTile(
+        title: Text(widget.title),
+        value: value,
+        onChanged: (bool? newValue) {
+          if (newValue != null) {
+            widget.callback(context, newValue, widget.index);
+            setState(() {
+              value = newValue;
+            });
+          }
+        });
+  }
+}
