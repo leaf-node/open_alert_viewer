@@ -118,13 +118,13 @@ enum RefreshFrequencies {
 }
 
 enum SyncTimeouts {
-  oneMinute("5 Seconds", 5),
-  threeMinutes("10 Seconds", 10),
-  fiveMinutes("15 Seconds", 15),
-  fifteenMinutes("30 Seconds", 30),
-  thirtyMinutes("45 Seconds", 45),
-  oneHour("1 Minute", 60),
-  twoHours("2 Minutes", 120),
+  fiveSeconds("5 Seconds", 5),
+  tenSeconds("10 Seconds", 10),
+  fifteenSeconds("15 Seconds", 15),
+  thirtySeconds("30 Seconds", 30),
+  fortyFiveSeconds("45 Seconds", 45),
+  oneMinue("1 Minute", 60),
+  twoMinutes("2 Minutes", 120),
   off("Off", -1);
 
   const SyncTimeouts(this.text, this.value);
@@ -134,9 +134,9 @@ enum SyncTimeouts {
 }
 
 enum ColorModes {
-  oneMinute("Auto", -1),
-  fiveMinutes("Light Mode", 0),
-  threeMinutes("Dark Mode", 1);
+  auto("Auto", -1),
+  lightMode("Light Mode", 0),
+  darkMode("Dark Mode", 1);
 
   const ColorModes(this.text, this.value);
 
