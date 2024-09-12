@@ -51,6 +51,7 @@ class _AccountFormState extends State<AccountForm> {
   final pathController = TextEditingController();
   final userController = TextEditingController();
   final passwordController = TextEditingController();
+  final epoch = DateTime.fromMillisecondsSinceEpoch(0);
 
   @override
   void initState() {
@@ -85,7 +86,6 @@ class _AccountFormState extends State<AccountForm> {
 
   @override
   Widget build(BuildContext context) {
-    final epoch = DateTime.fromMillisecondsSinceEpoch(0);
     return Form(
         autovalidateMode: AutovalidateMode.always,
         onChanged: () => (),
@@ -118,104 +118,97 @@ class _AccountFormState extends State<AccountForm> {
                     controller: passwordController,
                     passwordField: true),
                 const SizedBox(height: 20),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Expanded(
-                      child: Center(
-                          child: ElevatedButton(
-                              onPressed: () async {
-                                if (widget.source != null) {
-                                  bool result = await textDialogBuilder(
-                                      context: context,
-                                      text:
-                                          "Are you sure you want to remove this account?",
-                                      okayText: "Remove",
-                                      cancellable: true,
-                                      reverseColors: true);
-                                  if (context.mounted && result) {
-                                    context.read<AlertsBloc>().add(
-                                        RemoveAlertSource(
-                                            id: widget.source!.sourceData.id!));
-                                    Navigator.of(context).pop();
-                                  }
-                                }
-                              },
-                              child: Text(() {
-                                if (widget.source == null) {
-                                  return "Cancel";
-                                } else {
-                                  return "Remove Account";
-                                }
-                              }(),
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).colorScheme.error,
-                                      fontWeight: FontWeight.bold))))),
-                  Expanded(
-                      child: Center(
-                          child: ElevatedButton(
-                              onPressed: () {
-                                if (Form.of(context).validate()) {
-                                  if (widget.source == null) {
-                                    context
-                                        .read<AlertsBloc>()
-                                        .add(AddAlertSource(
-                                            sourceData: AlertSourceData(
-                                          id: null,
-                                          name: nameController.text,
-                                          type: int.parse(typeController.text),
-                                          baseURL: baseURLController.text,
-                                          path: pathController.text,
-                                          username: userController.text,
-                                          password: passwordController.text,
-                                          failing: false,
-                                          lastSeen: epoch,
-                                          priorFetch: epoch,
-                                          lastFetch: epoch,
-                                        )));
-                                  } else {
-                                    context
-                                        .read<AlertsBloc>()
-                                        .add(UpdateAlertSource(
-                                            sourceData: AlertSourceData(
-                                          id: widget.source!.sourceData.id,
-                                          name: nameController.text,
-                                          type: int.parse(typeController.text),
-                                          baseURL: baseURLController.text,
-                                          path: pathController.text,
-                                          username: userController.text,
-                                          password: passwordController.text,
-                                          failing: widget
-                                                  .source?.sourceData.failing ??
-                                              false,
-                                          lastSeen: widget.source?.sourceData
-                                                  .lastSeen ??
-                                              epoch,
-                                          priorFetch: widget.source?.sourceData
-                                                  .lastSeen ??
-                                              epoch,
-                                          lastFetch: widget.source?.sourceData
-                                                  .lastSeen ??
-                                              epoch,
-                                        )));
-                                  }
-                                  Navigator.of(context).pop();
-                                }
-                              },
-                              child: Text(() {
-                                if (widget.source == null) {
-                                  return "Add Account";
-                                } else {
-                                  return "Update Account";
-                                }
-                              }(),
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      fontWeight: FontWeight.bold)))))
-                ])
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [cancelButton(), acceptButton()])
               ]);
             })));
+  }
+
+  Widget cancelButton() {
+    return Expanded(
+        child: Center(
+            child: ElevatedButton(
+                onPressed: () async {
+                  if (widget.source != null) {
+                    bool result = await textDialogBuilder(
+                        context: context,
+                        text: "Are you sure you want to remove this account?",
+                        okayText: "Remove",
+                        cancellable: true,
+                        reverseColors: true);
+                    if (context.mounted && result) {
+                      context.read<AlertsBloc>().add(
+                          RemoveAlertSource(id: widget.source!.sourceData.id!));
+                      Navigator.of(context).pop();
+                    }
+                  }
+                },
+                child: Text(() {
+                  if (widget.source == null) {
+                    return "Cancel";
+                  } else {
+                    return "Remove Account";
+                  }
+                }(),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                        fontWeight: FontWeight.bold)))));
+  }
+
+  Widget acceptButton() {
+    return Expanded(
+        child: Center(
+            child: ElevatedButton(
+                onPressed: () {
+                  if (Form.of(context).validate()) {
+                    if (widget.source == null) {
+                      context.read<AlertsBloc>().add(AddAlertSource(
+                              sourceData: AlertSourceData(
+                            id: null,
+                            name: nameController.text,
+                            type: int.parse(typeController.text),
+                            baseURL: baseURLController.text,
+                            path: pathController.text,
+                            username: userController.text,
+                            password: passwordController.text,
+                            failing: false,
+                            lastSeen: epoch,
+                            priorFetch: epoch,
+                            lastFetch: epoch,
+                          )));
+                    } else {
+                      context.read<AlertsBloc>().add(UpdateAlertSource(
+                              sourceData: AlertSourceData(
+                            id: widget.source!.sourceData.id,
+                            name: nameController.text,
+                            type: int.parse(typeController.text),
+                            baseURL: baseURLController.text,
+                            path: pathController.text,
+                            username: userController.text,
+                            password: passwordController.text,
+                            failing: widget.source?.sourceData.failing ?? false,
+                            lastSeen:
+                                widget.source?.sourceData.lastSeen ?? epoch,
+                            priorFetch:
+                                widget.source?.sourceData.lastSeen ?? epoch,
+                            lastFetch:
+                                widget.source?.sourceData.lastSeen ?? epoch,
+                          )));
+                    }
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: Text(() {
+                  if (widget.source == null) {
+                    return "Add Account";
+                  } else {
+                    return "Update Account";
+                  }
+                }(),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.bold)))));
   }
 }
 
