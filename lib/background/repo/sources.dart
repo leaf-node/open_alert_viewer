@@ -13,16 +13,6 @@ import '../data_source/alerts_prom.dart';
 import '../data_source/alerts_random.dart';
 import '../../app/data_source/database.dart';
 
-enum SourceIntMap {
-  invalid(-1),
-  demo(0),
-  nag(1),
-  prom(2);
-
-  const SourceIntMap(this.val);
-  final int val;
-}
-
 class SourcesRepo with NetworkFetch {
   SourcesRepo({required LocalDatabase db, required SettingsRepo settings})
       : _db = db,
@@ -37,16 +27,18 @@ class SourcesRepo with NetworkFetch {
     AlertSource Function({required AlertSourceData sourceData}) alertSource;
     for (var sourceData in sourceDataArray) {
       var enumType =
-          SourceIntMap.values.singleWhere((e) => e.val == sourceData.type);
+          SourceTypes.values.singleWhere((e) => e.value == sourceData.type);
       switch (enumType) {
-        case SourceIntMap.demo:
-          alertSource = RandomAlerts.new;
-        case SourceIntMap.nag:
-          alertSource = NagAlerts.new;
-        case SourceIntMap.prom:
-          alertSource = PromAlerts.new;
-        case SourceIntMap.invalid:
+        case SourceTypes.invalid:
           alertSource = InvalidAlerts.new;
+        case SourceTypes.autodetect:
+          alertSource = InvalidAlerts.new;
+        case SourceTypes.demo:
+          alertSource = RandomAlerts.new;
+        case SourceTypes.prom:
+          alertSource = PromAlerts.new;
+        case SourceTypes.nag:
+          alertSource = NagAlerts.new;
       }
       sources.add(alertSource(sourceData: sourceData));
     }
@@ -82,13 +74,14 @@ class SourcesRepo with NetworkFetch {
 
   Future<AlertSourceData> _getSourceTypeAndPath(
       {required AlertSourceData sourcesData}) async {
-    if (sourcesData.baseURL == "") {
-      sourcesData.type = SourceIntMap.invalid.val;
+    if (sourcesData.type == SourceTypes.demo.value ||
+        (sourcesData.type == SourceTypes.autodetect.value &&
+            sourcesData.baseURL == "demo")) {
+      sourcesData.type = SourceTypes.demo.value;
       sourcesData.path = "";
-    } else if (sourcesData.baseURL == "demo") {
-      sourcesData.type = SourceIntMap.demo.val;
-      sourcesData.path = "";
-    } else {
+    }
+    if (sourcesData.type == SourceTypes.prom.value ||
+        sourcesData.type == SourceTypes.autodetect.value) {
       try {
         var promBaseURL = sourcesData.baseURL
             .replaceFirst(RegExp(r"(/#/alerts/?|/api/v2/alerts/?)$"), "");
@@ -96,15 +89,16 @@ class SourcesRepo with NetworkFetch {
         var response = await networkFetch(
             promBaseURL, promPath, sourcesData.username, sourcesData.password);
         if (response.statusCode == 200) {
-          sourcesData.type = SourceIntMap.prom.val;
+          sourcesData.type = SourceTypes.prom.value;
           sourcesData.path = promPath;
           sourcesData.baseURL = promBaseURL;
-        } else {
-          sourcesData.type = SourceIntMap.invalid.val;
+          return sourcesData;
         }
       } catch (e) {
-        sourcesData.type = SourceIntMap.invalid.val;
-        sourcesData.path = "";
+        // fall through
+      }
+      if (sourcesData.type == SourceTypes.prom.value) {
+        sourcesData.type = SourceTypes.invalid.value;
       }
     }
     return sourcesData;

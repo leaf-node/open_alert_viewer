@@ -68,6 +68,18 @@ class AlertSourceData {
   DateTime lastFetch;
 }
 
+enum SourceTypes {
+  invalid("Invalid", -1),
+  autodetect("Autodetect", 0),
+  demo("Demo", 1),
+  prom("Prometheus", 2),
+  nag("Nagios", 3);
+
+  const SourceTypes(this.text, this.value);
+  final String text;
+  final int value;
+}
+
 abstract class AlertSource {
   const AlertSource({required this.sourceData});
 
