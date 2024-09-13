@@ -69,11 +69,11 @@ class AlertSourceData {
 }
 
 enum SourceTypes {
+  demo("Demo", -2),
   invalid("Invalid", -1),
   autodetect("Autodetect", 0),
-  demo("Demo", 1),
-  prom("Prometheus", 2),
-  nag("Nagios", 3);
+  prom("Prometheus", 1),
+  nag("Nagios", 2);
 
   const SourceTypes(this.text, this.value);
   final String text;
