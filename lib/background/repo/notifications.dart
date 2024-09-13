@@ -153,7 +153,10 @@ class NotificationRepo {
 
     if (brandNew > 0) {
       await _showNotification(message: messages.join(", "));
-      if (_settings.soundEnabled && !Platform.isAndroid && !Platform.isIOS) {
+      if (_settings.notificationsEnabled &&
+          _settings.soundEnabled &&
+          !Platform.isAndroid &&
+          !Platform.isIOS) {
         alertStream?.add(const IsolateMessage(
             name: MessageName.playDesktopSound,
             destination: MessageDestination.notifications));
