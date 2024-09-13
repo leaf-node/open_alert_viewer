@@ -11,12 +11,12 @@ import '../../app/view/app_view_elements.dart';
 class MenuItem extends StatelessWidget {
   const MenuItem(
       {super.key,
-      required this.icon,
+      this.icon,
       required this.title,
       this.subtitle,
       required this.onTap});
 
-  final IconData icon;
+  final IconData? icon;
   final String title;
   final String? subtitle;
   final void Function() onTap;
@@ -27,7 +27,7 @@ class MenuItem extends StatelessWidget {
       return ListTile(leading: Icon(icon), title: Text(title), onTap: onTap);
     } else {
       return ListTile(
-          leading: Icon(icon),
+          leading: (icon != null) ? Icon(icon) : null,
           title: Text(title),
           subtitle: Text(subtitle!),
           onTap: onTap);
