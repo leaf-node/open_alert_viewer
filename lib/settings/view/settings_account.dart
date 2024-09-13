@@ -92,10 +92,23 @@ class _AccountFormState extends State<AccountForm> {
         child: SizedBox(
             width: 400,
             child: Builder(builder: (context) {
-              nameController.value;
               return ListView(children: [
                 const SizedBox(height: 20),
                 const MenuHeader(title: "Account Details", padding: 8.0),
+                AccountRadioField(
+                    title: "Source Type",
+                    initialValue: typeController.text,
+                    onTap: () async {
+                      String? result = await settingsRadioDialogBuilder<String>(
+                          context: context,
+                          text: "Source Type",
+                          priorSetting: typeController.text,
+                          valueListBuilder: listSourceTypes);
+                      if (result != null) {
+                        typeController.text = result;
+                      }
+                      return result;
+                    }),
                 AccountField(
                     title: "Account Name",
                     controller: nameController,
@@ -263,4 +276,69 @@ class _AccountFieldState extends State<AccountField> {
                 obscureText: !_textVisible,
                 validator: widget.validator)));
   }
+}
+
+List<SettingsRadioEnumValue> listSourceTypes<T>({T? priorSetting}) {
+  return [
+    for (var option in SourceTypes.values)
+      if (option.value >= 0)
+        SettingsRadioEnumValue<T>(
+            title: option.text,
+            value: option.value.toString() as T,
+            priorSetting: priorSetting)
+  ];
+}
+
+class AccountRadioField<T> extends StatelessWidget {
+  const AccountRadioField(
+      {super.key,
+      required this.title,
+      required this.initialValue,
+      this.validator,
+      required this.onTap});
+
+  final String title;
+  final T initialValue;
+  final FormFieldValidator<T>? validator;
+  final Future<T> Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Align(
+            alignment: Alignment.topCenter,
+            child: RadioDialogFormField(
+                title: title,
+                initialValue: initialValue,
+                onSaved: (T? value) {},
+                validator: validator,
+                onTap: onTap)));
+  }
+}
+
+class RadioDialogFormField<T> extends FormField<T> {
+  RadioDialogFormField(
+      {super.key,
+      required title,
+      required super.initialValue,
+      required super.onSaved,
+      required super.validator,
+      required Future<T> Function() onTap})
+      : super(builder: (FormFieldState<T> state) {
+          return Row(children: [
+            Text("$title: "),
+            TextButton(
+                onPressed: () async {
+                  var result = await onTap();
+                  if (result != null) {
+                    state.didChange(result);
+                  }
+                },
+                child: Text(SourceTypes.values
+                    .firstWhere((sourceType) =>
+                        sourceType.value.toString() == state.value)
+                    .text))
+          ]);
+        });
 }
