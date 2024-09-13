@@ -326,19 +326,40 @@ class RadioDialogFormField<T> extends FormField<T> {
       required super.validator,
       required Future<T> Function() onTap})
       : super(builder: (FormFieldState<T> state) {
-          return Row(children: [
-            Text("$title: "),
-            TextButton(
-                onPressed: () async {
-                  var result = await onTap();
-                  if (result != null) {
-                    state.didChange(result);
-                  }
-                },
-                child: Text(SourceTypes.values
-                    .firstWhere((sourceType) =>
-                        sourceType.value.toString() == state.value)
-                    .text))
-          ]);
+          return RadioDialogWidget(state: state, title: title, onTap: onTap);
         });
+}
+
+class RadioDialogWidget<T> extends StatelessWidget {
+  const RadioDialogWidget(
+      {super.key,
+      required this.state,
+      required this.title,
+      required this.onTap});
+
+  final FormFieldState<T> state;
+  final String title;
+  final Future<T> Function() onTap;
+
+  @override
+  build(BuildContext context) {
+    return Row(children: [
+      Text("$title: "),
+      TextButton(
+          onPressed: () async {
+            var result = await onTap();
+            if (result != null) {
+              state.didChange(result);
+            }
+          },
+          child: Text(
+              SourceTypes.values
+                  .firstWhere((sourceType) =>
+                      sourceType.value.toString() == state.value)
+                  .text,
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontWeight: FontWeight.bold)))
+    ]);
+  }
 }
