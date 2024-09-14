@@ -53,6 +53,7 @@ class AlertSourceData {
     required this.lastSeen,
     required this.priorFetch,
     required this.lastFetch,
+    required this.errorMessage,
   });
 
   int? id;
@@ -66,6 +67,7 @@ class AlertSourceData {
   DateTime lastSeen;
   DateTime priorFetch;
   DateTime lastFetch;
+  String errorMessage;
 }
 
 enum SourceTypes {

@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:io';
+
 import '../../alerts/model/alerts.dart';
 import '../../app/data_repository/settings_repository.dart';
 import '../../app/data_source/network_fetch.dart';
@@ -93,14 +95,21 @@ class SourcesRepo with NetworkFetch {
           sourcesData.path = promPath;
           sourcesData.baseURL = promBaseURL;
           return sourcesData;
+        } else {
+          sourcesData.errorMessage =
+              "${response.statusCode}: ${response.reasonPhrase ?? ""}";
         }
+      } on SocketException catch (e) {
+        sourcesData.errorMessage = e.message;
       } catch (e) {
         // fall through
       }
       if (sourcesData.type == SourceTypes.prom.value) {
         sourcesData.type = SourceTypes.invalid.value;
+        return sourcesData;
       }
     }
+    sourcesData.type = SourceTypes.invalid.value;
     return sourcesData;
   }
 }

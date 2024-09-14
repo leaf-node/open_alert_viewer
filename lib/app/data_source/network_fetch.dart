@@ -25,7 +25,8 @@ mixin NetworkFetch {
         .get(Uri.parse(generateURL(baseURL, path)), headers: headers)
         .timeout(Duration(seconds: BackgroundWorker.settings.syncTimeout),
             onTimeout: () {
-      return http.Response("408 Client Timeout", 408);
+      return http.Response("408 Client Timeout", 408,
+          reasonPhrase: "Client Timeout");
     });
     return response;
   }

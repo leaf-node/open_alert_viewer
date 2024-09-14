@@ -192,6 +192,7 @@ class _AccountFormState extends State<AccountForm> {
                             lastSeen: epoch,
                             priorFetch: epoch,
                             lastFetch: epoch,
+                            errorMessage: "",
                           )));
                     } else {
                       context.read<AlertsBloc>().add(UpdateAlertSource(
@@ -210,6 +211,7 @@ class _AccountFormState extends State<AccountForm> {
                                 widget.source?.sourceData.lastSeen ?? epoch,
                             lastFetch:
                                 widget.source?.sourceData.lastSeen ?? epoch,
+                            errorMessage: "",
                           )));
                     }
                     Navigator.of(context).pop();

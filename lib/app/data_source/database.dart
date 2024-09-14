@@ -112,7 +112,7 @@ class LocalDatabase {
     List<Map<String, Object>> valuesArray = _fetchFromTable(query: '''
       SELECT
         id, name, type, base_url, path, username, password,
-          failing, last_seen, prior_fetch, last_fetch
+          failing, last_seen, prior_fetch, last_fetch, error_message
       FROM sources;
     ''', values: []);
     var sources = <AlertSourceData>[];
@@ -133,6 +133,7 @@ class LocalDatabase {
             DateTime.fromMillisecondsSinceEpoch(values["prior_fetch"] as int),
         lastFetch:
             DateTime.fromMillisecondsSinceEpoch(values["last_fetch"] as int),
+        errorMessage: values["error_message"] as String,
       ));
     }
     return sources;
@@ -142,8 +143,8 @@ class LocalDatabase {
     return _insertIntoTable(query: '''
       INSERT INTO sources
         (name, type, base_url, path, username, password,
-          failing, last_seen, prior_fetch, last_fetch)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+          failing, last_seen, prior_fetch, last_fetch, error_message)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     ''', values: [
       [
         sourceData.name,
@@ -156,6 +157,7 @@ class LocalDatabase {
         sourceData.lastSeen.millisecondsSinceEpoch,
         sourceData.priorFetch.millisecondsSinceEpoch,
         sourceData.lastFetch.millisecondsSinceEpoch,
+        sourceData.errorMessage,
       ]
     ]);
   }
@@ -164,8 +166,8 @@ class LocalDatabase {
     return _updateTable(query: '''
       UPDATE sources SET
         (name, type, base_url, path, username, password,
-          failing, last_seen, prior_fetch, last_fetch)
-        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
+          failing, last_seen, prior_fetch, last_fetch, error_message)
+        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
     ''', values: [
       sourceData.name,
       sourceData.type,
@@ -177,6 +179,7 @@ class LocalDatabase {
       sourceData.lastSeen.millisecondsSinceEpoch,
       sourceData.priorFetch.millisecondsSinceEpoch,
       sourceData.lastFetch.millisecondsSinceEpoch,
+      sourceData.errorMessage,
       sourceData.id!,
     ]);
   }

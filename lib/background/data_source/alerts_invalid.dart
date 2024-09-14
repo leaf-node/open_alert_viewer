@@ -15,14 +15,16 @@ class InvalidAlerts extends AlertSource with NetworkFetch {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
+    var errorMessage = sourceData.errorMessage;
     List<Alert> nextAlerts = [
       Alert(
           source: sourceData.id!,
           kind: AlertType.syncFailure,
           hostname: sourceData.name,
           service: "OAV",
-          message: "Error finding / connecting to a compatible account. "
-              "Try editing your account details.",
+          message: "Error connecting to your account. "
+              "(${(errorMessage == "") ? "Unknown" : errorMessage}). "
+              "Try editing your account details. ",
           url: generateURL(sourceData.baseURL, ""),
           age: Duration.zero)
     ];
