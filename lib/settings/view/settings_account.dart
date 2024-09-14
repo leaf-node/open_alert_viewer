@@ -70,6 +70,9 @@ class _AccountFormState extends State<AccountForm> {
       pathController.text = widget.source!.sourceData.path;
       userController.text = widget.source!.sourceData.username;
       passwordController.text = widget.source!.sourceData.password;
+      if (typeController.text == "-1") {
+        typeController.text = "0";
+      }
     }
   }
 
