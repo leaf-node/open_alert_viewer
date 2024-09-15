@@ -48,14 +48,14 @@ class SourcesRepo with NetworkFetch {
   }
 
   Future<int> addSource({required AlertSourceData sourceData}) async {
-    sourceData = await _getSourceTypeAndPath(sourcesData: sourceData);
+    sourceData = await _getSourceTypeAndPath(sourceData: sourceData);
     return _db.addSource(sourceData: sourceData);
   }
 
   Future<bool> updateSource(
       {required AlertSourceData sourceData, bool? reIntialize}) async {
     if (reIntialize ?? false) {
-      sourceData = await _getSourceTypeAndPath(sourcesData: sourceData);
+      sourceData = await _getSourceTypeAndPath(sourceData: sourceData);
     }
     return _db.updateSource(sourceData: sourceData);
   }
@@ -75,42 +75,42 @@ class SourcesRepo with NetworkFetch {
   }
 
   Future<AlertSourceData> _getSourceTypeAndPath(
-      {required AlertSourceData sourcesData}) async {
-    if (sourcesData.type == SourceTypes.demo.value ||
-        (sourcesData.type == SourceTypes.autodetect.value &&
-            sourcesData.baseURL == "demo")) {
-      sourcesData.type = SourceTypes.demo.value;
-      sourcesData.path = "";
-      return sourcesData;
+      {required AlertSourceData sourceData}) async {
+    if (sourceData.type == SourceTypes.demo.value ||
+        (sourceData.type == SourceTypes.autodetect.value &&
+            sourceData.baseURL == "demo")) {
+      sourceData.type = SourceTypes.demo.value;
+      sourceData.path = "";
+      return sourceData;
     }
-    if (sourcesData.type == SourceTypes.prom.value ||
-        sourcesData.type == SourceTypes.autodetect.value) {
+    if (sourceData.type == SourceTypes.prom.value ||
+        sourceData.type == SourceTypes.autodetect.value) {
       try {
-        var promBaseURL = sourcesData.baseURL
+        var promBaseURL = sourceData.baseURL
             .replaceFirst(RegExp(r"(/#/alerts/?|/api/v2/alerts/?)$"), "");
         var promPath = "/api/v2/alerts";
         var response = await networkFetch(
-            promBaseURL, promPath, sourcesData.username, sourcesData.password);
+            promBaseURL, promPath, sourceData.username, sourceData.password);
         if (response.statusCode == 200) {
-          sourcesData.type = SourceTypes.prom.value;
-          sourcesData.path = promPath;
-          sourcesData.baseURL = promBaseURL;
-          return sourcesData;
+          sourceData.type = SourceTypes.prom.value;
+          sourceData.path = promPath;
+          sourceData.baseURL = promBaseURL;
+          return sourceData;
         } else {
-          sourcesData.errorMessage =
+          sourceData.errorMessage =
               "${response.statusCode}: ${response.reasonPhrase ?? ""}";
         }
       } on SocketException catch (e) {
-        sourcesData.errorMessage = e.message;
+        sourceData.errorMessage = e.message;
       } catch (e) {
         // fall through
       }
-      if (sourcesData.type == SourceTypes.prom.value) {
-        sourcesData.type = SourceTypes.invalid.value;
-        return sourcesData;
+      if (sourceData.type == SourceTypes.prom.value) {
+        sourceData.type = SourceTypes.invalid.value;
+        return sourceData;
       }
     }
-    sourcesData.type = SourceTypes.invalid.value;
-    return sourcesData;
+    sourceData.type = SourceTypes.invalid.value;
+    return sourceData;
   }
 }
