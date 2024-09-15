@@ -99,7 +99,7 @@ class BackgroundWorker {
       _sendPort = message;
       _isolateReady.complete();
     } else if (message is IsolateMessage) {
-      isolateStreams[message.destination]?.add(message);
+      isolateStreams[message.destination]!.add(message);
     } else if (message is List<dynamic>) {
       isolateStreams[MessageDestination.alerts]!
           .add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
@@ -198,10 +198,14 @@ class BackgroundWorker {
 
   static void _sourcesChangeResult(SendPort port, bool success) {
     if (success) {
-      port.send(const IsolateMessage(name: MessageName.sourcesChanged));
+      port.send(const IsolateMessage(
+          name: MessageName.sourcesChanged,
+          destination: MessageDestination.alerts));
       alertsRepo.fetchAlerts(forceRefreshNow: true);
     } else {
-      port.send(const IsolateMessage(name: MessageName.sourcesFailure));
+      port.send(const IsolateMessage(
+          name: MessageName.sourcesFailure,
+          destination: MessageDestination.alerts));
     }
   }
 }
