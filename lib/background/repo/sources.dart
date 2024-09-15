@@ -81,6 +81,7 @@ class SourcesRepo with NetworkFetch {
             sourcesData.baseURL == "demo")) {
       sourcesData.type = SourceTypes.demo.value;
       sourcesData.path = "";
+      return sourcesData;
     }
     if (sourcesData.type == SourceTypes.prom.value ||
         sourcesData.type == SourceTypes.autodetect.value) {
