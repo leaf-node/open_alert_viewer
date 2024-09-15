@@ -62,21 +62,21 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
       ListenForAlerts event, Emitter<AlertState> emit) async {
     List<Alert> alerts = [];
     List<AlertSource> sources = [];
-    await for (final sourceData
+    await for (final message
         in _bgWorker.isolateStreams[MessageDestination.alerts]!.stream) {
-      alerts = sourceData.alerts ?? alerts;
-      sources = sourceData.sources ?? sources;
-      if (sourceData.name == MessageName.alertsInit) {
+      alerts = message.alerts ?? alerts;
+      sources = message.sources ?? sources;
+      if (message.name == MessageName.alertsInit) {
         emit(AlertsInit(alerts: alerts, sources: sources));
-      } else if (sourceData.name == MessageName.alertsFetching) {
+      } else if (message.name == MessageName.alertsFetching) {
         emit(AlertsFetching(alerts: alerts, sources: sources));
-      } else if (sourceData.name == MessageName.alertsFetched) {
+      } else if (message.name == MessageName.alertsFetched) {
         emit(AlertsFetched(alerts: alerts, sources: sources));
-      } else if (sourceData.name == MessageName.sourcesChanged) {
+      } else if (message.name == MessageName.sourcesChanged) {
         emit(SourcesChanged(alerts: alerts, sources: sources));
       } else {
         throw Exception(
-            "OAV Invalid 'alert' stream message name: ${sourceData.name}");
+            "OAV Invalid 'alert' stream message name: ${message.name}");
       }
     }
   }
