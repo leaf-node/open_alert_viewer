@@ -171,14 +171,14 @@ class BackgroundWorker {
         } else if (message.name == MessageName.addSource) {
           var result =
               await sourcesRepo.addSource(sourceData: message.sourceData!);
-          _sourcesChangeResult(port, (result >= 0));
+          _sourcesChangeResult(outboundStream, (result >= 0));
         } else if (message.name == MessageName.updateSource) {
           var result = await sourcesRepo.updateSource(
               sourceData: message.sourceData!, reIntialize: true);
-          _sourcesChangeResult(port, result);
+          _sourcesChangeResult(outboundStream, result);
         } else if (message.name == MessageName.removeSource) {
           sourcesRepo.removeSource(id: message.id!);
-          _sourcesChangeResult(port, true);
+          _sourcesChangeResult(outboundStream, true);
         } else if (message.name == MessageName.updateLastSeen) {
           sourcesRepo.updateLastSeen();
         } else if (message.name == MessageName.enableNotifications) {
@@ -196,14 +196,15 @@ class BackgroundWorker {
     });
   }
 
-  static void _sourcesChangeResult(SendPort port, bool success) {
+  static void _sourcesChangeResult(
+      StreamController<IsolateMessage> stream, bool success) {
     if (success) {
-      port.send(const IsolateMessage(
+      stream.add(const IsolateMessage(
           name: MessageName.sourcesChanged,
           destination: MessageDestination.alerts));
       alertsRepo.fetchAlerts(forceRefreshNow: true);
     } else {
-      port.send(const IsolateMessage(
+      stream.add(const IsolateMessage(
           name: MessageName.sourcesFailure,
           destination: MessageDestination.alerts));
     }
