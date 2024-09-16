@@ -76,12 +76,17 @@ class SourcesRepo with NetworkFetch {
 
   Future<AlertSourceData> _getSourceTypeAndPath(
       {required AlertSourceData sourceData}) async {
-    if (sourceData.type == SourceTypes.demo.value ||
-        (sourceData.type == SourceTypes.autodetect.value &&
-            sourceData.baseURL == "demo")) {
+    if ((sourceData.type == SourceTypes.demo.value ||
+            sourceData.type == SourceTypes.autodetect.value) &&
+        sourceData.baseURL == "demo") {
       sourceData.type = SourceTypes.demo.value;
       sourceData.path = "";
       sourceData.isValid = true;
+      return sourceData;
+    } else if (sourceData.type == SourceTypes.demo.value &&
+        sourceData.baseURL != "demo") {
+      sourceData.isValid = false;
+      sourceData.errorMessage = "Invalid demo configuration";
       return sourceData;
     }
     if (sourceData.type == SourceTypes.prom.value ||
@@ -107,7 +112,7 @@ class SourcesRepo with NetworkFetch {
       } catch (e) {
         // fall through
       }
-      if (sourceData.type == SourceTypes.prom.value) {
+      if (sourceData.type != SourceTypes.autodetect.value) {
         sourceData.isValid = false;
         return sourceData;
       }
