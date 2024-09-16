@@ -158,6 +158,10 @@ class _AccountFormState extends State<AccountForm> {
                           RemoveAlertSource(id: widget.source!.sourceData.id!));
                       Navigator.of(context).pop();
                     }
+                  } else {
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
                   }
                 },
                 child: Text(() {
