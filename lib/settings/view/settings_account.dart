@@ -200,17 +200,18 @@ class _AccountFormState extends State<AccountForm> {
                     title: "Password",
                     controller: passwordController,
                     passwordField: true),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 ListTile(title: Text(status)),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   cancelButton(context),
                   acceptButton(
                       context: context,
                       needsCheck: state.needsCheck,
                       isValid: state.sourceData?.isValid ?? false,
-                      responded: state.responded)
-                ])
+                      responded: state.responded),
+                ]),
+                const SizedBox(height: 40),
               ]);
             })));
   }
