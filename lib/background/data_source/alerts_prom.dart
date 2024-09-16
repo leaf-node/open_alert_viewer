@@ -20,6 +20,9 @@ class PromAlerts extends AlertSource with NetworkFetch {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
+    if (!(sourceData.isValid ?? false)) {
+      return alertForInvalidSource(sourceData);
+    }
     Response response;
     List<Alert> nextAlerts;
     PromAlertsData alertDatum;

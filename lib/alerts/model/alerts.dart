@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import '../../app/data_source/network_fetch.dart';
+
 enum AlertType {
   okay(name: "Okay"),
   warning(name: "Warning"),
@@ -54,6 +56,7 @@ class AlertSourceData {
     required this.priorFetch,
     required this.lastFetch,
     required this.errorMessage,
+    this.isValid,
   });
 
   int? id;
@@ -68,11 +71,12 @@ class AlertSourceData {
   DateTime priorFetch;
   DateTime lastFetch;
   String errorMessage;
+  bool? isValid;
 }
 
 enum SourceTypes {
   demo("Demo", -2),
-  invalid("Invalid", -1),
+  nullType("Null", -1),
   autodetect("Autodetect", 0),
   prom("Prometheus", 1),
   nag("Nagios", 2);
@@ -82,10 +86,27 @@ enum SourceTypes {
   final int value;
 }
 
-abstract class AlertSource {
+abstract class AlertSource with NetworkFetch {
   const AlertSource({required this.sourceData});
+
+  final AlertSourceData sourceData;
 
   Future<List<Alert>> fetchAlerts();
 
-  final AlertSourceData sourceData;
+  Future<List<Alert>> alertForInvalidSource(AlertSourceData sourceData) async {
+    var errorMessage = sourceData.errorMessage;
+    List<Alert> alerts = [
+      Alert(
+          source: sourceData.id!,
+          kind: AlertType.syncFailure,
+          hostname: sourceData.name,
+          service: "OAV",
+          message: "Error connecting to your account. "
+              "(${(errorMessage == "") ? "Unknown reason" : errorMessage}). "
+              "Try editing your account details. ",
+          url: generateURL(sourceData.baseURL, ""),
+          age: Duration.zero)
+    ];
+    return alerts;
+  }
 }

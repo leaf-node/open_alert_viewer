@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS sources (
     last_seen INTEGER NOT NULL,
     prior_fetch INTEGER NOT NULL,
     last_fetch INTEGER NOT NULL,
-    error_message TEXT NOT NULL
+    error_message TEXT NOT NULL,
+    is_valid BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS settings (

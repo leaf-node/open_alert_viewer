@@ -111,13 +111,12 @@ class LocalDatabase {
   List<AlertSourceData> listSources() {
     List<Map<String, Object>> valuesArray = _fetchFromTable(query: '''
       SELECT
-        id, name, type, base_url, path, username, password,
-          failing, last_seen, prior_fetch, last_fetch, error_message
+        id, name, type, base_url, path, username, password, failing, last_seen,
+          prior_fetch, last_fetch, error_message, is_valid
       FROM sources;
     ''', values: []);
     var sources = <AlertSourceData>[];
     for (var values in valuesArray) {
-      var failing = switch (values["failing"]) { 0 => false, 1 || _ => true };
       sources.add(AlertSourceData(
         id: values["id"] as int,
         name: values["name"] as String,
@@ -126,7 +125,7 @@ class LocalDatabase {
         path: values["path"] as String,
         username: values["username"] as String,
         password: values["password"] as String,
-        failing: failing,
+        failing: switch (values["failing"]) { 0 => false, 1 || _ => true },
         lastSeen:
             DateTime.fromMillisecondsSinceEpoch(values["last_seen"] as int),
         priorFetch:
@@ -134,6 +133,7 @@ class LocalDatabase {
         lastFetch:
             DateTime.fromMillisecondsSinceEpoch(values["last_fetch"] as int),
         errorMessage: values["error_message"] as String,
+        isValid: switch (values["is_valid"]) { 0 => false, 1 || _ => true },
       ));
     }
     return sources;
@@ -142,9 +142,9 @@ class LocalDatabase {
   int addSource({required AlertSourceData sourceData}) {
     return _insertIntoTable(query: '''
       INSERT INTO sources
-        (name, type, base_url, path, username, password,
-          failing, last_seen, prior_fetch, last_fetch, error_message)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        (name, type, base_url, path, username, password, failing, last_seen,
+          prior_fetch, last_fetch, error_message, is_valid)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     ''', values: [
       [
         sourceData.name,
@@ -158,6 +158,7 @@ class LocalDatabase {
         sourceData.priorFetch.millisecondsSinceEpoch,
         sourceData.lastFetch.millisecondsSinceEpoch,
         sourceData.errorMessage,
+        sourceData.isValid ?? "NULL",
       ]
     ]);
   }
@@ -165,9 +166,9 @@ class LocalDatabase {
   bool updateSource({required AlertSourceData sourceData}) {
     return _updateTable(query: '''
       UPDATE sources SET
-        (name, type, base_url, path, username, password,
-          failing, last_seen, prior_fetch, last_fetch, error_message)
-        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
+        (name, type, base_url, path, username, password, failing, last_seen,
+          prior_fetch, last_fetch, error_message, is_valid)
+        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
     ''', values: [
       sourceData.name,
       sourceData.type,
@@ -180,6 +181,7 @@ class LocalDatabase {
       sourceData.priorFetch.millisecondsSinceEpoch,
       sourceData.lastFetch.millisecondsSinceEpoch,
       sourceData.errorMessage,
+      sourceData.isValid ?? "NULL",
       sourceData.id!,
     ]);
   }

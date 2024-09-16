@@ -9,8 +9,8 @@ import 'dart:io';
 import '../../alerts/model/alerts.dart';
 import '../../app/data_repository/settings_repository.dart';
 import '../../app/data_source/network_fetch.dart';
-import '../data_source/alerts_invalid.dart';
 import '../data_source/alerts_nag.dart';
+import '../data_source/alerts_null.dart';
 import '../data_source/alerts_prom.dart';
 import '../data_source/alerts_random.dart';
 import '../../app/data_source/database.dart';
@@ -31,10 +31,10 @@ class SourcesRepo with NetworkFetch {
       var enumType =
           SourceTypes.values.singleWhere((e) => e.value == sourceData.type);
       switch (enumType) {
-        case SourceTypes.invalid:
-          alertSource = InvalidAlerts.new;
+        case SourceTypes.nullType:
+          alertSource = NullAlerts.new;
         case SourceTypes.autodetect:
-          alertSource = InvalidAlerts.new;
+          alertSource = NullAlerts.new;
         case SourceTypes.demo:
           alertSource = RandomAlerts.new;
         case SourceTypes.prom:
@@ -81,6 +81,7 @@ class SourcesRepo with NetworkFetch {
             sourceData.baseURL == "demo")) {
       sourceData.type = SourceTypes.demo.value;
       sourceData.path = "";
+      sourceData.isValid = true;
       return sourceData;
     }
     if (sourceData.type == SourceTypes.prom.value ||
@@ -95,6 +96,7 @@ class SourcesRepo with NetworkFetch {
           sourceData.type = SourceTypes.prom.value;
           sourceData.path = promPath;
           sourceData.baseURL = promBaseURL;
+          sourceData.isValid = true;
           return sourceData;
         } else {
           sourceData.errorMessage =
@@ -106,11 +108,11 @@ class SourcesRepo with NetworkFetch {
         // fall through
       }
       if (sourceData.type == SourceTypes.prom.value) {
-        sourceData.type = SourceTypes.invalid.value;
+        sourceData.isValid = false;
         return sourceData;
       }
     }
-    sourceData.type = SourceTypes.invalid.value;
+    sourceData.isValid = false;
     return sourceData;
   }
 }
