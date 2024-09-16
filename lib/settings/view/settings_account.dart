@@ -92,8 +92,8 @@ class _AccountFormState extends State<AccountForm> {
         password: passwordController.text,
         failing: widget.source?.sourceData.failing ?? false,
         lastSeen: widget.source?.sourceData.lastSeen ?? epoch,
-        priorFetch: widget.source?.sourceData.lastSeen ?? epoch,
-        lastFetch: widget.source?.sourceData.lastSeen ?? epoch,
+        priorFetch: widget.source?.sourceData.priorFetch ?? epoch,
+        lastFetch: widget.source?.sourceData.lastFetch ?? epoch,
         errorMessage: "",
       );
     }
