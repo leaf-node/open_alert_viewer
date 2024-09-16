@@ -64,6 +64,7 @@ class _AccountFormState extends State<AccountForm> {
   final TextEditingController userController;
   final TextEditingController passwordController;
   final DateTime epoch;
+  late final AccountBloc accountBloc;
 
   AlertSourceData get newSourceData {
     if (widget.source == null) {
@@ -129,6 +130,7 @@ class _AccountFormState extends State<AccountForm> {
         typeController.text = "0";
       }
     }
+    accountBloc = context.read<AccountBloc>();
   }
 
   @override
@@ -140,6 +142,7 @@ class _AccountFormState extends State<AccountForm> {
     pathController.dispose();
     userController.dispose();
     passwordController.dispose();
+    accountBloc.add(CleanOutAccountEvent());
   }
 
   @override
@@ -231,12 +234,10 @@ class _AccountFormState extends State<AccountForm> {
                     if (context.mounted && result) {
                       context.read<AlertsBloc>().add(
                           RemoveAlertSource(id: widget.source!.sourceData.id!));
-                      context.read<AccountBloc>().add(CleanOutAccountEvent());
                       Navigator.of(context).pop();
                     }
                   } else {
                     if (context.mounted) {
-                      context.read<AccountBloc>().add(CleanOutAccountEvent());
                       Navigator.of(context).pop();
                     }
                   }
@@ -284,9 +285,6 @@ class _AccountFormState extends State<AccountForm> {
                               context.read<AlertsBloc>().add(
                                   UpdateAlertSource(sourceData: newSourceData));
                             }
-                            context
-                                .read<AccountBloc>()
-                                .add(CleanOutAccountEvent());
                             Navigator.of(context).pop();
                           }
                         }
