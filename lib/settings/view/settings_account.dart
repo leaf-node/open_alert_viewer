@@ -260,7 +260,7 @@ class _AccountFormState extends State<AccountForm> {
       required bool isValid,
       required bool responded}) {
     bool allowClick;
-    if (needsCheck || isValid) {
+    if (needsCheck || responded) {
       allowClick = true;
     } else {
       allowClick = false;
@@ -272,7 +272,7 @@ class _AccountFormState extends State<AccountForm> {
                     ? null
                     : () {
                         if (Form.of(context).validate()) {
-                          if (needsCheck) {
+                          if (needsCheck || !isValid) {
                             context.read<AccountBloc>().add(ConfirmAccountEvent(
                                 sourceData: newSourceData,
                                 needsCheck: false,
@@ -300,7 +300,7 @@ class _AccountFormState extends State<AccountForm> {
                         return "Update Account";
                       }
                     } else {
-                      return "Error";
+                      return "Try Again";
                     }
                   } else {
                     return "Checking...";
