@@ -296,9 +296,9 @@ class _AccountFormState extends State<AccountForm> {
                   } else if (responded) {
                     if (isValid) {
                       if (widget.source == null) {
-                        return "Update Account";
-                      } else {
                         return "Add Account";
+                      } else {
+                        return "Update Account";
                       }
                     } else {
                       return "Error";
