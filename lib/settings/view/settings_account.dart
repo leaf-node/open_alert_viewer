@@ -366,6 +366,8 @@ class _AccountFieldState extends State<AccountField> {
                         )
                       : null,
                 ),
+                autocorrect: false,
+                enableSuggestions: false,
                 obscureText: !_textVisible,
                 validator: widget.validator)));
   }
