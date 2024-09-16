@@ -111,7 +111,7 @@ class BackgroundWorker {
             kind: AlertType.syncFailure,
             hostname: "Open Alert Viewer",
             service: "Background Isolate",
-            message: "Oh no! The background isolate has stopped. "
+            message: "Oh no! The background isolate crashed. "
                 "Please check whether an app upgrade is available and "
                 "resolves this issue. If that does not help, "
                 "please take a screen shot, and submit it using "
