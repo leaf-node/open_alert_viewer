@@ -36,12 +36,15 @@ enum MessageName {
   sourcesFailure,
   showRefreshIndicator,
   updateLastSeen,
+  confirmSources,
+  confirmSourcesReply,
 }
 
 enum MessageDestination {
   alerts,
   notifications,
   refreshIcon,
+  accountSettings,
 }
 
 class IsolateMessage {
@@ -168,13 +171,20 @@ class BackgroundWorker {
               forceRefreshNow: message.forceRefreshNow ?? false);
         } else if (message.name == MessageName.refreshTimer) {
           alertsRepo.refreshTimer();
+        } else if (message.name == MessageName.confirmSources) {
+          var result = await sourcesRepo.getSourceTypeAndPath(
+              sourceData: message.sourceData!);
+          outboundStream.add(IsolateMessage(
+              name: MessageName.confirmSourcesReply,
+              destination: MessageDestination.accountSettings,
+              sourceData: result));
         } else if (message.name == MessageName.addSource) {
           var result =
               await sourcesRepo.addSource(sourceData: message.sourceData!);
           _sourcesChangeResult(outboundStream, (result >= 0));
         } else if (message.name == MessageName.updateSource) {
-          var result = await sourcesRepo.updateSource(
-              sourceData: message.sourceData!, reIntialize: true);
+          var result =
+              await sourcesRepo.updateSource(sourceData: message.sourceData!);
           _sourcesChangeResult(outboundStream, result);
         } else if (message.name == MessageName.removeSource) {
           sourcesRepo.removeSource(id: message.id!);

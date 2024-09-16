@@ -19,6 +19,7 @@ import 'navigation/bloc/navigation_state.dart';
 import 'app/data_repository/settings_repository.dart';
 import 'notifications/bloc/notification_bloc.dart';
 import 'notifications/data_repository/notification.dart';
+import 'settings/bloc/account_bloc.dart';
 import 'settings/bloc/settings_bloc.dart';
 import 'settings/data_repository/account_repository.dart';
 import 'settings/view/licensing_page.dart';
@@ -59,6 +60,7 @@ class OAVapp extends StatelessWidget {
           BlocProvider(
               create: (context) => SettingsBloc(
                   settings: context.read<SettingsRepo>(), bgWorker: bgWorker)),
+          BlocProvider(create: (context) => AccountBloc(bgWorker: bgWorker)),
         ], child: const OAVappView()));
   }
 }

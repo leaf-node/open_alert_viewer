@@ -14,6 +14,9 @@ class NagAlerts extends AlertSource with NetworkFetch {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
+    if (!(sourceData.isValid ?? false)) {
+      return alertForInvalidSource(sourceData);
+    }
     List<Alert> nextAlerts = [
       Alert(
           source: sourceData.id!,

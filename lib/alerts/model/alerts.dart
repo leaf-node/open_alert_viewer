@@ -57,6 +57,7 @@ class AlertSourceData {
     required this.lastFetch,
     required this.errorMessage,
     this.isValid,
+    this.serial,
   });
 
   int? id;
@@ -72,6 +73,7 @@ class AlertSourceData {
   DateTime lastFetch;
   String errorMessage;
   bool? isValid;
+  int? serial;
 }
 
 enum SourceTypes {

@@ -48,15 +48,10 @@ class SourcesRepo with NetworkFetch {
   }
 
   Future<int> addSource({required AlertSourceData sourceData}) async {
-    sourceData = await _getSourceTypeAndPath(sourceData: sourceData);
     return _db.addSource(sourceData: sourceData);
   }
 
-  Future<bool> updateSource(
-      {required AlertSourceData sourceData, bool? reIntialize}) async {
-    if (reIntialize ?? false) {
-      sourceData = await _getSourceTypeAndPath(sourceData: sourceData);
-    }
+  Future<bool> updateSource({required AlertSourceData sourceData}) async {
     return _db.updateSource(sourceData: sourceData);
   }
 
@@ -74,7 +69,7 @@ class SourcesRepo with NetworkFetch {
     }
   }
 
-  Future<AlertSourceData> _getSourceTypeAndPath(
+  Future<AlertSourceData> getSourceTypeAndPath(
       {required AlertSourceData sourceData}) async {
     if ((sourceData.type == SourceTypes.demo.value ||
             sourceData.type == SourceTypes.autodetect.value) &&

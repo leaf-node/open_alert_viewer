@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,6 +13,7 @@ import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_event.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/view/app_view_elements.dart';
+import '../../settings/bloc/account_bloc.dart';
 import '../data_repository/account_repository.dart';
 import 'settings_components.dart';
 
@@ -45,13 +48,65 @@ class AccountForm extends StatefulWidget {
 }
 
 class _AccountFormState extends State<AccountForm> {
-  final nameController = TextEditingController();
-  final typeController = TextEditingController();
-  final baseURLController = TextEditingController();
-  final pathController = TextEditingController();
-  final userController = TextEditingController();
-  final passwordController = TextEditingController();
-  final epoch = DateTime.fromMillisecondsSinceEpoch(0);
+  _AccountFormState()
+      : nameController = TextEditingController(),
+        typeController = TextEditingController(),
+        baseURLController = TextEditingController(),
+        pathController = TextEditingController(),
+        userController = TextEditingController(),
+        passwordController = TextEditingController(),
+        epoch = DateTime.fromMillisecondsSinceEpoch(0);
+
+  final TextEditingController nameController;
+  final TextEditingController typeController;
+  final TextEditingController baseURLController;
+  final TextEditingController pathController;
+  final TextEditingController userController;
+  final TextEditingController passwordController;
+  final DateTime epoch;
+
+  AlertSourceData get newSourceData {
+    if (widget.source == null) {
+      return AlertSourceData(
+        id: null,
+        name: nameController.text,
+        type: int.parse(typeController.text),
+        baseURL: baseURLController.text,
+        path: pathController.text,
+        username: userController.text,
+        password: passwordController.text,
+        failing: false,
+        lastSeen: epoch,
+        priorFetch: epoch,
+        lastFetch: epoch,
+        errorMessage: "",
+      );
+    } else {
+      return AlertSourceData(
+        id: widget.source!.sourceData.id,
+        name: nameController.text,
+        type: int.parse(typeController.text),
+        baseURL: baseURLController.text,
+        path: pathController.text,
+        username: userController.text,
+        password: passwordController.text,
+        failing: widget.source?.sourceData.failing ?? false,
+        lastSeen: widget.source?.sourceData.lastSeen ?? epoch,
+        priorFetch: widget.source?.sourceData.lastSeen ?? epoch,
+        lastFetch: widget.source?.sourceData.lastSeen ?? epoch,
+        errorMessage: "",
+      );
+    }
+  }
+
+  void setNewSourceData({required AlertSourceData sourceData}) {
+    nameController.text = sourceData.name;
+    typeController.text = sourceData.type.toString();
+    baseURLController.text = sourceData.baseURL;
+    pathController.text = sourceData.path;
+    userController.text = sourceData.username;
+    passwordController.text = sourceData.password;
+  }
 
   @override
   void initState() {
@@ -91,10 +146,22 @@ class _AccountFormState extends State<AccountForm> {
   Widget build(BuildContext context) {
     return Form(
         autovalidateMode: AutovalidateMode.always,
-        onChanged: () => (),
+        onChanged: setNeedsCheck,
         child: SizedBox(
             width: 400,
-            child: Builder(builder: (context) {
+            child: BlocBuilder<AccountBloc, AccountState>(
+                builder: (context, state) {
+              String status = "";
+              if (state.responded) {
+                setNewSourceData(sourceData: state.sourceData!);
+                if (state.sourceData!.isValid ?? false) {
+                  status = "Connected";
+                } else {
+                  status = "Error: ${state.sourceData!.errorMessage}";
+                }
+              } else if (state.needsCheck) {
+                status = "";
+              }
               return ListView(children: [
                 const SizedBox(height: 20),
                 const MenuHeader(title: "Account Details", padding: 8.0),
@@ -107,7 +174,7 @@ class _AccountFormState extends State<AccountForm> {
                           text: "Source Type",
                           priorSetting: typeController.text,
                           valueListBuilder: listSourceTypes);
-                      if (result != null) {
+                      if (result != null && result != typeController.text) {
                         typeController.text = result;
                       }
                       return result;
@@ -134,9 +201,16 @@ class _AccountFormState extends State<AccountForm> {
                     controller: passwordController,
                     passwordField: true),
                 const SizedBox(height: 20),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [cancelButton(context), acceptButton(context)])
+                ListTile(title: Text(status)),
+                const SizedBox(height: 20),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  cancelButton(context),
+                  acceptButton(
+                      context: context,
+                      needsCheck: state.needsCheck,
+                      isValid: state.sourceData?.isValid ?? false,
+                      responded: state.responded)
+                ])
               ]);
             })));
   }
@@ -156,10 +230,12 @@ class _AccountFormState extends State<AccountForm> {
                     if (context.mounted && result) {
                       context.read<AlertsBloc>().add(
                           RemoveAlertSource(id: widget.source!.sourceData.id!));
+                      context.read<AccountBloc>().add(CleanOutAccountEvent());
                       Navigator.of(context).pop();
                     }
                   } else {
                     if (context.mounted) {
+                      context.read<AccountBloc>().add(CleanOutAccountEvent());
                       Navigator.of(context).pop();
                     }
                   }
@@ -176,61 +252,70 @@ class _AccountFormState extends State<AccountForm> {
                         fontWeight: FontWeight.bold)))));
   }
 
-  Widget acceptButton(BuildContext context) {
+  Widget acceptButton(
+      {required BuildContext context,
+      required bool needsCheck,
+      required bool isValid,
+      required bool responded}) {
+    bool allowClick;
+    if (needsCheck || isValid) {
+      allowClick = true;
+    } else {
+      allowClick = false;
+    }
     return Expanded(
         child: Center(
             child: ElevatedButton(
-                onPressed: () {
-                  if (Form.of(context).validate()) {
-                    if (widget.source == null) {
-                      context.read<AlertsBloc>().add(AddAlertSource(
-                              sourceData: AlertSourceData(
-                            id: null,
-                            name: nameController.text,
-                            type: int.parse(typeController.text),
-                            baseURL: baseURLController.text,
-                            path: pathController.text,
-                            username: userController.text,
-                            password: passwordController.text,
-                            failing: false,
-                            lastSeen: epoch,
-                            priorFetch: epoch,
-                            lastFetch: epoch,
-                            errorMessage: "",
-                          )));
-                    } else {
-                      context.read<AlertsBloc>().add(UpdateAlertSource(
-                              sourceData: AlertSourceData(
-                            id: widget.source!.sourceData.id,
-                            name: nameController.text,
-                            type: int.parse(typeController.text),
-                            baseURL: baseURLController.text,
-                            path: pathController.text,
-                            username: userController.text,
-                            password: passwordController.text,
-                            failing: widget.source?.sourceData.failing ?? false,
-                            lastSeen:
-                                widget.source?.sourceData.lastSeen ?? epoch,
-                            priorFetch:
-                                widget.source?.sourceData.lastSeen ?? epoch,
-                            lastFetch:
-                                widget.source?.sourceData.lastSeen ?? epoch,
-                            errorMessage: "",
-                          )));
-                    }
-                    Navigator.of(context).pop();
-                  }
-                },
+                onPressed: (!allowClick)
+                    ? null
+                    : () {
+                        if (Form.of(context).validate()) {
+                          if (needsCheck) {
+                            context.read<AccountBloc>().add(ConfirmAccountEvent(
+                                sourceData: newSourceData,
+                                needsCheck: false,
+                                checkNow: true));
+                          } else {
+                            if (widget.source == null) {
+                              context.read<AlertsBloc>().add(
+                                  AddAlertSource(sourceData: newSourceData));
+                            } else {
+                              context.read<AlertsBloc>().add(
+                                  UpdateAlertSource(sourceData: newSourceData));
+                            }
+                            context
+                                .read<AccountBloc>()
+                                .add(CleanOutAccountEvent());
+                            Navigator.of(context).pop();
+                          }
+                        }
+                      },
                 child: Text(() {
-                  if (widget.source == null) {
-                    return "Add Account";
+                  if (needsCheck) {
+                    return "Check Account";
+                  } else if (responded) {
+                    if (isValid) {
+                      if (widget.source == null) {
+                        return "Update Account";
+                      } else {
+                        return "Add Account";
+                      }
+                    } else {
+                      return "Error";
+                    }
                   } else {
-                    return "Update Account";
+                    return "Checking...";
                   }
                 }(),
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                         fontWeight: FontWeight.bold)))));
+  }
+
+  void setNeedsCheck() {
+    context
+        .read<AccountBloc>()
+        .add(ConfirmAccountEvent(sourceData: newSourceData, needsCheck: true));
   }
 }
 

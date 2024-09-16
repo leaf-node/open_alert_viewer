@@ -18,6 +18,9 @@ class RandomAlerts extends AlertSource {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
+    if (!(sourceData.isValid ?? false)) {
+      return alertForInvalidSource(sourceData);
+    }
     List<Alert> nextAlerts = [];
     int count = 20 + _randomSeed.nextInt(20);
     for (int i = 0; i < count; i++) {
