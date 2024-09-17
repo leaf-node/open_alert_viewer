@@ -172,12 +172,7 @@ class BackgroundWorker {
         } else if (message.name == MessageName.refreshTimer) {
           alertsRepo.refreshTimer();
         } else if (message.name == MessageName.confirmSources) {
-          var result = await sourcesRepo.getSourceTypeAndPath(
-              sourceData: message.sourceData!);
-          outboundStream.add(IsolateMessage(
-              name: MessageName.confirmSourcesReply,
-              destination: MessageDestination.accountSettings,
-              sourceData: result));
+          _confirmSource(outboundStream, message);
         } else if (message.name == MessageName.addSource) {
           var result =
               await sourcesRepo.addSource(sourceData: message.sourceData!);
@@ -218,5 +213,15 @@ class BackgroundWorker {
           name: MessageName.sourcesFailure,
           destination: MessageDestination.alerts));
     }
+  }
+
+  static Future<void> _confirmSource(
+      StreamController<IsolateMessage> stream, IsolateMessage message) async {
+    var result =
+        await sourcesRepo.getSourceTypeAndPath(sourceData: message.sourceData!);
+    stream.add(IsolateMessage(
+        name: MessageName.confirmSourcesReply,
+        destination: MessageDestination.accountSettings,
+        sourceData: result));
   }
 }
