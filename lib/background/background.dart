@@ -146,11 +146,12 @@ class BackgroundWorker {
     await db.open();
     SettingsRepo.appVersion = appVersion;
     settings = SettingsRepo(db: db);
-    sourcesRepo = SourcesRepo(db: db, settings: settings);
     notifier = NotificationRepo(settings: settings);
     await notifier.initializeAlertNotifications();
     await notifier.startAnroidStickyNotification();
     var outboundStream = StreamController<IsolateMessage>();
+    sourcesRepo =
+        SourcesRepo(db: db, outboundStream: outboundStream, settings: settings);
     alertsRepo = AlertsRepo(
         db: db,
         settings: settings,
@@ -174,16 +175,11 @@ class BackgroundWorker {
         } else if (message.name == MessageName.confirmSources) {
           _confirmSource(outboundStream, message);
         } else if (message.name == MessageName.addSource) {
-          var result =
-              await sourcesRepo.addSource(sourceData: message.sourceData!);
-          _sourcesChangeResult(outboundStream, (result >= 0));
+          sourcesRepo.addSource(sourceData: message.sourceData!);
         } else if (message.name == MessageName.updateSource) {
-          var result =
-              await sourcesRepo.updateSource(sourceData: message.sourceData!);
-          _sourcesChangeResult(outboundStream, result);
+          sourcesRepo.updateSource(sourceData: message.sourceData!);
         } else if (message.name == MessageName.removeSource) {
           sourcesRepo.removeSource(id: message.id!);
-          _sourcesChangeResult(outboundStream, true);
         } else if (message.name == MessageName.updateLastSeen) {
           sourcesRepo.updateLastSeen();
         } else if (message.name == MessageName.enableNotifications) {
@@ -199,20 +195,6 @@ class BackgroundWorker {
         throw Exception("Invalid message type: $message");
       }
     });
-  }
-
-  static void _sourcesChangeResult(
-      StreamController<IsolateMessage> stream, bool success) {
-    if (success) {
-      stream.add(const IsolateMessage(
-          name: MessageName.sourcesChanged,
-          destination: MessageDestination.alerts));
-      alertsRepo.fetchAlerts(forceRefreshNow: true);
-    } else {
-      stream.add(const IsolateMessage(
-          name: MessageName.sourcesFailure,
-          destination: MessageDestination.alerts));
-    }
   }
 
   static Future<void> _confirmSource(

@@ -73,7 +73,11 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
       } else if (message.name == MessageName.alertsFetched) {
         emit(AlertsFetched(alerts: alerts, sources: sources));
       } else if (message.name == MessageName.sourcesChanged) {
-        emit(SourcesChanged(alerts: alerts, sources: sources));
+        emit(SourcesChangedEvent(alerts: alerts, sources: sources));
+        add(FetchAlerts(forceRefreshNow: true));
+      } else if (message.name == MessageName.sourcesFailure) {
+        emit(SourcesUpdateError(alerts: alerts, sources: sources));
+        add(FetchAlerts(forceRefreshNow: true));
       } else {
         throw Exception(
             "OAV Invalid 'alert' stream message name: ${message.name}");

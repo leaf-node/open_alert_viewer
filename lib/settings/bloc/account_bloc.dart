@@ -77,7 +77,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         }
       } else {
         throw Exception(
-            "OAV Invalid 'settings' stream message name: ${message.name}");
+            "OAV Invalid 'accounts' stream message name: ${message.name}");
       }
     }
   }

@@ -40,10 +40,10 @@ class SettingsPage extends StatelessWidget {
         body: BlocListener<AlertsBloc, AlertState>(
             listener: (context, state) {
               switch (state) {
-                case SourcesListUpdateError():
+                case SourcesUpdateError():
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content:
-                          Text("Ignoring duplicate of existing alert source")));
+                      content: Text("There was an unexpected error while "
+                          "trying to modify your accounts.")));
               }
             },
             child: const SettingsList()));
@@ -73,7 +73,13 @@ class SettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
+    return BlocBuilder<AlertsBloc, AlertState>(buildWhen: (previous, current) {
+      if (current is SourcesChangedEvent || current is SourcesUpdateError) {
+        return true;
+      } else {
+        return false;
+      }
+    }, builder: (context, state) {
       return ListView(children: [
         MenuItem(
             icon: Icons.settings,

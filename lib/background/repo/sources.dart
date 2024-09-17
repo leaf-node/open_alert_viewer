@@ -4,11 +4,13 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:async';
 import 'dart:io';
 
 import '../../alerts/model/alerts.dart';
 import '../../app/data_repository/settings_repository.dart';
 import '../../app/data_source/network_fetch.dart';
+import '../background.dart';
 import '../data_source/alerts_nag.dart';
 import '../data_source/alerts_null.dart';
 import '../data_source/alerts_prom.dart';
@@ -16,12 +18,17 @@ import '../data_source/alerts_random.dart';
 import '../../app/data_source/database.dart';
 
 class SourcesRepo with NetworkFetch {
-  SourcesRepo({required LocalDatabase db, required SettingsRepo settings})
+  SourcesRepo(
+      {required LocalDatabase db,
+      required SettingsRepo settings,
+      required StreamController<IsolateMessage> outboundStream})
       : _db = db,
-        _settings = settings;
+        _settings = settings,
+        _outboundStream = outboundStream;
 
   final LocalDatabase _db;
   final SettingsRepo _settings;
+  final StreamController<IsolateMessage> _outboundStream;
 
   List<AlertSource> get alertSources {
     List<AlertSource> sources = [];
@@ -47,16 +54,19 @@ class SourcesRepo with NetworkFetch {
     return sources;
   }
 
-  Future<int> addSource({required AlertSourceData sourceData}) async {
-    return _db.addSource(sourceData: sourceData);
+  void addSource({required AlertSourceData sourceData}) {
+    var result = _db.addSource(sourceData: sourceData);
+    _sourcesChangeResult(_outboundStream, alertSources, (result >= 0));
   }
 
-  Future<bool> updateSource({required AlertSourceData sourceData}) async {
-    return _db.updateSource(sourceData: sourceData);
+  void updateSource({required AlertSourceData sourceData}) {
+    var result = _db.updateSource(sourceData: sourceData);
+    _sourcesChangeResult(_outboundStream, alertSources, result);
   }
 
   void removeSource({required int id}) {
     _db.removeSource(id: id);
+    _sourcesChangeResult(_outboundStream, alertSources, true);
   }
 
   void updateLastSeen() {
@@ -114,5 +124,20 @@ class SourcesRepo with NetworkFetch {
     }
     sourceData.isValid = false;
     return sourceData;
+  }
+
+  static void _sourcesChangeResult(StreamController<IsolateMessage> stream,
+      List<AlertSource> sources, bool success) {
+    if (success) {
+      stream.add(IsolateMessage(
+          name: MessageName.sourcesChanged,
+          sources: sources,
+          destination: MessageDestination.alerts));
+    } else {
+      stream.add(IsolateMessage(
+          name: MessageName.sourcesFailure,
+          sources: sources,
+          destination: MessageDestination.alerts));
+    }
   }
 }

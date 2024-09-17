@@ -25,10 +25,10 @@ final class AlertsFetched extends AlertState {
   AlertsFetched({required super.alerts, required super.sources});
 }
 
-final class SourcesChanged extends AlertState {
-  SourcesChanged({required super.alerts, required super.sources});
+final class SourcesChangedEvent extends AlertState {
+  SourcesChangedEvent({required super.alerts, required super.sources});
 }
 
-final class SourcesListUpdateError extends AlertState {
-  SourcesListUpdateError({required super.alerts, required super.sources});
+final class SourcesUpdateError extends AlertState {
+  SourcesUpdateError({required super.alerts, required super.sources});
 }
