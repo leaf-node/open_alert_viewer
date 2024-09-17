@@ -177,7 +177,8 @@ class BackgroundWorker {
         } else if (message.name == MessageName.addSource) {
           sourcesRepo.addSource(sourceData: message.sourceData!);
         } else if (message.name == MessageName.updateSource) {
-          sourcesRepo.updateSource(sourceData: message.sourceData!);
+          sourcesRepo.updateSource(
+              sourceData: message.sourceData!, updateUIandRefresh: true);
         } else if (message.name == MessageName.removeSource) {
           sourcesRepo.removeSource(id: message.id!);
         } else if (message.name == MessageName.updateLastSeen) {

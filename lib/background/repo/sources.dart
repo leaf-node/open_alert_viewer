@@ -59,9 +59,12 @@ class SourcesRepo with NetworkFetch {
     _sourcesChangeResult(_outboundStream, alertSources, (result >= 0));
   }
 
-  void updateSource({required AlertSourceData sourceData}) {
+  void updateSource(
+      {required AlertSourceData sourceData, bool? updateUIandRefresh}) {
     var result = _db.updateSource(sourceData: sourceData);
-    _sourcesChangeResult(_outboundStream, alertSources, result);
+    if (updateUIandRefresh ?? false) {
+      _sourcesChangeResult(_outboundStream, alertSources, result);
+    }
   }
 
   void removeSource({required int id}) {
