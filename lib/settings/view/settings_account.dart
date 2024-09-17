@@ -154,16 +154,23 @@ class _AccountFormState extends State<AccountForm> {
             width: 400,
             child: BlocBuilder<AccountBloc, AccountState>(
                 builder: (context, state) {
-              String status = "";
+              String status;
+              IconData? icon;
               if (state.responded) {
                 setNewSourceData(sourceData: state.sourceData!);
                 if (state.sourceData!.isValid ?? false) {
                   status = "Connected";
+                  icon = Icons.check_outlined;
                 } else {
                   status = "Error: ${state.sourceData!.errorMessage}";
+                  icon = Icons.close_outlined;
                 }
               } else if (state.needsCheck) {
                 status = "";
+                icon = null;
+              } else {
+                status = "Checking...";
+                icon = Icons.sync_outlined;
               }
               return ListView(children: [
                 const SizedBox(height: 20),
@@ -204,7 +211,10 @@ class _AccountFormState extends State<AccountForm> {
                     controller: passwordController,
                     passwordField: true),
                 const SizedBox(height: 10),
-                ListTile(title: Text(status)),
+                ListTile(
+                    leading: Icon(icon),
+                    title: Text(status),
+                    contentPadding: const EdgeInsets.all(8)),
                 const SizedBox(height: 10),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   cancelButton(context),
