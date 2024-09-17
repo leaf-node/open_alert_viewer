@@ -265,6 +265,22 @@ class _AccountFormState extends State<AccountForm> {
     } else {
       allowClick = false;
     }
+    String status;
+    if (needsCheck) {
+      status = "Check Account";
+    } else if (responded) {
+      if (isValid) {
+        if (widget.source == null) {
+          status = "Add Account";
+        } else {
+          status = "Update Account";
+        }
+      } else {
+        status = "Try Again";
+      }
+    } else {
+      status = "Checking...";
+    }
     return Expanded(
         child: Center(
             child: ElevatedButton(
@@ -289,23 +305,7 @@ class _AccountFormState extends State<AccountForm> {
                           }
                         }
                       },
-                child: Text(() {
-                  if (needsCheck) {
-                    return "Check Account";
-                  } else if (responded) {
-                    if (isValid) {
-                      if (widget.source == null) {
-                        return "Add Account";
-                      } else {
-                        return "Update Account";
-                      }
-                    } else {
-                      return "Try Again";
-                    }
-                  } else {
-                    return "Checking...";
-                  }
-                }(),
+                child: Text(status,
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                         fontWeight: FontWeight.bold)))));
