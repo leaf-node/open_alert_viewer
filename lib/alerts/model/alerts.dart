@@ -170,13 +170,6 @@ abstract class AlertSource with NetworkFetch {
         }
       }
     }
-    try {
-      return unstructuredDataToAlerts(dataSet);
-    } catch (e) {
-      return errorFetchingAlerts(
-          sourceData: sourceData,
-          error: "Error processing JSON: incompatible or missing data",
-          parameters: "");
-    }
+    return unstructuredDataToAlerts(dataSet);
   }
 }
