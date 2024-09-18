@@ -4,11 +4,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:http/http.dart';
-
 import '../../alerts/model/alerts.dart';
 import '../../app/data_source/network_fetch.dart';
 import '../../app/util/util.dart';
@@ -18,66 +13,35 @@ class PromAlerts extends AlertSource with NetworkFetch {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
-    if (!(sourceData.isValid ?? false)) {
-      return alertForInvalidSource(sourceData);
-    }
-    Response response;
-    List<Alert> newAlerts;
-    PromAlertsData alertDatum;
-    newAlerts = [];
-    try {
-      response = await networkFetch(sourceData.baseURL, sourceData.path,
-          sourceData.username, sourceData.password);
-    } on SocketException catch (e) {
-      return errorFetchingAlerts(
-          sourceData: sourceData, error: "Error fetching alerts: ${e.message}");
-    }
-    if (response.statusCode == 200) {
-      dynamic data;
-      try {
-        data = json.decode(response.body);
-      } catch (e) {
-        return errorFetchingAlerts(
-            sourceData: sourceData,
-            error: "Error decoding reply: invalid JSON");
-      }
-      try {
-        for (var datum in data) {
-          alertDatum = PromAlertsData.fromJSON(Util.mapConvert(datum));
-          var severity = alertDatum.labels['severity'] ?? "";
-          var type = alertDatum.labels['oav_type'] ?? "";
-          AlertType kind;
-          if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
-            kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
-                ? AlertType.down
-                : AlertType.error;
-          } else if (RegExp(r"^(warning)$").hasMatch(severity)) {
-            kind = AlertType.warning;
-          } else {
-            kind = AlertType.unknown;
-          }
-          newAlerts.add(Alert(
-              source: sourceData.id!,
-              kind: kind,
-              hostname: alertDatum.labels['instance'] ?? "",
-              service: alertDatum.labels['alertname'] ?? "",
-              message: alertDatum.annotations['summary'] ?? "",
-              url: alertDatum.generatorURL,
-              age: DateTime.now()
-                  .difference(DateTime.parse(alertDatum.startsAt))));
+    return fetchAndDecodeJSON((dynamic data) {
+      List<Alert> newAlerts = [];
+      for (var datum in data) {
+        PromAlertsData alertDatum =
+            PromAlertsData.fromJSON(Util.mapConvert(datum));
+        var severity = alertDatum.labels['severity'] ?? "";
+        var type = alertDatum.labels['oav_type'] ?? "";
+        AlertType kind;
+        if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
+          kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
+              ? AlertType.down
+              : AlertType.error;
+        } else if (RegExp(r"^(warning)$").hasMatch(severity)) {
+          kind = AlertType.warning;
+        } else {
+          kind = AlertType.unknown;
         }
-        return newAlerts;
-      } catch (e) {
-        return errorFetchingAlerts(
-            sourceData: sourceData,
-            error: "Error processing JSON: incompatible or missing data");
+        newAlerts.add(Alert(
+            source: sourceData.id!,
+            kind: kind,
+            hostname: alertDatum.labels['instance'] ?? "",
+            service: alertDatum.labels['alertname'] ?? "",
+            message: alertDatum.annotations['summary'] ?? "",
+            url: alertDatum.generatorURL,
+            age: DateTime.now()
+                .difference(DateTime.parse(alertDatum.startsAt))));
       }
-    } else {
-      return errorFetchingAlerts(
-          sourceData: sourceData,
-          error: "Error fetching alerts: HTTP status code "
-              "${response.statusCode}: ${response.reasonPhrase}");
-    }
+      return newAlerts;
+    });
   }
 }
 

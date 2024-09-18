@@ -4,6 +4,11 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:http/http.dart';
+
 import '../../app/data_source/network_fetch.dart';
 
 enum AlertType {
@@ -125,5 +130,42 @@ abstract class AlertSource with NetworkFetch {
           age: Duration.zero)
     ];
     return alerts;
+  }
+
+  Future<List<Alert>> fetchAndDecodeJSON(
+      List<Alert> Function(dynamic data) unstructuredDataToAlerts) async {
+    if (!(sourceData.isValid ?? false)) {
+      return alertForInvalidSource(sourceData);
+    }
+    Response response;
+    try {
+      response = await networkFetch(sourceData.baseURL, sourceData.path,
+          sourceData.username, sourceData.password);
+    } on SocketException catch (e) {
+      return errorFetchingAlerts(
+          sourceData: sourceData, error: "Error fetching alerts: ${e.message}");
+    }
+    if (response.statusCode == 200) {
+      dynamic data;
+      try {
+        data = json.decode(response.body);
+      } catch (e) {
+        return errorFetchingAlerts(
+            sourceData: sourceData,
+            error: "Error decoding reply: invalid JSON");
+      }
+      try {
+        return unstructuredDataToAlerts(data);
+      } catch (e) {
+        return errorFetchingAlerts(
+            sourceData: sourceData,
+            error: "Error processing JSON: incompatible or missing data");
+      }
+    } else {
+      return errorFetchingAlerts(
+          sourceData: sourceData,
+          error: "Error fetching alerts: HTTP status code "
+              "${response.statusCode}: ${response.reasonPhrase}");
+    }
   }
 }
