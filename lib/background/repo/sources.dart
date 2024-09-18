@@ -97,20 +97,46 @@ class SourcesRepo with NetworkFetch {
       sourceData.errorMessage = "Invalid demo configuration";
       return sourceData;
     }
-    if (sourceData.type == SourceTypes.prom.value ||
+    bool success;
+    AlertSourceData newSourceData;
+    (success, newSourceData) = await checkSource(
+        sourceType: SourceTypes.prom,
+        sourceData: sourceData,
+        trimRegex: r"(/#/alerts/?|/api/v2/alerts/?)$",
+        apiEndpoint: "/api/v2/alerts");
+    if (success) {
+      return newSourceData;
+    }
+    (success, newSourceData) = await checkSource(
+        sourceType: SourceTypes.nag,
+        sourceData: sourceData,
+        trimRegex: r"(/cgi-bin/statusjson.cgi/?)$",
+        apiEndpoint: "/cgi-bin/statusjson.cgi");
+    if (success) {
+      return newSourceData;
+    }
+    sourceData.isValid = false;
+    return sourceData;
+  }
+
+  Future<(bool, AlertSourceData)> checkSource(
+      {required SourceTypes sourceType,
+      required AlertSourceData sourceData,
+      required String trimRegex,
+      required String apiEndpoint}) async {
+    if (sourceData.type == sourceType.value ||
         sourceData.type == SourceTypes.autodetect.value) {
       try {
-        var promBaseURL = sourceData.baseURL
-            .replaceFirst(RegExp(r"(/#/alerts/?|/api/v2/alerts/?)$"), "");
-        var promPath = "/api/v2/alerts";
-        var response = await networkFetch(
-            promBaseURL, promPath, sourceData.username, sourceData.password);
+        var trimmedBaseURL =
+            sourceData.baseURL.replaceFirst(RegExp(trimRegex), "");
+        var response = await networkFetch(trimmedBaseURL, apiEndpoint,
+            sourceData.username, sourceData.password);
         if (response.statusCode == 200) {
-          sourceData.type = SourceTypes.prom.value;
-          sourceData.path = promPath;
-          sourceData.baseURL = promBaseURL;
+          sourceData.type = sourceType.value;
+          sourceData.path = apiEndpoint;
+          sourceData.baseURL = trimmedBaseURL;
           sourceData.isValid = true;
-          return sourceData;
+          return (true, sourceData);
         } else {
           sourceData.errorMessage =
               "${response.statusCode}: ${response.reasonPhrase ?? ""}";
@@ -122,11 +148,10 @@ class SourcesRepo with NetworkFetch {
       }
       if (sourceData.type != SourceTypes.autodetect.value) {
         sourceData.isValid = false;
-        return sourceData;
+        return (false, sourceData);
       }
     }
-    sourceData.isValid = false;
-    return sourceData;
+    return (false, sourceData);
   }
 
   static void _sourcesChangeResult(StreamController<IsolateMessage> stream,
