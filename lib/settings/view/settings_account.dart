@@ -55,7 +55,8 @@ class _AccountFormState extends State<AccountForm> {
         pathController = TextEditingController(),
         userController = TextEditingController(),
         passwordController = TextEditingController(),
-        epoch = DateTime.fromMillisecondsSinceEpoch(0);
+        epoch = DateTime.fromMillisecondsSinceEpoch(0),
+        systemIsUpdatingValues = false;
 
   final TextEditingController nameController;
   final TextEditingController typeController;
@@ -65,6 +66,7 @@ class _AccountFormState extends State<AccountForm> {
   final TextEditingController passwordController;
   final DateTime epoch;
   late final AccountBloc accountBloc;
+  bool systemIsUpdatingValues;
 
   AlertSourceData get newSourceData {
     if (widget.source == null) {
@@ -101,12 +103,14 @@ class _AccountFormState extends State<AccountForm> {
   }
 
   void setNewSourceData({required AlertSourceData sourceData}) {
+    systemIsUpdatingValues = true;
     nameController.text = sourceData.name;
     typeController.text = sourceData.type.toString();
     baseURLController.text = sourceData.baseURL;
     pathController.text = sourceData.path;
     userController.text = sourceData.username;
     passwordController.text = sourceData.password;
+    systemIsUpdatingValues = false;
   }
 
   @override
@@ -322,9 +326,10 @@ class _AccountFormState extends State<AccountForm> {
   }
 
   void setNeedsCheck() {
-    context
-        .read<AccountBloc>()
-        .add(ConfirmAccountEvent(sourceData: newSourceData, needsCheck: true));
+    if (!systemIsUpdatingValues) {
+      context.read<AccountBloc>().add(
+          ConfirmAccountEvent(sourceData: newSourceData, needsCheck: true));
+    }
   }
 }
 
