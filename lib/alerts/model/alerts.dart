@@ -135,14 +135,14 @@ abstract class AlertSource with NetworkFetch {
   }
 
   Future<List<Alert>> fetchAndDecodeJSON(
-      {required List<Alert> Function(List<dynamic> data)
+      {required List<Alert> Function(Map<String, dynamic> data)
           unstructuredDataToAlerts,
       required List<String> queryParametersSet}) async {
     if (!(sourceData.isValid ?? false)) {
       return alertForInvalidSource(sourceData);
     }
     Response response;
-    List<dynamic> dataSet = [];
+    Map<String, dynamic> dataSet = {};
     for (String parameters in queryParametersSet) {
       try {
         response = await networkFetch(sourceData.baseURL, sourceData.path,
@@ -161,7 +161,7 @@ abstract class AlertSource with NetworkFetch {
             parameters: parameters);
       } else {
         try {
-          dataSet.add(json.decode(response.body));
+          dataSet[parameters] = json.decode(response.body);
         } catch (e) {
           return errorFetchingAlerts(
               sourceData: sourceData,

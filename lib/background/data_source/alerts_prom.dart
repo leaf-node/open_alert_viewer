@@ -15,9 +15,9 @@ class PromAlerts extends AlertSource with NetworkFetch {
   Future<List<Alert>> fetchAlerts() async {
     return fetchAndDecodeJSON(
         queryParametersSet: [""],
-        unstructuredDataToAlerts: (List<dynamic> dataSet) {
+        unstructuredDataToAlerts: (Map<String, dynamic> dataSet) {
           List<Alert> newAlerts = [];
-          for (var datum in dataSet[0]) {
+          for (var datum in dataSet[""]) {
             PromAlertsData alertDatum =
                 PromAlertsData.fromJSON(Util.mapConvert(datum));
             var severity = alertDatum.labels['severity'] ?? "";
