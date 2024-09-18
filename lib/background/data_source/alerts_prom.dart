@@ -31,17 +31,7 @@ class PromAlerts extends AlertSource with NetworkFetch {
       response = await networkFetch(sourceData.baseURL, sourceData.path,
           sourceData.username, sourceData.password);
     } on SocketException catch (e) {
-      nextAlerts = [
-        Alert(
-            source: sourceData.id!,
-            kind: AlertType.syncFailure,
-            hostname: sourceData.name,
-            service: "OAV",
-            message: "Error fetching alerts: ${e.message}",
-            url: generateURL(sourceData.baseURL, sourceData.path),
-            age: Duration.zero)
-      ];
-      _alerts = nextAlerts;
+      _alerts = errorFetchingAlerts(sourceData: sourceData, error: e.message);
       return _alerts;
     }
     if (response.statusCode == 200) {
@@ -71,19 +61,11 @@ class PromAlerts extends AlertSource with NetworkFetch {
                 .difference(DateTime.parse(alertDatum.startsAt))));
       }
     } else {
-      nextAlerts = [
-        Alert(
-            source: sourceData.id!,
-            kind: AlertType.syncFailure,
-            hostname: sourceData.name,
-            service: "OAV",
-            message: "Error fetching alerts: HTTP status code "
-                "${response.statusCode}",
-            url: generateURL(sourceData.baseURL, sourceData.path),
-            age: Duration.zero)
-      ];
+      _alerts = errorFetchingAlerts(
+          sourceData: sourceData,
+          error: "Error fetching alerts: HTTP status code "
+              "${response.statusCode}");
     }
-    _alerts = nextAlerts;
     return _alerts;
   }
 }
