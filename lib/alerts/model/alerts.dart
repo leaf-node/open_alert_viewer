@@ -111,14 +111,16 @@ abstract class AlertSource with NetworkFetch {
           message: "Error connecting to your account. "
               "(${(errorMessage == "") ? "Unknown reason" : errorMessage}). "
               "Try editing your account details. ",
-          url: generateURL(sourceData.baseURL, ""),
+          url: generateURL(sourceData.baseURL, "", ""),
           age: Duration.zero)
     ];
     return alerts;
   }
 
   List<Alert> errorFetchingAlerts(
-      {required AlertSourceData sourceData, required String error}) {
+      {required AlertSourceData sourceData,
+      required String error,
+      required String parameters}) {
     var alerts = [
       Alert(
           source: sourceData.id!,
@@ -126,46 +128,55 @@ abstract class AlertSource with NetworkFetch {
           hostname: sourceData.name,
           service: "OAV",
           message: error,
-          url: generateURL(sourceData.baseURL, sourceData.path),
+          url: generateURL(sourceData.baseURL, sourceData.path, parameters),
           age: Duration.zero)
     ];
     return alerts;
   }
 
   Future<List<Alert>> fetchAndDecodeJSON(
-      List<Alert> Function(dynamic data) unstructuredDataToAlerts) async {
+      {required List<Alert> Function(List<dynamic> data)
+          unstructuredDataToAlerts,
+      required List<String> queryParametersSet}) async {
     if (!(sourceData.isValid ?? false)) {
       return alertForInvalidSource(sourceData);
     }
     Response response;
-    try {
-      response = await networkFetch(sourceData.baseURL, sourceData.path,
-          sourceData.username, sourceData.password);
-    } on SocketException catch (e) {
-      return errorFetchingAlerts(
-          sourceData: sourceData, error: "Error fetching alerts: ${e.message}");
+    List<dynamic> dataSet = [];
+    for (String parameters in queryParametersSet) {
+      try {
+        response = await networkFetch(sourceData.baseURL, sourceData.path,
+            sourceData.username, sourceData.password, parameters);
+      } on SocketException catch (e) {
+        return errorFetchingAlerts(
+            sourceData: sourceData,
+            error: "Error fetching alerts: ${e.message}",
+            parameters: parameters);
+      }
+      if (response.statusCode != 200) {
+        return errorFetchingAlerts(
+            sourceData: sourceData,
+            error: "Error fetching alerts: HTTP status code "
+                "${response.statusCode}: ${response.reasonPhrase}",
+            parameters: parameters);
+      } else {
+        try {
+          dataSet.add(json.decode(response.body));
+        } catch (e) {
+          return errorFetchingAlerts(
+              sourceData: sourceData,
+              error: "Error decoding reply: invalid JSON",
+              parameters: parameters);
+        }
+      }
     }
-    if (response.statusCode == 200) {
-      dynamic data;
-      try {
-        data = json.decode(response.body);
-      } catch (e) {
-        return errorFetchingAlerts(
-            sourceData: sourceData,
-            error: "Error decoding reply: invalid JSON");
-      }
-      try {
-        return unstructuredDataToAlerts(data);
-      } catch (e) {
-        return errorFetchingAlerts(
-            sourceData: sourceData,
-            error: "Error processing JSON: incompatible or missing data");
-      }
-    } else {
+    try {
+      return unstructuredDataToAlerts(dataSet);
+    } catch (e) {
       return errorFetchingAlerts(
           sourceData: sourceData,
-          error: "Error fetching alerts: HTTP status code "
-              "${response.statusCode}: ${response.reasonPhrase}");
+          error: "Error processing JSON: incompatible or missing data",
+          parameters: "");
     }
   }
 }

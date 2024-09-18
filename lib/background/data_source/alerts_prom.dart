@@ -13,35 +13,37 @@ class PromAlerts extends AlertSource with NetworkFetch {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
-    return fetchAndDecodeJSON((dynamic data) {
-      List<Alert> newAlerts = [];
-      for (var datum in data) {
-        PromAlertsData alertDatum =
-            PromAlertsData.fromJSON(Util.mapConvert(datum));
-        var severity = alertDatum.labels['severity'] ?? "";
-        var type = alertDatum.labels['oav_type'] ?? "";
-        AlertType kind;
-        if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
-          kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
-              ? AlertType.down
-              : AlertType.error;
-        } else if (RegExp(r"^(warning)$").hasMatch(severity)) {
-          kind = AlertType.warning;
-        } else {
-          kind = AlertType.unknown;
-        }
-        newAlerts.add(Alert(
-            source: sourceData.id!,
-            kind: kind,
-            hostname: alertDatum.labels['instance'] ?? "",
-            service: alertDatum.labels['alertname'] ?? "",
-            message: alertDatum.annotations['summary'] ?? "",
-            url: alertDatum.generatorURL,
-            age: DateTime.now()
-                .difference(DateTime.parse(alertDatum.startsAt))));
-      }
-      return newAlerts;
-    });
+    return fetchAndDecodeJSON(
+        queryParametersSet: [""],
+        unstructuredDataToAlerts: (List<dynamic> dataSet) {
+          List<Alert> newAlerts = [];
+          for (var datum in dataSet[0]) {
+            PromAlertsData alertDatum =
+                PromAlertsData.fromJSON(Util.mapConvert(datum));
+            var severity = alertDatum.labels['severity'] ?? "";
+            var type = alertDatum.labels['oav_type'] ?? "";
+            AlertType kind;
+            if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
+              kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
+                  ? AlertType.down
+                  : AlertType.error;
+            } else if (RegExp(r"^(warning)$").hasMatch(severity)) {
+              kind = AlertType.warning;
+            } else {
+              kind = AlertType.unknown;
+            }
+            newAlerts.add(Alert(
+                source: sourceData.id!,
+                kind: kind,
+                hostname: alertDatum.labels['instance'] ?? "",
+                service: alertDatum.labels['alertname'] ?? "",
+                message: alertDatum.annotations['summary'] ?? "",
+                url: alertDatum.generatorURL,
+                age: DateTime.now()
+                    .difference(DateTime.parse(alertDatum.startsAt))));
+          }
+          return newAlerts;
+        });
   }
 }
 
