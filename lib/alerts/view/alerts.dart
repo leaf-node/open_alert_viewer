@@ -71,7 +71,7 @@ enum AlertTypeView {
   syncFailure(
       icon: Icons.mobiledata_off,
       bgColor: Color(0xFF111111), // darker gray
-      fgColor: Color(0xFFC65656), // less saturated red800
+      fgColor: Color(0xFFFBC02D), // yellow700
       title: "SYNC FAILURE",
       numArgs: 3);
 
