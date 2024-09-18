@@ -120,7 +120,7 @@ abstract class AlertSource with NetworkFetch {
           kind: AlertType.syncFailure,
           hostname: sourceData.name,
           service: "OAV",
-          message: "Error fetching alerts: $error",
+          message: error,
           url: generateURL(sourceData.baseURL, sourceData.path),
           age: Duration.zero)
     ];
