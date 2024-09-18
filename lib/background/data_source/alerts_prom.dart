@@ -14,9 +14,7 @@ import '../../app/data_source/network_fetch.dart';
 import '../../app/util/util.dart';
 
 class PromAlerts extends AlertSource with NetworkFetch {
-  PromAlerts({required super.sourceData}) : _alerts = [];
-
-  List<Alert> _alerts;
+  PromAlerts({required super.sourceData});
 
   @override
   Future<List<Alert>> fetchAlerts() async {
@@ -24,26 +22,24 @@ class PromAlerts extends AlertSource with NetworkFetch {
       return alertForInvalidSource(sourceData);
     }
     Response response;
-    List<Alert> nextAlerts;
+    List<Alert> newAlerts;
     PromAlertsData alertDatum;
-    nextAlerts = [];
+    newAlerts = [];
     try {
       response = await networkFetch(sourceData.baseURL, sourceData.path,
           sourceData.username, sourceData.password);
     } on SocketException catch (e) {
-      _alerts = errorFetchingAlerts(
+      return errorFetchingAlerts(
           sourceData: sourceData, error: "Error fetching alerts: ${e.message}");
-      return _alerts;
     }
     if (response.statusCode == 200) {
       dynamic data;
       try {
         data = json.decode(response.body);
       } catch (e) {
-        _alerts = errorFetchingAlerts(
+        return errorFetchingAlerts(
             sourceData: sourceData,
             error: "Error decoding reply: invalid JSON");
-        return _alerts;
       }
       try {
         for (var datum in data) {
@@ -60,7 +56,7 @@ class PromAlerts extends AlertSource with NetworkFetch {
           } else {
             kind = AlertType.unknown;
           }
-          nextAlerts.add(Alert(
+          newAlerts.add(Alert(
               source: sourceData.id!,
               kind: kind,
               hostname: alertDatum.labels['instance'] ?? "",
@@ -70,20 +66,17 @@ class PromAlerts extends AlertSource with NetworkFetch {
               age: DateTime.now()
                   .difference(DateTime.parse(alertDatum.startsAt))));
         }
-        _alerts = nextAlerts;
-        return _alerts;
+        return newAlerts;
       } catch (e) {
-        _alerts = errorFetchingAlerts(
+        return errorFetchingAlerts(
             sourceData: sourceData,
             error: "Error processing JSON: incompatible or missing data");
-        return _alerts;
       }
     } else {
-      _alerts = errorFetchingAlerts(
+      return errorFetchingAlerts(
           sourceData: sourceData,
           error: "Error fetching alerts: HTTP status code "
               "${response.statusCode}: ${response.reasonPhrase}");
-      return _alerts;
     }
   }
 }
