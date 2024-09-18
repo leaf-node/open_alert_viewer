@@ -19,7 +19,7 @@ class PromAlerts extends AlertSource with NetworkFetch {
           List<Alert> newAlerts = [];
           for (var datum in dataSet[""]) {
             PromAlertsData alertDatum =
-                PromAlertsData.fromJSON(Util.mapConvert(datum));
+                PromAlertsData.fromParsedJSON(Util.mapConvert(datum));
             var severity = alertDatum.labels['severity'] ?? "";
             var type = alertDatum.labels['oav_type'] ?? "";
             AlertType kind;
@@ -57,7 +57,7 @@ class PromAlertsData {
       required this.annotations,
       required this.labels});
 
-  factory PromAlertsData.fromJSON(Map<String, Object> parsed) {
+  factory PromAlertsData.fromParsedJSON(Map<String, Object> parsed) {
     return PromAlertsData(
         fingerprint: parsed["fingerprint"] as String,
         startsAt: parsed["startsAt"] as String,
