@@ -117,13 +117,6 @@ class NagAlertsData {
       required this.lastStateChange,
       required this.lastHardStateChange,
       required this.lastCheck,
-      required this.lastTimeUp,
-      required this.lastTimeDown,
-      required this.lastTimeUnreachable,
-      required this.lastTimeOkay,
-      required this.lastTimeWarning,
-      required this.lastTimeUnknown,
-      required this.lastTimeCritical,
       required this.pluginOutput});
 
   final int status;
@@ -131,13 +124,6 @@ class NagAlertsData {
   final DateTime lastStateChange;
   final DateTime lastHardStateChange;
   final DateTime lastCheck;
-  final DateTime lastTimeUp;
-  final DateTime lastTimeDown;
-  final DateTime lastTimeUnreachable;
-  final DateTime lastTimeOkay;
-  final DateTime lastTimeWarning;
-  final DateTime lastTimeUnknown;
-  final DateTime lastTimeCritical;
   final String pluginOutput;
 
   factory NagAlertsData.fromParsedJSON(Map<String, Object> parsed) {
@@ -147,14 +133,6 @@ class NagAlertsData {
         lastStateChange: _dateTime(parsed["last_state_change"] as int),
         lastHardStateChange: _dateTime(parsed["last_hard_state_change"] as int),
         lastCheck: _dateTime(parsed["last_check"] as int),
-        lastTimeUp: _dateTime(parsed["last_time_up"] as int? ?? 0),
-        lastTimeDown: _dateTime(parsed["last_time_down"] as int? ?? 0),
-        lastTimeUnreachable:
-            _dateTime(parsed["last_time_unreachable"] as int? ?? 0),
-        lastTimeOkay: _dateTime(parsed["last_time_ok"] as int? ?? 0),
-        lastTimeWarning: _dateTime(parsed["last_time_warning"] as int? ?? 0),
-        lastTimeUnknown: _dateTime(parsed["last_time_unknown"] as int? ?? 0),
-        lastTimeCritical: _dateTime(parsed["last_time_critical"] as int? ?? 0),
         pluginOutput: parsed["plugin_output"] as String);
   }
 
