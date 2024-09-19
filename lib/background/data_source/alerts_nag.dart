@@ -95,7 +95,7 @@ class NagAlerts extends AlertSource with NetworkFetch {
     } else {
       DateTime startsAt = alertDatum.lastHardStateChange;
       age = (startsAt.difference(epoch) == Duration.zero)
-          ? Duration.zero
+          ? DateTime.now().difference(alertDatum.lastCheck)
           : DateTime.now().difference(startsAt);
       if (age == Duration.zero) {}
     }
@@ -114,11 +114,12 @@ class NagAlertsData {
   const NagAlertsData(
       {required this.status,
       required this.description,
+      required this.lastStateChange,
+      required this.lastHardStateChange,
+      required this.lastCheck,
       required this.lastTimeUp,
       required this.lastTimeDown,
       required this.lastTimeUnreachable,
-      required this.lastStateChange,
-      required this.lastHardStateChange,
       required this.lastTimeOkay,
       required this.lastTimeWarning,
       required this.lastTimeUnknown,
@@ -129,6 +130,7 @@ class NagAlertsData {
   final String description;
   final DateTime lastStateChange;
   final DateTime lastHardStateChange;
+  final DateTime lastCheck;
   final DateTime lastTimeUp;
   final DateTime lastTimeDown;
   final DateTime lastTimeUnreachable;
@@ -144,6 +146,7 @@ class NagAlertsData {
         description: parsed["description"] as String? ?? "Ping",
         lastStateChange: _dateTime(parsed["last_state_change"] as int),
         lastHardStateChange: _dateTime(parsed["last_hard_state_change"] as int),
+        lastCheck: _dateTime(parsed["last_check"] as int),
         lastTimeUp: _dateTime(parsed["last_time_up"] as int? ?? 0),
         lastTimeDown: _dateTime(parsed["last_time_down"] as int? ?? 0),
         lastTimeUnreachable:
