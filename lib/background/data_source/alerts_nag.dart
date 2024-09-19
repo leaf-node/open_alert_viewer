@@ -8,6 +8,8 @@ import '../../alerts/model/alerts.dart';
 import '../../app/data_source/network_fetch.dart';
 import '../../app/util/util.dart';
 
+enum StatusType { hostStatus, serviceStatus }
+
 enum HostStatus {
   pending(1, AlertType.hostPending),
   up(2, AlertType.up),
@@ -39,91 +41,121 @@ class NagAlerts extends AlertSource with NetworkFetch {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
-    List<String> queryParametersSet = [
-      "?query=hostlist&details=true",
-      //"?query=servicelist&details=true"
-    ];
+    Map<String, StatusType> queryParametersSet = {
+      "?query=hostlist&details=true": StatusType.hostStatus,
+      "?query=servicelist&details=true": StatusType.serviceStatus
+    };
     return fetchAndDecodeJSON(
-        queryParametersSet: queryParametersSet,
+        queryParametersSet: queryParametersSet.keys.toList(),
         unstructuredDataToAlerts: (Map<String, dynamic> dataSet) {
           List<Alert> newAlerts = [];
           for (var queryParams in dataSet.keys) {
+            StatusType statusType = queryParametersSet[queryParams]!;
             var data = Util.mapConvert(dataSet[queryParams]);
             var dataMap = Util.mapConvert(data["data"]);
-            var hostList = Util.mapConvert(dataMap["hostlist"]);
-            for (var host in hostList.keys) {
-              var hostData = Util.mapConvert(hostList[host]);
-              NagHostAlertsData alertDatum =
-                  NagHostAlertsData.fromParsedJSON(Util.mapConvert(hostData));
-              AlertType kind = HostStatus.values
-                  .firstWhere((v) => v.value == alertDatum.status)
-                  .alertType;
-              Duration age;
-              if (kind == HostStatus.pending.alertType) {
-                age = Duration.zero;
-              } else {
-                DateTime startsAt =
-                    (alertDatum.lastHardStateChange.difference(epoch) ==
-                            Duration.zero)
-                        ? alertDatum.lastStateChange
-                        : alertDatum.lastHardStateChange;
-                age = DateTime.now().difference(startsAt);
+            if (statusType == StatusType.hostStatus) {
+              var hostList = Util.mapConvert(dataMap["hostlist"]);
+              for (var host in hostList.keys) {
+                var hostData = Util.mapConvert(hostList[host]);
+                newAlerts.add(alertHandler(hostData, false, host));
               }
-              newAlerts.add(Alert(
-                  source: sourceData.id!,
-                  kind: kind,
-                  hostname: host,
-                  service: "Ping",
-                  message: alertDatum.pluginOutput,
-                  url: generateURL(host, "", ""),
-                  age: age));
+            } else if (statusType == StatusType.serviceStatus) {
+              var serviceHostList = Util.mapConvert(dataMap["servicelist"]);
+              for (var host in serviceHostList.keys) {
+                var serviceHostData = Util.mapConvert(serviceHostList[host]);
+                for (var service in serviceHostData.keys) {
+                  var serviceData = Util.mapConvert(serviceHostData[service]);
+                  newAlerts.add(alertHandler(serviceData, true, host));
+                }
+              }
             }
           }
           return newAlerts;
         });
   }
+
+  Alert alertHandler(
+      Map<String, dynamic> alertsData, bool isService, String host) {
+    NagAlertsData alertDatum =
+        NagAlertsData.fromParsedJSON(Util.mapConvert(alertsData));
+    AlertType kind;
+    if (isService) {
+      kind = ServiceStatus.values
+          .firstWhere((v) => v.value == alertDatum.status)
+          .alertType;
+    } else {
+      kind = HostStatus.values
+          .firstWhere((v) => v.value == alertDatum.status)
+          .alertType;
+    }
+    Duration age;
+    if (kind == ServiceStatus.pending.alertType ||
+        kind == HostStatus.pending.alertType) {
+      age = Duration.zero;
+    } else {
+      DateTime startsAt = alertDatum.lastHardStateChange;
+      age = (startsAt.difference(epoch) == Duration.zero)
+          ? Duration.zero
+          : DateTime.now().difference(startsAt);
+      if (age == Duration.zero) {}
+    }
+    return Alert(
+        source: sourceData.id!,
+        kind: kind,
+        hostname: host,
+        service: alertDatum.description,
+        message: alertDatum.pluginOutput,
+        url: generateURL(host, "", ""),
+        age: age);
+  }
 }
 
-class NagHostAlertsData {
-  const NagHostAlertsData(
+class NagAlertsData {
+  const NagAlertsData(
       {required this.status,
-      required this.lastStateChange,
-      required this.lastHardStateChange,
+      required this.description,
       required this.lastTimeUp,
       required this.lastTimeDown,
       required this.lastTimeUnreachable,
+      required this.lastStateChange,
+      required this.lastHardStateChange,
+      required this.lastTimeOkay,
+      required this.lastTimeWarning,
+      required this.lastTimeUnknown,
+      required this.lastTimeCritical,
       required this.pluginOutput});
 
   final int status;
+  final String description;
   final DateTime lastStateChange;
   final DateTime lastHardStateChange;
   final DateTime lastTimeUp;
   final DateTime lastTimeDown;
   final DateTime lastTimeUnreachable;
+  final DateTime lastTimeOkay;
+  final DateTime lastTimeWarning;
+  final DateTime lastTimeUnknown;
+  final DateTime lastTimeCritical;
   final String pluginOutput;
 
-  factory NagHostAlertsData.fromParsedJSON(Map<String, Object> parsed) {
-    return NagHostAlertsData(
+  factory NagAlertsData.fromParsedJSON(Map<String, Object> parsed) {
+    return NagAlertsData(
         status: parsed["status"] as int,
+        description: parsed["description"] as String? ?? "Ping",
         lastStateChange: _dateTime(parsed["last_state_change"] as int),
         lastHardStateChange: _dateTime(parsed["last_hard_state_change"] as int),
-        lastTimeUp: _dateTime(parsed["last_time_up"] as int),
-        lastTimeDown: _dateTime(parsed["last_time_down"] as int),
-        lastTimeUnreachable: _dateTime(parsed["last_time_unreachable"] as int),
+        lastTimeUp: _dateTime(parsed["last_time_up"] as int? ?? 0),
+        lastTimeDown: _dateTime(parsed["last_time_down"] as int? ?? 0),
+        lastTimeUnreachable:
+            _dateTime(parsed["last_time_unreachable"] as int? ?? 0),
+        lastTimeOkay: _dateTime(parsed["last_time_ok"] as int? ?? 0),
+        lastTimeWarning: _dateTime(parsed["last_time_warning"] as int? ?? 0),
+        lastTimeUnknown: _dateTime(parsed["last_time_unknown"] as int? ?? 0),
+        lastTimeCritical: _dateTime(parsed["last_time_critical"] as int? ?? 0),
         pluginOutput: parsed["plugin_output"] as String);
   }
 
   static DateTime _dateTime(int milliSeconds) {
     return DateTime.fromMillisecondsSinceEpoch(milliSeconds);
   }
-}
-
-class NagserviceAlertsData {
-  const NagserviceAlertsData({required this.status});
-
-  factory NagserviceAlertsData.fromJSON(Map<String, Object> parsed) {
-    return NagserviceAlertsData(status: parsed["fingerprint"] as String);
-  }
-
-  final String status;
 }
