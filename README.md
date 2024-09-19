@@ -14,6 +14,7 @@ support for additional back end alerting services.
 
 * [Prometheus Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/)
   ([configuration](#prometheus))
+* [Nagios Core 4](https://www.nagios.org/projects/nagios-core/)
 * (More planned)
 
 ### Authentication
