@@ -48,6 +48,8 @@ class SourcesRepo with NetworkFetch {
           alertSource = PromAlerts.new;
         case SourceTypes.nag:
           alertSource = NagAlerts.new;
+        case SourceTypes.ici:
+          alertSource = NullAlerts.new;
       }
       sources.add(alertSource(sourceData: sourceData));
     }

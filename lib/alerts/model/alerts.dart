@@ -85,6 +85,7 @@ enum SourceTypes {
   demo("Demo", -2),
   nullType("Null", -1),
   autodetect("Autodetect", 0),
+  ici("Icinga", 3),
   nag("Nagios", 2),
   prom("Prometheus", 1),
 
