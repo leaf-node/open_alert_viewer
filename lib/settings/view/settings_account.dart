@@ -163,7 +163,7 @@ class _AccountFormState extends State<AccountForm> {
               if (state.responded) {
                 setNewSourceData(sourceData: state.sourceData!);
                 if (state.sourceData!.isValid ?? false) {
-                  status = "Connected";
+                  status = "Found API endpoint";
                   icon = Icons.check_outlined;
                 } else {
                   status = "Error: ${state.sourceData!.errorMessage}";
