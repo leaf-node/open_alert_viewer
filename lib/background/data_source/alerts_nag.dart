@@ -41,16 +41,16 @@ class NagAlerts extends AlertSource with NetworkFetch {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
-    Map<String, StatusType> queryParametersSet = {
-      "?query=hostlist&details=true": StatusType.hostStatus,
-      "?query=servicelist&details=true": StatusType.serviceStatus
+    Map<StatusType, String> queryParametersSet = {
+      StatusType.hostStatus: "?query=hostlist&details=true",
+      StatusType.serviceStatus: "?query=servicelist&details=true"
     };
     return fetchAndDecodeJSON(
-        queryParametersSet: queryParametersSet.keys.toList(),
+        queryParametersSet: queryParametersSet.values.toList(),
         unstructuredDataToAlerts: (Map<String, dynamic> dataSet) {
           List<Alert> newAlerts = [];
-          for (var queryParams in dataSet.keys) {
-            StatusType statusType = queryParametersSet[queryParams]!;
+          for (var statusType in queryParametersSet.keys) {
+            String queryParams = queryParametersSet[statusType]!;
             var data = Util.mapConvert(dataSet[queryParams]);
             var dataMap = Util.mapConvert(data["data"]);
             if (statusType == StatusType.hostStatus) {
