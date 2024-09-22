@@ -201,7 +201,7 @@ class BackgroundWorker {
   static Future<void> _confirmSource(
       StreamController<IsolateMessage> stream, IsolateMessage message) async {
     var result =
-        await sourcesRepo.getSourceTypeAndPath(sourceData: message.sourceData!);
+        await sourcesRepo.getSourceType(sourceData: message.sourceData!);
     stream.add(IsolateMessage(
         name: MessageName.confirmSourcesReply,
         destination: MessageDestination.accountSettings,

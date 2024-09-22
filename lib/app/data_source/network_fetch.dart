@@ -12,8 +12,8 @@ import '../../background/background.dart';
 import '../data_repository/settings_repository.dart';
 
 mixin NetworkFetch {
-  Future<http.Response> networkFetch(String baseURL, String path,
-      String username, String password, String parameters) async {
+  Future<http.Response> networkFetch(String baseURL, String username,
+      String password, String restOfURL) async {
     Map<String, String> headers;
     headers = {"User-Agent": "open_alert_viewer/${SettingsRepo.appVersion}"};
     if (username != "" || password != "") {
@@ -22,8 +22,7 @@ mixin NetworkFetch {
       headers["authorization"] = basicAuth;
     }
     var response = await http
-        .get(Uri.parse(generateURL(baseURL, path, parameters)),
-            headers: headers)
+        .get(Uri.parse(generateURL(baseURL, restOfURL)), headers: headers)
         .timeout(Duration(seconds: BackgroundWorker.settings.syncTimeout),
             onTimeout: () {
       return http.Response("408 Client Timeout", 408,
@@ -32,7 +31,7 @@ mixin NetworkFetch {
     return response;
   }
 
-  String generateURL(String baseURL, String path, String parameters) {
+  String generateURL(String baseURL, String restOfURL) {
     String prefix;
     if (RegExp(r"^https?://").hasMatch(baseURL)) {
       prefix = "";
@@ -41,6 +40,6 @@ mixin NetworkFetch {
     } else {
       prefix = "https://";
     }
-    return prefix + baseURL + path + parameters;
+    return prefix + baseURL + restOfURL;
   }
 }

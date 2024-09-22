@@ -53,7 +53,6 @@ class AlertSourceData {
     required this.name,
     required this.type,
     required this.baseURL,
-    required this.path,
     required this.username,
     required this.password,
     required this.failing,
@@ -69,7 +68,6 @@ class AlertSourceData {
   String name;
   int type;
   String baseURL;
-  String path;
   String username;
   String password;
   bool failing;
@@ -112,7 +110,7 @@ abstract class AlertSource with NetworkFetch {
           message: "Error connecting to your account. "
               "(${(errorMessage == "") ? "Unknown reason" : errorMessage}). "
               "Try editing your account details. ",
-          url: generateURL(sourceData.baseURL, "", ""),
+          url: generateURL(sourceData.baseURL, ""),
           age: Duration.zero)
     ];
     return alerts;
@@ -121,7 +119,7 @@ abstract class AlertSource with NetworkFetch {
   List<Alert> errorFetchingAlerts(
       {required AlertSourceData sourceData,
       required String error,
-      required String parameters}) {
+      required String endpoint}) {
     var alerts = [
       Alert(
           source: sourceData.id!,
@@ -129,7 +127,7 @@ abstract class AlertSource with NetworkFetch {
           hostname: sourceData.name,
           service: "OAV",
           message: error,
-          url: generateURL(sourceData.baseURL, sourceData.path, parameters),
+          url: generateURL(sourceData.baseURL, endpoint),
           age: Duration.zero)
     ];
     return alerts;
@@ -138,36 +136,36 @@ abstract class AlertSource with NetworkFetch {
   Future<List<Alert>> fetchAndDecodeJSON(
       {required List<Alert> Function(Map<String, dynamic> data)
           unstructuredDataToAlerts,
-      required List<String> queryParametersSet}) async {
+      required List<String> endpoints}) async {
     if (!(sourceData.isValid ?? false)) {
       return alertForInvalidSource(sourceData);
     }
     Response response;
     Map<String, dynamic> dataSet = {};
-    for (String parameters in queryParametersSet) {
+    for (String endpoint in endpoints) {
       try {
-        response = await networkFetch(sourceData.baseURL, sourceData.path,
-            sourceData.username, sourceData.password, parameters);
+        response = await networkFetch(sourceData.baseURL, sourceData.username,
+            sourceData.password, endpoint);
       } on SocketException catch (e) {
         return errorFetchingAlerts(
             sourceData: sourceData,
             error: "Error fetching alerts: ${e.message}",
-            parameters: parameters);
+            endpoint: endpoint);
       }
       if (response.statusCode != 200) {
         return errorFetchingAlerts(
             sourceData: sourceData,
             error: "Error fetching alerts: HTTP status code "
                 "${response.statusCode}: ${response.reasonPhrase}",
-            parameters: parameters);
+            endpoint: endpoint);
       } else {
         try {
-          dataSet[parameters] = json.decode(response.body);
+          dataSet[endpoint] = json.decode(response.body);
         } catch (e) {
           return errorFetchingAlerts(
               sourceData: sourceData,
               error: "Error decoding reply: invalid JSON",
-              parameters: parameters);
+              endpoint: endpoint);
         }
       }
     }

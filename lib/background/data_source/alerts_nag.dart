@@ -35,22 +35,26 @@ enum ServiceStatus {
 
 class NagAlerts extends AlertSource with NetworkFetch {
   NagAlerts({required super.sourceData})
-      : epoch = DateTime.fromMillisecondsSinceEpoch(0);
+      : epoch = DateTime.fromMillisecondsSinceEpoch(0),
+        apiPath = "/cgi-bin/statusjson.cgi" {
+    endpoints = {
+      StatusType.hostStatus: "$apiPath?query=hostlist&details=true",
+      StatusType.serviceStatus: "$apiPath?query=servicelist&details=true"
+    };
+  }
 
+  final String apiPath;
+  late Map<StatusType, String> endpoints;
   final DateTime epoch;
 
   @override
   Future<List<Alert>> fetchAlerts() async {
-    Map<StatusType, String> queryParametersSet = {
-      StatusType.hostStatus: "?query=hostlist&details=true",
-      StatusType.serviceStatus: "?query=servicelist&details=true"
-    };
     return fetchAndDecodeJSON(
-        queryParametersSet: queryParametersSet.values.toList(),
+        endpoints: endpoints.values.toList(),
         unstructuredDataToAlerts: (Map<String, dynamic> dataSet) {
           List<Alert> newAlerts = [];
-          for (var statusType in queryParametersSet.keys) {
-            String queryParams = queryParametersSet[statusType]!;
+          for (var statusType in endpoints.keys) {
+            String queryParams = endpoints[statusType]!;
             var data = Util.mapConvert(dataSet[queryParams]);
             var dataMap = Util.mapConvert(data["data"]);
             if (statusType == StatusType.hostStatus) {
@@ -105,7 +109,7 @@ class NagAlerts extends AlertSource with NetworkFetch {
         hostname: host,
         service: alertDatum.description,
         message: alertDatum.pluginOutput,
-        url: generateURL(host, "", ""),
+        url: generateURL(host, ""),
         age: age);
   }
 }

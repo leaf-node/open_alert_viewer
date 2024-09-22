@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS sources (
     name TEXT NOT NULL UNIQUE,
     type INTEGER NOT NULL,
     base_url TEXT NOT NULL,
-    path TEXT NOT NULL,
     username TEXT NOT NULL,
     password TEXT NOT NULL,
     failing BOOLEAN NOT NULL,

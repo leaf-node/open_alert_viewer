@@ -52,7 +52,6 @@ class _AccountFormState extends State<AccountForm> {
       : nameController = TextEditingController(),
         typeController = TextEditingController(),
         baseURLController = TextEditingController(),
-        pathController = TextEditingController(),
         userController = TextEditingController(),
         passwordController = TextEditingController(),
         epoch = DateTime.fromMillisecondsSinceEpoch(0),
@@ -61,7 +60,6 @@ class _AccountFormState extends State<AccountForm> {
   final TextEditingController nameController;
   final TextEditingController typeController;
   final TextEditingController baseURLController;
-  final TextEditingController pathController;
   final TextEditingController userController;
   final TextEditingController passwordController;
   final DateTime epoch;
@@ -75,7 +73,6 @@ class _AccountFormState extends State<AccountForm> {
         name: nameController.text,
         type: int.parse(typeController.text),
         baseURL: baseURLController.text,
-        path: pathController.text,
         username: userController.text,
         password: passwordController.text,
         failing: false,
@@ -90,7 +87,6 @@ class _AccountFormState extends State<AccountForm> {
         name: nameController.text,
         type: int.parse(typeController.text),
         baseURL: baseURLController.text,
-        path: pathController.text,
         username: userController.text,
         password: passwordController.text,
         failing: widget.source?.sourceData.failing ?? false,
@@ -107,7 +103,6 @@ class _AccountFormState extends State<AccountForm> {
     nameController.text = sourceData.name;
     typeController.text = sourceData.type.toString();
     baseURLController.text = sourceData.baseURL;
-    pathController.text = sourceData.path;
     userController.text = sourceData.username;
     passwordController.text = sourceData.password;
     systemIsUpdatingValues = false;
@@ -120,14 +115,12 @@ class _AccountFormState extends State<AccountForm> {
       nameController.text = "";
       typeController.text = "0";
       baseURLController.text = "";
-      pathController.text = "";
       userController.text = "";
       passwordController.text = "";
     } else {
       nameController.text = widget.source!.sourceData.name;
       typeController.text = widget.source!.sourceData.type.toString();
       baseURLController.text = widget.source!.sourceData.baseURL;
-      pathController.text = widget.source!.sourceData.path;
       userController.text = widget.source!.sourceData.username;
       passwordController.text = widget.source!.sourceData.password;
       if (typeController.text == "-1") {
@@ -143,7 +136,6 @@ class _AccountFormState extends State<AccountForm> {
     nameController.dispose();
     typeController.dispose();
     baseURLController.dispose();
-    pathController.dispose();
     userController.dispose();
     passwordController.dispose();
     accountBloc.add(CleanOutAccountEvent());

@@ -11,13 +11,15 @@ import '../../app/util/util.dart';
 class PromAlerts extends AlertSource with NetworkFetch {
   PromAlerts({required super.sourceData});
 
+  static const endpoint = "/api/v2/alerts";
+
   @override
   Future<List<Alert>> fetchAlerts() async {
     return fetchAndDecodeJSON(
-        queryParametersSet: [""],
+        endpoints: [endpoint],
         unstructuredDataToAlerts: (Map<String, dynamic> dataSet) {
           List<Alert> newAlerts = [];
-          for (var datum in dataSet[""]) {
+          for (var datum in dataSet[endpoint]) {
             PromAlertsData alertDatum =
                 PromAlertsData.fromParsedJSON(Util.mapConvert(datum));
             var severity = alertDatum.labels['severity'] ?? "";

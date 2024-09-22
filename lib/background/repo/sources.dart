@@ -84,13 +84,12 @@ class SourcesRepo with NetworkFetch {
     }
   }
 
-  Future<AlertSourceData> getSourceTypeAndPath(
+  Future<AlertSourceData> getSourceType(
       {required AlertSourceData sourceData}) async {
     if ((sourceData.type == SourceTypes.demo.value ||
             sourceData.type == SourceTypes.autodetect.value) &&
         sourceData.baseURL == "demo") {
       sourceData.type = SourceTypes.demo.value;
-      sourceData.path = "";
       sourceData.isValid = true;
       return sourceData;
     } else if (sourceData.type == SourceTypes.demo.value &&
@@ -131,11 +130,10 @@ class SourcesRepo with NetworkFetch {
       try {
         var trimmedBaseURL =
             sourceData.baseURL.replaceFirst(RegExp(trimRegex), "");
-        var response = await networkFetch(trimmedBaseURL, apiEndpoint,
-            sourceData.username, sourceData.password, "");
+        var response = await networkFetch(trimmedBaseURL, sourceData.username,
+            sourceData.password, apiEndpoint);
         if (response.statusCode == 200) {
           sourceData.type = sourceType.value;
-          sourceData.path = apiEndpoint;
           sourceData.baseURL = trimmedBaseURL;
           sourceData.isValid = true;
           return (true, sourceData);

@@ -111,7 +111,7 @@ class LocalDatabase {
   List<AlertSourceData> listSources() {
     List<Map<String, Object>> valuesArray = _fetchFromTable(query: '''
       SELECT
-        id, name, type, base_url, path, username, password, failing, last_seen,
+        id, name, type, base_url, username, password, failing, last_seen,
           prior_fetch, last_fetch, error_message, is_valid
       FROM sources;
     ''', values: []);
@@ -122,7 +122,6 @@ class LocalDatabase {
         name: values["name"] as String,
         type: values["type"] as int,
         baseURL: values["base_url"] as String,
-        path: values["path"] as String,
         username: values["username"] as String,
         password: values["password"] as String,
         failing: switch (values["failing"]) { 0 => false, 1 || _ => true },
@@ -142,15 +141,14 @@ class LocalDatabase {
   int addSource({required AlertSourceData sourceData}) {
     return _insertIntoTable(query: '''
       INSERT INTO sources
-        (name, type, base_url, path, username, password, failing, last_seen,
+        (name, type, base_url, username, password, failing, last_seen,
           prior_fetch, last_fetch, error_message, is_valid)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     ''', values: [
       [
         sourceData.name,
         sourceData.type,
         sourceData.baseURL,
-        sourceData.path,
         sourceData.username,
         sourceData.password,
         sourceData.failing,
@@ -166,14 +164,13 @@ class LocalDatabase {
   bool updateSource({required AlertSourceData sourceData}) {
     return _updateTable(query: '''
       UPDATE sources SET
-        (name, type, base_url, path, username, password, failing, last_seen,
+        (name, type, base_url, username, password, failing, last_seen,
           prior_fetch, last_fetch, error_message, is_valid)
-        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
+        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
     ''', values: [
       sourceData.name,
       sourceData.type,
       sourceData.baseURL,
-      sourceData.path,
       sourceData.username,
       sourceData.password,
       sourceData.failing,
