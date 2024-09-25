@@ -319,7 +319,7 @@ class GeneralSettingsList extends StatelessWidget {
             icon: Icons.support_outlined,
             title: "Online Support",
             onTap: () async {
-              var link = "https://github.com/okaycode-dev/open_alert_viewer";
+              var link = "https://github.com/okcode-studio/open_alert_viewer";
               var uri = Uri.parse(link);
               if (await canLaunchUrl(uri)) {
                 await launchUrl(uri);
@@ -331,7 +331,7 @@ class GeneralSettingsList extends StatelessWidget {
             icon: Icons.volunteer_activism_outlined,
             title: "Donate",
             onTap: () async {
-              var link = "https://buymeacoffee.com/okaycode.dev";
+              var link = "https://buymeacoffee.com/okcode.studio";
               var uri = Uri.parse(link);
               if (await canLaunchUrl(uri)) {
                 await launchUrl(uri);

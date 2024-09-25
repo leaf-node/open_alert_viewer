@@ -117,7 +117,7 @@ class BackgroundWorker {
                 "please take a screen shot, and submit it using "
                 "the link icon to the left so we can help resolve the "
                 "problem. Sorry for the inconvenience.",
-            url: "https://github.com/okaycode-dev/open_alert_viewer/issues",
+            url: "https://github.com/okcode-studio/open_alert_viewer/issues",
             age: Duration.zero),
         Alert(
             source: 0,
@@ -125,7 +125,7 @@ class BackgroundWorker {
             hostname: "Open Alert Viewer version ${SettingsRepo.appVersion}",
             service: "Stack Trace",
             message: message.toString(),
-            url: "https://github.com/okaycode-dev/open_alert_viewer/issues",
+            url: "https://github.com/okcode-studio/open_alert_viewer/issues",
             age: Duration.zero),
       ]));
     } else {

@@ -102,7 +102,7 @@ class AlertsRepo {
               service: "OAV",
               message: "Error fetching alerts. "
                   "Please open an issue using the link icon to the left.",
-              url: "https://github.com/okaycode-dev/open_alert_viewer/issues",
+              url: "https://github.com/okcode-studio/open_alert_viewer/issues",
               age: Duration.zero),
           Alert(
               source: source.sourceData.id!,
@@ -110,7 +110,7 @@ class AlertsRepo {
               hostname: source.sourceData.name,
               service: "OAV",
               message: message,
-              url: "https://github.com/okaycode-dev/open_alert_viewer/issues",
+              url: "https://github.com/okcode-studio/open_alert_viewer/issues",
               age: Duration.zero)
         ]);
       });

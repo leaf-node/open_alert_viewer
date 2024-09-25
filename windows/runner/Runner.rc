@@ -92,7 +92,7 @@ BEGIN
             VALUE "CompanyName", "okaycode.dev" "\0"
             VALUE "FileDescription", "open_alert_viewer" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "dev.okaycode.open_alert_viewer" "\0"
+            VALUE "InternalName", "studio.okcode.open_alert_viewer" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 okaycode.dev. MIT License." "\0"
             VALUE "OriginalFilename", "open_alert_viewer.exe" "\0"
             VALUE "ProductName", "open_alert_viewer" "\0"
