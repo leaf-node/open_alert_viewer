@@ -172,11 +172,8 @@ class SourcesRepo with NetworkFetch {
       } catch (e) {
         // fall through
       }
-      if (sourceData.type != SourceTypes.autodetect.value) {
-        sourceData.isValid = false;
-        return (false, sourceData);
-      }
     }
+    sourceData.isValid = false;
     return (false, sourceData);
   }
 
