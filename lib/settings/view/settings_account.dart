@@ -99,13 +99,15 @@ class _AccountFormState extends State<AccountForm> {
   }
 
   void setNewSourceData({required AlertSourceData sourceData}) {
-    systemIsUpdatingValues = true;
-    nameController.text = sourceData.name;
-    typeController.text = sourceData.type.toString();
-    baseURLController.text = sourceData.baseURL;
-    userController.text = sourceData.username;
-    passwordController.text = sourceData.password;
-    systemIsUpdatingValues = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      systemIsUpdatingValues = true;
+      nameController.text = sourceData.name;
+      typeController.text = sourceData.type.toString();
+      baseURLController.text = sourceData.baseURL;
+      userController.text = sourceData.username;
+      passwordController.text = sourceData.password;
+      systemIsUpdatingValues = false;
+    });
   }
 
   @override
