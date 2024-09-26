@@ -158,7 +158,11 @@ class _AccountFormState extends State<AccountForm> {
                   status = "Found API endpoint";
                   icon = Icons.check_outlined;
                 } else {
-                  status = "Error: ${state.sourceData!.errorMessage}";
+                  var error = state.sourceData!.errorMessage;
+                  if (error == "") {
+                    error = "Unkown Error";
+                  }
+                  status = "Error: $error";
                   icon = Icons.close_outlined;
                 }
               } else if (state.needsCheck) {
