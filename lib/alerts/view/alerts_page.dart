@@ -166,6 +166,8 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
         refreshKey.currentState?.show();
       }
     }, child: BlocBuilder<AlertsBloc, AlertState>(builder: (context, state) {
+      var refreshIconState = context.read<RefreshIconBloc>().state;
+      var stream = context.read<AlertsBloc>().stream;
       List<Widget> alertWidgets = [];
       Widget child;
       List<bool> filter = _settings.alertFilter;
@@ -193,12 +195,10 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
           onRefresh: () async {
             bool forceRefreshNow = true;
             bool alreadyFetching = false;
-            var refreshIconState = context.read<RefreshIconBloc>().state;
             if (refreshIconState is RefreshIconTriggered) {
               forceRefreshNow = refreshIconState.forceRefreshNow;
               alreadyFetching = refreshIconState.alreadyFetching;
             }
-            var stream = context.read<AlertsBloc>().stream;
             if (!alreadyFetching) {
               context
                   .read<AlertsBloc>()
