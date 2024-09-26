@@ -101,7 +101,6 @@ class NagAlerts extends AlertSource with NetworkFetch {
       age = (startsAt.difference(epoch) == Duration.zero)
           ? DateTime.now().difference(alertDatum.lastCheck)
           : DateTime.now().difference(startsAt);
-      if (age == Duration.zero) {}
     }
     return Alert(
         source: sourceData.id!,
