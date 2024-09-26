@@ -77,6 +77,23 @@ class AlertSourceData {
   String errorMessage;
   bool? isValid;
   int? serial;
+
+  AlertSourceData copy() {
+    return AlertSourceData(
+        id: id,
+        name: name,
+        type: type,
+        baseURL: baseURL,
+        username: username,
+        password: password,
+        failing: failing,
+        lastSeen: lastSeen,
+        priorFetch: priorFetch,
+        lastFetch: lastFetch,
+        errorMessage: errorMessage,
+        isValid: isValid,
+        serial: serial);
+  }
 }
 
 enum SourceTypes {

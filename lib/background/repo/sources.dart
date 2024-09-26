@@ -125,6 +125,7 @@ class SourcesRepo with NetworkFetch {
       required AlertSourceData sourceData,
       required String trimRegex,
       required String apiEndpoint}) async {
+    sourceData = sourceData.copy();
     if (sourceData.type == sourceType.value ||
         sourceData.type == SourceTypes.autodetect.value) {
       try {
