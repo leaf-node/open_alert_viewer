@@ -165,6 +165,8 @@ class SourcesRepo with NetworkFetch {
         }
       } on SocketException catch (e) {
         sourceData.errorMessage = e.message;
+      } on HandshakeException catch (e) {
+        sourceData.errorMessage = e.message;
       } on FormatException catch (e) {
         sourceData.errorMessage = e.message;
       } catch (e) {
