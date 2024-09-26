@@ -116,6 +116,15 @@ class SourcesRepo with NetworkFetch {
     if (success || sourceData.type == SourceTypes.nag.value) {
       return newSourceData;
     }
+    (success, newSourceData) = await checkSource(
+        sourceType: SourceTypes.ici,
+        sourceData: sourceData,
+        trimRegex: r"(/v1/objects/services/?)$",
+        apiEndpoint: "/v1/objects/services",
+        fallbackPort: 5665);
+    if (success || sourceData.type == SourceTypes.ici.value) {
+      return newSourceData;
+    }
     sourceData.isValid = false;
     if (sourceData.type == SourceTypes.autodetect.value) {
       sourceData.errorMessage = "No accounts found automatically";
@@ -127,11 +136,20 @@ class SourcesRepo with NetworkFetch {
       {required SourceTypes sourceType,
       required AlertSourceData sourceData,
       required String trimRegex,
-      required String apiEndpoint}) async {
+      required String apiEndpoint,
+      int? fallbackPort}) async {
     sourceData = sourceData.copy();
     if (sourceData.type == sourceType.value ||
         sourceData.type == SourceTypes.autodetect.value) {
       try {
+        if (fallbackPort != null &&
+            !sourceData.baseURL
+                .contains(RegExp("^(https?://)?[^:/]+:[0-9]+(/.*)?"))) {
+          sourceData.baseURL = sourceData.baseURL.replaceAllMapped(
+              RegExp(r"^((https?://)?[^:/]+)(/.*)?"), (match) {
+            return "${match.group(1)}:$fallbackPort${match.group(3) ?? ""}";
+          });
+        }
         var trimmedBaseURL =
             sourceData.baseURL.replaceFirst(RegExp(trimRegex), "");
         var response = await networkFetch(trimmedBaseURL, sourceData.username,
