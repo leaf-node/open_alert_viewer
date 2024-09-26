@@ -127,7 +127,7 @@ class SourcesRepo with NetworkFetch {
     }
     sourceData.isValid = false;
     if (sourceData.type == SourceTypes.autodetect.value) {
-      sourceData.errorMessage = "No accounts found automatically";
+      sourceData.errorMessage = "Specify a specific source type";
     }
     return sourceData;
   }
