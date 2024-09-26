@@ -105,7 +105,7 @@ class SourcesRepo with NetworkFetch {
         sourceData: sourceData,
         trimRegex: r"(/#/alerts/?|/api/v2/alerts/?)$",
         apiEndpoint: "/api/v2/alerts");
-    if (success) {
+    if (success || sourceData.type == SourceTypes.prom.value) {
       return newSourceData;
     }
     (success, newSourceData) = await checkSource(
@@ -113,10 +113,13 @@ class SourcesRepo with NetworkFetch {
         sourceData: sourceData,
         trimRegex: r"(/cgi-bin/statusjson.cgi/?)$",
         apiEndpoint: "/cgi-bin/statusjson.cgi");
-    if (success) {
+    if (success || sourceData.type == SourceTypes.nag.value) {
       return newSourceData;
     }
     sourceData.isValid = false;
+    if (sourceData.type == SourceTypes.autodetect.value) {
+      sourceData.errorMessage = "No accounts found automatically";
+    }
     return sourceData;
   }
 
