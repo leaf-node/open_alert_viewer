@@ -11,9 +11,9 @@ import '../../app/util/util.dart';
 enum StatusType { hostStatus, serviceStatus }
 
 enum HostStatus {
-  up(0, AlertType.okay),
+  up(0, AlertType.up),
   warning(1, AlertType.warning),
-  down(2, AlertType.error),
+  down(2, AlertType.down),
   unknown(3, AlertType.unknown);
 
   const HostStatus(this.value, this.alertType);
