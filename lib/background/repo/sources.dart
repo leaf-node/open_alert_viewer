@@ -11,6 +11,7 @@ import '../../alerts/model/alerts.dart';
 import '../../app/data_repository/settings_repository.dart';
 import '../../app/data_source/network_fetch.dart';
 import '../background.dart';
+import '../data_source/alerts_ici.dart';
 import '../data_source/alerts_nag.dart';
 import '../data_source/alerts_null.dart';
 import '../data_source/alerts_prom.dart';
@@ -49,7 +50,7 @@ class SourcesRepo with NetworkFetch {
         case SourceTypes.nag:
           alertSource = NagAlerts.new;
         case SourceTypes.ici:
-          alertSource = NullAlerts.new;
+          alertSource = IciAlerts.new;
       }
       sources.add(alertSource(sourceData: sourceData));
     }
