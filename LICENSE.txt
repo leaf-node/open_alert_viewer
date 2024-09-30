@@ -10,7 +10,7 @@ licensing page with the source code and the compiled app.
 Open Alert Viewer License (MIT)
 ===============================
 
-Copyright 2024 okaycode.dev LLC and Open Alert Viewer authors
+Copyright 2024 OK Code Studio LLC and Open Alert Viewer authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the “Software”), to deal in
@@ -33,9 +33,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Trademarks of third-parties
 ===========================
 
-Aside from Open Alert Viewer itself, neither Open Alert Viewer nor okaycode.dev
-LLC are endorsed by, nor affiliated with, the owners of the software referenced
-in this app, this app's source code, and its documentation.
+Aside from Open Alert Viewer itself, neither Open Alert Viewer nor OK Code
+Studio LLC are endorsed by, nor affiliated with, the owners of the software
+referenced in this app, this app's source code, and its documentation.
 
 
 Dependency Licenses

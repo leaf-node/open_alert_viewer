@@ -82,7 +82,7 @@ License: MIT
 
 Other dependencies use a variety of permissive licenses. See `LICENSE.txt`.
 
-Aside from Open Alert Viewer itself, neither Open Alert Viewer nor okaycode.dev
-LLC are endorsed by, nor affiliated with, the owners of the software referenced
-in this app, this app's source code, and its documentation.
+Aside from Open Alert Viewer itself, neither Open Alert Viewer nor OK Code
+Studio LLC are endorsed by, nor affiliated with, the owners of the software
+referenced in this app, this app's source code, and its documentation.
 
