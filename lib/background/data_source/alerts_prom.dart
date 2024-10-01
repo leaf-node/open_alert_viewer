@@ -22,8 +22,8 @@ class PromAlerts extends AlertSource with NetworkFetch {
           for (var datum in dataSet[endpoint]) {
             PromAlertsData alertDatum =
                 PromAlertsData.fromParsedJSON(Util.mapConvert(datum));
-            var severity = alertDatum.labels['severity'] ?? "";
-            var type = alertDatum.labels['oav_type'] ?? "";
+            var severity = alertDatum.severity;
+            var type = alertDatum.oavType;
             AlertType kind;
             if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
               kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
@@ -37,13 +37,13 @@ class PromAlerts extends AlertSource with NetworkFetch {
             newAlerts.add(Alert(
                 source: sourceData.id!,
                 kind: kind,
-                hostname: alertDatum.labels['instance'] ?? "",
-                service: alertDatum.labels['alertname'] ?? "",
-                message: alertDatum.annotations['summary'] ?? "",
+                hostname: alertDatum.instance,
+                service: alertDatum.alertName,
+                message: alertDatum.summary,
                 url: alertDatum.generatorURL,
                 age: DateTime.now()
                     .difference(DateTime.parse(alertDatum.startsAt)),
-                silenced: false,
+                silenced: alertDatum.silenced,
                 downtimeScheduled: false));
           }
           return newAlerts;
@@ -52,32 +52,50 @@ class PromAlerts extends AlertSource with NetworkFetch {
 }
 
 class PromAlertsData {
-  const PromAlertsData(
-      {required this.fingerprint,
-      required this.startsAt,
-      required this.updatedAt,
-      required this.endsAt,
-      required this.generatorURL,
-      required this.annotations,
-      required this.labels});
+  const PromAlertsData({
+    required this.fingerprint,
+    required this.severity,
+    required this.oavType,
+    required this.instance,
+    required this.alertName,
+    required this.summary,
+    required this.startsAt,
+    required this.updatedAt,
+    required this.endsAt,
+    required this.generatorURL,
+    required this.silenced,
+  });
 
   factory PromAlertsData.fromParsedJSON(Map<String, Object> parsed) {
+    var annotations =
+        Util.mapConvert<String>(parsed["annotations"] as Map<String, dynamic>);
+    var labels =
+        Util.mapConvert<String>(parsed["labels"] as Map<String, dynamic>);
+    var status =
+        Util.mapConvert<Object>(parsed["status"] as Map<String, dynamic>);
     return PromAlertsData(
         fingerprint: parsed["fingerprint"] as String,
+        severity: labels["severity"] ?? "",
+        oavType: labels["oav_type"] ?? "",
+        instance: labels["instance"] ?? "",
+        alertName: labels["alertname"] ?? "",
+        summary: annotations["summary"] ?? "",
         startsAt: parsed["startsAt"] as String,
         updatedAt: parsed["updatedAt"] as String,
         endsAt: parsed["endsAt"] as String,
         generatorURL: parsed["generatorURL"] as String,
-        annotations:
-            Util.mapConvert(parsed["annotations"] as Map<String, dynamic>),
-        labels: Util.mapConvert(parsed["labels"] as Map<String, dynamic>));
+        silenced: (status["silencedBy"] as List).isNotEmpty);
   }
 
   final String fingerprint;
+  final String severity;
+  final String oavType;
+  final String instance;
+  final String alertName;
+  final String summary;
   final String startsAt;
   final String updatedAt;
   final String endsAt;
   final String generatorURL;
-  final Map<String, String> annotations;
-  final Map<String, String> labels;
+  final bool silenced;
 }

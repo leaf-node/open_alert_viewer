@@ -110,14 +110,16 @@ class NagAlerts extends AlertSource with NetworkFetch {
         message: alertDatum.pluginOutput,
         url: generateURL(host, ""),
         age: age,
-        silenced: false,
-        downtimeScheduled: false);
+        silenced: alertDatum.acknowledged,
+        downtimeScheduled: alertDatum.downtimeDepth);
   }
 }
 
 class NagAlertsData {
   const NagAlertsData(
       {required this.status,
+      required this.acknowledged,
+      required this.downtimeDepth,
       required this.description,
       required this.lastStateChange,
       required this.lastHardStateChange,
@@ -125,6 +127,8 @@ class NagAlertsData {
       required this.pluginOutput});
 
   final int status;
+  final bool downtimeDepth;
+  final bool acknowledged;
   final String description;
   final DateTime lastStateChange;
   final DateTime lastHardStateChange;
@@ -134,6 +138,8 @@ class NagAlertsData {
   factory NagAlertsData.fromParsedJSON(Map<String, Object> parsed) {
     return NagAlertsData(
         status: parsed["status"] as int,
+        downtimeDepth: Util.toBool(parsed["scheduled_downtime_depth"]!),
+        acknowledged: parsed["problem_has_been_acknowledged"] as bool,
         description: parsed["description"] as String? ?? "Ping",
         lastStateChange: _dateTime(parsed["last_state_change"] as int),
         lastHardStateChange: _dateTime(parsed["last_hard_state_change"] as int),
