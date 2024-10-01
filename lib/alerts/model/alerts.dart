@@ -177,16 +177,24 @@ abstract class AlertSource with NetworkFetch {
     if (!(sourceData.isValid ?? false)) {
       return alertForInvalidSource(sourceData);
     }
-    Response response;
     Map<String, dynamic> dataSet = {};
     for (String endpoint in endpoints) {
+      Response? response;
+      String errorMessage = "";
       try {
         response = await networkFetch(sourceData.baseURL, sourceData.username,
             sourceData.password, endpoint);
       } on SocketException catch (e) {
+        errorMessage = e.message;
+      } on HandshakeException catch (e) {
+        errorMessage = e.message;
+      } on ClientException catch (e) {
+        errorMessage = e.message;
+      }
+      if (response == null || errorMessage.isNotEmpty) {
         return errorFetchingAlerts(
             sourceData: sourceData,
-            error: "Error fetching alerts: ${e.message}",
+            error: "Error fetching alerts: $errorMessage",
             endpoint: endpoint);
       }
       if (response.statusCode != 200) {

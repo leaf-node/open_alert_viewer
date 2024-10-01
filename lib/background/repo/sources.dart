@@ -7,6 +7,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:http/http.dart';
+
 import '../../alerts/model/alerts.dart';
 import '../../app/data_repository/settings_repository.dart';
 import '../../app/data_source/network_fetch.dart';
@@ -169,6 +171,8 @@ class SourcesRepo with NetworkFetch {
       } on HandshakeException catch (e) {
         sourceData.errorMessage = e.message;
       } on FormatException catch (e) {
+        sourceData.errorMessage = e.message;
+      } on ClientException catch (e) {
         sourceData.errorMessage = e.message;
       } catch (e) {
         // fall through
