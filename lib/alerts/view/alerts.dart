@@ -126,7 +126,9 @@ class AlertWidget extends StatelessWidget {
                 log("Error launching URL: ${alert.url}");
               }
             }),
-        Icon(viewKind.icon)
+        Icon(viewKind.icon),
+        if (alert.silenced || alert.downtimeScheduled)
+          const Icon(Icons.music_off_outlined)
       ]),
     );
   }

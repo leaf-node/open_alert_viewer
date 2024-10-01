@@ -127,6 +127,9 @@ class NotificationRepo {
       if (alert.age.compareTo(sinceLooked) > 0) {
         continue;
       }
+      if (alert.silenced || alert.downtimeScheduled) {
+        continue;
+      }
       brandNewInc = (alert.age.compareTo(sincePriorFetch) <= 0) ? 1 : 0;
       if (alert.kind == AlertType.syncFailure) {
         newSyncFailureCount += 1;
