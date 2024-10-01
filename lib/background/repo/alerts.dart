@@ -103,7 +103,9 @@ class AlertsRepo {
               message: "Error fetching alerts. "
                   "Please open an issue using the link icon to the left.",
               url: "https://github.com/okcode-studio/open_alert_viewer/issues",
-              age: Duration.zero),
+              age: Duration.zero,
+              acknowledged: false,
+              downtimeScheduled: false),
           Alert(
               source: source.sourceData.id!,
               kind: AlertType.syncFailure,
@@ -111,7 +113,9 @@ class AlertsRepo {
               service: "OAV",
               message: message,
               url: "https://github.com/okcode-studio/open_alert_viewer/issues",
-              age: Duration.zero)
+              age: Duration.zero,
+              acknowledged: false,
+              downtimeScheduled: false)
         ]);
       });
       incoming.add(sourceFuture);
@@ -184,7 +188,9 @@ class AlertsRepo {
             service: alert.service,
             message: alert.message,
             url: alert.url,
-            age: newAge);
+            age: newAge,
+            acknowledged: false,
+            downtimeScheduled: false);
       }
       return alert;
     }).toList();

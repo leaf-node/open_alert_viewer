@@ -118,7 +118,9 @@ class BackgroundWorker {
                 "the link icon to the left so we can help resolve the "
                 "problem. Sorry for the inconvenience.",
             url: "https://github.com/okcode-studio/open_alert_viewer/issues",
-            age: Duration.zero),
+            age: Duration.zero,
+            acknowledged: false,
+            downtimeScheduled: false),
         Alert(
             source: 0,
             kind: AlertType.syncFailure,
@@ -126,7 +128,9 @@ class BackgroundWorker {
             service: "Stack Trace",
             message: message.toString(),
             url: "https://github.com/okcode-studio/open_alert_viewer/issues",
-            age: Duration.zero),
+            age: Duration.zero,
+            acknowledged: false,
+            downtimeScheduled: false),
       ]));
     } else {
       throw Exception("Invalid message type: $message");

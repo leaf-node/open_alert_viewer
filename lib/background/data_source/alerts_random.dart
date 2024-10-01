@@ -32,7 +32,9 @@ class RandomAlerts extends AlertSource {
           service: "fizz buzz",
           message: "foo bar baz",
           url: "https://example.com",
-          age: Duration(seconds: _randomSeed.nextInt(60 * 10))));
+          age: Duration(seconds: _randomSeed.nextInt(60 * 10)),
+          acknowledged: false,
+          downtimeScheduled: false));
     }
     // simulate network timeout
     await Future.delayed(Duration(milliseconds: _randomSeed.nextInt(4000)));

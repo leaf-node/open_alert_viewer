@@ -36,7 +36,9 @@ class Alert {
       required this.service,
       required this.message,
       required this.url,
-      required this.age});
+      required this.age,
+      required this.downtimeScheduled,
+      required this.acknowledged});
 
   final int source;
   final AlertType kind;
@@ -45,6 +47,8 @@ class Alert {
   final String message;
   final String url;
   final Duration age;
+  final bool downtimeScheduled;
+  final bool acknowledged;
 }
 
 class AlertSourceData {
@@ -140,7 +144,9 @@ abstract class AlertSource with NetworkFetch {
               "(${(errorMessage == "") ? "Unknown reason" : errorMessage}). "
               "Try editing your account details. ",
           url: generateURL(sourceData.baseURL, ""),
-          age: Duration.zero)
+          age: Duration.zero,
+          acknowledged: false,
+          downtimeScheduled: false)
     ];
     return alerts;
   }
@@ -157,7 +163,9 @@ abstract class AlertSource with NetworkFetch {
           service: "OAV",
           message: error,
           url: generateURL(sourceData.baseURL, endpoint),
-          age: Duration.zero)
+          age: Duration.zero,
+          acknowledged: false,
+          downtimeScheduled: false)
     ];
     return alerts;
   }

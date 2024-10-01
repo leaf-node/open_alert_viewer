@@ -110,7 +110,9 @@ class IciAlerts extends AlertSource with NetworkFetch {
         service: service,
         message: alertDatum.message,
         url: generateURL(hostname, ""),
-        age: age);
+        age: age,
+        acknowledged: Util.toBool(alertDatum.acknowledgement),
+        downtimeScheduled: (alertDatum.downtimeDepth > 0));
   }
 }
 

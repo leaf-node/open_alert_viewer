@@ -106,12 +106,6 @@ class LocalDatabase {
     return true;
   }
 
-  // General utilities
-
-  bool _toBool(int value) {
-    return switch (value) { 0 => false, 1 || _ => true };
-  }
-
   // App-specific queries
 
   List<AlertSourceData> listSources() {
@@ -131,7 +125,7 @@ class LocalDatabase {
         baseURL: values["base_url"] as String,
         username: values["username"] as String,
         password: values["password"] as String,
-        failing: _toBool(values["failing"] as int),
+        failing: Util.toBool(values["failing"]!),
         lastSeen:
             DateTime.fromMillisecondsSinceEpoch(values["last_seen"] as int),
         priorFetch:
@@ -139,7 +133,7 @@ class LocalDatabase {
         lastFetch:
             DateTime.fromMillisecondsSinceEpoch(values["last_fetch"] as int),
         errorMessage: values["error_message"] as String,
-        isValid: _toBool(values["is_valid"] as int),
+        isValid: Util.toBool(values["is_valid"]!),
       ));
     }
     return sources;
@@ -210,7 +204,8 @@ class LocalDatabase {
 
   List<Alert> fetchCachedAlerts() {
     List<Map<String, Object>> alerts = _fetchFromTable(
-        query: '''SELECT id, source, kind, hostname, service, message, url, age
+        query: '''SELECT id, source, kind, hostname, service, message, url, age,
+          acknowledged, downtime_scheduled
             FROM alerts_cache;''', values: []);
     return [
       for (var alert in alerts)
@@ -221,7 +216,9 @@ class LocalDatabase {
             url: alert["url"] as String,
             hostname: alert["hostname"] as String,
             service: alert["service"] as String,
-            age: Duration(seconds: alert["age"] as int))
+            age: Duration(seconds: alert["age"] as int),
+            acknowledged: Util.toBool(alert["acknowledged"]!),
+            downtimeScheduled: Util.toBool(alert["downtime_scheduled"]!))
     ];
   }
 
@@ -232,8 +229,9 @@ class LocalDatabase {
   void insertIntoAlertsCache({required List<Alert> alerts}) {
     _insertIntoTable(query: '''
         INSERT INTO alerts_cache
-          (source, kind, hostname, service, message, url, age)
-          VALUES (?, ?, ?, ?, ?, ?, ?);''', values: [
+          (source, kind, hostname, service, message, url, age, acknowledged,
+            downtime_scheduled)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);''', values: [
       for (var alert in alerts)
         [
           alert.source,
@@ -242,7 +240,9 @@ class LocalDatabase {
           alert.service,
           alert.message,
           alert.url,
-          alert.age.inSeconds
+          alert.age.inSeconds,
+          alert.acknowledged,
+          alert.downtimeScheduled,
         ]
     ]);
   }

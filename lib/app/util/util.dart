@@ -55,4 +55,15 @@ class Util {
     }
     return durationStr;
   }
+
+  static bool toBool(Object value) {
+    if (value.runtimeType == String) {
+      return switch (value) { "0" => false, "1" || _ => true };
+    } else if (value.runtimeType == int) {
+      return switch (value) { 0 => false, 1 || _ => true };
+    } else {
+      throw Exception(
+          "Invalid format to convert to bool: ${value.runtimeType}");
+    }
+  }
 }
