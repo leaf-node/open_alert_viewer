@@ -106,6 +106,12 @@ class LocalDatabase {
     return true;
   }
 
+  // General utilities
+
+  bool _toBool(int value, {bool default_ = false}) {
+    return switch (value) { 0 => false, 1 || _ => default_ };
+  }
+
   // App-specific queries
 
   List<AlertSourceData> listSources() {
@@ -125,7 +131,7 @@ class LocalDatabase {
         baseURL: values["base_url"] as String,
         username: values["username"] as String,
         password: values["password"] as String,
-        failing: switch (values["failing"]) { 0 => false, 1 || _ => true },
+        failing: _toBool(values["failing"] as int, default_: true),
         lastSeen:
             DateTime.fromMillisecondsSinceEpoch(values["last_seen"] as int),
         priorFetch:
@@ -133,7 +139,7 @@ class LocalDatabase {
         lastFetch:
             DateTime.fromMillisecondsSinceEpoch(values["last_fetch"] as int),
         errorMessage: values["error_message"] as String,
-        isValid: switch (values["is_valid"]) { 0 => false, 1 || _ => true },
+        isValid: _toBool(values["is_valid"] as int, default_: true),
       ));
     }
     return sources;
