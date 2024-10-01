@@ -70,7 +70,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
         soundStatusWidget = Container();
       }
       List<bool> filter = settings.alertFilter;
-      bool isImportantShown = true;
+      bool areImportantShown = true;
       for (var kind in [
         AlertType.error,
         AlertType.down,
@@ -78,11 +78,11 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
         AlertType.syncFailure
       ]) {
         if (filter[kind.index] == false) {
-          isImportantShown = false;
+          areImportantShown = false;
           break;
         }
       }
-      if (!isImportantShown) {
+      if (!areImportantShown) {
         filterStatusWidget = HeaderButton(
             icon: Icons.filter_alt_off_outlined,
             onPressed: () =>
