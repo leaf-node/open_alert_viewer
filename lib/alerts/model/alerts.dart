@@ -52,6 +52,7 @@ class AlertSourceData {
     required this.id,
     required this.name,
     required this.type,
+    required this.authType,
     required this.baseURL,
     required this.username,
     required this.password,
@@ -67,6 +68,7 @@ class AlertSourceData {
   int? id;
   String name;
   int type;
+  int authType;
   String baseURL;
   String username;
   String password;
@@ -83,6 +85,7 @@ class AlertSourceData {
         id: id,
         name: name,
         type: type,
+        authType: authType,
         baseURL: baseURL,
         username: username,
         password: password,
@@ -94,6 +97,15 @@ class AlertSourceData {
         isValid: isValid,
         serial: serial);
   }
+}
+
+enum AuthTypes {
+  basicAuth("Basic Auth", 0);
+
+  const AuthTypes(this.text, this.value);
+
+  final String text;
+  final int value;
 }
 
 enum SourceTypes {

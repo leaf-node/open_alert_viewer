@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS sources (
     id INTEGER NOT NULL PRIMARY KEY,
     name TEXT NOT NULL UNIQUE,
     type INTEGER NOT NULL,
+    auth_type INTEGER NOT NULL,
     base_url TEXT NOT NULL,
     username TEXT NOT NULL,
     password TEXT NOT NULL,

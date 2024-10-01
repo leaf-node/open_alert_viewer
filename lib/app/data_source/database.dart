@@ -111,8 +111,8 @@ class LocalDatabase {
   List<AlertSourceData> listSources() {
     List<Map<String, Object>> valuesArray = _fetchFromTable(query: '''
       SELECT
-        id, name, type, base_url, username, password, failing, last_seen,
-          prior_fetch, last_fetch, error_message, is_valid
+        id, name, type, auth_type, base_url, username, password, failing,
+          last_seen, prior_fetch, last_fetch, error_message, is_valid
       FROM sources;
     ''', values: []);
     var sources = <AlertSourceData>[];
@@ -121,6 +121,7 @@ class LocalDatabase {
         id: values["id"] as int,
         name: values["name"] as String,
         type: values["type"] as int,
+        authType: values["auth_type"] as int,
         baseURL: values["base_url"] as String,
         username: values["username"] as String,
         password: values["password"] as String,
@@ -141,13 +142,14 @@ class LocalDatabase {
   int addSource({required AlertSourceData sourceData}) {
     return _insertIntoTable(query: '''
       INSERT INTO sources
-        (name, type, base_url, username, password, failing, last_seen,
-          prior_fetch, last_fetch, error_message, is_valid)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        (name, type, auth_type, base_url, username, password, failing,
+          last_seen, prior_fetch, last_fetch, error_message, is_valid)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     ''', values: [
       [
         sourceData.name,
         sourceData.type,
+        sourceData.authType,
         sourceData.baseURL,
         sourceData.username,
         sourceData.password,
@@ -164,12 +166,13 @@ class LocalDatabase {
   bool updateSource({required AlertSourceData sourceData}) {
     return _updateTable(query: '''
       UPDATE sources SET
-        (name, type, base_url, username, password, failing, last_seen,
-          prior_fetch, last_fetch, error_message, is_valid)
-        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
+        (name, type, auth_type, base_url, username, password, failing,
+          last_seen, prior_fetch, last_fetch, error_message, is_valid)
+        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
     ''', values: [
       sourceData.name,
       sourceData.type,
+      sourceData.authType,
       sourceData.baseURL,
       sourceData.username,
       sourceData.password,
