@@ -33,7 +33,7 @@ class RandomAlerts extends AlertSource {
           message: "foo bar baz",
           url: "https://example.com",
           age: Duration(seconds: _randomSeed.nextInt(60 * 10)),
-          acknowledged: false,
+          silenced: false,
           downtimeScheduled: false));
     }
     // simulate network timeout

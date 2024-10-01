@@ -38,7 +38,7 @@ class Alert {
       required this.url,
       required this.age,
       required this.downtimeScheduled,
-      required this.acknowledged});
+      required this.silenced});
 
   final int source;
   final AlertType kind;
@@ -48,7 +48,7 @@ class Alert {
   final String url;
   final Duration age;
   final bool downtimeScheduled;
-  final bool acknowledged;
+  final bool silenced;
 }
 
 class AlertSourceData {
@@ -145,7 +145,7 @@ abstract class AlertSource with NetworkFetch {
               "Try editing your account details. ",
           url: generateURL(sourceData.baseURL, ""),
           age: Duration.zero,
-          acknowledged: false,
+          silenced: false,
           downtimeScheduled: false)
     ];
     return alerts;
@@ -164,7 +164,7 @@ abstract class AlertSource with NetworkFetch {
           message: error,
           url: generateURL(sourceData.baseURL, endpoint),
           age: Duration.zero,
-          acknowledged: false,
+          silenced: false,
           downtimeScheduled: false)
     ];
     return alerts;

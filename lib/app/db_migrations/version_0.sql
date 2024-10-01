@@ -35,6 +35,6 @@ CREATE TABLE IF NOT EXISTS alerts_cache (
     message TEXT NOT NULL,
     url TEXT NOT NULL,
     age INTEGER NOT NULL,
-    acknowledged INTEGER NOT NULL,
+    silenced INTEGER NOT NULL,
     downtime_scheduled INTEGER NOT NULL
 );

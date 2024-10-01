@@ -104,7 +104,7 @@ class AlertsRepo {
                   "Please open an issue using the link icon to the left.",
               url: "https://github.com/okcode-studio/open_alert_viewer/issues",
               age: Duration.zero,
-              acknowledged: false,
+              silenced: false,
               downtimeScheduled: false),
           Alert(
               source: source.sourceData.id!,
@@ -114,7 +114,7 @@ class AlertsRepo {
               message: message,
               url: "https://github.com/okcode-studio/open_alert_viewer/issues",
               age: Duration.zero,
-              acknowledged: false,
+              silenced: false,
               downtimeScheduled: false)
         ]);
       });
@@ -189,7 +189,7 @@ class AlertsRepo {
             message: alert.message,
             url: alert.url,
             age: newAge,
-            acknowledged: false,
+            silenced: false,
             downtimeScheduled: false);
       }
       return alert;

@@ -110,7 +110,7 @@ class NagAlerts extends AlertSource with NetworkFetch {
         message: alertDatum.pluginOutput,
         url: generateURL(host, ""),
         age: age,
-        acknowledged: false,
+        silenced: false,
         downtimeScheduled: false);
   }
 }

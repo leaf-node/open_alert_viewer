@@ -119,7 +119,7 @@ class BackgroundWorker {
                 "problem. Sorry for the inconvenience.",
             url: "https://github.com/okcode-studio/open_alert_viewer/issues",
             age: Duration.zero,
-            acknowledged: false,
+            silenced: false,
             downtimeScheduled: false),
         Alert(
             source: 0,
@@ -129,7 +129,7 @@ class BackgroundWorker {
             message: message.toString(),
             url: "https://github.com/okcode-studio/open_alert_viewer/issues",
             age: Duration.zero,
-            acknowledged: false,
+            silenced: false,
             downtimeScheduled: false),
       ]));
     } else {

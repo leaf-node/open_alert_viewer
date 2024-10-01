@@ -111,7 +111,7 @@ class IciAlerts extends AlertSource with NetworkFetch {
         message: alertDatum.message,
         url: generateURL(hostname, ""),
         age: age,
-        acknowledged: Util.toBool(alertDatum.acknowledgement),
+        silenced: Util.toBool(alertDatum.acknowledged),
         downtimeScheduled: (alertDatum.downtimeDepth > 0));
   }
 }
@@ -123,7 +123,7 @@ class IciAlertsData {
       required this.message,
       required this.state,
       required this.downtimeDepth,
-      required this.acknowledgement,
+      required this.acknowledged,
       required this.lastStateChange,
       required this.lastHardStateChange,
       required this.lastCheck,
@@ -134,7 +134,7 @@ class IciAlertsData {
   final String message;
   final int state;
   final int downtimeDepth;
-  final int acknowledgement;
+  final int acknowledged;
   final DateTime lastStateChange;
   final DateTime lastHardStateChange;
   final DateTime lastCheck;
@@ -156,7 +156,7 @@ class IciAlertsData {
             as String,
         state: attrs["state"] as int,
         downtimeDepth: attrs["downtime_depth"] as int,
-        acknowledgement: attrs["acknowledgement"] as int,
+        acknowledged: attrs["acknowledgement"] as int,
         lastStateChange: _dateTime(attrs["last_state_change"] as num),
         lastHardStateChange: _dateTime(attrs["last_hard_state_change"] as num),
         lastCheck: _dateTime(attrs["last_check"] as num),
