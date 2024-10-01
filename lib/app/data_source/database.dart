@@ -108,8 +108,8 @@ class LocalDatabase {
 
   // General utilities
 
-  bool _toBool(int value, {bool default_ = false}) {
-    return switch (value) { 0 => false, 1 || _ => default_ };
+  bool _toBool(int value) {
+    return switch (value) { 0 => false, 1 || _ => true };
   }
 
   // App-specific queries
@@ -131,7 +131,7 @@ class LocalDatabase {
         baseURL: values["base_url"] as String,
         username: values["username"] as String,
         password: values["password"] as String,
-        failing: _toBool(values["failing"] as int, default_: true),
+        failing: _toBool(values["failing"] as int),
         lastSeen:
             DateTime.fromMillisecondsSinceEpoch(values["last_seen"] as int),
         priorFetch:
@@ -139,7 +139,7 @@ class LocalDatabase {
         lastFetch:
             DateTime.fromMillisecondsSinceEpoch(values["last_fetch"] as int),
         errorMessage: values["error_message"] as String,
-        isValid: _toBool(values["is_valid"] as int, default_: true),
+        isValid: _toBool(values["is_valid"] as int),
       ));
     }
     return sources;
