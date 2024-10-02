@@ -15,7 +15,7 @@ part 'refresh_state.dart';
 class RefreshIconBloc extends Bloc<RefreshIconEvent, RefreshIconState> {
   RefreshIconBloc({required bgWorker})
       : _bgWorker = bgWorker,
-        super(RefresIconInitial()) {
+        super(RefreshIconInitial()) {
     on<RefreshIconNow>(_refreshIconNow, transformer: droppable());
     on<RefreshIconFinish>(_refreshFinish);
     on<ListenForRefreshIcon>(_listenForRefreshIcon);

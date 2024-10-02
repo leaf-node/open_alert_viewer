@@ -10,8 +10,8 @@ sealed class RefreshIconState {
   const RefreshIconState();
 }
 
-final class RefresIconInitial extends RefreshIconState {
-  RefresIconInitial();
+final class RefreshIconInitial extends RefreshIconState {
+  RefreshIconInitial();
 }
 
 final class RefreshIconTriggered extends RefreshIconState {
