@@ -202,6 +202,7 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
               context
                   .read<AlertsBloc>()
                   .add(FetchAlerts(forceRefreshNow: forceRefreshNow));
+              await Future.delayed(const Duration(milliseconds: 100));
             }
             while (true) {
               if (context.mounted &&
