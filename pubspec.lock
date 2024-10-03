@@ -217,10 +217,11 @@ packages:
   flutter_boot_receiver:
     dependency: "direct main"
     description:
-      name: flutter_boot_receiver
-      sha256: "2e69c5c7ee8732af9517300e64241b4b79c6c1902673411c0f988710b17a4aff"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: gradle-8-changes
+      resolved-ref: "8e996f2d2129096e24d9e8cc1d2775fe4b8f907e"
+      url: "https://github.com/leaf-node/flutter_boot_receiver"
+    source: git
     version: "1.2.0"
   flutter_launcher_icons:
     dependency: "direct dev"
