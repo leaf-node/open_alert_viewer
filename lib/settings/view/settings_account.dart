@@ -186,7 +186,7 @@ class _AccountFormState extends State<AccountForm> with NetworkFetch {
                     onTap: () async {
                       String? result = await settingsRadioDialogBuilder<String>(
                           context: context,
-                          text: "Source Type",
+                          text: "Account Type",
                           priorSetting: typeController.text,
                           valueListBuilder: listSourceTypes);
                       if (result != null && result != typeController.text) {
