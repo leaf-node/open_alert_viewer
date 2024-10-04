@@ -216,8 +216,12 @@ class _AccountFormState extends State<AccountForm> with NetworkFetch {
                       if (value == null || value == "") {
                         return "Please enter a valid URL";
                       }
-                      if (Uri.parse(generateURL(value, "")).isAbsolute) {
-                        return null;
+                      try {
+                        if (Uri.parse(generateURL(value, "")).isAbsolute) {
+                          return null;
+                        }
+                      } catch (e) {
+                        // fall through
                       }
                       return "Please enter a valid URL";
                     }),
