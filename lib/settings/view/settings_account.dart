@@ -180,7 +180,7 @@ class _AccountFormState extends State<AccountForm> {
                 const SizedBox(height: 20),
                 const MenuHeader(title: "Account Details", padding: 8.0),
                 AccountRadioField(
-                    title: "Source Type",
+                    title: "Third-Party Account",
                     initialValue: typeController.text,
                     onTap: () async {
                       String? result = await settingsRadioDialogBuilder<String>(

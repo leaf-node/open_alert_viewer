@@ -130,7 +130,7 @@ class SourcesRepo with NetworkFetch {
     }
     sourceData.isValid = false;
     if (sourceData.type == SourceTypes.autodetect.value) {
-      sourceData.errorMessage = "Specify a specific source type";
+      sourceData.errorMessage = "Choose a specific account type";
     }
     return sourceData;
   }
