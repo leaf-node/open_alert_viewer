@@ -8,6 +8,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_alert_viewer/app/data_source/network_fetch.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_event.dart';
@@ -47,7 +48,7 @@ class AccountForm extends StatefulWidget {
   State<AccountForm> createState() => _AccountFormState();
 }
 
-class _AccountFormState extends State<AccountForm> {
+class _AccountFormState extends State<AccountForm> with NetworkFetch {
   _AccountFormState()
       : nameController = TextEditingController(),
         typeController = TextEditingController(),
@@ -208,7 +209,18 @@ class _AccountFormState extends State<AccountForm> {
                           ? null
                           : "Name already used";
                     }),
-                AccountField(title: "Base URL", controller: baseURLController),
+                AccountField(
+                    title: "Base URL",
+                    controller: baseURLController,
+                    validator: (String? value) {
+                      if (value == null || value == "") {
+                        return "Please enter a valid URL";
+                      }
+                      if (Uri.parse(generateURL(value, "")).isAbsolute) {
+                        return null;
+                      }
+                      return "Please enter a valid URL";
+                    }),
                 AccountField(title: "User Name", controller: userController),
                 AccountField(
                     title: "Password",
