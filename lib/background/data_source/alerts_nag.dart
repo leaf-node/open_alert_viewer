@@ -93,11 +93,20 @@ class NagAlerts extends AlertSource with NetworkFetch {
           .alertType;
     }
     Duration age;
+    bool active;
     if (kind == ServiceStatus.pending.alertType ||
         kind == HostStatus.pending.alertType) {
       age = Duration.zero;
+      active = true;
     } else {
-      DateTime startsAt = alertDatum.lastHardStateChange;
+      if (kind == AlertType.up ||
+          kind == AlertType.okay ||
+          alertDatum.currentAttempt == alertDatum.maxAttempts) {
+        active = true;
+      } else {
+        active = false;
+      }
+      DateTime startsAt = alertDatum.lastStateChange;
       age = (startsAt.difference(epoch) == Duration.zero)
           ? DateTime.now().difference(alertDatum.lastCheck)
           : DateTime.now().difference(startsAt);
@@ -112,7 +121,7 @@ class NagAlerts extends AlertSource with NetworkFetch {
         age: age,
         silenced: alertDatum.acknowledged,
         downtimeScheduled: alertDatum.downtimeDepth,
-        active: true);
+        active: active);
   }
 }
 
@@ -125,6 +134,8 @@ class NagAlertsData {
       required this.lastStateChange,
       required this.lastHardStateChange,
       required this.lastCheck,
+      required this.maxAttempts,
+      required this.currentAttempt,
       required this.pluginOutput});
 
   final int status;
@@ -134,6 +145,8 @@ class NagAlertsData {
   final DateTime lastStateChange;
   final DateTime lastHardStateChange;
   final DateTime lastCheck;
+  final int maxAttempts;
+  final int currentAttempt;
   final String pluginOutput;
 
   factory NagAlertsData.fromParsedJSON(Map<String, Object> parsed) {
@@ -145,6 +158,8 @@ class NagAlertsData {
         lastStateChange: _dateTime(parsed["last_state_change"] as int),
         lastHardStateChange: _dateTime(parsed["last_hard_state_change"] as int),
         lastCheck: _dateTime(parsed["last_check"] as int),
+        maxAttempts: parsed["max_attempts"] as int,
+        currentAttempt: parsed["current_attempt"] as int,
         pluginOutput: parsed["plugin_output"] as String);
   }
 
