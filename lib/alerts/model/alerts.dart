@@ -119,7 +119,7 @@ enum SourceTypes {
   nullType("Null", -1),
   autodetect("Autodetect", 0),
   ici("Icinga", 3),
-  nag("Nagios", 2),
+  nag("Nagios Core", 2),
   prom("Prometheus", 1);
 
   const SourceTypes(this.text, this.value);
