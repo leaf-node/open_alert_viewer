@@ -39,11 +39,11 @@ class IciAlerts extends AlertSource with NetworkFetch {
       StatusType.hostStatus: "/v1/objects/hosts/?attrs=display_name"
           "&attrs=state&attrs=downtime_depth&attrs=acknowledgement"
           "&attrs=last_hard_state_change&attrs=last_state_change"
-          "&attrs=last_check&attrs=last_check_result",
+          "&attrs=last_check&attrs=last_check_result&attrs=state_type",
       StatusType.serviceStatus: "/v1/objects/services/?attrs=display_name"
           "&attrs=state&attrs=downtime_depth&attrs=acknowledgement"
           "&attrs=last_hard_state_change&attrs=last_state_change"
-          "&attrs=last_check&attrs=last_check_result"
+          "&attrs=last_check&attrs=last_check_result&attrs=state_type"
           "&joins=host.name&joins=host.address"
     };
   }
@@ -98,8 +98,18 @@ class IciAlerts extends AlertSource with NetworkFetch {
       hostname = alertDatum.name;
       service = "PING";
     }
+    DateTime startsAt;
+    bool active;
+    if (kind == AlertType.up ||
+        kind == AlertType.okay ||
+        alertDatum.stateType == 1) {
+      startsAt = alertDatum.lastHardStateChange;
+      active = true;
+    } else {
+      startsAt = alertDatum.lastStateChange;
+      active = false;
+    }
     Duration age;
-    DateTime startsAt = alertDatum.lastHardStateChange;
     age = (startsAt.difference(epoch) == Duration.zero)
         ? DateTime.now().difference(alertDatum.lastCheck)
         : DateTime.now().difference(startsAt);
@@ -113,7 +123,7 @@ class IciAlerts extends AlertSource with NetworkFetch {
         age: age,
         silenced: Util.toBool(alertDatum.acknowledged),
         downtimeScheduled: (alertDatum.downtimeDepth > 0),
-        active: true);
+        active: active);
   }
 }
 
@@ -128,7 +138,8 @@ class IciAlertsData {
       required this.lastStateChange,
       required this.lastHardStateChange,
       required this.lastCheck,
-      required this.lastCheckResult});
+      required this.lastCheckResult,
+      required this.stateType});
 
   final String name;
   final String hostname;
@@ -140,6 +151,7 @@ class IciAlertsData {
   final DateTime lastHardStateChange;
   final DateTime lastCheck;
   final Map<String, Object> lastCheckResult;
+  final int stateType;
 
   factory IciAlertsData.fromParsedJSON(Map<String, Object> parsed) {
     var attrs =
@@ -161,7 +173,8 @@ class IciAlertsData {
         lastStateChange: _dateTime(attrs["last_state_change"] as num),
         lastHardStateChange: _dateTime(attrs["last_hard_state_change"] as num),
         lastCheck: _dateTime(attrs["last_check"] as num),
-        lastCheckResult: Util.mapConvert<Object>(result));
+        lastCheckResult: Util.mapConvert<Object>(result),
+        stateType: attrs["state_type"] as int);
   }
 
   static DateTime _dateTime(num milliSeconds) {
