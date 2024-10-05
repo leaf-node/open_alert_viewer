@@ -100,9 +100,7 @@ class NagAlerts extends AlertSource with NetworkFetch {
       age = Duration.zero;
       active = true;
     } else {
-      if (kind == AlertType.up ||
-          kind == AlertType.okay ||
-          alertDatum.stateType == 1) {
+      if (alertDatum.stateType == 1) {
         startsAt = alertDatum.lastHardStateChange;
         active = true;
       } else {
