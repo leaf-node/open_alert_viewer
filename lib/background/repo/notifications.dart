@@ -127,7 +127,7 @@ class NotificationRepo {
       if (alert.age.compareTo(sinceLooked) > 0) {
         continue;
       }
-      if (alert.silenced || alert.downtimeScheduled) {
+      if (alert.silenced || alert.downtimeScheduled || !alert.active) {
         continue;
       }
       brandNewInc = (alert.age.compareTo(sincePriorFetch) <= 0) ? 1 : 0;

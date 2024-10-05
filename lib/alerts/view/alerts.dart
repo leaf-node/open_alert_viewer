@@ -129,6 +129,8 @@ class AlertWidget extends StatelessWidget {
         Icon(viewKind.icon),
         if (alert.silenced || alert.downtimeScheduled)
           const Icon(Icons.music_off_outlined)
+        else if (!alert.active)
+          const Icon(Icons.timer_outlined)
       ]),
     );
   }
