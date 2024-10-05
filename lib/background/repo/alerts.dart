@@ -107,7 +107,8 @@ class AlertsRepo {
               url: "https://github.com/okcode-studio/open_alert_viewer/issues",
               age: Duration.zero,
               silenced: false,
-              downtimeScheduled: false),
+              downtimeScheduled: false,
+              active: true),
           Alert(
               source: source.sourceData.id!,
               kind: AlertType.syncFailure,
@@ -117,7 +118,8 @@ class AlertsRepo {
               url: "https://github.com/okcode-studio/open_alert_viewer/issues",
               age: Duration.zero,
               silenced: false,
-              downtimeScheduled: false)
+              downtimeScheduled: false,
+              active: true)
         ]);
       });
       incoming.add(sourceFuture);
@@ -192,7 +194,8 @@ class AlertsRepo {
             url: alert.url,
             age: newAge,
             silenced: false,
-            downtimeScheduled: false);
+            downtimeScheduled: false,
+            active: true);
       }
       return alert;
     }).toList();

@@ -205,7 +205,7 @@ class LocalDatabase {
   List<Alert> fetchCachedAlerts() {
     List<Map<String, Object>> alerts = _fetchFromTable(
         query: '''SELECT id, source, kind, hostname, service, message, url, age,
-          silenced, downtime_scheduled
+          silenced, downtime_scheduled, active
             FROM alerts_cache;''', values: []);
     return [
       for (var alert in alerts)
@@ -218,7 +218,8 @@ class LocalDatabase {
             service: alert["service"] as String,
             age: Duration(seconds: alert["age"] as int),
             silenced: Util.toBool(alert["silenced"]!),
-            downtimeScheduled: Util.toBool(alert["downtime_scheduled"]!))
+            downtimeScheduled: Util.toBool(alert["downtime_scheduled"]!),
+            active: Util.toBool(alert["active"]!))
     ];
   }
 
@@ -230,8 +231,8 @@ class LocalDatabase {
     _insertIntoTable(query: '''
         INSERT INTO alerts_cache
           (source, kind, hostname, service, message, url, age, silenced,
-            downtime_scheduled)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);''', values: [
+            downtime_scheduled, active)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);''', values: [
       for (var alert in alerts)
         [
           alert.source,
@@ -243,6 +244,7 @@ class LocalDatabase {
           alert.age.inSeconds,
           alert.silenced,
           alert.downtimeScheduled,
+          alert.active,
         ]
     ]);
   }

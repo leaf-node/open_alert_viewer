@@ -44,7 +44,8 @@ class PromAlerts extends AlertSource with NetworkFetch {
                 age: DateTime.now()
                     .difference(DateTime.parse(alertDatum.startsAt)),
                 silenced: alertDatum.silenced,
-                downtimeScheduled: false));
+                downtimeScheduled: false,
+                active: true));
           }
           return newAlerts;
         });

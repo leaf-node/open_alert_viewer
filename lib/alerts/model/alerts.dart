@@ -38,7 +38,8 @@ class Alert {
       required this.url,
       required this.age,
       required this.downtimeScheduled,
-      required this.silenced});
+      required this.silenced,
+      required this.active});
 
   final int source;
   final AlertType kind;
@@ -49,6 +50,7 @@ class Alert {
   final Duration age;
   final bool downtimeScheduled;
   final bool silenced;
+  final bool active;
 }
 
 class AlertSourceData {
@@ -146,7 +148,8 @@ abstract class AlertSource with NetworkFetch {
           url: generateURL(sourceData.baseURL, ""),
           age: Duration.zero,
           silenced: false,
-          downtimeScheduled: false)
+          downtimeScheduled: false,
+          active: true)
     ];
     return alerts;
   }
@@ -165,7 +168,8 @@ abstract class AlertSource with NetworkFetch {
           url: generateURL(sourceData.baseURL, endpoint),
           age: Duration.zero,
           silenced: false,
-          downtimeScheduled: false)
+          downtimeScheduled: false,
+          active: true)
     ];
     return alerts;
   }

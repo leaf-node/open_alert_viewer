@@ -34,7 +34,8 @@ class RandomAlerts extends AlertSource {
           url: "https://example.com",
           age: Duration(seconds: _randomSeed.nextInt(60 * 10)),
           silenced: false,
-          downtimeScheduled: false));
+          downtimeScheduled: false,
+          active: true));
     }
     // simulate network timeout
     await Future.delayed(Duration(milliseconds: _randomSeed.nextInt(4000)));

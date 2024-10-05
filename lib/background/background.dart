@@ -120,7 +120,8 @@ class BackgroundWorker {
             url: "https://github.com/okcode-studio/open_alert_viewer/issues",
             age: Duration.zero,
             silenced: false,
-            downtimeScheduled: false),
+            downtimeScheduled: false,
+            active: true),
         Alert(
             source: 0,
             kind: AlertType.syncFailure,
@@ -130,7 +131,8 @@ class BackgroundWorker {
             url: "https://github.com/okcode-studio/open_alert_viewer/issues",
             age: Duration.zero,
             silenced: false,
-            downtimeScheduled: false),
+            downtimeScheduled: false,
+            active: true),
       ]));
     } else {
       throw Exception("Invalid message type: $message");

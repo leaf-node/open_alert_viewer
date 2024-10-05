@@ -36,5 +36,6 @@ CREATE TABLE IF NOT EXISTS alerts_cache (
     url TEXT NOT NULL,
     age INTEGER NOT NULL,
     silenced INTEGER NOT NULL,
-    downtime_scheduled INTEGER NOT NULL
+    downtime_scheduled INTEGER NOT NULL,
+    active INTEGER NOT NULL
 );
