@@ -315,7 +315,7 @@ class _AccountFormState extends State<AccountForm> with NetworkFetch {
         child: Center(
             child: ElevatedButton(
                 onPressed: (!allowClick)
-                    ? null
+                    ? () {}
                     : () {
                         if (Form.of(context).validate()) {
                           if (needsCheck || !isValid) {
