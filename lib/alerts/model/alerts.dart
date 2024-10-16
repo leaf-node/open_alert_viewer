@@ -120,7 +120,7 @@ enum SourceTypes {
   autodetect("Autodetect", 0),
   ici("Icinga", 3),
   nag("Nagios Core", 2),
-  prom("Prometheus", 1);
+  prom("Prometheus Alertmanager", 1);
 
   const SourceTypes(this.text, this.value);
   final String text;
