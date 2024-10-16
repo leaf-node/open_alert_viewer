@@ -21,8 +21,14 @@ mixin NetworkFetch {
           "Basic ${base64.encode(utf8.encode("$username:$password"))}";
       headers["authorization"] = basicAuth;
     }
+    String url = generateURL(baseURL, restOfURL);
+    if (RegExp(r"^http://").hasMatch(url) &&
+        !RegExp(r"^http://localhost(:[0-9]+)?(/.*)?$").hasMatch(url)) {
+      return http.Response("426 HTTPS required", 426,
+          reasonPhrase: "HTTPS Required");
+    }
     var response = await http
-        .get(Uri.parse(generateURL(baseURL, restOfURL)), headers: headers)
+        .get(Uri.parse(url), headers: headers)
         .timeout(Duration(seconds: BackgroundWorker.settings.syncTimeout),
             onTimeout: () {
       return http.Response("408 Client Timeout", 408,
