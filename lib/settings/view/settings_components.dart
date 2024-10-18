@@ -66,9 +66,10 @@ class MenuHeaderTile extends StatelessWidget {
 }
 
 class SettingsHeader extends StatelessWidget implements PreferredSizeWidget {
-  const SettingsHeader({super.key, required this.title});
+  const SettingsHeader({super.key, required this.title, this.intercept});
 
   final String title;
+  final Future<bool> Function()? intercept;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +78,17 @@ class SettingsHeader extends StatelessWidget implements PreferredSizeWidget {
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         leading: HeaderButton(
             icon: Icons.arrow_back,
-            onPressed: () => Navigator.of(context).pop()),
+            onPressed: () async {
+              bool stay;
+              if (intercept != null) {
+                stay = await intercept!();
+              } else {
+                stay = false;
+              }
+              if (!stay && context.mounted) {
+                Navigator.of(context).pop();
+              }
+            }),
         title: Text(title));
   }
 

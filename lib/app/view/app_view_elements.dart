@@ -34,7 +34,8 @@ Future textDialogBuilder(
     required String text,
     required bool cancellable,
     bool? reverseColors,
-    String? okayText}) async {
+    String? okayText,
+    String? cancelText}) async {
   return await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -50,7 +51,7 @@ Future textDialogBuilder(
                     Row(children: [
                       if (cancellable == true)
                         SettingsButton<bool>(
-                            text: "Cancel",
+                            text: cancelText ?? "Cancel",
                             retVal: false,
                             color: reverseColors ?? false
                                 ? safeColor
