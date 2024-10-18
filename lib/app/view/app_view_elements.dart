@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -118,7 +120,7 @@ Future<void> requestAndEnableNotifications(
             "the settings menu.",
         okayText: "Continue",
         cancellable: true);
-  } else if (!askAgain) {
+  } else if (!askAgain && Platform.isAndroid) {
     result = false;
   } else {
     result = true;
