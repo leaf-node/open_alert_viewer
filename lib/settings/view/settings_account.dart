@@ -149,117 +149,129 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: SettingsHeader(
-            title: widget.title,
-            intercept: () => discardDialog(context: context)),
-        body: Center(
-            child: Form(
-                autovalidateMode: AutovalidateMode.always,
-                onChanged: setNeedsCheck,
-                child: SizedBox(
-                    width: 400,
-                    child: BlocBuilder<AccountBloc, AccountState>(
-                        builder: (context, state) {
-                      String status;
-                      IconData? icon;
-                      if (state.responded) {
-                        setNewSourceData(sourceData: state.sourceData!);
-                        if (state.sourceData!.isValid ?? false) {
-                          status = "Found API endpoint";
-                          icon = Icons.check_outlined;
-                        } else {
-                          var error = state.sourceData!.errorMessage;
-                          if (error == "") {
-                            error = "Unkown Error";
+    return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, dynamic result) async {
+          if (!didPop) {
+            final stay = await discardDialog(context: context);
+            if (context.mounted && !stay) {
+              Navigator.of(context).pop();
+            }
+          }
+        },
+        child: Scaffold(
+            appBar: SettingsHeader(
+                title: widget.title,
+                intercept: () => discardDialog(context: context)),
+            body: Center(
+                child: Form(
+                    autovalidateMode: AutovalidateMode.always,
+                    onChanged: setNeedsCheck,
+                    child: SizedBox(
+                        width: 400,
+                        child: BlocBuilder<AccountBloc, AccountState>(
+                            builder: (context, state) {
+                          String status;
+                          IconData? icon;
+                          if (state.responded) {
+                            setNewSourceData(sourceData: state.sourceData!);
+                            if (state.sourceData!.isValid ?? false) {
+                              status = "Found API endpoint";
+                              icon = Icons.check_outlined;
+                            } else {
+                              var error = state.sourceData!.errorMessage;
+                              if (error == "") {
+                                error = "Unkown Error";
+                              }
+                              status = "Error: $error";
+                              icon = Icons.close_outlined;
+                            }
+                          } else if (state.needsCheck) {
+                            status = "";
+                            icon = null;
+                          } else {
+                            status = "Checking...";
+                            icon = Icons.sync_outlined;
                           }
-                          status = "Error: $error";
-                          icon = Icons.close_outlined;
-                        }
-                      } else if (state.needsCheck) {
-                        status = "";
-                        icon = null;
-                      } else {
-                        status = "Checking...";
-                        icon = Icons.sync_outlined;
-                      }
-                      return ListView(children: [
-                        const SizedBox(height: 20),
-                        const MenuHeader(
-                            title: "Account Details", padding: 8.0),
-                        AccountRadioField(
-                            title: "Third-Party Account",
-                            initialValue: typeController.text,
-                            onTap: () async {
-                              String? result =
-                                  await settingsRadioDialogBuilder<String>(
+                          return ListView(children: [
+                            const SizedBox(height: 20),
+                            const MenuHeader(
+                                title: "Account Details", padding: 8.0),
+                            AccountRadioField(
+                                title: "Third-Party Account",
+                                initialValue: typeController.text,
+                                onTap: () async {
+                                  String? result =
+                                      await settingsRadioDialogBuilder<String>(
+                                          context: context,
+                                          text: "Account Type",
+                                          priorSetting: typeController.text,
+                                          valueListBuilder: listSourceTypes);
+                                  if (result != null &&
+                                      result != typeController.text) {
+                                    typeController.text = result;
+                                  }
+                                  return result;
+                                }),
+                            AccountField(
+                                title: "Account Name",
+                                controller: nameController,
+                                validator: (String? value) {
+                                  int? id;
+                                  id = widget.source?.sourceData.id;
+                                  if (value == null || value == "") {
+                                    return "Please enter a name";
+                                  }
+                                  return context
+                                          .read<AccountsRepo>()
+                                          .checkUniqueSource(
+                                              id: id, name: value)
+                                      ? null
+                                      : "Name already used";
+                                }),
+                            AccountField(
+                                title: "Base URL",
+                                controller: baseURLController,
+                                validator: (String? value) {
+                                  if (value == null || value == "") {
+                                    return "Please enter a valid URL";
+                                  }
+                                  try {
+                                    if (Uri.parse(generateURL(value, ""))
+                                        .isAbsolute) {
+                                      return null;
+                                    }
+                                  } catch (e) {
+                                    // fall through
+                                  }
+                                  return "Please enter a valid URL";
+                                }),
+                            AccountField(
+                                title: "User Name", controller: userController),
+                            AccountField(
+                                title: "Password",
+                                controller: passwordController,
+                                passwordField: true),
+                            const SizedBox(height: 10),
+                            ListTile(
+                                leading: Icon(icon),
+                                title: Text(status),
+                                contentPadding: const EdgeInsets.all(8)),
+                            const SizedBox(height: 10),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  cancelButton(context),
+                                  acceptButton(
                                       context: context,
-                                      text: "Account Type",
-                                      priorSetting: typeController.text,
-                                      valueListBuilder: listSourceTypes);
-                              if (result != null &&
-                                  result != typeController.text) {
-                                typeController.text = result;
-                              }
-                              return result;
-                            }),
-                        AccountField(
-                            title: "Account Name",
-                            controller: nameController,
-                            validator: (String? value) {
-                              int? id;
-                              id = widget.source?.sourceData.id;
-                              if (value == null || value == "") {
-                                return "Please enter a name";
-                              }
-                              return context
-                                      .read<AccountsRepo>()
-                                      .checkUniqueSource(id: id, name: value)
-                                  ? null
-                                  : "Name already used";
-                            }),
-                        AccountField(
-                            title: "Base URL",
-                            controller: baseURLController,
-                            validator: (String? value) {
-                              if (value == null || value == "") {
-                                return "Please enter a valid URL";
-                              }
-                              try {
-                                if (Uri.parse(generateURL(value, ""))
-                                    .isAbsolute) {
-                                  return null;
-                                }
-                              } catch (e) {
-                                // fall through
-                              }
-                              return "Please enter a valid URL";
-                            }),
-                        AccountField(
-                            title: "User Name", controller: userController),
-                        AccountField(
-                            title: "Password",
-                            controller: passwordController,
-                            passwordField: true),
-                        const SizedBox(height: 10),
-                        ListTile(
-                            leading: Icon(icon),
-                            title: Text(status),
-                            contentPadding: const EdgeInsets.all(8)),
-                        const SizedBox(height: 10),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              cancelButton(context),
-                              acceptButton(
-                                  context: context,
-                                  needsCheck: state.needsCheck,
-                                  isValid: state.sourceData?.isValid ?? false,
-                                  responded: state.responded),
-                            ]),
-                        const SizedBox(height: 40),
-                      ]);
-                    })))));
+                                      needsCheck: state.needsCheck,
+                                      isValid:
+                                          state.sourceData?.isValid ?? false,
+                                      responded: state.responded),
+                                ]),
+                            const SizedBox(height: 40),
+                          ]);
+                        }))))));
   }
 
   Widget cancelButton(BuildContext context) {
