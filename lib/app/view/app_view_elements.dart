@@ -88,20 +88,6 @@ class SettingsButton<T> extends StatelessWidget {
   }
 }
 
-Future<void> showLatestModal(BuildContext context) async {
-  var settings = context.read<SettingsRepo>();
-  if (settings.latestModalShown < 1) {
-    textDialogBuilder(
-        context: context,
-        text: "Open Alert Viewer is an early access application, "
-            "so you may run into a few coding errors. Please "
-            "report any issues via the \"Online Support\" menu item "
-            "in the app settings. Thank you!",
-        cancellable: false);
-    settings.latestModalShown = 1;
-  }
-}
-
 Future<void> requestAndEnableNotifications(
     {required BuildContext context,
     required bool askAgain,
