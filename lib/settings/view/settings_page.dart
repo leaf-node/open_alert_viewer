@@ -286,27 +286,6 @@ class GeneralSettingsList extends StatelessWidget {
                     .add(SettingsPushEvent(newSettings: {"darkMode": result}));
               }
             }),
-        if (Platform.isAndroid)
-          MenuItem(
-              icon: Icons.battery_saver_outlined,
-              title: "Battery Optimization",
-              onTap: () async {
-                var link = "https://dontkillmyapp.com";
-                bool result = await textDialogBuilder(
-                    context: context,
-                    text: "For guidance on how to disable battery optimization "
-                        "on your Android device, please confirm this message.",
-                    okayText: "Open Browser",
-                    cancellable: true);
-                if (result == true) {
-                  var uri = Uri.parse(link);
-                  if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri);
-                  } else {
-                    log("Error launching URL: $link");
-                  }
-                }
-              }),
         MenuItem(
             icon: Icons.article_outlined,
             title: "App and License Info",
