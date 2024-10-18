@@ -114,8 +114,8 @@ Future<void> requestAndEnableNotifications(
     result = await textDialogBuilder(
         context: context,
         text: "Please enable notifications to allow background data "
-            "synchronization.",
-        okayText: "Enable",
+            "synchronization. This can be allowed later from the settings menu.",
+        okayText: "Continue",
         cancellable: true);
   } else if (!askAgain) {
     result = false;
