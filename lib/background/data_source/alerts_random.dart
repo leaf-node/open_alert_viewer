@@ -34,12 +34,20 @@ class RandomAlerts extends AlertSource {
           url: "https://example.com",
           age: Duration(seconds: _randomSeed.nextInt(60 * 10)),
           silenced: false,
-          downtimeScheduled: false,
-          active: true));
+          downtimeScheduled: frequentlyChosenBool(false),
+          active: frequentlyChosenBool(true)));
     }
     // simulate network timeout
     await Future.delayed(Duration(milliseconds: _randomSeed.nextInt(4000)));
     _alerts = nextAlerts;
     return _alerts;
+  }
+
+  bool frequentlyChosenBool(bool chosen) {
+    if (_randomSeed.nextDouble() > 0.2) {
+      return chosen;
+    } else {
+      return !chosen;
+    }
   }
 }
