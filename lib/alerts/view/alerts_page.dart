@@ -11,7 +11,6 @@ import '../../navigation/bloc/navigation_bloc.dart';
 import '../../navigation/bloc/navigation_event.dart';
 import '../../app/data_repository/settings_repository.dart';
 import '../../app/view/app_view_elements.dart';
-import '../../notifications/bloc/notification_bloc.dart';
 import '../../settings/bloc/settings_bloc.dart';
 import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
@@ -137,8 +136,8 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
     _settings = context.read<SettingsRepo>();
     WidgetsBinding.instance.addObserver(this);
     context.read<AlertsBloc>().add(UpdateLastSeen());
-    context.read<NotificationBloc>().add(
-        RequestAndEnableNotificationEvent(askAgain: false, callback: () {}));
+    requestAndEnableNotifications(
+        askAgain: false, context: context, callback: () {});
   }
 
   @override
@@ -147,8 +146,8 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       context.read<AlertsBloc>().add(UpdateLastSeen());
     }
     if (state == AppLifecycleState.resumed && _settings.notificationsEnabled) {
-      context.read<NotificationBloc>().add(
-          RequestAndEnableNotificationEvent(askAgain: false, callback: () {}));
+      requestAndEnableNotifications(
+          askAgain: false, context: context, callback: () {});
     }
   }
 

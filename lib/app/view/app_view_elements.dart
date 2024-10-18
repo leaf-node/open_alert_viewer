@@ -7,6 +7,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../notifications/bloc/notification_bloc.dart';
+import '../../notifications/data_repository/notification.dart';
 import '../data_repository/settings_repository.dart';
 
 class HeaderButton extends StatelessWidget {
@@ -95,5 +97,33 @@ Future<void> showLatestModal(BuildContext context) async {
             "in the app settings. Thank you!",
         cancellable: false);
     settings.latestModalShown = 1;
+  }
+}
+
+Future<void> requestAndEnableNotifications(
+    {required BuildContext context,
+    required bool askAgain,
+    required Function() callback}) async {
+  final settings = context.read<SettingsRepo>();
+  final stickyRepo = context.read<StickyNotificationRepo>();
+  final notificationBloc = context.read<NotificationBloc>();
+  bool result;
+  if (!(await stickyRepo.areNotificationsAllowed()) &&
+      (!settings.notificationsRequested || askAgain) &&
+      context.mounted) {
+    result = await textDialogBuilder(
+        context: context,
+        text: "Please enable notifications to allow background data "
+            "synchronization.",
+        okayText: "Enable",
+        cancellable: true);
+  } else if (!askAgain) {
+    result = false;
+  } else {
+    result = true;
+  }
+  if (result == true) {
+    notificationBloc.add(RequestAndEnableNotificationEvent(
+        askAgain: askAgain, callback: callback));
   }
 }

@@ -231,16 +231,14 @@ class GeneralSettingsList extends StatelessWidget {
                     .read<NotificationBloc>()
                     .add(DisableNotificationsEvent());
               } else {
-                context
-                    .read<NotificationBloc>()
-                    .add(RequestAndEnableNotificationEvent(
-                        askAgain: true,
-                        callback: () {
-                          settingsBloc.add(SettingsPushEvent(newSettings: {
-                            "notificationsEnabled":
-                                settings.notificationsEnabled
-                          }));
-                        }));
+                requestAndEnableNotifications(
+                    askAgain: true,
+                    context: context,
+                    callback: () {
+                      settingsBloc.add(SettingsPushEvent(newSettings: {
+                        "notificationsEnabled": settings.notificationsEnabled
+                      }));
+                    });
               }
             }),
         if (Platform.isAndroid && settings.notificationsEnabled)
