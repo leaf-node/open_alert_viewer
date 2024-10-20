@@ -53,30 +53,31 @@ class IciAlerts extends AlertSource with NetworkFetch {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
-    return fetchAndDecodeJSON(
-        endpoints: endpoints.values.toList(),
-        unstructuredDataToAlerts: (Map<String, dynamic> dataSet) {
-          List<Alert> newAlerts = [];
-          for (var statusType in endpoints.keys) {
-            String queryParams = endpoints[statusType]!;
-            var data = Util.mapConvert(dataSet[queryParams]);
+    List<Alert> newAlerts = [];
+    for (StatusType key in endpoints.keys) {
+      newAlerts.addAll(await fetchAndDecodeJSON(
+          endpoint: endpoints[key]!,
+          unstructuredDataToAlerts: (dynamic dataSet) {
+            List<Alert> someAlerts = [];
+            var data = Util.mapConvert(dataSet);
             var dataList = (data["results"] as List).cast<Object>();
-            if (statusType == StatusType.hostStatus) {
+            if (key == StatusType.hostStatus) {
               for (var entry in dataList) {
                 var hostData =
                     Util.mapConvert<Object>(entry as Map<String, dynamic>);
-                newAlerts.add(alertHandler(hostData, false));
+                someAlerts.add(alertHandler(hostData, false));
               }
-            } else if (statusType == StatusType.serviceStatus) {
+            } else if (key == StatusType.serviceStatus) {
               for (var entry in dataList) {
                 var serviceData =
                     Util.mapConvert<Object>(entry as Map<String, dynamic>);
-                newAlerts.add(alertHandler(serviceData, true));
+                someAlerts.add(alertHandler(serviceData, true));
               }
             }
-          }
-          return newAlerts;
-        });
+            return someAlerts;
+          }));
+    }
+    return newAlerts;
   }
 
   Alert alertHandler(Map<String, Object> alertsData, bool isService) {

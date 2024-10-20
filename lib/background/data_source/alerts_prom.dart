@@ -16,10 +16,10 @@ class PromAlerts extends AlertSource with NetworkFetch {
   @override
   Future<List<Alert>> fetchAlerts() async {
     return fetchAndDecodeJSON(
-        endpoints: [endpoint],
-        unstructuredDataToAlerts: (Map<String, dynamic> dataSet) {
-          List<Alert> newAlerts = [];
-          for (var datum in dataSet[endpoint]) {
+        endpoint: endpoint,
+        unstructuredDataToAlerts: (dynamic dataSet) {
+          List<Alert> someAlerts = [];
+          for (Map<String, dynamic> datum in dataSet as List) {
             PromAlertsData alertDatum =
                 PromAlertsData.fromParsedJSON(Util.mapConvert(datum));
             var severity = alertDatum.severity;
@@ -34,7 +34,7 @@ class PromAlerts extends AlertSource with NetworkFetch {
             } else {
               kind = AlertType.unknown;
             }
-            newAlerts.add(Alert(
+            someAlerts.add(Alert(
                 source: sourceData.id!,
                 kind: kind,
                 hostname: alertDatum.instance,
@@ -47,7 +47,7 @@ class PromAlerts extends AlertSource with NetworkFetch {
                 downtimeScheduled: false,
                 active: true));
           }
-          return newAlerts;
+          return someAlerts;
         });
   }
 }

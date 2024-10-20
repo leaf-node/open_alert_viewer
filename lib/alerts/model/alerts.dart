@@ -175,47 +175,45 @@ abstract class AlertSource with NetworkFetch {
   }
 
   Future<List<Alert>> fetchAndDecodeJSON(
-      {required List<Alert> Function(Map<String, dynamic> data)
-          unstructuredDataToAlerts,
-      required List<String> endpoints}) async {
+      {required List<Alert> Function(dynamic data) unstructuredDataToAlerts,
+      required String endpoint,
+      String? postBody}) async {
     if (!(sourceData.isValid ?? false)) {
       return alertForInvalidSource(sourceData);
     }
-    Map<String, dynamic> dataSet = {};
-    for (String endpoint in endpoints) {
-      Response? response;
-      String errorMessage = "";
+    dynamic dataSet;
+    Response? response;
+    String errorMessage = "";
+    try {
+      response = await networkFetch(sourceData.baseURL, sourceData.username,
+          sourceData.password, endpoint, postBody);
+    } on SocketException catch (e) {
+      errorMessage = e.message;
+    } on HandshakeException catch (e) {
+      errorMessage = e.message;
+    } on ClientException catch (e) {
+      errorMessage = e.message;
+    }
+    if (response == null || errorMessage.isNotEmpty) {
+      return errorFetchingAlerts(
+          sourceData: sourceData,
+          error: "Error fetching alerts: $errorMessage",
+          endpoint: endpoint);
+    }
+    if (response.statusCode != 200) {
+      return errorFetchingAlerts(
+          sourceData: sourceData,
+          error: "Error fetching alerts: HTTP status code "
+              "${response.statusCode}: ${response.reasonPhrase}",
+          endpoint: endpoint);
+    } else {
       try {
-        response = await networkFetch(sourceData.baseURL, sourceData.username,
-            sourceData.password, endpoint);
-      } on SocketException catch (e) {
-        errorMessage = e.message;
-      } on HandshakeException catch (e) {
-        errorMessage = e.message;
-      } on ClientException catch (e) {
-        errorMessage = e.message;
-      }
-      if (response == null || errorMessage.isNotEmpty) {
+        dataSet = json.decode(response.body);
+      } catch (e) {
         return errorFetchingAlerts(
             sourceData: sourceData,
-            error: "Error fetching alerts: $errorMessage",
+            error: "Error decoding reply: invalid JSON",
             endpoint: endpoint);
-      }
-      if (response.statusCode != 200) {
-        return errorFetchingAlerts(
-            sourceData: sourceData,
-            error: "Error fetching alerts: HTTP status code "
-                "${response.statusCode}: ${response.reasonPhrase}",
-            endpoint: endpoint);
-      } else {
-        try {
-          dataSet[endpoint] = json.decode(response.body);
-        } catch (e) {
-          return errorFetchingAlerts(
-              sourceData: sourceData,
-              error: "Error decoding reply: invalid JSON",
-              endpoint: endpoint);
-        }
       }
     }
     return unstructuredDataToAlerts(dataSet);

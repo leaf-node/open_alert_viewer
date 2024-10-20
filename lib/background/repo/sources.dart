@@ -11,6 +11,7 @@ import 'package:http/http.dart';
 
 import '../../alerts/model/alerts.dart';
 import '../../app/data_repository/settings_repository.dart';
+import '../../app/data_source/database.dart';
 import '../../app/data_source/network_fetch.dart';
 import '../background.dart';
 import '../data_source/alerts_ici.dart';
@@ -18,7 +19,6 @@ import '../data_source/alerts_nag.dart';
 import '../data_source/alerts_null.dart';
 import '../data_source/alerts_prom.dart';
 import '../data_source/alerts_random.dart';
-import '../../app/data_source/database.dart';
 
 class SourcesRepo with NetworkFetch {
   SourcesRepo(

@@ -49,33 +49,34 @@ class NagAlerts extends AlertSource with NetworkFetch {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
-    return fetchAndDecodeJSON(
-        endpoints: endpoints.values.toList(),
-        unstructuredDataToAlerts: (Map<String, dynamic> dataSet) {
-          List<Alert> newAlerts = [];
-          for (var statusType in endpoints.keys) {
-            String queryParams = endpoints[statusType]!;
-            var data = Util.mapConvert(dataSet[queryParams]);
+    List<Alert> newAlerts = [];
+    for (StatusType key in endpoints.keys) {
+      newAlerts.addAll(await fetchAndDecodeJSON(
+          endpoint: endpoints[key]!,
+          unstructuredDataToAlerts: (dynamic dataSet) {
+            List<Alert> someAlerts = [];
+            var data = Util.mapConvert(dataSet);
             var dataMap = Util.mapConvert(data["data"]);
-            if (statusType == StatusType.hostStatus) {
+            if (key == StatusType.hostStatus) {
               var hostList = Util.mapConvert(dataMap["hostlist"]);
               for (var host in hostList.keys) {
                 var hostData = Util.mapConvert(hostList[host]);
-                newAlerts.add(alertHandler(hostData, false, host));
+                someAlerts.add(alertHandler(hostData, false, host));
               }
-            } else if (statusType == StatusType.serviceStatus) {
+            } else if (key == StatusType.serviceStatus) {
               var serviceHostList = Util.mapConvert(dataMap["servicelist"]);
               for (var host in serviceHostList.keys) {
                 var serviceHostData = Util.mapConvert(serviceHostList[host]);
                 for (var service in serviceHostData.keys) {
                   var serviceData = Util.mapConvert(serviceHostData[service]);
-                  newAlerts.add(alertHandler(serviceData, true, host));
+                  someAlerts.add(alertHandler(serviceData, true, host));
                 }
               }
             }
-          }
-          return newAlerts;
-        });
+            return someAlerts;
+          }));
+    }
+    return newAlerts;
   }
 
   Alert alertHandler(
