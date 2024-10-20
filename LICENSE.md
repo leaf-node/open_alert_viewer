@@ -49,15 +49,15 @@ Copyright 2012, the Dart project authors.
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following
-      disclaimer in the documentation and/or other materials provided
-      with the distribution.
-    * Neither the name of Google LLC nor the names of its
-      contributors may be used to endorse or promote products derived
-      from this software without specific prior written permission.
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+* Neither the name of Google LLC nor the names of its contributors may
+  be used to endorse or promote products derived from this software
+  without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -124,7 +124,7 @@ to you under this License for this implementation shall terminate as
 of the date such litigation is filed.
 
 
-app_settings
+app\_settings
 ------------
 
 Copyright (c) 2019 Daniel Spencer
@@ -148,7 +148,7 @@ Copyright (c) 2024 Felix Angelov
 License: MIT
 
 
-bloc_concurrency
+bloc\_concurrency
 ----------------
 
 Copyright (c) 2024 Felix Angelov
@@ -156,7 +156,7 @@ Copyright (c) 2024 Felix Angelov
 License: MIT
 
 
-flutter_bloc
+flutter\_bloc
 ------------
 
 Copyright (c) 2024 Felix Angelov
@@ -164,7 +164,7 @@ Copyright (c) 2024 Felix Angelov
 License: MIT
 
 
-flutter_boot_receiver
+flutter\_boot\_receiver
 ---------------------
 
 Copyright (c) 2024 Ahsan Sarwar
@@ -172,7 +172,7 @@ Copyright (c) 2024 Ahsan Sarwar
 License: MIT
 
 
-flutter_local_notifications (BSD 3-Clause)
+flutter\_local\_notifications (BSD 3-Clause)
 ------------------------------------------
 
 Copyright 2018 Michael Bui. All rights reserved.
@@ -181,15 +181,14 @@ Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following
-      disclaimer in the documentation and/or other materials provided
-      with the distribution.
-    * Neither the name of the copyright holder nor the names of its
-      contributors may be used to endorse or promote products derived
-      from this software without specific prior written permission.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+* Neither the name of the copyright holder nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -204,7 +203,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-flutter_markdown
+flutter\_markdown
 ----------------
 
 Copyright 2013 The Flutter Authors. All rights reserved.
@@ -220,7 +219,7 @@ Copyright 2014, the Dart project authors.
 License: Google BSD 3-Clause
 
 
-path_provider
+path\_provider
 -------------
 
 Copyright 2013 The Flutter Authors. All rights reserved.
@@ -263,7 +262,7 @@ Copyright (c) 2020 Simon Binder
 License: MIT
 
 
-sqlite3_flutter_libs
+sqlite3\_flutter\_libs
 --------------------
 
 Copyright (c) 2020 Simon Binder
@@ -271,7 +270,7 @@ Copyright (c) 2020 Simon Binder
 License: MIT
 
 
-url_launcher
+url\_launcher
 ------------
 
 Copyright 2013 The Flutter Authors. All rights reserved.
