@@ -52,6 +52,7 @@ dependencies:
       ref: gradle-8-changes
   http: ^1.2.2
   yaml: ^3.1.2
+  flutter_markdown: ^0.7.4
 
 dev_dependencies:
   flutter_test:
@@ -82,7 +83,7 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - LICENSE.txt
+    - LICENSE.md
     - pubspec.yaml
     - .git/HEAD
     - .git/refs/heads/

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -43,7 +44,7 @@ class _LicensingInfoState extends State<LicensingInfo> {
   @override
   void initState() {
     super.initState();
-    _licenseString = rootBundle.loadString("LICENSE.txt");
+    _licenseString = rootBundle.loadString("LICENSE.md");
   }
 
   @override
@@ -60,13 +61,10 @@ class _LicensingInfoState extends State<LicensingInfo> {
           }
           return Padding(
               padding: const EdgeInsets.all(15),
-              child: ListView(children: [
-                Text(
-                  "Open Alert Viewer\n\nversion: "
-                  "${SettingsRepo.appVersion}\n$_text",
-                  style: const TextStyle(fontFamily: "monospace"),
-                )
-              ]));
+              child: Markdown(
+                data: "# Open Alert Viewer\n\nversion: "
+                    "${SettingsRepo.appVersion}\n$_text",
+              ));
         });
   }
 }
