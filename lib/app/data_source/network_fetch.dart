@@ -15,13 +15,17 @@ import '../data_repository/settings_repository.dart';
 mixin NetworkFetch {
   Future<http.Response> networkFetch(
       String baseURL, String username, String password, String restOfURL,
-      [String? postBody, String? authOverride]) async {
-    Map<String, String> headers;
-    headers = {"User-Agent": "open_alert_viewer/${SettingsRepo.appVersion}"};
-    if ((username != "" || password != "") && authOverride == null) {
+      [String? postBody,
+      bool? authOverride,
+      Map<String, String>? headers]) async {
+    Map<String, String> collectedHeaders = {
+      "User-Agent": "open_alert_viewer/${SettingsRepo.appVersion}"
+    };
+    collectedHeaders.addAll(headers ?? {});
+    if ((username != "" || password != "") && !(authOverride ?? false)) {
       var basicAuth =
           "Basic ${base64.encode(utf8.encode("$username:$password"))}";
-      headers["authorization"] = basicAuth;
+      collectedHeaders["authorization"] = basicAuth;
     }
     String url = generateURL(baseURL, restOfURL);
     if (RegExp(r"^http://").hasMatch(url) &&
@@ -31,9 +35,10 @@ mixin NetworkFetch {
     }
     Future<Response> query;
     if (postBody == null) {
-      query = http.get(Uri.parse(url), headers: headers);
+      query = http.get(Uri.parse(url), headers: collectedHeaders);
     } else {
-      query = http.post(Uri.parse(url), headers: headers, body: postBody);
+      query =
+          http.post(Uri.parse(url), headers: collectedHeaders, body: postBody);
     }
     var response = await query
         .timeout(Duration(seconds: BackgroundWorker.settings.syncTimeout),

@@ -177,7 +177,9 @@ abstract class AlertSource with NetworkFetch {
   Future<List<Alert>> fetchAndDecodeJSON(
       {required List<Alert> Function(dynamic data) unstructuredDataToAlerts,
       required String endpoint,
-      String? postBody}) async {
+      String? postBody,
+      bool? authOverride,
+      Map<String, String>? headers}) async {
     if (!(sourceData.isValid ?? false)) {
       return alertForInvalidSource(sourceData);
     }
@@ -186,7 +188,7 @@ abstract class AlertSource with NetworkFetch {
     String errorMessage = "";
     try {
       response = await networkFetch(sourceData.baseURL, sourceData.username,
-          sourceData.password, endpoint, postBody);
+          sourceData.password, endpoint, postBody, authOverride, headers);
     } on SocketException catch (e) {
       errorMessage = e.message;
     } on HandshakeException catch (e) {
