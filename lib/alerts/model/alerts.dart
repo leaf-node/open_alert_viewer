@@ -212,7 +212,7 @@ abstract class AlertSource with NetworkFetch {
       } catch (e) {
         return errorFetchingAlerts(
             sourceData: sourceData,
-            error: "Error decoding reply: invalid JSON",
+            error: "Error decoding reply: expected JSON data is missing",
             endpoint: endpoint);
       }
     }
