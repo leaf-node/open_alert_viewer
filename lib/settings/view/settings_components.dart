@@ -96,7 +96,7 @@ class SettingsHeader extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-Future settingsRadioDialogBuilder<T>(
+Future<T?> settingsRadioDialogBuilder<T>(
     {required BuildContext context,
     required String text,
     required T? priorSetting,
@@ -115,13 +115,13 @@ Future settingsRadioDialogBuilder<T>(
       });
 }
 
-Future settingsCheckBoxDialogBuilder<T>(
+Future<void> settingsCheckBoxDialogBuilder<T>(
     {required BuildContext context,
     required String text,
     required List<bool> priorSetting,
     required Function({required List<bool> priorSetting})
         valueListBuilder}) async {
-  return await showDialog<T>(
+  await showDialog<T>(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
