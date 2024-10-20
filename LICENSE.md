@@ -204,6 +204,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
+flutter_markdown
+----------------
+
+Copyright 2013 The Flutter Authors. All rights reserved.
+
+License: Google BSD 3-Clause
+
+
 http
 ----
 
