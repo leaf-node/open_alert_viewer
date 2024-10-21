@@ -112,7 +112,8 @@ class LocalDatabase {
     List<Map<String, Object>> valuesArray = _fetchFromTable(query: '''
       SELECT
         id, name, type, auth_type, base_url, username, password, failing,
-          last_seen, prior_fetch, last_fetch, error_message, is_valid
+          last_seen, prior_fetch, last_fetch, error_message, is_valid,
+          access_token
       FROM sources;
     ''', values: []);
     var sources = <AlertSourceData>[];
@@ -134,6 +135,7 @@ class LocalDatabase {
             DateTime.fromMillisecondsSinceEpoch(values["last_fetch"] as int),
         errorMessage: values["error_message"] as String,
         isValid: Util.toBool(values["is_valid"]!),
+        accessToken: values["access_token"] as String,
       ));
     }
     return sources;
@@ -143,8 +145,9 @@ class LocalDatabase {
     return _insertIntoTable(query: '''
       INSERT INTO sources
         (name, type, auth_type, base_url, username, password, failing,
-          last_seen, prior_fetch, last_fetch, error_message, is_valid)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+          last_seen, prior_fetch, last_fetch, error_message, is_valid,
+          access_token)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     ''', values: [
       [
         sourceData.name,
@@ -159,6 +162,7 @@ class LocalDatabase {
         sourceData.lastFetch.millisecondsSinceEpoch,
         sourceData.errorMessage,
         sourceData.isValid ?? "NULL",
+        sourceData.accessToken ?? "NULL"
       ]
     ]);
   }
@@ -167,8 +171,9 @@ class LocalDatabase {
     return _updateTable(query: '''
       UPDATE sources SET
         (name, type, auth_type, base_url, username, password, failing,
-          last_seen, prior_fetch, last_fetch, error_message, is_valid)
-        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
+          last_seen, prior_fetch, last_fetch, error_message, is_valid,
+          access_token)
+        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
     ''', values: [
       sourceData.name,
       sourceData.type,
@@ -182,6 +187,7 @@ class LocalDatabase {
       sourceData.lastFetch.millisecondsSinceEpoch,
       sourceData.errorMessage,
       sourceData.isValid ?? "NULL",
+      sourceData.accessToken ?? "NULL",
       sourceData.id!,
     ]);
   }

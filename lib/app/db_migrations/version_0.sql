@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS sources (
     prior_fetch INTEGER NOT NULL,
     last_fetch INTEGER NOT NULL,
     error_message TEXT NOT NULL,
-    is_valid BOOLEAN
+    is_valid BOOLEAN,
+    access_token TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS settings (
