@@ -162,7 +162,7 @@ class LocalDatabase {
         sourceData.lastFetch.millisecondsSinceEpoch,
         sourceData.errorMessage,
         sourceData.isValid ?? "NULL",
-        sourceData.accessToken ?? "NULL"
+        sourceData.accessToken
       ]
     ]);
   }
@@ -187,7 +187,7 @@ class LocalDatabase {
       sourceData.lastFetch.millisecondsSinceEpoch,
       sourceData.errorMessage,
       sourceData.isValid ?? "NULL",
-      sourceData.accessToken ?? "NULL",
+      sourceData.accessToken,
       sourceData.id!,
     ]);
   }

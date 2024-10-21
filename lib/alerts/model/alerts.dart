@@ -68,7 +68,7 @@ class AlertSourceData {
     required this.lastFetch,
     required this.errorMessage,
     this.isValid,
-    this.accessToken,
+    required this.accessToken,
     this.serial,
   });
 
@@ -85,7 +85,7 @@ class AlertSourceData {
   DateTime lastFetch;
   String errorMessage;
   bool? isValid;
-  String? accessToken;
+  String accessToken;
   int? serial;
 
   AlertSourceData copy() {

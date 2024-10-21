@@ -43,6 +43,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
         baseURLController = TextEditingController(),
         userController = TextEditingController(),
         passwordController = TextEditingController(),
+        accessTokenController = TextEditingController(),
         isValid = null,
         epoch = DateTime.fromMillisecondsSinceEpoch(0),
         systemIsUpdatingValues = false;
@@ -52,6 +53,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
   final TextEditingController baseURLController;
   final TextEditingController userController;
   final TextEditingController passwordController;
+  final TextEditingController accessTokenController;
   bool? isValid;
   final DateTime epoch;
   late final AccountBloc accountBloc;
@@ -72,6 +74,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
         priorFetch: epoch,
         lastFetch: epoch,
         errorMessage: "",
+        accessToken: accessTokenController.text,
         isValid: isValid,
       );
     } else {
@@ -88,6 +91,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
         priorFetch: widget.source?.sourceData.priorFetch ?? epoch,
         lastFetch: widget.source?.sourceData.lastFetch ?? epoch,
         errorMessage: "",
+        accessToken: accessTokenController.text,
         isValid: isValid,
       );
     }
@@ -101,6 +105,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
       baseURLController.text = sourceData.baseURL;
       userController.text = sourceData.username;
       passwordController.text = sourceData.password;
+      accessTokenController.text = sourceData.accessToken;
       isValid = sourceData.isValid;
       systemIsUpdatingValues = false;
     });
@@ -112,7 +117,8 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
         typeController.text == (sourceData?.type.toString() ?? "0") &&
         baseURLController.text == (sourceData?.baseURL ?? "") &&
         userController.text == (sourceData?.username ?? "") &&
-        passwordController.text == (sourceData?.password ?? "")) {
+        passwordController.text == (sourceData?.password ?? "") &&
+        accessTokenController.text == (sourceData?.accessToken ?? "")) {
       return false;
     } else {
       return true;
@@ -128,6 +134,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
       baseURLController.text = "";
       userController.text = "";
       passwordController.text = "";
+      accessTokenController.text = "";
       isValid = null;
     } else {
       nameController.text = widget.source!.sourceData.name;
@@ -135,6 +142,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
       baseURLController.text = widget.source!.sourceData.baseURL;
       userController.text = widget.source!.sourceData.username;
       passwordController.text = widget.source!.sourceData.password;
+      accessTokenController.text = widget.source!.sourceData.accessToken;
       isValid = widget.source!.sourceData.isValid;
       if (typeController.text == "-1") {
         typeController.text = "0";
@@ -151,6 +159,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
     baseURLController.dispose();
     userController.dispose();
     passwordController.dispose();
+    accessTokenController.dispose();
     accountBloc.add(CleanOutAccountEvent());
   }
 
