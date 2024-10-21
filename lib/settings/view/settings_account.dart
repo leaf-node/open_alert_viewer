@@ -43,6 +43,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
         baseURLController = TextEditingController(),
         userController = TextEditingController(),
         passwordController = TextEditingController(),
+        isValid = null,
         epoch = DateTime.fromMillisecondsSinceEpoch(0),
         systemIsUpdatingValues = false;
 
@@ -51,6 +52,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
   final TextEditingController baseURLController;
   final TextEditingController userController;
   final TextEditingController passwordController;
+  bool? isValid;
   final DateTime epoch;
   late final AccountBloc accountBloc;
   bool systemIsUpdatingValues;
@@ -70,6 +72,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
         priorFetch: epoch,
         lastFetch: epoch,
         errorMessage: "",
+        isValid: isValid,
       );
     } else {
       return AlertSourceData(
@@ -85,6 +88,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
         priorFetch: widget.source?.sourceData.priorFetch ?? epoch,
         lastFetch: widget.source?.sourceData.lastFetch ?? epoch,
         errorMessage: "",
+        isValid: isValid,
       );
     }
   }
@@ -97,6 +101,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
       baseURLController.text = sourceData.baseURL;
       userController.text = sourceData.username;
       passwordController.text = sourceData.password;
+      isValid = sourceData.isValid;
       systemIsUpdatingValues = false;
     });
   }
@@ -123,12 +128,14 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
       baseURLController.text = "";
       userController.text = "";
       passwordController.text = "";
+      isValid = null;
     } else {
       nameController.text = widget.source!.sourceData.name;
       typeController.text = widget.source!.sourceData.type.toString();
       baseURLController.text = widget.source!.sourceData.baseURL;
       userController.text = widget.source!.sourceData.username;
       passwordController.text = widget.source!.sourceData.password;
+      isValid = widget.source!.sourceData.isValid;
       if (typeController.text == "-1") {
         typeController.text = "0";
       }
