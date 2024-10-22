@@ -51,30 +51,30 @@ class NagAlerts extends AlertSource with NetworkFetch {
   Future<List<Alert>> fetchAlerts() async {
     List<Alert> newAlerts = [];
     for (StatusType key in endpoints.keys) {
-      newAlerts.addAll(await fetchAndDecodeJSON(
-          endpoint: endpoints[key]!,
-          unstructuredDataToAlerts: (dynamic dataSet) {
-            List<Alert> someAlerts = [];
-            var data = Util.mapConvert(dataSet);
-            var dataMap = Util.mapConvert(data["data"]);
-            if (key == StatusType.hostStatus) {
-              var hostList = Util.mapConvert(dataMap["hostlist"]);
-              for (var host in hostList.keys) {
-                var hostData = Util.mapConvert(hostList[host]);
-                someAlerts.add(alertHandler(hostData, false, host));
-              }
-            } else if (key == StatusType.serviceStatus) {
-              var serviceHostList = Util.mapConvert(dataMap["servicelist"]);
-              for (var host in serviceHostList.keys) {
-                var serviceHostData = Util.mapConvert(serviceHostList[host]);
-                for (var service in serviceHostData.keys) {
-                  var serviceData = Util.mapConvert(serviceHostData[service]);
-                  someAlerts.add(alertHandler(serviceData, true, host));
-                }
-              }
-            }
-            return someAlerts;
-          }));
+      dynamic dataSet;
+      List<Alert> errors;
+      (dataSet, errors) = await fetchAndDecodeJSON(endpoint: endpoints[key]!);
+      if (dataSet == null) {
+        return errors;
+      }
+      var data = Util.mapConvert(dataSet);
+      var dataMap = Util.mapConvert(data["data"]);
+      if (key == StatusType.hostStatus) {
+        var hostList = Util.mapConvert(dataMap["hostlist"]);
+        for (var host in hostList.keys) {
+          var hostData = Util.mapConvert(hostList[host]);
+          newAlerts.add(alertHandler(hostData, false, host));
+        }
+      } else if (key == StatusType.serviceStatus) {
+        var serviceHostList = Util.mapConvert(dataMap["servicelist"]);
+        for (var host in serviceHostList.keys) {
+          var serviceHostData = Util.mapConvert(serviceHostList[host]);
+          for (var service in serviceHostData.keys) {
+            var serviceData = Util.mapConvert(serviceHostData[service]);
+            newAlerts.add(alertHandler(serviceData, true, host));
+          }
+        }
+      }
     }
     return newAlerts;
   }

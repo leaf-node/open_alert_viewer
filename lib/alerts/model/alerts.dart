@@ -167,14 +167,13 @@ abstract class AlertSource with NetworkFetch {
     ];
   }
 
-  Future<List<Alert>> fetchAndDecodeJSON(
-      {required List<Alert> Function(dynamic data) unstructuredDataToAlerts,
-      required String endpoint,
+  Future<(dynamic, List<Alert>)> fetchAndDecodeJSON(
+      {required String endpoint,
       String? postBody,
       bool? authOverride,
       Map<String, String>? headers}) async {
     if (!(sourceData.isValid ?? false)) {
-      return alertForInvalidSource(sourceData);
+      return (null, alertForInvalidSource(sourceData));
     }
     dynamic dataSet;
     Response? response;
@@ -190,27 +189,36 @@ abstract class AlertSource with NetworkFetch {
       errorMessage = e.message;
     }
     if (response == null || errorMessage.isNotEmpty) {
-      return errorFetchingAlerts(
-          sourceData: sourceData,
-          error: "Error fetching alerts: $errorMessage",
-          endpoint: endpoint);
+      return (
+        null,
+        errorFetchingAlerts(
+            sourceData: sourceData,
+            error: "Error fetching alerts: $errorMessage",
+            endpoint: endpoint)
+      );
     }
     if (response.statusCode != 200) {
-      return errorFetchingAlerts(
-          sourceData: sourceData,
-          error: "Error fetching alerts: HTTP status code "
-              "${response.statusCode}: ${response.reasonPhrase}",
-          endpoint: endpoint);
+      return (
+        null,
+        errorFetchingAlerts(
+            sourceData: sourceData,
+            error: "Error fetching alerts: HTTP status code "
+                "${response.statusCode}: ${response.reasonPhrase}",
+            endpoint: endpoint)
+      );
     } else {
       try {
         dataSet = json.decode(response.body);
       } catch (e) {
-        return errorFetchingAlerts(
-            sourceData: sourceData,
-            error: "Error decoding reply: expected JSON data is missing",
-            endpoint: endpoint);
+        return (
+          null,
+          errorFetchingAlerts(
+              sourceData: sourceData,
+              error: "Error decoding reply: expected JSON data is missing",
+              endpoint: endpoint)
+        );
       }
     }
-    return unstructuredDataToAlerts(dataSet);
+    return (dataSet, <Alert>[]);
   }
 }

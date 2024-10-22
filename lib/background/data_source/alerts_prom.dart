@@ -15,40 +15,41 @@ class PromAlerts extends AlertSource with NetworkFetch {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
-    return fetchAndDecodeJSON(
-        endpoint: endpoint,
-        unstructuredDataToAlerts: (dynamic dataSet) {
-          List<Alert> someAlerts = [];
-          for (Map<String, dynamic> datum in dataSet as List) {
-            PromAlertsData alertDatum =
-                PromAlertsData.fromParsedJSON(Util.mapConvert(datum));
-            var severity = alertDatum.severity;
-            var type = alertDatum.oavType;
-            AlertType kind;
-            if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
-              kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
-                  ? AlertType.down
-                  : AlertType.error;
-            } else if (RegExp(r"^(warning)$").hasMatch(severity)) {
-              kind = AlertType.warning;
-            } else {
-              kind = AlertType.unknown;
-            }
-            someAlerts.add(Alert(
-                source: sourceData.id!,
-                kind: kind,
-                hostname: alertDatum.instance,
-                service: alertDatum.alertName,
-                message: alertDatum.summary,
-                url: alertDatum.generatorURL,
-                age: DateTime.now()
-                    .difference(DateTime.parse(alertDatum.startsAt)),
-                silenced: alertDatum.silenced,
-                downtimeScheduled: false,
-                active: true));
-          }
-          return someAlerts;
-        });
+    dynamic dataSet;
+    List<Alert> errors;
+    (dataSet, errors) = await fetchAndDecodeJSON(endpoint: endpoint);
+    if (dataSet == null) {
+      return errors;
+    }
+    List<Alert> newAlerts = [];
+    for (Map<String, dynamic> datum in dataSet as List) {
+      PromAlertsData alertDatum =
+          PromAlertsData.fromParsedJSON(Util.mapConvert(datum));
+      var severity = alertDatum.severity;
+      var type = alertDatum.oavType;
+      AlertType kind;
+      if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
+        kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
+            ? AlertType.down
+            : AlertType.error;
+      } else if (RegExp(r"^(warning)$").hasMatch(severity)) {
+        kind = AlertType.warning;
+      } else {
+        kind = AlertType.unknown;
+      }
+      newAlerts.add(Alert(
+          source: sourceData.id!,
+          kind: kind,
+          hostname: alertDatum.instance,
+          service: alertDatum.alertName,
+          message: alertDatum.summary,
+          url: alertDatum.generatorURL,
+          age: DateTime.now().difference(DateTime.parse(alertDatum.startsAt)),
+          silenced: alertDatum.silenced,
+          downtimeScheduled: false,
+          active: true));
+    }
+    return newAlerts;
   }
 }
 
