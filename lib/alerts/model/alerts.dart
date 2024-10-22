@@ -139,30 +139,20 @@ abstract class AlertSource with NetworkFetch {
   Future<List<Alert>> fetchAlerts();
 
   List<Alert> alertForInvalidSource(AlertSourceData sourceData) {
-    var errorMessage = sourceData.errorMessage;
-    List<Alert> alerts = [
-      Alert(
-          source: sourceData.id!,
-          kind: AlertType.syncFailure,
-          hostname: sourceData.name,
-          service: "OAV",
-          message: "Error connecting to your account. "
-              "(${(errorMessage == "") ? "Unknown reason" : errorMessage}). "
-              "Try editing your account details. ",
-          url: generateURL(sourceData.baseURL, ""),
-          age: Duration.zero,
-          silenced: false,
-          downtimeScheduled: false,
-          active: true)
-    ];
-    return alerts;
+    final error = sourceData.errorMessage;
+    return errorFetchingAlerts(
+        sourceData: sourceData,
+        error: "Error connecting to your account. "
+            "(${(error == "") ? "Unknown reason" : error}). "
+            "Try editing your account details. ",
+        endpoint: "");
   }
 
   List<Alert> errorFetchingAlerts(
       {required AlertSourceData sourceData,
       required String error,
       required String endpoint}) {
-    var alerts = [
+    return [
       Alert(
           source: sourceData.id!,
           kind: AlertType.syncFailure,
@@ -175,7 +165,6 @@ abstract class AlertSource with NetworkFetch {
           downtimeScheduled: false,
           active: true)
     ];
-    return alerts;
   }
 
   Future<List<Alert>> fetchAndDecodeJSON(
