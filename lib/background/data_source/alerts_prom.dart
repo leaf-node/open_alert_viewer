@@ -19,7 +19,11 @@ class PromAlerts extends AlertSource with NetworkFetch {
     List<Alert> errors;
     (dataSet, errors) = await fetchAndDecodeJSON(endpoint: endpoint);
     if (dataSet == null) {
-      return errors;
+      if (errors.isEmpty) {
+        throw Exception("Missing alert message after Zabbix error");
+      } else {
+        return errors;
+      }
     }
     List<Alert> newAlerts = [];
     for (Map<String, dynamic> datum in dataSet as List) {
