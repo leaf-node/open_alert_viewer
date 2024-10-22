@@ -214,7 +214,8 @@ abstract class AlertSource with NetworkFetch {
           null,
           errorFetchingAlerts(
               sourceData: sourceData,
-              error: "Error decoding reply: expected JSON data is missing",
+              error: "Error parsing reply: API mismatch, "
+                  "or JSON data is invalid",
               endpoint: endpoint)
         );
       }
