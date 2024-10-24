@@ -179,7 +179,7 @@ class IciAlertsData {
         stateType: attrs["state_type"] as int);
   }
 
-  static DateTime _dateTime(num milliSeconds) {
-    return DateTime.fromMillisecondsSinceEpoch((milliSeconds * 1000).floor());
+  static DateTime _dateTime(num seconds) {
+    return DateTime.fromMillisecondsSinceEpoch((seconds * 1000).floor());
   }
 }
