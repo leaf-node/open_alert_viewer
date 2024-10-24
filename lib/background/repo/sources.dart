@@ -21,6 +21,7 @@ import '../data_source/alerts_nag.dart';
 import '../data_source/alerts_null.dart';
 import '../data_source/alerts_prom.dart';
 import '../data_source/alerts_random.dart';
+import '../data_source/alerts_zab.dart';
 
 class SourcesRepo with NetworkFetch {
   SourcesRepo(
@@ -56,7 +57,7 @@ class SourcesRepo with NetworkFetch {
         case SourceTypes.ici:
           alertSource = IciAlerts.new;
         case SourceTypes.zab:
-          alertSource = NullAlerts.new;
+          alertSource = ZabAlerts.new;
           break;
       }
       sources.add(alertSource(sourceData: sourceData));
