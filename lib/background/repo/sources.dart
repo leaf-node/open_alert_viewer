@@ -5,7 +5,6 @@
  */
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
@@ -14,7 +13,6 @@ import '../../alerts/model/alerts.dart';
 import '../../app/data_repository/settings_repository.dart';
 import '../../app/data_source/database.dart';
 import '../../app/data_source/network_fetch.dart';
-import '../../app/util/util.dart';
 import '../background.dart';
 import '../data_source/alerts_ici.dart';
 import '../data_source/alerts_nag.dart';
@@ -55,9 +53,8 @@ class SourcesRepo with NetworkFetch {
           alertSource = NagAlerts.new;
         case SourceTypes.ici:
           alertSource = IciAlerts.new;
-        case SourceTypes.zab:
-          alertSource = NullAlerts.new;
-          break;
+        //case SourceTypes.zab:
+        //  alertSource = NullAlerts.new;
       }
       sources.add(alertSource(sourceData: sourceData));
     }
@@ -133,6 +130,7 @@ class SourcesRepo with NetworkFetch {
     if (success || sourceData.type == SourceTypes.ici.value) {
       return newSourceData;
     }
+    /*
     (success, newSourceData) = await checkSource(
         sourceType: SourceTypes.zab,
         sourceData: sourceData,
@@ -141,6 +139,7 @@ class SourcesRepo with NetworkFetch {
     if (success || sourceData.type == SourceTypes.zab.value) {
       return newSourceData;
     }
+    */
     sourceData.isValid = false;
     if (sourceData.type == SourceTypes.autodetect.value) {
       sourceData.errorMessage = "Choose a specific account type";
@@ -175,6 +174,7 @@ class SourcesRepo with NetworkFetch {
           sourceData.baseURL = trimmedBaseURL;
           sourceData.isValid = true;
           return (true, sourceData);
+          /*
         } else if (sourceType.value == SourceTypes.zab.value &&
             response.statusCode == 412) {
           final zabLoginQuery = '{"jsonrpc":"2.0","method":"user.login",'
@@ -205,6 +205,7 @@ class SourcesRepo with NetworkFetch {
             sourceData.isValid = true;
             return (true, sourceData);
           }
+          */
         } else {
           sourceData.errorMessage =
               "${response.statusCode}: ${response.reasonPhrase ?? ""}";
