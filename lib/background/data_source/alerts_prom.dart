@@ -20,7 +20,7 @@ class PromAlerts extends AlertSource with NetworkFetch {
     (dataSet, errors) = await fetchAndDecodeJSON(endpoint: endpoint);
     if (dataSet == null) {
       if (errors.isEmpty) {
-        throw Exception("Missing alert message after Zabbix error");
+        throw Exception("Missing alert message after Prometheus fetch error");
       } else {
         return errors;
       }

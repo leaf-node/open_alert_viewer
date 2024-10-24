@@ -60,7 +60,7 @@ class IciAlerts extends AlertSource with NetworkFetch {
       (dataSet, errors) = await fetchAndDecodeJSON(endpoint: endpoints[key]!);
       if (dataSet == null) {
         if (errors.isEmpty) {
-          throw Exception("Missing alert message after Zabbix error");
+          throw Exception("Missing alert message after Icinga fetch error");
         } else {
           return errors;
         }
