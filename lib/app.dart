@@ -124,8 +124,7 @@ class _OAVappViewState extends State<OAVappView> {
                     _navigator.push(
                         LicensingPage.route(title: "License Information"));
                   case ShowPrivacyPage():
-                    _navigator
-                        .push(PrivacyPage.route(title: "License Information"));
+                    _navigator.push(PrivacyPage.route(title: "Privacy Policy"));
                 }
               },
               child: child);
