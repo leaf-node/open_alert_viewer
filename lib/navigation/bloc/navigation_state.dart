@@ -31,3 +31,7 @@ final class ShowAccountSettingsPage extends NavState {
 final class ShowLicensingPage extends NavState {
   ShowLicensingPage();
 }
+
+final class ShowPrivacyPage extends NavState {
+  ShowPrivacyPage();
+}

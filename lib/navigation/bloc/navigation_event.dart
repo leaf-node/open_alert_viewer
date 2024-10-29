@@ -21,3 +21,5 @@ final class OpenAccountSettingsPageEvent implements NavEvent {
 }
 
 final class OpenLicensingPageEvent implements NavEvent {}
+
+final class OpenPrivacyPageEvent implements NavEvent {}

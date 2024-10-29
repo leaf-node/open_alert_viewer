@@ -293,6 +293,12 @@ class GeneralSettingsList extends StatelessWidget {
               context.read<NavBloc>().add(OpenLicensingPageEvent());
             }),
         MenuItem(
+            icon: Icons.person_search_outlined,
+            title: "Privacy Policy",
+            onTap: () async {
+              context.read<NavBloc>().add(OpenPrivacyPageEvent());
+            }),
+        MenuItem(
             icon: Icons.support_outlined,
             title: "Online Support",
             onTap: () async {

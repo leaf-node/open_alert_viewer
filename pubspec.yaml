@@ -84,6 +84,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - LICENSE.md
+    - PRIVACY.md
     - pubspec.yaml
     - .git/HEAD
     - .git/refs/heads/
