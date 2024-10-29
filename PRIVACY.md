@@ -54,10 +54,10 @@ we recommend locking your device's screen when you're not using it.
 ### Data Deletion
 
 Since the credentials are controlled by your device alone, you are in control
-of when they may be deleted. Aside from removing from your device's backups, to
-delete the data entered into the app, open the app settings, then select each
-unwanted account, and choose "Remove Account". Alert data caches for removed
-accounts clear out after the next data fetch.
+of when they may be deleted. Besides removing app data from your device's
+backups, to delete the data entered into the app, open the app settings, then
+select each unwanted account, and choose "Remove Account". Alert data caches
+for removed accounts clear out after the next data fetch.
 
 If backups are enabled on your device, copies of the app's credentials may be
 stored elsewhere, outside the control of Open Alert Viewer authors. That data
