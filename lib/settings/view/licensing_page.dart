@@ -4,9 +4,12 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:developer';
+
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/data_repository/settings_repository.dart';
 import 'settings_components.dart';
@@ -54,17 +57,22 @@ class _LicensingInfoState extends State<LicensingInfo> {
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
             _text = snapshot.data ?? _errorMessage;
-          } else if (snapshot.hasError) {
-            _text = _errorMessage;
           } else {
-            _text = "...";
+            _text = _errorMessage;
           }
           return Padding(
               padding: const EdgeInsets.all(15),
               child: Markdown(
-                data: "# Open Alert Viewer\n\nversion: "
-                    "${SettingsRepo.appVersion}\n$_text",
-              ));
+                  data: "# Open Alert Viewer\n\nversion: "
+                      "${SettingsRepo.appVersion}\n$_text",
+                  onTapLink: (_, href, __) async {
+                    var uri = Uri.parse(href ?? "");
+                    if (await canLaunchUrl(uri)) {
+                      await launchUrl(uri);
+                    } else {
+                      log("Error launching URL: $href");
+                    }
+                  }));
         });
   }
 }
