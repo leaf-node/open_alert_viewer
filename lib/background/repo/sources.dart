@@ -53,8 +53,6 @@ class SourcesRepo with NetworkFetch {
           alertSource = NagAlerts.new;
         case SourceTypes.ici:
           alertSource = IciAlerts.new;
-        //case SourceTypes.zab:
-        //  alertSource = NullAlerts.new;
       }
       sources.add(alertSource(sourceData: sourceData));
     }
@@ -130,16 +128,6 @@ class SourcesRepo with NetworkFetch {
     if (success || sourceData.type == SourceTypes.ici.value) {
       return newSourceData;
     }
-    /*
-    (success, newSourceData) = await checkSource(
-        sourceType: SourceTypes.zab,
-        sourceData: sourceData,
-        trimRegex: r"(/api_jsonrpc.php/?)$",
-        apiEndpoint: "/api_jsonrpc.php");
-    if (success || sourceData.type == SourceTypes.zab.value) {
-      return newSourceData;
-    }
-    */
     sourceData.isValid = false;
     if (sourceData.type == SourceTypes.autodetect.value) {
       sourceData.errorMessage = "Choose a specific account type";
@@ -174,38 +162,6 @@ class SourcesRepo with NetworkFetch {
           sourceData.baseURL = trimmedBaseURL;
           sourceData.isValid = true;
           return (true, sourceData);
-          /*
-        } else if (sourceType.value == SourceTypes.zab.value &&
-            response.statusCode == 412) {
-          final zabLoginQuery = '{"jsonrpc":"2.0","method":"user.login",'
-              '"params":{"username":"${sourceData.username}",'
-              '"password":"${sourceData.password}"},"id":1}';
-          final zabResponse = await networkFetch(
-              sourceData.baseURL,
-              sourceData.username,
-              sourceData.password,
-              apiEndpoint,
-              zabLoginQuery,
-              true,
-              {"Content-Type": "application/json-rpc"});
-          if (zabResponse.statusCode != 200) {
-            sourceData.errorMessage =
-                "${zabResponse.statusCode}: ${zabResponse.reasonPhrase ?? ""}";
-            sourceData.isValid = false;
-            return (false, sourceData);
-          }
-          final replyMap = Util.mapConvert(json.decode(zabResponse.body));
-          if (replyMap.keys.contains("error")) {
-            sourceData.errorMessage = replyMap["error"]["data"];
-            return (false, sourceData);
-          } else {
-            sourceData.accessToken = replyMap["result"];
-            sourceData.type = sourceType.value;
-            sourceData.baseURL = trimmedBaseURL;
-            sourceData.isValid = true;
-            return (true, sourceData);
-          }
-          */
         } else {
           sourceData.errorMessage =
               "${response.statusCode}: ${response.reasonPhrase ?? ""}";
