@@ -180,7 +180,9 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
             icon: Icons.login, text: "Please configure an account");
       } else {
         String caveat = " ";
-        if (state.alerts.isNotEmpty) {
+        if (state.alerts
+            .where((v) => v.kind != AlertType.okay && v.kind != AlertType.up)
+            .isNotEmpty) {
           caveat = " (filtered) ";
         }
         child = EmptyPane(icon: Icons.check, text: "No${caveat}alerts here!");
