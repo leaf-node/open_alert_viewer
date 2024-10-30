@@ -198,6 +198,10 @@ class GeneralSettingsList extends StatelessWidget {
                 settingsBloc.add(SettingsPushEvent(
                     newSettings: {"refreshInterval": result}));
               }
+              if (result == -1) {
+                settingsBloc.add(SettingsPushEvent(
+                    newSettings: {"notificationsEnabled": false}));
+              }
             }),
         MenuItem(
             icon: Icons.timer_outlined,
@@ -235,6 +239,12 @@ class GeneralSettingsList extends StatelessWidget {
                     askAgain: true,
                     context: context,
                     callback: () {
+                      if (settings.refreshInterval == -1) {
+                        final interval = RefreshFrequencies.oneMinute.value;
+                        settings.refreshInterval = interval;
+                        settingsBloc.add(SettingsPushEvent(
+                            newSettings: {"refreshInterval": interval}));
+                      }
                       settingsBloc.add(SettingsPushEvent(newSettings: {
                         "notificationsEnabled": settings.notificationsEnabled
                       }));

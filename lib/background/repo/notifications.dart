@@ -170,7 +170,9 @@ class NotificationRepo {
   }
 
   Future<void> startAnroidStickyNotification() async {
-    if (!Platform.isAndroid || !_settings.notificationsEnabled) {
+    if (!Platform.isAndroid ||
+        !_settings.notificationsEnabled ||
+        _settings.refreshInterval == -1) {
       return;
     }
     var activeAlerts = await _flutterLocalNotificationsPlugin

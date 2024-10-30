@@ -237,10 +237,12 @@ class AlertsRepo {
 
   void refreshTimer() {
     _timer?.cancel();
-    _timer =
-        Timer.periodic(Duration(seconds: _settings.refreshInterval), (timer) {
-      fetchAlerts(forceRefreshNow: true);
-    });
+    if (_settings.refreshInterval != -1) {
+      _timer =
+          Timer.periodic(Duration(seconds: _settings.refreshInterval), (timer) {
+        fetchAlerts(forceRefreshNow: true);
+      });
+    }
     fetchAlerts(forceRefreshNow: true);
     if (_settings.notificationsEnabled) {
       _notifier.disableNotifications();
