@@ -125,8 +125,9 @@ class AlertsRepo {
       incoming.add(sourceFuture);
       incoming.last.then((List<Alert> newAlerts) {
         bool priorValue = source.sourceData.failing;
-        if (newAlerts.isNotEmpty &&
-            newAlerts[0].kind == AlertType.syncFailure) {
+        if (newAlerts
+            .where((v) => v.kind == AlertType.syncFailure)
+            .isNotEmpty) {
           source.sourceData.failing = true;
         } else {
           source.sourceData.failing = false;
