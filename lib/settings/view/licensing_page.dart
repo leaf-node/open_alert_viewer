@@ -67,9 +67,9 @@ class _LicensingInfoState extends State<LicensingInfo> {
                       "${SettingsRepo.appVersion}\n$_text",
                   onTapLink: (_, href, __) async {
                     var uri = Uri.parse(href ?? "");
-                    if (await canLaunchUrl(uri)) {
+                    try {
                       await launchUrl(uri);
-                    } else {
+                    } catch (e) {
                       log("Error launching URL: $href");
                     }
                   }));

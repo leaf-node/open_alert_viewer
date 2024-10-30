@@ -304,9 +304,9 @@ class GeneralSettingsList extends StatelessWidget {
             onTap: () async {
               var link = "https://github.com/okcode-studio/open_alert_viewer";
               var uri = Uri.parse(link);
-              if (await canLaunchUrl(uri)) {
+              try {
                 await launchUrl(uri);
-              } else {
+              } catch (e) {
                 log("Error launching URL: $link");
               }
             }),
@@ -316,9 +316,9 @@ class GeneralSettingsList extends StatelessWidget {
             onTap: () async {
               var link = "https://buymeacoffee.com/okcode.studio";
               var uri = Uri.parse(link);
-              if (await canLaunchUrl(uri)) {
+              try {
                 await launchUrl(uri);
-              } else {
+              } catch (e) {
                 log("Error launching URL: $link");
               }
             }),

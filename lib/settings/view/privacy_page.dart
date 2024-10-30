@@ -65,9 +65,9 @@ class _PrivacyInfoState extends State<PrivacyInfo> {
                   data: _text,
                   onTapLink: (_, href, __) async {
                     var uri = Uri.parse(href ?? "");
-                    if (await canLaunchUrl(uri)) {
+                    try {
                       await launchUrl(uri);
-                    } else {
+                    } catch (e) {
                       log("Error launching URL: $href");
                     }
                   }));
