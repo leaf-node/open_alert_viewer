@@ -12,9 +12,8 @@ enum StatusType { hostStatus, serviceStatus }
 
 enum HostStatus {
   up(0, AlertType.up),
-  warning(1, AlertType.warning),
-  down(2, AlertType.down),
-  unknown(3, AlertType.unknown);
+  down(1, AlertType.down),
+  unreachable(2, AlertType.unreachable);
 
   const HostStatus(this.value, this.alertType);
   final int value;
