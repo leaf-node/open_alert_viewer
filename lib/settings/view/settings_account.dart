@@ -215,7 +215,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
                                 title: "Account Details", padding: 8.0),
                             AccountRadioField(
                                 title: "Third-Party Account",
-                                initialValue: typeController.text,
+                                controller: typeController,
                                 onTap: () async {
                                   String? result =
                                       await settingsRadioDialogBuilder<String>(
@@ -223,10 +223,6 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
                                           text: "Account Type",
                                           priorSetting: typeController.text,
                                           valueListBuilder: listSourceTypes);
-                                  if (result != null &&
-                                      result != typeController.text) {
-                                    typeController.text = result;
-                                  }
                                   return result;
                                 }),
                             AccountField(
@@ -472,77 +468,57 @@ List<SettingsRadioEnumValue> listSourceTypes<T>({T? priorSetting}) {
   ];
 }
 
-class AccountRadioField<T> extends StatelessWidget {
+class AccountRadioField extends StatefulWidget {
   const AccountRadioField(
       {super.key,
       required this.title,
-      required this.initialValue,
-      this.validator,
+      required this.controller,
       required this.onTap});
 
+  final TextEditingController controller;
   final String title;
-  final T initialValue;
-  final FormFieldValidator<T>? validator;
-  final Future<T> Function() onTap;
+  final Future<String?> Function() onTap;
 
   @override
-  Widget build(BuildContext context) {
+  State<AccountRadioField> createState() => _AccountRadioFieldState();
+}
+
+class _AccountRadioFieldState extends State<AccountRadioField> {
+  late String _name;
+
+  String getName() {
+    return SourceTypes.values
+        .firstWhere((sourceType) =>
+            sourceType.value.toString() == widget.controller.text)
+        .text;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(() => setState(() => _name = getName()));
+    _name = getName();
+  }
+
+  @override
+  build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Align(
             alignment: Alignment.topCenter,
-            child: RadioDialogFormField(
-                title: title,
-                initialValue: initialValue,
-                onSaved: (T? value) {},
-                validator: validator,
-                onTap: onTap)));
-  }
-}
-
-class RadioDialogFormField<T> extends FormField<T> {
-  RadioDialogFormField(
-      {super.key,
-      required title,
-      required super.initialValue,
-      required super.onSaved,
-      required super.validator,
-      required Future<T> Function() onTap})
-      : super(builder: (FormFieldState<T> state) {
-          return RadioDialogWidget(state: state, title: title, onTap: onTap);
-        });
-}
-
-class RadioDialogWidget<T> extends StatelessWidget {
-  const RadioDialogWidget(
-      {super.key,
-      required this.state,
-      required this.title,
-      required this.onTap});
-
-  final FormFieldState<T> state;
-  final String title;
-  final Future<T> Function() onTap;
-
-  @override
-  build(BuildContext context) {
-    return Row(children: [
-      Text("$title: "),
-      TextButton(
-          onPressed: () async {
-            var result = await onTap();
-            if (result != null) {
-              state.didChange(result);
-            }
-          },
-          child: Text(
-              SourceTypes.values
-                  .firstWhere((sourceType) =>
-                      sourceType.value.toString() == state.value)
-                  .text,
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.bold)))
-    ]);
+            child: Row(children: [
+              Text("${widget.title}: "),
+              TextButton(
+                  onPressed: () async {
+                    var result = await widget.onTap();
+                    if (result != null && result != widget.controller.text) {
+                      widget.controller.text = result;
+                    }
+                  },
+                  child: Text(_name,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.bold)))
+            ])));
   }
 }
