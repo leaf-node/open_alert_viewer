@@ -223,6 +223,11 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
                                           text: "Account Type",
                                           priorSetting: typeController.text,
                                           valueListBuilder: listSourceTypes);
+                                  if (result != null &&
+                                      result != typeController.text) {
+                                    typeController.text = result;
+                                    setNeedsCheck();
+                                  }
                                   return result;
                                 }),
                             AccountField(
@@ -509,12 +514,7 @@ class _AccountRadioFieldState extends State<AccountRadioField> {
             child: Row(children: [
               Text("${widget.title}: "),
               TextButton(
-                  onPressed: () async {
-                    var result = await widget.onTap();
-                    if (result != null && result != widget.controller.text) {
-                      widget.controller.text = result;
-                    }
-                  },
+                  onPressed: widget.onTap,
                   child: Text(_name,
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary,
