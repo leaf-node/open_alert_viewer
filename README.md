@@ -13,9 +13,9 @@ support for additional back end alerting services.
 ### Compatible third-party alert services
 
 * [Prometheus Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/)
-  ([configuration](#prometheus))
-* [Nagios Core 4](https://www.nagios.org/projects/nagios-core/)
-* [Icinga 2](https://icinga.com/)
+  v0.16.0 or later ([configuration](#prometheus))
+* [Nagios Core](https://www.nagios.org/projects/nagios-core/) 4.x
+* [Icinga](https://icinga.com/) 2.12.0 or later
 * (More planned)
 
 ### Authentication
