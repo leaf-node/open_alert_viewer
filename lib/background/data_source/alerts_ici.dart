@@ -168,14 +168,14 @@ class IciAlertsData {
         hostname: host["name"] as String? ?? "",
         message: (attrs["last_check_result"] as Map<String, dynamic>)["output"]
             as String,
-        state: attrs["state"] as int,
-        downtimeDepth: attrs["downtime_depth"] as int,
-        acknowledged: attrs["acknowledgement"] as int,
+        state: (attrs["state"] as num).floor(),
+        downtimeDepth: (attrs["downtime_depth"] as num).floor(),
+        acknowledged: (attrs["acknowledgement"] as num).floor(),
         lastStateChange: _dateTime(attrs["last_state_change"] as num),
         lastHardStateChange: _dateTime(attrs["last_hard_state_change"] as num),
         lastCheck: _dateTime(attrs["last_check"] as num),
         lastCheckResult: Util.mapConvert<Object>(result),
-        stateType: attrs["state_type"] as int);
+        stateType: (attrs["state_type"] as num).floor());
   }
 
   static DateTime _dateTime(num seconds) {
