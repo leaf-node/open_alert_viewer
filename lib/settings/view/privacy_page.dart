@@ -64,8 +64,8 @@ class _PrivacyInfoState extends State<PrivacyInfo> {
               child: Markdown(
                   data: _text,
                   onTapLink: (_, href, __) async {
-                    var uri = Uri.parse(href ?? "");
                     try {
+                      var uri = Uri.parse(href ?? "");
                       await launchUrl(uri);
                     } catch (e) {
                       log("Error launching URL: $href");

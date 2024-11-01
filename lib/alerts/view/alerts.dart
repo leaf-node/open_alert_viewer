@@ -119,8 +119,8 @@ class AlertWidget extends StatelessWidget {
         IconButton(
             icon: const Icon(Icons.link_outlined),
             onPressed: () async {
-              var uri = Uri.parse(alert.url);
               try {
+                var uri = Uri.parse(alert.url);
                 await launchUrl(uri);
               } catch (e) {
                 log("Error launching URL: ${alert.url}");

@@ -33,12 +33,20 @@ mixin NetworkFetch {
       return http.Response("426 HTTPS required", 426,
           reasonPhrase: "HTTPS Required");
     }
+    Uri? parsedURI;
     Future<Response> query;
+    try {
+      parsedURI = Uri.parse(url);
+    } catch (e) {
+      parsedURI = null;
+    }
+    if (parsedURI == null || parsedURI.host == "") {
+      return http.Response("400 Bad Request", 400, reasonPhrase: "Bad Request");
+    }
     if (postBody == null) {
-      query = http.get(Uri.parse(url), headers: collectedHeaders);
+      query = http.get(parsedURI, headers: collectedHeaders);
     } else {
-      query =
-          http.post(Uri.parse(url), headers: collectedHeaders, body: postBody);
+      query = http.post(parsedURI, headers: collectedHeaders, body: postBody);
     }
     var response = await query
         .timeout(Duration(seconds: BackgroundWorker.settings.syncTimeout),
