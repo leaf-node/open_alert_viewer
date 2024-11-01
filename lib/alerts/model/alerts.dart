@@ -119,7 +119,7 @@ enum AuthTypes {
 
 enum SourceTypes {
   demo("Demo", -2),
-  nullType("Null", -1),
+  nullType("Unknown", -1),
   autodetect("Autodetect", 0),
   ici("Icinga", 3),
   nag("Nagios Core", 2),

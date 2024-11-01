@@ -118,10 +118,15 @@ class LocalDatabase {
     ''', values: []);
     var sources = <AlertSourceData>[];
     for (var values in valuesArray) {
+      int type = values["type"] as int;
+      type = SourceTypes.values
+          .singleWhere((e) => e.value == type,
+              orElse: () => SourceTypes.nullType)
+          .value;
       sources.add(AlertSourceData(
         id: values["id"] as int,
         name: values["name"] as String,
-        type: values["type"] as int,
+        type: type,
         authType: values["auth_type"] as int,
         baseURL: values["base_url"] as String,
         username: values["username"] as String,

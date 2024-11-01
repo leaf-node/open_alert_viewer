@@ -144,9 +144,6 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>
       passwordController.text = widget.source!.sourceData.password;
       accessTokenController.text = widget.source!.sourceData.accessToken;
       isValid = widget.source!.sourceData.isValid;
-      if (typeController.text == "-1") {
-        typeController.text = "0";
-      }
     }
     accountBloc = context.read<AccountBloc>();
   }
