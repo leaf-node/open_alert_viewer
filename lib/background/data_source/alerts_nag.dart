@@ -14,7 +14,8 @@ enum HostStatus {
   pending(1, AlertType.hostPending),
   up(2, AlertType.up),
   down(4, AlertType.down),
-  unreachable(8, AlertType.unreachable);
+  unreachable(8, AlertType.unreachable),
+  unknown(-1, AlertType.unknown); // not upstream
 
   const HostStatus(this.value, this.alertType);
   final int value;
@@ -90,11 +91,13 @@ class NagAlerts extends AlertSource with NetworkFetch {
     AlertType kind;
     if (isService) {
       kind = ServiceStatus.values
-          .firstWhere((v) => v.value == alertDatum.status)
+          .singleWhere((v) => v.value == alertDatum.status,
+              orElse: () => ServiceStatus.unknown)
           .alertType;
     } else {
       kind = HostStatus.values
-          .firstWhere((v) => v.value == alertDatum.status)
+          .singleWhere((v) => v.value == alertDatum.status,
+              orElse: () => HostStatus.unknown)
           .alertType;
     }
     Duration age;

@@ -13,7 +13,8 @@ enum StatusType { hostStatus, serviceStatus }
 enum HostStatus {
   up(0, AlertType.up),
   down(1, AlertType.down),
-  unreachable(2, AlertType.unreachable);
+  unreachable(2, AlertType.unreachable),
+  unknown(-1, AlertType.unknown); // not upstream
 
   const HostStatus(this.value, this.alertType);
   final int value;
@@ -90,13 +91,15 @@ class IciAlerts extends AlertSource with NetworkFetch {
     String service;
     if (isService) {
       kind = ServiceStatus.values
-          .firstWhere((v) => v.value == alertDatum.state)
+          .singleWhere((v) => v.value == alertDatum.state,
+              orElse: () => ServiceStatus.unknown)
           .alertType;
       hostname = alertDatum.hostname;
       service = alertDatum.name;
     } else {
       kind = HostStatus.values
-          .firstWhere((v) => v.value == alertDatum.state)
+          .singleWhere((v) => v.value == alertDatum.state,
+              orElse: () => HostStatus.unknown)
           .alertType;
       hostname = alertDatum.name;
       service = "PING";
