@@ -103,6 +103,7 @@ class SourcesRepo with NetworkFetch {
     }
     bool success;
     AlertSourceData newSourceData;
+    AlertSourceData prevNewSourceData;
     (success, newSourceData) = await checkSource(
         sourceType: SourceTypes.prom,
         sourceData: sourceData,
@@ -122,11 +123,23 @@ class SourcesRepo with NetworkFetch {
     (success, newSourceData) = await checkSource(
         sourceType: SourceTypes.ici,
         sourceData: sourceData,
-        trimRegex: r"(/v1/objects/services/?)$",
+        trimRegex: r"(/+(v1/objects/services/?)?)$",
+        apiEndpoint: "/v1/objects/services");
+    if (success) {
+      return newSourceData;
+    } else {
+      prevNewSourceData = newSourceData;
+    }
+    (success, newSourceData) = await checkSource(
+        sourceType: SourceTypes.ici,
+        sourceData: sourceData,
+        trimRegex: r"(/+(v1/objects/services/?)?)$",
         apiEndpoint: "/v1/objects/services",
         fallbackPort: 5665);
-    if (success || sourceData.type == SourceTypes.ici.value) {
+    if (success) {
       return newSourceData;
+    } else if (sourceData.type == SourceTypes.ici.value) {
+      return prevNewSourceData;
     }
     sourceData.isValid = false;
     if (sourceData.type == SourceTypes.autodetect.value) {
