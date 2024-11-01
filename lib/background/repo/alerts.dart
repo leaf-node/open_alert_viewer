@@ -100,8 +100,7 @@ class AlertsRepo {
               kind: AlertType.syncFailure,
               hostname: source.sourceData.name,
               service: "OAV",
-              message: "Error fetching alerts, "
-                  "is your back end done initializing? "
+              message: "Error fetching alerts. "
                   "Please open an issue using the link icon to the left to "
                   "report any persistent errors.",
               url: "https://github.com/okcode-studio/open_alert_viewer/issues",
