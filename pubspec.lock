@@ -337,6 +337,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  license_generator:
+    dependency: "direct dev"
+    description:
+      name: license_generator
+      sha256: "0b111c03cbccfa36a68a8738e3b2a54392a269673b5258d5fc6a83302d675a9e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   lints:
     dependency: transitive
     description:
