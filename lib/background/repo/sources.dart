@@ -104,6 +104,7 @@ class SourcesRepo with NetworkFetch {
     bool success;
     AlertSourceData newSourceData;
     AlertSourceData prevNewSourceData;
+    sourceData.baseURL = sourceData.baseURL.replaceAll(RegExp(r"[?&].*$"), "");
     (success, newSourceData) = await checkSource(
         sourceType: SourceTypes.prom,
         sourceData: sourceData,
