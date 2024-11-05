@@ -377,7 +377,7 @@ List<SettingsCheckBoxEnumValue> listFiltered(
           index: option.index,
           callback: (BuildContext context, bool? newValue, int index) {
             context.read<SettingsBloc>().add(SettingsPushEvent(
-                newSettings: {"setAlertFilterAt": (newValue, index)}));
+                newSettings: {"setAlertFilterAt": (newValue!, index)}));
           })
   ];
 }
@@ -392,7 +392,7 @@ List<SettingsCheckBoxEnumValue> listSilenceFilters(
           index: option.index,
           callback: (BuildContext context, bool? newValue, int index) {
             context.read<SettingsBloc>().add(SettingsPushEvent(
-                newSettings: {"setSilenceFilterAt": (newValue, index)}));
+                newSettings: {"setSilenceFilterAt": (newValue!, index)}));
           })
   ];
 }
