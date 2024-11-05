@@ -108,16 +108,13 @@ Future<T?> settingsRadioDialogBuilder<T>(
             child: SizedBox(
                 width: 300,
                 child: ListView(shrinkWrap: true, children: [
-                  Column(mainAxisSize: MainAxisSize.min, children: [
-                    if (text != null)
-                      ListTile(
-                          title: Text(text,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0))),
-                    ...valueListBuilder(priorSetting: priorSetting)
-                  ])
+                  if (text != null)
+                    ListTile(
+                        title: Text(text,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16.0))),
+                  ...valueListBuilder(priorSetting: priorSetting)
                 ])));
       });
 }
