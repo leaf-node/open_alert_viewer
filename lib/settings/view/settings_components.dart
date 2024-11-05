@@ -98,7 +98,7 @@ class SettingsHeader extends StatelessWidget implements PreferredSizeWidget {
 
 Future<T?> settingsRadioDialogBuilder<T>(
     {required BuildContext context,
-    required String text,
+    required String? text,
     required T? priorSetting,
     required Function<T>({T? priorSetting}) valueListBuilder}) async {
   return await showDialog<T>(
@@ -108,16 +108,23 @@ Future<T?> settingsRadioDialogBuilder<T>(
             child: SizedBox(
                 width: 300,
                 child: ListView(shrinkWrap: true, children: [
-                  Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: valueListBuilder<T>(priorSetting: priorSetting))
+                  Column(mainAxisSize: MainAxisSize.min, children: [
+                    if (text != null)
+                      ListTile(
+                          title: Text(text,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0))),
+                    ...valueListBuilder(priorSetting: priorSetting)
+                  ])
                 ])));
       });
 }
 
 Future<void> settingsCheckBoxDialogBuilder<T>(
     {required BuildContext context,
-    required String text,
+    required String? text,
     required List<bool> priorSetting,
     required Function({required List<bool> priorSetting})
         valueListBuilder}) async {
@@ -128,9 +135,13 @@ Future<void> settingsCheckBoxDialogBuilder<T>(
             child: SizedBox(
                 width: 300,
                 child: ListView(shrinkWrap: true, children: [
-                  Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: valueListBuilder(priorSetting: priorSetting))
+                  if (text != null)
+                    ListTile(
+                        title: Text(text,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16.0))),
+                  ...valueListBuilder(priorSetting: priorSetting)
                 ])));
       });
 }
