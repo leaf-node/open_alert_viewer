@@ -165,8 +165,16 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       List<Widget> alertWidgets = [];
       Widget child;
       List<bool> filter = _settings.alertFilter;
+      List<bool> silenceFilter = _settings.silenceFilter;
       for (var alert in state.alerts) {
         if (filter[alert.kind.index]) {
+          if ((alert.downtimeScheduled &&
+                  !silenceFilter[SilenceTypes.downtimeScheduled.id]) ||
+              (alert.silenced &&
+                  !silenceFilter[SilenceTypes.acknowledged.id]) ||
+              (!alert.active && !silenceFilter[SilenceTypes.inactive.id])) {
+            continue;
+          }
           alertWidgets.add(AlertWidget(alert: alert));
         }
       }

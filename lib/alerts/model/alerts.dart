@@ -108,6 +108,17 @@ class AlertSourceData {
   }
 }
 
+enum SilenceTypes {
+  downtimeScheduled("Downtime Scheduled", 0),
+  acknowledged("Acknowledged", 1),
+  inactive("Inactive", 2);
+
+  const SilenceTypes(this.text, this.id);
+
+  final String text;
+  final int id;
+}
+
 enum AuthTypes {
   basicAuth("Basic Auth", 0);
 

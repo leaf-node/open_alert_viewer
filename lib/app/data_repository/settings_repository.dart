@@ -46,6 +46,12 @@ class SettingsRepo {
   set latestModalShown(value) => _setSetting<int>("latest_modal_shown", value);
   bool get soundEnabled => _getSetting<bool>("sound_enabled", true);
   set soundEnabled(value) => _setSetting<bool>("sound_enabled", value);
+  List<bool> get silenceFilter =>
+      _getSetting<List<bool>>("silence_filter", [true],
+          opt: SilenceTypes.values.length);
+  set silenceFilter(value) => _setSetting<List<bool>>("silence_filter", value);
+  void setSilenceFilterAt(bool value, int index) =>
+      _setListAt<bool>("silence_filter", value, [true], index);
 
   T _getSetting<T>(String name, T defaultValue, {int? opt}) {
     String storedValue = _db.getSetting(setting: name);
@@ -69,6 +75,8 @@ class SettingsRepo {
       if (name == "alert_filter") {
         value = [false, true, true, false, true, false, true, true, false, true]
             as T;
+      } else if (name == "silence_filter") {
+        value = [true, true, true] as T;
       } else {
         value = defaultValue;
       }

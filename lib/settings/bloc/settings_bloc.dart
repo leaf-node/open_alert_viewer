@@ -49,6 +49,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           int index;
           (value, index) = newSetting as (bool, int);
           _settingsRepo.setAlertFilterAt(value, index);
+        case "silenceFilter":
+          _settingsRepo.silenceFilter = newSetting;
+        case "setSilenceFilterAt":
+          bool value;
+          int index;
+          (value, index) = newSetting as (bool, int);
+          _settingsRepo.setSilenceFilterAt(value, index);
         case "darkMode":
           _settingsRepo.darkMode = newSetting;
         case _:
@@ -62,6 +69,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       "notificationsEnabled": _settingsRepo.notificationsEnabled,
       "soundEnabled": _settingsRepo.soundEnabled,
       "alertFilter": _settingsRepo.alertFilter,
+      "silenceFilter": _settingsRepo.silenceFilter,
       "darkMode": _settingsRepo.darkMode,
     }));
   }

@@ -282,6 +282,16 @@ class GeneralSettingsList extends StatelessWidget {
                   valueListBuilder: listFiltered);
             }),
         MenuItem(
+            icon: Icons.bedtime_outlined,
+            title: "Silence Filter",
+            onTap: () async {
+              await settingsCheckBoxDialogBuilder<bool>(
+                  context: context,
+                  text: "Silence Filter",
+                  priorSetting: settings.silenceFilter,
+                  valueListBuilder: listSilenceFilters);
+            }),
+        MenuItem(
             icon: Icons.contrast,
             title: "Dark Mode",
             subtitle: darkModeSubtitle,
@@ -368,6 +378,21 @@ List<SettingsCheckBoxEnumValue> listFiltered(
           callback: (BuildContext context, bool? newValue, int index) {
             context.read<SettingsBloc>().add(SettingsPushEvent(
                 newSettings: {"setAlertFilterAt": (newValue, index)}));
+          })
+  ];
+}
+
+List<SettingsCheckBoxEnumValue> listSilenceFilters(
+    {required List<bool> priorSetting}) {
+  return [
+    for (var option in SilenceTypes.values)
+      SettingsCheckBoxEnumValue(
+          title: option.text,
+          value: priorSetting[option.index],
+          index: option.index,
+          callback: (BuildContext context, bool? newValue, int index) {
+            context.read<SettingsBloc>().add(SettingsPushEvent(
+                newSettings: {"setSilenceFilterAt": (newValue, index)}));
           })
   ];
 }
