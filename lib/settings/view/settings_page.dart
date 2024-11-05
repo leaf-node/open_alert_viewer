@@ -277,7 +277,7 @@ class GeneralSettingsList extends StatelessWidget {
             onTap: () async {
               await settingsCheckBoxDialogBuilder<bool>(
                   context: context,
-                  text: "Alerts Filter",
+                  text: "Show Alert Types",
                   priorSetting: settings.alertFilter,
                   valueListBuilder: listFiltered);
             }),
@@ -287,7 +287,7 @@ class GeneralSettingsList extends StatelessWidget {
             onTap: () async {
               await settingsCheckBoxDialogBuilder<bool>(
                   context: context,
-                  text: "Silence Filter",
+                  text: "Show Silenced Alerts",
                   priorSetting: settings.silenceFilter,
                   valueListBuilder: listSilenceFilters);
             }),
