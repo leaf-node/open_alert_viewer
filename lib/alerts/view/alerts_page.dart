@@ -131,8 +131,7 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
     _settings = context.read<SettingsRepo>();
     WidgetsBinding.instance.addObserver(this);
     context.read<AlertsBloc>().add(UpdateLastSeen());
-    requestAndEnableNotifications(
-        askAgain: false, context: context, callback: () {});
+    _requestPermissions(context);
   }
 
   @override
@@ -150,6 +149,14 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  void _requestPermissions(BuildContext context) async {
+    await requestAndEnableNotifications(
+        askAgain: false, context: context, callback: () {});
+    if (context.mounted) {
+      await requestBatteryPermission(context: context, askAgain: false);
+    }
   }
 
   @override

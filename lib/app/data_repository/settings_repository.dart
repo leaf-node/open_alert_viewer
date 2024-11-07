@@ -52,6 +52,10 @@ class SettingsRepo {
   set silenceFilter(value) => _setSetting<List<bool>>("silence_filter", value);
   void setSilenceFilterAt(bool value, int index) =>
       _setListAt<bool>("silence_filter", value, [true], index);
+  bool get batteryPermissionRequested =>
+      _getSetting<bool>("battery_permission_requested", false);
+  set batteryPermissionRequested(value) =>
+      _setSetting<bool>("battery_permission_requested", value);
 
   T _getSetting<T>(String name, T defaultValue, {int? opt}) {
     String storedValue = _db.getSetting(setting: name);

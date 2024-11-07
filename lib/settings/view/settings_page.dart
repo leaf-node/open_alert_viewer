@@ -9,12 +9,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/alerts/bloc/refresh_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:app_settings/app_settings.dart';
 
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_state.dart';
+import '../../alerts/bloc/refresh_bloc.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/view/app_view_elements.dart';
 import '../../navigation/bloc/navigation_bloc.dart';
@@ -22,6 +22,7 @@ import '../../navigation/bloc/navigation_event.dart';
 import '../../app/data_repository/settings_repository.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import '../bloc/settings_bloc.dart';
+import '../cubit/battery_permission_cubit.dart';
 import 'settings_components.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -306,6 +307,18 @@ class GeneralSettingsList extends StatelessWidget {
                     .add(SettingsPushEvent(newSettings: {"darkMode": result}));
               }
             }),
+        if (Platform.isAndroid)
+          Builder(builder: (BuildContext context) {
+            final state = context.watch<BatteryPermissionCubit>().state;
+            return MenuItem(
+                icon: Icons.battery_saver_outlined,
+                title: "Battery Permission",
+                subtitle: state.value.name,
+                onTap: () async {
+                  await requestBatteryPermission(
+                      context: context, askAgain: true);
+                });
+          }),
         MenuItem(
             icon: Icons.article_outlined,
             title: "App and License Info",

@@ -21,7 +21,9 @@ import 'notifications/bloc/notification_bloc.dart';
 import 'notifications/data_repository/notification.dart';
 import 'settings/bloc/account_bloc.dart';
 import 'settings/bloc/settings_bloc.dart';
+import 'settings/cubit/battery_permission_cubit.dart';
 import 'settings/data_repository/account_repository.dart';
+import 'settings/data_repository/battery_repository.dart';
 import 'settings/view/licensing_page.dart';
 import 'settings/view/privacy_page.dart';
 import 'settings/view/settings_account.dart';
@@ -48,6 +50,9 @@ class OAVapp extends StatelessWidget {
           RepositoryProvider(
               create: (context) => StickyNotificationRepo(
                   settings: context.read<SettingsRepo>())),
+          RepositoryProvider(
+              create: (context) => BatteryPermissionRepo(
+                  settings: context.read<SettingsRepo>())),
         ],
         child: MultiBlocProvider(providers: [
           BlocProvider(create: (context) => NavBloc()),
@@ -62,6 +67,9 @@ class OAVapp extends StatelessWidget {
               create: (context) => SettingsBloc(
                   settings: context.read<SettingsRepo>(), bgWorker: bgWorker)),
           BlocProvider(create: (context) => AccountBloc(bgWorker: bgWorker)),
+          BlocProvider(
+              create: (context) => BatteryPermissionCubit(
+                  context.read<BatteryPermissionRepo>())),
         ], child: const OAVappView()));
   }
 }

@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../notifications/bloc/notification_bloc.dart';
 import '../../notifications/data_repository/notification.dart';
+import '../../settings/cubit/battery_permission_cubit.dart';
 import '../data_repository/settings_repository.dart';
 
 class HeaderButton extends StatelessWidget {
@@ -115,5 +116,31 @@ Future<void> requestAndEnableNotifications(
   if (result == true) {
     notificationBloc.add(RequestAndEnableNotificationEvent(
         askAgain: askAgain, callback: callback));
+  }
+}
+
+Future<void> requestBatteryPermission(
+    {required BuildContext context, required bool askAgain}) async {
+  final settings = context.read<SettingsRepo>();
+  final cubit = context.read<BatteryPermissionCubit>();
+  bool shouldAsk = !settings.batteryPermissionRequested || askAgain;
+  bool willAsk;
+  if (Platform.isAndroid && !cubit.state.value.active) {
+    if (shouldAsk && context.mounted) {
+      willAsk = await textDialogBuilder(
+          context: context,
+          text: "Please disable battery optimizations to allow the "
+              "app to run in the background. This permission can "
+              "also be set later in the app's settings.",
+          okayText: "Continue",
+          cancellable: true);
+    } else {
+      willAsk = false;
+    }
+  } else {
+    willAsk = false;
+  }
+  if (willAsk && context.mounted) {
+    cubit.requestPermission();
   }
 }
