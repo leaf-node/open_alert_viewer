@@ -125,6 +125,7 @@ Future<void> requestBatteryPermission(
   final cubit = context.read<BatteryPermissionCubit>();
   bool shouldAsk = !settings.batteryPermissionRequested || askAgain;
   bool willAsk;
+  await cubit.refreshState();
   if (Platform.isAndroid && !cubit.state.value.active) {
     if (shouldAsk && context.mounted) {
       willAsk = await textDialogBuilder(

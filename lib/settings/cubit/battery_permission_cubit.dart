@@ -13,19 +13,19 @@ part 'battery_permission_state.dart';
 
 class BatteryPermissionCubit extends Cubit<BatteryPermissionState> {
   BatteryPermissionCubit(this.repo) : super(BatteryPermissionState.init()) {
-    emitLatestState();
+    refreshState();
   }
 
   final BatteryPermissionRepo repo;
 
-  Future<void> emitLatestState() async {
+  Future<void> refreshState() async {
     emit(BatteryPermissionState(await BatteryPermissionRepo.getStatus()));
   }
 
   void requestPermission() async {
     if (!(state.value.active)) {
       await repo.requestBatteryPermission();
-      await emitLatestState();
+      await refreshState();
     }
   }
 }
