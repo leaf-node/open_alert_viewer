@@ -14,6 +14,8 @@ final class OpenSettingsPageEvent implements NavEvent {}
 
 final class OpenGeneralSettingsPageEvent implements NavEvent {}
 
+final class OpenAboutPageEvent implements NavEvent {}
+
 final class OpenAccountSettingsPageEvent implements NavEvent {
   OpenAccountSettingsPageEvent({required this.source});
 

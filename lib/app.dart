@@ -24,6 +24,7 @@ import 'settings/bloc/settings_bloc.dart';
 import 'settings/cubit/battery_permission_cubit.dart';
 import 'settings/data_repository/account_repository.dart';
 import 'settings/data_repository/battery_repository.dart';
+import 'settings/view/about_page.dart';
 import 'settings/view/licensing_page.dart';
 import 'settings/view/privacy_page.dart';
 import 'settings/view/settings_account.dart';
@@ -126,6 +127,8 @@ class _OAVappViewState extends State<OAVappView> {
                   case ShowGeneralSettingsPage():
                     _navigator.push(GeneralSettingsPage.route(
                         title: "OAV General Settings"));
+                  case ShowAboutPage():
+                    _navigator.push(AboutPage.route(title: "About OAV"));
                   case ShowAccountSettingsPage():
                     _navigator.push(AccountSettingsPage.route(
                         title: "OAV Account Settings", source: state.source));

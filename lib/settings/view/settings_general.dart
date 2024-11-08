@@ -4,19 +4,15 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:app_settings/app_settings.dart';
 
 import '../../alerts/bloc/refresh_bloc.dart';
 import '../../alerts/model/alerts.dart';
 import '../../app/view/app_view_elements.dart';
-import '../../navigation/bloc/navigation_bloc.dart';
-import '../../navigation/bloc/navigation_event.dart';
 import '../../app/data_repository/settings_repository.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import '../bloc/settings_bloc.dart';
@@ -254,42 +250,6 @@ class GeneralSettingsList extends StatelessWidget {
                       context: context, askAgain: true);
                 });
           }),
-        MenuItem(
-            icon: Icons.article_outlined,
-            title: "App and License Info",
-            onTap: () async {
-              context.read<NavBloc>().add(OpenLicensingPageEvent());
-            }),
-        MenuItem(
-            icon: Icons.person_search_outlined,
-            title: "Privacy Policy",
-            onTap: () async {
-              context.read<NavBloc>().add(OpenPrivacyPageEvent());
-            }),
-        MenuItem(
-            icon: Icons.support_outlined,
-            title: "Online Support",
-            onTap: () async {
-              var link = "https://github.com/okcode-studio/open_alert_viewer";
-              try {
-                var uri = Uri.parse(link);
-                await launchUrl(uri);
-              } catch (e) {
-                log("Error launching URL: $link");
-              }
-            }),
-        MenuItem(
-            icon: Icons.volunteer_activism_outlined,
-            title: "Donate",
-            onTap: () async {
-              var link = "https://buymeacoffee.com/okcode.studio";
-              try {
-                var uri = Uri.parse(link);
-                await launchUrl(uri);
-              } catch (e) {
-                log("Error launching URL: $link");
-              }
-            }),
       ]);
     });
   }

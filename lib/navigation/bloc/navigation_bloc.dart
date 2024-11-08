@@ -13,6 +13,7 @@ class NavBloc extends Bloc<NavEvent, NavState> {
     on<OpenAlertsPageEvent>(_openAlertsPage);
     on<OpenSettingsPageEvent>(_openSettingsPage);
     on<OpenGeneralSettingsPageEvent>(_openGeneralSettingsPage);
+    on<OpenAboutPageEvent>(_openAboutPage);
     on<OpenAccountSettingsPageEvent>(_openAccountSettingsPage);
     on<OpenLicensingPageEvent>(_openLicensingPage);
     on<OpenPrivacyPageEvent>(_openPrivacyPage);
@@ -29,6 +30,10 @@ class NavBloc extends Bloc<NavEvent, NavState> {
   void _openGeneralSettingsPage(
       OpenGeneralSettingsPageEvent event, Emitter<NavState> emit) {
     emit(ShowGeneralSettingsPage());
+  }
+
+  void _openAboutPage(OpenAboutPageEvent event, Emitter<NavState> emit) {
+    emit(ShowAboutPage());
   }
 
   void _openAccountSettingsPage(

@@ -58,6 +58,10 @@ class SettingsList extends StatelessWidget {
             title: "General Settings",
             onTap: () =>
                 context.read<NavBloc>().add(OpenGeneralSettingsPageEvent())),
+        MenuItem(
+            icon: Icons.info_outline,
+            title: "About App",
+            onTap: () => context.read<NavBloc>().add(OpenAboutPageEvent())),
         const MenuHeaderTile(title: "Accounts"),
         for (AlertSource account in state.sources)
           MenuItem(

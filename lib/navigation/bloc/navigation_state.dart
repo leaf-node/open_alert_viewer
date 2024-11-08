@@ -18,6 +18,10 @@ final class ShowSettingsPage extends NavState {
   ShowSettingsPage();
 }
 
+final class ShowAboutPage extends NavState {
+  ShowAboutPage();
+}
+
 final class ShowGeneralSettingsPage extends NavState {
   ShowGeneralSettingsPage();
 }
