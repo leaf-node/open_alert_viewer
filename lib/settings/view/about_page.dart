@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../app/data_repository/settings_repository.dart';
 import '../../navigation/bloc/navigation_bloc.dart';
 import '../../navigation/bloc/navigation_event.dart';
 import 'settings_components.dart';
@@ -72,6 +73,12 @@ class AboutList extends StatelessWidget {
               log("Error launching URL: $link");
             }
           }),
+      MenuItem(
+        icon: Icons.info_outline,
+        title: "Open Alert Viewer version",
+        subtitle: SettingsRepo.appVersion,
+        onTap: () {},
+      )
     ]);
   }
 }

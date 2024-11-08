@@ -1,4 +1,7 @@
 
+Open Alert Viewer
+=================
+
 Open Alert Viewer is libre / open source software, meaning that it respects
 your freedom to run, study, change and share the code.
 

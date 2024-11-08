@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../app/data_repository/settings_repository.dart';
 import 'settings_components.dart';
 
 class LicensingPage extends StatelessWidget {
@@ -63,8 +62,7 @@ class _LicensingInfoState extends State<LicensingInfo> {
           return Padding(
               padding: const EdgeInsets.all(15),
               child: Markdown(
-                  data: "# Open Alert Viewer\n\nversion: "
-                      "${SettingsRepo.appVersion}\n$_text",
+                  data: _text,
                   onTapLink: (_, href, __) async {
                     try {
                       var uri = Uri.parse(href ?? "");
