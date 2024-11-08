@@ -27,6 +27,7 @@ import 'settings/data_repository/battery_repository.dart';
 import 'settings/view/licensing_page.dart';
 import 'settings/view/privacy_page.dart';
 import 'settings/view/settings_account.dart';
+import 'settings/view/settings_general.dart';
 import 'settings/view/settings_page.dart';
 
 class OAVapp extends StatelessWidget {
