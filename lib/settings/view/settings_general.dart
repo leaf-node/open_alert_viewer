@@ -126,13 +126,24 @@ class GeneralSettingsList extends StatelessWidget {
                   text: "Refresh Interval",
                   priorSetting: settings.refreshInterval,
                   valueListBuilder: listRefreshFrequencies);
-              if (result != null) {
-                settingsBloc.add(SettingsPushEvent(
-                    newSettings: {"refreshInterval": result}));
-              }
-              if (result == -1) {
-                settingsBloc.add(SettingsPushEvent(
-                    newSettings: {"notificationsEnabled": false}));
+              if (context.mounted) {
+                if (result == -1) {
+                  context
+                      .read<NotificationBloc>()
+                      .add(DisableNotificationsEvent());
+                  settingsBloc.add(SettingsPushEvent(
+                      newSettings: {"notificationsEnabled": false}));
+                } else if (result != null) {
+                  context
+                      .read<NotificationBloc>()
+                      .add(EnableNotificationsEvent());
+                  settingsBloc.add(SettingsPushEvent(
+                      newSettings: {"notificationsEnabled": true}));
+                }
+                if (result != null) {
+                  settingsBloc.add(SettingsPushEvent(
+                      newSettings: {"refreshInterval": result}));
+                }
               }
             }),
         MenuItem(

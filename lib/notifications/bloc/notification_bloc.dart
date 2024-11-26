@@ -26,6 +26,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     on<RequestAndEnableNotificationEvent>(_requestAndEnableNotifications,
         transformer: droppable());
     on<DisableNotificationsEvent>(_disableNotifications);
+    on<EnableNotificationsEvent>(_enableNotifications);
     on<ToggleSounds>(_toggleIntegratedAlertSounds);
     on<ListenForNotificationEvents>(_listenForNotificationEvents);
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -55,6 +56,13 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     await _bgWorker.makeRequest(
         const IsolateMessage(name: MessageName.disableNotifications));
     emit(NotificationsDisabled());
+  }
+
+  void _enableNotifications(
+      EnableNotificationsEvent event, Emitter<NotificationState> emit) async {
+    await _bgWorker.makeRequest(
+        const IsolateMessage(name: MessageName.enableNotifications));
+    emit(NotificationsEnabled());
   }
 
   void _toggleIntegratedAlertSounds(

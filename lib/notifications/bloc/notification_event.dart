@@ -22,6 +22,10 @@ final class DisableNotificationsEvent extends NotificationEvent {
   DisableNotificationsEvent();
 }
 
+final class EnableNotificationsEvent extends NotificationEvent {
+  EnableNotificationsEvent();
+}
+
 final class ToggleSounds extends NotificationEvent {
   ToggleSounds();
 }
