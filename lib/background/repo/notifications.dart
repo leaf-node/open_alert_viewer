@@ -200,6 +200,35 @@ class NotificationRepo {
         });
   }
 
+  Future<void> updateAnroidStickyNotification() async {
+    if (!Platform.isAndroid ||
+        !_settings.notificationsEnabled ||
+        _settings.refreshInterval == -1) {
+      return;
+    }
+    var activeAlerts = await _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.getActiveNotifications();
+    if (activeAlerts
+            ?.where((alert) => alert.id == stickyNotificationId)
+            .isEmpty ??
+        true) {
+      startAnroidStickyNotification();
+      return;
+    }
+    var duration = Util.prettyPrintDuration(
+        duration: Duration(seconds: _settings.refreshInterval),
+        longForm: true,
+        stripLeadingOne: true);
+    await _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.show(stickyNotificationId, stickyNotificationTitle,
+            "$stickyNotificationContentStart $duration",
+            notificationDetails: _stickyAndroidNotificationDetails);
+  }
+
   Future<void> disableNotifications() async {
     if (Platform.isAndroid) {
       await _flutterLocalNotificationsPlugin
