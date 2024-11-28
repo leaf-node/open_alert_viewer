@@ -36,18 +36,13 @@
             android:exported="false"
             android:stopWithTask="false"
             android:foregroundServiceType="dataSync" />
-        <service
-            android:name="com.flux.flutter_boot_receiver.BootHandlerService"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
         <receiver
+            android:name=".BootReceiver"
             android:enabled="true"
             android:exported="true"
-            android:name="com.flux.flutter_boot_receiver.BootBroadcastReceiver"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
     </application>

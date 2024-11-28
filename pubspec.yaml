@@ -46,10 +46,6 @@ dependencies:
   url_launcher: ^6.3.1
   app_settings: ^5.1.1
   audioplayers: ^6.1.0
-  flutter_boot_receiver:
-    git:
-      url: https://github.com/leaf-node/flutter_boot_receiver
-      ref: gradle-8-changes
   http: ^1.2.2
   yaml: ^3.1.2
   flutter_markdown: ^0.7.4+1
