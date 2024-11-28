@@ -14,14 +14,31 @@ import 'app.dart';
 import 'app/data_source/database.dart';
 import 'background/background.dart';
 
+LocalDatabase? db;
+BackgroundWorker? bgWorker;
+
 Future<void> main() async {
+  startBackground();
+  startForeground();
+}
+
+Future<void> startBackground() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var db = LocalDatabase();
-  await db.migrate(showPath: true);
-  var bgWorker = BackgroundWorker();
-  String appVersion = await getVersion();
-  await bgWorker.spawn(appVersion: appVersion);
-  runApp(OAVapp(appVersion: appVersion, db: db, bgWorker: bgWorker));
+  if (db == null) {
+    db = LocalDatabase();
+    await db!.migrate(showPath: true);
+  }
+  if (bgWorker == null) {
+    bgWorker = BackgroundWorker();
+    await bgWorker!.spawn(appVersion: await getVersion());
+  }
+}
+
+Future<void> startForeground() async {
+  while (bgWorker == null || db == null) {
+    await Future.delayed(Duration(milliseconds: 100));
+  }
+  runApp(OAVapp(appVersion: await getVersion(), db: db!, bgWorker: bgWorker!));
 }
 
 Future<String> getVersion() async {
