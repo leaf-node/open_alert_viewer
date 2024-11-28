@@ -195,6 +195,7 @@ class NotificationRepo {
         ?.startForegroundService(stickyNotificationId, stickyNotificationTitle,
             "$stickyNotificationContentStart $duration",
             notificationDetails: _stickyAndroidNotificationDetails,
+            startType: AndroidServiceStartType.startRedeliverIntent,
             foregroundServiceTypes: {
           AndroidServiceForegroundType.foregroundServiceTypeDataSync
         });
