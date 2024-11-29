@@ -175,14 +175,7 @@ class NotificationRepo {
         _settings.refreshInterval == -1) {
       return;
     }
-    var activeAlerts = await _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.getActiveNotifications();
-    if (activeAlerts
-            ?.where((alert) => alert.id == stickyNotificationId)
-            .isNotEmpty ??
-        false) {
+    if (await _stickyAlreadyExists()) {
       return;
     }
     var duration = Util.prettyPrintDuration(
@@ -207,14 +200,7 @@ class NotificationRepo {
         _settings.refreshInterval == -1) {
       return;
     }
-    var activeAlerts = await _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.getActiveNotifications();
-    if (activeAlerts
-            ?.where((alert) => alert.id == stickyNotificationId)
-            .isEmpty ??
-        true) {
+    if (!(await _stickyAlreadyExists())) {
       startAnroidStickyNotification();
       return;
     }
@@ -228,6 +214,18 @@ class NotificationRepo {
         ?.show(stickyNotificationId, stickyNotificationTitle,
             "$stickyNotificationContentStart $duration",
             notificationDetails: _stickyAndroidNotificationDetails);
+  }
+
+  Future<bool> _stickyAlreadyExists() async {
+    var activeAlerts = await _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.getActiveNotifications();
+    final exists = activeAlerts
+            ?.where((alert) => alert.id == stickyNotificationId)
+            .isNotEmpty ??
+        false;
+    return exists;
   }
 
   Future<void> disableNotifications() async {
