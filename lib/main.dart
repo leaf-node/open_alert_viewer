@@ -18,8 +18,8 @@ LocalDatabase? db;
 BackgroundWorker? bgWorker;
 
 Future<void> main() async {
-  startBackground();
-  startForeground();
+  await startBackground();
+  await startForeground();
 }
 
 Future<void> startBackground() async {
