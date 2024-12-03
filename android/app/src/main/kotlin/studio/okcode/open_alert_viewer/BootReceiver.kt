@@ -12,7 +12,11 @@ import android.content.Intent
 
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context : Context, intent : Intent) {
-        if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
+        if (intent.action.equals("android.intent.action.BOOT_COMPLETED") ||
+            intent.action.equals("android.intent.action.QUICKBOOT_POWERON") ||
+            intent.action.equals("com.htc.intent.action.QUICKBOOT_POWERON") ||
+            intent.action.equals("android.intent.action.ACTION_MY_PACKAGE_REPLACED")) {
+
             StartFlutterOnce(context, true)
         }
     }
