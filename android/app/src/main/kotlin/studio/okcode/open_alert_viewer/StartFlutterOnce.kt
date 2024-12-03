@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Open Alert Viewer authors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
 package studio.okcode.open_alert_viewer
 
 import android.content.Context
