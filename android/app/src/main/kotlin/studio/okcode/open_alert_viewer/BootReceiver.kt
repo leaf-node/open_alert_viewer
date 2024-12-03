@@ -15,7 +15,7 @@ class BootReceiver : BroadcastReceiver() {
         if (intent.action.equals("android.intent.action.BOOT_COMPLETED") ||
             intent.action.equals("android.intent.action.QUICKBOOT_POWERON") ||
             intent.action.equals("com.htc.intent.action.QUICKBOOT_POWERON") ||
-            intent.action.equals("android.intent.action.ACTION_MY_PACKAGE_REPLACED")) {
+            intent.action.equals("android.intent.action.MY_PACKAGE_REPLACED")) {
 
             StartFlutterOnce(context, true)
         }
