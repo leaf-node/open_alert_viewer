@@ -170,7 +170,8 @@ class SourcesRepo with NetworkFetch {
         var trimmedBaseURL =
             sourceData.baseURL.replaceFirst(RegExp(trimRegex), "");
         var response = await networkFetch(trimmedBaseURL, sourceData.username,
-            sourceData.password, apiEndpoint);
+            sourceData.password, apiEndpoint,
+            maxTimeout: 5);
         if (response.statusCode == 200) {
           sourceData.type = sourceType.value;
           sourceData.baseURL = trimmedBaseURL;

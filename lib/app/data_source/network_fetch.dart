@@ -15,9 +15,10 @@ import '../data_repository/settings_repository.dart';
 mixin NetworkFetch {
   Future<http.Response> networkFetch(
       String baseURL, String username, String password, String restOfURL,
-      [String? postBody,
+      {String? postBody,
       bool? authOverride,
-      Map<String, String>? headers]) async {
+      Map<String, String>? headers,
+      int? maxTimeout}) async {
     Map<String, String> collectedHeaders = {
       "User-Agent": "open_alert_viewer/${SettingsRepo.appVersion}"
     };
@@ -48,9 +49,12 @@ mixin NetworkFetch {
     } else {
       query = http.post(parsedURI, headers: collectedHeaders, body: postBody);
     }
-    var response = await query
-        .timeout(Duration(seconds: BackgroundWorker.settings.syncTimeout),
-            onTimeout: () {
+    var timeout = BackgroundWorker.settings.syncTimeout;
+    if (maxTimeout != null) {
+      timeout = (timeout > maxTimeout) ? maxTimeout : timeout;
+    }
+    var response =
+        await query.timeout(Duration(seconds: timeout), onTimeout: () {
       return http.Response("408 Client Timeout", 408,
           reasonPhrase: "Client Timeout");
     });
