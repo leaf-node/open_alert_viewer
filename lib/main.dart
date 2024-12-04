@@ -5,6 +5,7 @@
  */
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,8 @@ import 'package:yaml/yaml.dart';
 import 'app.dart';
 import 'app/data_source/database.dart';
 import 'background/background.dart';
+import 'background/background_desktop.dart';
+import 'background/background_mobile.dart';
 
 LocalDatabase? db;
 BackgroundWorker? bgWorker;
@@ -29,7 +32,11 @@ Future<void> startBackground() async {
     await db!.migrate(showPath: true);
   }
   if (bgWorker == null) {
-    bgWorker = BackgroundWorker();
+    if (Platform.isAndroid) {
+      bgWorker = BackgroundMobile();
+    } else {
+      bgWorker = BackgroundDesktop();
+    }
     await bgWorker!.spawn(appVersion: await getVersion());
   }
 }
