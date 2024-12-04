@@ -12,6 +12,7 @@ import io.flutter.embedding.engine.FlutterEngine
 
 class MainActivity: FlutterActivity() {
     override fun provideFlutterEngine(context: Context): FlutterEngine {
-        return StartFlutterOnce(context, false).flutterEngine
+        val engine = StartFlutterOnce(context, false)
+        return engine.getFlutterEngine()
     }
 }

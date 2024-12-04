@@ -15,7 +15,7 @@ import io.flutter.embedding.engine.dart.DartExecutor
 class StartFlutterOnce (context: Context, backgroundOnly: Boolean) {
     private val bgEngineName: String = "single_bg_engine"
     private val fgEngineName: String = "single_fg_engine"
-    lateinit var flutterEngine: FlutterEngine
+    lateinit private var flutterEngine: FlutterEngine
     init {
         val engineName: String
         if (backgroundOnly) {
@@ -30,5 +30,8 @@ class StartFlutterOnce (context: Context, backgroundOnly: Boolean) {
             flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
             FlutterEngineCache.getInstance().put(engineName, flutterEngine)
         }
+    }
+    fun getFlutterEngine() : FlutterEngine {
+        return flutterEngine
     }
 }
