@@ -87,7 +87,15 @@ class SourcesRepo with NetworkFetch {
     }
   }
 
-  Future<AlertSourceData> getSourceType(
+  Future<void> confirmSource(IsolateMessage message) async {
+    var result = await _getSourceType(sourceData: message.sourceData!);
+    _outboundStream.add(IsolateMessage(
+        name: MessageName.confirmSourcesReply,
+        destination: MessageDestination.accountSettings,
+        sourceData: result));
+  }
+
+  Future<AlertSourceData> _getSourceType(
       {required AlertSourceData sourceData}) async {
     if ((sourceData.type == SourceTypes.demo.value ||
             sourceData.type == SourceTypes.autodetect.value) &&

@@ -171,7 +171,7 @@ class BackgroundChannelReceiver with BackgroundTranslator {
       } else if (message.name == MessageName.refreshTimer) {
         _alertsRepo.refreshTimer();
       } else if (message.name == MessageName.confirmSources) {
-        _confirmSource(_outboundStream, message);
+        _sourcesRepo.confirmSource(message);
       } else if (message.name == MessageName.addSource) {
         _sourcesRepo.addSource(sourceData: message.sourceData!);
       } else if (message.name == MessageName.updateSource) {
@@ -193,15 +193,5 @@ class BackgroundChannelReceiver with BackgroundTranslator {
     } else {
       throw Exception("Invalid message type: $message");
     }
-  }
-
-  Future<void> _confirmSource(
-      StreamController<IsolateMessage> stream, IsolateMessage message) async {
-    var result =
-        await _sourcesRepo.getSourceType(sourceData: message.sourceData!);
-    stream.add(IsolateMessage(
-        name: MessageName.confirmSourcesReply,
-        destination: MessageDestination.accountSettings,
-        sourceData: result));
   }
 }
