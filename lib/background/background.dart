@@ -9,6 +9,10 @@ import 'dart:isolate';
 
 import '../alerts/model/alerts.dart';
 import '../app/data_repository/settings_repository.dart';
+import '../app/data_source/database.dart';
+import 'repo/alerts.dart';
+import 'repo/notifications.dart';
+import 'repo/sources.dart';
 
 enum MessageName {
   alertsInit,
@@ -127,5 +131,77 @@ class BackgroundChannelResponse with BackgroundTranslator {
     } else {
       throw Exception("Invalid message type: $message");
     }
+  }
+}
+
+class BackgroundChannelReceiver with BackgroundTranslator {
+  late LocalDatabase _db;
+  late SettingsRepo _settings;
+  late SourcesRepo _sourcesRepo;
+  late AlertsRepo _alertsRepo;
+  late NotificationRepo _notifier;
+  late StreamController<IsolateMessage> _outboundStream;
+
+  Future<StreamController<IsolateMessage>> init(String appVersion) async {
+    _db = LocalDatabase();
+    await _db.open();
+    SettingsRepo.appVersion = appVersion;
+    _settings = SettingsRepo(db: _db);
+    BackgroundChannel.settings = _settings;
+    _notifier = NotificationRepo(settings: _settings);
+    await _notifier.initializeAlertNotifications();
+    await _notifier.startAnroidStickyNotification();
+    _outboundStream = StreamController<IsolateMessage>();
+    _sourcesRepo = SourcesRepo(
+        db: _db, outboundStream: _outboundStream, settings: _settings);
+    _alertsRepo = AlertsRepo(
+        db: _db,
+        settings: _settings,
+        sourcesRepo: _sourcesRepo,
+        notifier: _notifier);
+    _alertsRepo.init(_outboundStream);
+    return _outboundStream;
+  }
+
+  void handleRequestsToBackground(dynamic message) async {
+    if (message is IsolateMessage) {
+      if (message.name == MessageName.fetchAlerts) {
+        _alertsRepo.fetchAlerts(
+            forceRefreshNow: message.forceRefreshNow ?? false);
+      } else if (message.name == MessageName.refreshTimer) {
+        _alertsRepo.refreshTimer();
+      } else if (message.name == MessageName.confirmSources) {
+        _confirmSource(_outboundStream, message);
+      } else if (message.name == MessageName.addSource) {
+        _sourcesRepo.addSource(sourceData: message.sourceData!);
+      } else if (message.name == MessageName.updateSource) {
+        _sourcesRepo.updateSource(
+            sourceData: message.sourceData!, updateUIandRefresh: true);
+      } else if (message.name == MessageName.removeSource) {
+        _sourcesRepo.removeSource(id: message.id!);
+      } else if (message.name == MessageName.updateLastSeen) {
+        _sourcesRepo.updateLastSeen();
+      } else if (message.name == MessageName.enableNotifications) {
+        _notifier.startAnroidStickyNotification();
+      } else if (message.name == MessageName.disableNotifications) {
+        _notifier.disableNotifications();
+      } else if (message.name == MessageName.toggleSounds) {
+        _notifier.updateAlertDetails();
+      } else {
+        throw Exception("Invalid message name: $message");
+      }
+    } else {
+      throw Exception("Invalid message type: $message");
+    }
+  }
+
+  Future<void> _confirmSource(
+      StreamController<IsolateMessage> stream, IsolateMessage message) async {
+    var result =
+        await _sourcesRepo.getSourceType(sourceData: message.sourceData!);
+    stream.add(IsolateMessage(
+        name: MessageName.confirmSourcesReply,
+        destination: MessageDestination.accountSettings,
+        sourceData: result));
   }
 }
