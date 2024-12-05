@@ -5,7 +5,10 @@
  */
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:isolate';
+
+import 'package:json_annotation/json_annotation.dart';
 
 import '../alerts/model/alerts.dart';
 import '../app/data_repository/settings_repository.dart';
@@ -13,6 +16,8 @@ import '../app/data_source/database.dart';
 import 'repo/alerts.dart';
 import 'repo/notifications.dart';
 import 'repo/sources.dart';
+
+part 'background.g.dart';
 
 enum MessageName {
   alertsInit,
@@ -42,6 +47,7 @@ enum MessageDestination {
   accountSettings,
 }
 
+@JsonSerializable(explicitToJson: true)
 class IsolateMessage {
   const IsolateMessage(
       {required this.name,
@@ -60,6 +66,11 @@ class IsolateMessage {
   final List<AlertSource>? sources;
   final bool? forceRefreshNow;
   final bool? alreadyFetching;
+
+  factory IsolateMessage.fromJson(Map<String, dynamic> json) =>
+      _$IsolateMessageFromJson(json);
+
+  Map<String, dynamic> toJson() => _$IsolateMessageToJson(this);
 }
 
 abstract class BackgroundChannel {
@@ -71,12 +82,13 @@ abstract class BackgroundChannel {
 }
 
 mixin BackgroundTranslator {
-  String serializeMessage(IsolateMessage message) {
-    return '{name: "fetchAlerts"}';
+  String serialize(IsolateMessage message) {
+    return jsonEncode(message);
   }
 
-  IsolateMessage deserializeToMessage(String message) {
-    return IsolateMessage(name: MessageName.fetchAlerts);
+  IsolateMessage deserialize(String message) {
+    final messageMap = jsonDecode(message) as Map<String, dynamic>;
+    return IsolateMessage.fromJson(messageMap);
   }
 }
 
@@ -91,13 +103,15 @@ class BackgroundChannelExternal with BackgroundTranslator {
   final Completer<void> isolateReady = Completer.sync();
   late SendPort sendPort;
 
-  void handleResponsesFromBackground(dynamic message) {
-    if (message is SendPort) {
-      sendPort = message;
+  void handleResponsesFromBackground(dynamic rawMessage) {
+    IsolateMessage message;
+    if (rawMessage is SendPort) {
+      sendPort = rawMessage;
       isolateReady.complete();
-    } else if (message is IsolateMessage) {
+    } else if (rawMessage is String) {
+      message = deserialize(rawMessage);
       isolateStreams[message.destination]!.add(message);
-    } else if (message is List<dynamic>) {
+    } else if (rawMessage is List<dynamic>) {
       isolateStreams[MessageDestination.alerts]!
           .add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
         const Alert(
@@ -121,7 +135,7 @@ class BackgroundChannelExternal with BackgroundTranslator {
             kind: AlertType.syncFailure,
             hostname: "Open Alert Viewer version ${SettingsRepo.appVersion}",
             service: "Stack Trace",
-            message: message.toString(),
+            message: rawMessage.toString(),
             url: "https://github.com/okcode-studio/open_alert_viewer/issues",
             age: Duration.zero,
             silenced: false,
@@ -129,7 +143,7 @@ class BackgroundChannelExternal with BackgroundTranslator {
             active: true),
       ]));
     } else {
-      throw Exception("Invalid message type: $message");
+      throw Exception("Invalid message type: $rawMessage");
     }
   }
 }
@@ -169,8 +183,9 @@ class BackgroundChannelInternal with BackgroundTranslator {
     });
   }
 
-  void handleRequestsToBackground(dynamic message) async {
-    if (message is IsolateMessage) {
+  void handleRequestsToBackground(dynamic rawMessage) async {
+    if (rawMessage is String) {
+      final message = deserialize(rawMessage);
       if (message.name == MessageName.fetchAlerts) {
         _alertsRepo.fetchAlerts(
             forceRefreshNow: message.forceRefreshNow ?? false);
@@ -197,7 +212,7 @@ class BackgroundChannelInternal with BackgroundTranslator {
         throw Exception("Invalid message name: $message");
       }
     } else {
-      throw Exception("Invalid message type: $message");
+      throw Exception("Invalid message type: $rawMessage");
     }
   }
 }

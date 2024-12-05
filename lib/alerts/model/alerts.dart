@@ -8,8 +8,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import '../../app/data_source/network_fetch.dart';
+
+part 'alerts.g.dart';
 
 enum AlertType {
   okay(name: "Okay"),
@@ -28,6 +31,7 @@ enum AlertType {
   final String name;
 }
 
+@JsonSerializable()
 class Alert {
   const Alert(
       {required this.source,
@@ -51,8 +55,13 @@ class Alert {
   final bool downtimeScheduled;
   final bool silenced;
   final bool active;
+
+  factory Alert.fromJson(Map<String, dynamic> json) => _$AlertFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AlertToJson(this);
 }
 
+@JsonSerializable()
 class AlertSourceData {
   AlertSourceData({
     required this.id,
@@ -87,6 +96,11 @@ class AlertSourceData {
   bool? isValid;
   String accessToken;
   int? serial;
+
+  factory AlertSourceData.fromJson(Map<String, dynamic> json) =>
+      _$AlertSourceDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AlertSourceDataToJson(this);
 
   AlertSourceData copy() {
     return AlertSourceData(
@@ -141,12 +155,20 @@ enum SourceTypes {
   final int value;
 }
 
-abstract class AlertSource with NetworkFetch {
+@JsonSerializable()
+class AlertSource with NetworkFetch {
   const AlertSource({required this.sourceData});
 
   final AlertSourceData sourceData;
 
-  Future<List<Alert>> fetchAlerts();
+  factory AlertSource.fromJson(Map<String, dynamic> json) =>
+      _$AlertSourceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AlertSourceToJson(this);
+
+  Future<List<Alert>> fetchAlerts() async {
+    return [];
+  }
 
   List<Alert> alertForInvalidSource(AlertSourceData sourceData) {
     final error = sourceData.errorMessage;

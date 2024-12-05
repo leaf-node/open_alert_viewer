@@ -25,7 +25,7 @@ class BackgroundDesktop extends BackgroundChannelExternal
   @override
   Future<void> makeRequest(IsolateMessage message) async {
     await isolateReady.future;
-    sendPort.send(message);
+    sendPort.send(serialize(message));
   }
 }
 
@@ -38,7 +38,7 @@ class BackgroundIsolate extends BackgroundChannelInternal {
     final receivePort = ReceivePort();
     port.send(receivePort.sendPort);
     BackgroundIsolateBinaryMessenger.ensureInitialized(token);
-    await init(appVersion, port.send);
+    await init(appVersion, (message) => port.send(serialize(message)));
     receivePort.listen(handleRequestsToBackground);
   }
 }
