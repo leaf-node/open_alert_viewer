@@ -11,7 +11,7 @@ import 'package:flutter/services.dart';
 
 import 'background.dart';
 
-class BackgroundDesktop extends BackgroundChannelResponse
+class BackgroundDesktop extends BackgroundChannelExternal
     implements BackgroundChannel {
   @override
   Future<void> spawn({required String appVersion}) async {
@@ -29,7 +29,7 @@ class BackgroundDesktop extends BackgroundChannelResponse
   }
 }
 
-class BackgroundIsolate extends BackgroundChannelReceiver {
+class BackgroundIsolate extends BackgroundChannelInternal {
   Future<void> spawned((SendPort, RootIsolateToken?, String) initArgs) async {
     SendPort port;
     RootIsolateToken token;
@@ -38,14 +38,7 @@ class BackgroundIsolate extends BackgroundChannelReceiver {
     final receivePort = ReceivePort();
     port.send(receivePort.sendPort);
     BackgroundIsolateBinaryMessenger.ensureInitialized(token);
-    StreamController<IsolateMessage> outboundStream = await init(appVersion);
-    outboundStream.stream.listen((event) {
-      if (event.destination == null) {
-        throw Exception(
-            "Background worker sending message without destination");
-      }
-      port.send(event);
-    });
+    await init(appVersion, port.send);
     receivePort.listen(handleRequestsToBackground);
   }
 }

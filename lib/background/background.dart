@@ -80,8 +80,8 @@ mixin BackgroundTranslator {
   }
 }
 
-class BackgroundChannelResponse with BackgroundTranslator {
-  BackgroundChannelResponse() {
+class BackgroundChannelExternal with BackgroundTranslator {
+  BackgroundChannelExternal() {
     for (var destination in MessageDestination.values) {
       isolateStreams[destination] = StreamController<IsolateMessage>();
     }
@@ -134,7 +134,7 @@ class BackgroundChannelResponse with BackgroundTranslator {
   }
 }
 
-class BackgroundChannelReceiver with BackgroundTranslator {
+class BackgroundChannelInternal with BackgroundTranslator {
   late LocalDatabase _db;
   late SettingsRepo _settings;
   late SourcesRepo _sourcesRepo;
@@ -142,7 +142,7 @@ class BackgroundChannelReceiver with BackgroundTranslator {
   late NotificationRepo _notifier;
   late StreamController<IsolateMessage> _outboundStream;
 
-  Future<StreamController<IsolateMessage>> init(String appVersion) async {
+  Future<void> init(String appVersion, Function(IsolateMessage) sender) async {
     _db = LocalDatabase();
     await _db.open();
     SettingsRepo.appVersion = appVersion;
@@ -160,7 +160,13 @@ class BackgroundChannelReceiver with BackgroundTranslator {
         sourcesRepo: _sourcesRepo,
         notifier: _notifier);
     _alertsRepo.init(_outboundStream);
-    return _outboundStream;
+    _outboundStream.stream.listen((event) {
+      if (event.destination == null) {
+        throw Exception(
+            "Background worker sending message without destination");
+      }
+      sender(event);
+    });
   }
 
   void handleRequestsToBackground(dynamic message) async {
