@@ -15,8 +15,8 @@ part 'account_event.dart';
 part 'account_state.dart';
 
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
-  AccountBloc({required BackgroundWorker bgWorker})
-      : _bgWorker = bgWorker,
+  AccountBloc({required BackgroundChannel bgChannel})
+      : _bgChannel = bgChannel,
         accountCheckSerial = -1,
         random = Random(DateTime.now().microsecondsSinceEpoch),
         lastNeedsCheck = true,
@@ -32,7 +32,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     add(ListenForAccountConfirmations());
   }
 
-  final BackgroundWorker _bgWorker;
+  final BackgroundChannel _bgChannel;
   int accountCheckSerial;
   Random random;
   bool lastNeedsCheck;
@@ -57,14 +57,14 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
           checkingNow: true,
           responded: false));
       event.sourceData.serial = accountCheckSerial = _genRandom();
-      _bgWorker.makeRequest(IsolateMessage(
+      _bgChannel.makeRequest(IsolateMessage(
           name: MessageName.confirmSources, sourceData: event.sourceData));
     }
   }
 
   Future<void> _listenForConfirmations(
       ListenForAccountConfirmations event, Emitter<AccountState> emit) async {
-    await for (final message in _bgWorker
+    await for (final message in _bgChannel
         .isolateStreams[MessageDestination.accountSettings]!.stream) {
       if (message.name == MessageName.confirmSourcesReply) {
         if (message.sourceData!.serial == accountCheckSerial &&

@@ -58,7 +58,7 @@ class IsolateMessage {
   final bool? alreadyFetching;
 }
 
-abstract class BackgroundWorker {
+abstract class BackgroundChannel {
   Future<void> spawn({required String appVersion});
   Future<void> makeRequest(IsolateMessage message);
   final Map<MessageDestination, StreamController<IsolateMessage>>
@@ -76,8 +76,8 @@ mixin BackgroundTranslator {
   }
 }
 
-class BackgroundChannel with BackgroundTranslator {
-  BackgroundChannel() {
+class BackgroundChannelResponse with BackgroundTranslator {
+  BackgroundChannelResponse() {
     for (var destination in MessageDestination.values) {
       isolateStreams[destination] = StreamController<IsolateMessage>();
     }

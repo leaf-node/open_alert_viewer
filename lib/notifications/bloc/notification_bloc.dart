@@ -19,9 +19,9 @@ part 'notification_state.dart';
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   NotificationBloc(
       {required StickyNotificationRepo notificationRepo,
-      required BackgroundWorker bgWorker})
+      required BackgroundChannel bgChannel})
       : _notificationRepo = notificationRepo,
-        _bgWorker = bgWorker,
+        _bgChannel = bgChannel,
         super(NotificationInitial()) {
     on<RequestAndEnableNotificationEvent>(_requestAndEnableNotifications,
         transformer: droppable());
@@ -36,7 +36,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   }
 
   final StickyNotificationRepo _notificationRepo;
-  final BackgroundWorker _bgWorker;
+  final BackgroundChannel _bgChannel;
   late AudioPlayer? player;
 
   Future<void> _requestAndEnableNotifications(
@@ -45,7 +45,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     var enabled = await _notificationRepo.requestAndEnableNotifications(
         askAgain: event.askAgain, callback: event.callback);
     if (enabled) {
-      await _bgWorker.makeRequest(
+      await _bgChannel.makeRequest(
           const IsolateMessage(name: MessageName.enableNotifications));
       emit(NotificationsEnabled());
     }
@@ -53,21 +53,21 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   void _disableNotifications(
       DisableNotificationsEvent event, Emitter<NotificationState> emit) async {
-    await _bgWorker.makeRequest(
+    await _bgChannel.makeRequest(
         const IsolateMessage(name: MessageName.disableNotifications));
     emit(NotificationsDisabled());
   }
 
   void _enableNotifications(
       EnableNotificationsEvent event, Emitter<NotificationState> emit) async {
-    await _bgWorker.makeRequest(
+    await _bgChannel.makeRequest(
         const IsolateMessage(name: MessageName.enableNotifications));
     emit(NotificationsEnabled());
   }
 
   void _toggleIntegratedAlertSounds(
       ToggleSounds event, Emitter<NotificationState> emit) async {
-    await _bgWorker
+    await _bgChannel
         .makeRequest(const IsolateMessage(name: MessageName.toggleSounds));
     emit(SoundsToggled());
   }
@@ -75,7 +75,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   Future<void> _listenForNotificationEvents(ListenForNotificationEvents event,
       Emitter<NotificationState> emit) async {
     await for (final message
-        in _bgWorker.isolateStreams[MessageDestination.notifications]!.stream) {
+        in _bgChannel.isolateStreams[MessageDestination.notifications]!.stream) {
       if (message.name == MessageName.playDesktopSound) {
         if (!Platform.isAndroid && !Platform.isIOS) {
           player?.play(AssetSource("sound/alarm.ogg"));

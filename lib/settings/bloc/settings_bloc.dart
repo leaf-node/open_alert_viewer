@@ -14,9 +14,9 @@ part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc(
-      {required SettingsRepo settings, required BackgroundWorker bgWorker})
+      {required SettingsRepo settings, required BackgroundChannel bgChannel})
       : _settingsRepo = settings,
-        _bgWorker = bgWorker,
+        _bgChannel = bgChannel,
         super(SettingsInitial()) {
     on<SettingsPushEvent>(_pushSettings);
 
@@ -24,7 +24,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   final SettingsRepo _settingsRepo;
-  final BackgroundWorker _bgWorker;
+  final BackgroundChannel _bgChannel;
 
   void _pushSettings(SettingsPushEvent event, Emitter<SettingsState> emit) {
     for (var setting in event.newSettings.keys) {
@@ -32,7 +32,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       switch (setting) {
         case "refreshInterval":
           _settingsRepo.refreshInterval = newSetting;
-          _bgWorker.makeRequest(
+          _bgChannel.makeRequest(
               const IsolateMessage(name: MessageName.refreshTimer));
         case "syncTimeout":
           _settingsRepo.syncTimeout = newSetting;

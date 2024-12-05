@@ -13,8 +13,8 @@ part 'refresh_event.dart';
 part 'refresh_state.dart';
 
 class RefreshIconBloc extends Bloc<RefreshIconEvent, RefreshIconState> {
-  RefreshIconBloc({required bgWorker})
-      : _bgWorker = bgWorker,
+  RefreshIconBloc({required bgChannel})
+      : _bgChannel = bgChannel,
         super(RefreshIconInitial()) {
     on<RefreshIconNow>(_refreshIconNow, transformer: droppable());
     on<RefreshIconFinish>(_refreshFinish);
@@ -22,7 +22,7 @@ class RefreshIconBloc extends Bloc<RefreshIconEvent, RefreshIconState> {
     add(ListenForRefreshIcon());
   }
 
-  final BackgroundWorker _bgWorker;
+  final BackgroundChannel _bgChannel;
 
   Future<void> _refreshIconNow(
       RefreshIconNow event, Emitter<RefreshIconState> emit) async {
@@ -39,7 +39,7 @@ class RefreshIconBloc extends Bloc<RefreshIconEvent, RefreshIconState> {
   Future<void> _listenForRefreshIcon(
       ListenForRefreshIcon event, Emitter<RefreshIconState> emit) async {
     await for (final message
-        in _bgWorker.isolateStreams[MessageDestination.refreshIcon]!.stream) {
+        in _bgChannel.isolateStreams[MessageDestination.refreshIcon]!.stream) {
       if (message.name == MessageName.showRefreshIndicator) {
         emit(RefreshIconTriggered(
             forceRefreshNow: message.forceRefreshNow ?? false,

@@ -18,7 +18,7 @@ import 'background/background_desktop.dart';
 import 'background/background_mobile.dart';
 
 LocalDatabase? db;
-BackgroundWorker? bgWorker;
+BackgroundChannel? bgChannel;
 
 Future<void> main() async {
   await startBackground();
@@ -31,21 +31,21 @@ Future<void> startBackground() async {
     db = LocalDatabase();
     await db!.migrate(showPath: true);
   }
-  if (bgWorker == null) {
+  if (bgChannel == null) {
     if (Platform.isAndroid) {
-      bgWorker = BackgroundMobile();
+      bgChannel = BackgroundMobile();
     } else {
-      bgWorker = BackgroundDesktop();
+      bgChannel = BackgroundDesktop();
     }
-    await bgWorker!.spawn(appVersion: await getVersion());
+    await bgChannel!.spawn(appVersion: await getVersion());
   }
 }
 
 Future<void> startForeground() async {
-  while (bgWorker == null || db == null) {
+  while (bgChannel == null || db == null) {
     await Future.delayed(Duration(milliseconds: 100));
   }
-  runApp(OAVapp(appVersion: await getVersion(), db: db!, bgWorker: bgWorker!));
+  runApp(OAVapp(appVersion: await getVersion(), db: db!, bgChannel: bgChannel!));
 }
 
 Future<String> getVersion() async {

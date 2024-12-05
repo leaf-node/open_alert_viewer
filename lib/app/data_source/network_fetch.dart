@@ -49,7 +49,7 @@ mixin NetworkFetch {
     } else {
       query = http.post(parsedURI, headers: collectedHeaders, body: postBody);
     }
-    var timeout = BackgroundWorker.settings!.syncTimeout;
+    var timeout = BackgroundChannel.settings!.syncTimeout;
     if (maxTimeout != null) {
       timeout = (timeout > maxTimeout) ? maxTimeout : timeout;
     }

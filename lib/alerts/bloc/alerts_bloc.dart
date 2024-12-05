@@ -15,8 +15,8 @@ import 'alerts_event.dart';
 import 'alerts_state.dart';
 
 class AlertsBloc extends Bloc<AlertEvent, AlertState> {
-  AlertsBloc({required BackgroundWorker bgWorker})
-      : _bgWorker = bgWorker,
+  AlertsBloc({required BackgroundChannel bgChannel})
+      : _bgChannel = bgChannel,
         super(AlertsInit(alerts: [], sources: [])) {
     on<ListenForAlerts>(_listenForAlerts);
     on<AddAlertSource>(_addSource);
@@ -27,34 +27,34 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     add(ListenForAlerts());
   }
 
-  final BackgroundWorker _bgWorker;
+  final BackgroundChannel _bgChannel;
 
   Future<void> _addSource(
       AddAlertSource event, Emitter<AlertState> emit) async {
-    _bgWorker.makeRequest(IsolateMessage(
+    _bgChannel.makeRequest(IsolateMessage(
         name: MessageName.addSource, sourceData: event.sourceData));
   }
 
   Future<void> _updateSource(
       UpdateAlertSource event, Emitter<AlertState> emit) async {
-    _bgWorker.makeRequest(IsolateMessage(
+    _bgChannel.makeRequest(IsolateMessage(
         name: MessageName.updateSource, sourceData: event.sourceData));
   }
 
   Future<void> _removeSource(
       RemoveAlertSource event, Emitter<AlertState> emit) async {
-    _bgWorker.makeRequest(
+    _bgChannel.makeRequest(
         IsolateMessage(name: MessageName.removeSource, id: event.id));
   }
 
   Future<void> _fetch(FetchAlerts event, Emitter<AlertState> emit) async {
-    _bgWorker.makeRequest(IsolateMessage(
+    _bgChannel.makeRequest(IsolateMessage(
         name: MessageName.fetchAlerts, forceRefreshNow: event.forceRefreshNow));
   }
 
   Future<void> _updateLastSeen(
       UpdateLastSeen event, Emitter<AlertState> emit) async {
-    _bgWorker
+    _bgChannel
         .makeRequest(const IsolateMessage(name: MessageName.updateLastSeen));
   }
 
@@ -63,7 +63,7 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
     List<Alert> alerts = [];
     List<AlertSource> sources = [];
     await for (final message
-        in _bgWorker.isolateStreams[MessageDestination.alerts]!.stream) {
+        in _bgChannel.isolateStreams[MessageDestination.alerts]!.stream) {
       alerts = message.alerts ?? alerts;
       sources = message.sources ?? sources;
       if (message.name == MessageName.alertsInit) {

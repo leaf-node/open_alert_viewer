@@ -16,7 +16,8 @@ import 'repo/alerts.dart';
 import 'repo/notifications.dart';
 import 'repo/sources.dart';
 
-class BackgroundDesktop extends BackgroundChannel implements BackgroundWorker {
+class BackgroundDesktop extends BackgroundChannelResponse
+    implements BackgroundChannel {
   @override
   Future<void> spawn({required String appVersion}) async {
     final receivePort = ReceivePort();
@@ -52,7 +53,7 @@ class BackgroundIsolate with BackgroundTranslator {
     await _db.open();
     SettingsRepo.appVersion = appVersion;
     _settings = SettingsRepo(db: _db);
-    BackgroundWorker.settings = _settings;
+    BackgroundChannel.settings = _settings;
     _notifier = NotificationRepo(settings: _settings);
     await _notifier.initializeAlertNotifications();
     await _notifier.startAnroidStickyNotification();

@@ -36,11 +36,11 @@ class OAVapp extends StatelessWidget {
       {super.key,
       required this.appVersion,
       required this.db,
-      required this.bgWorker});
+      required this.bgChannel});
 
   final String appVersion;
   final LocalDatabase db;
-  final BackgroundWorker bgWorker;
+  final BackgroundChannel bgChannel;
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +61,14 @@ class OAVapp extends StatelessWidget {
           BlocProvider(
               create: (context) => NotificationBloc(
                   notificationRepo: context.read<StickyNotificationRepo>(),
-                  bgWorker: bgWorker)),
+                  bgChannel: bgChannel)),
           BlocProvider(
-              create: (context) => RefreshIconBloc(bgWorker: bgWorker)),
-          BlocProvider(create: (context) => AlertsBloc(bgWorker: bgWorker)),
+              create: (context) => RefreshIconBloc(bgChannel: bgChannel)),
+          BlocProvider(create: (context) => AlertsBloc(bgChannel: bgChannel)),
           BlocProvider(
               create: (context) => SettingsBloc(
-                  settings: context.read<SettingsRepo>(), bgWorker: bgWorker)),
-          BlocProvider(create: (context) => AccountBloc(bgWorker: bgWorker)),
+                  settings: context.read<SettingsRepo>(), bgChannel: bgChannel)),
+          BlocProvider(create: (context) => AccountBloc(bgChannel: bgChannel)),
           BlocProvider(
               create: (context) => BatteryPermissionCubit(
                   context.read<BatteryPermissionRepo>())),
