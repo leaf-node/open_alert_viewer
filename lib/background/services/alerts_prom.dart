@@ -6,7 +6,7 @@
 
 import '../../domain/alerts.dart';
 import '../../data/services/network_fetch.dart';
-import '../../utils/util.dart';
+import '../../utils/utils.dart';
 
 class PromAlerts extends AlertSource with NetworkFetch {
   PromAlerts({required super.sourceData});

@@ -10,15 +10,15 @@ import '../../domain/alerts.dart';
 import '../../data/services/database.dart';
 import '../../data/repositories/settings_repository.dart';
 import '../background.dart';
-import 'notifications.dart';
-import 'sources.dart';
+import 'notifications_background_repo.dart';
+import 'sources_background_repo.dart';
 
-class AlertsRepo {
-  AlertsRepo(
+class AlertsBackgroundRepo {
+  AlertsBackgroundRepo(
       {required LocalDatabase db,
       required SettingsRepo settings,
-      required SourcesRepo sourcesRepo,
-      required NotificationRepo notifier})
+      required SourcesBackgroundRepo sourcesRepo,
+      required NotificationsBackgroundRepo notifier})
       : _db = db,
         _sourcesRepo = sourcesRepo,
         _settings = settings,
@@ -28,8 +28,8 @@ class AlertsRepo {
 
   final LocalDatabase _db;
   final SettingsRepo _settings;
-  final SourcesRepo _sourcesRepo;
-  final NotificationRepo _notifier;
+  final SourcesBackgroundRepo _sourcesRepo;
+  final NotificationsBackgroundRepo _notifier;
   late StreamController<IsolateMessage> _outboundStream;
   List<AlertSource> _alertSources;
   List<Alert> _alerts;

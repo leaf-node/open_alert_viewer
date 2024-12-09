@@ -20,8 +20,8 @@ import '../services/alerts_null.dart';
 import '../services/alerts_prom.dart';
 import '../services/alerts_random.dart';
 
-class SourcesRepo with NetworkFetch {
-  SourcesRepo(
+class SourcesBackgroundRepo with NetworkFetch {
+  SourcesBackgroundRepo(
       {required LocalDatabase db,
       required SettingsRepo settings,
       required StreamController<IsolateMessage> outboundStream})

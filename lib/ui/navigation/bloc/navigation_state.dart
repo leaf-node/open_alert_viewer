@@ -10,32 +10,32 @@ abstract class NavState {
   const NavState();
 }
 
-final class ShowAlertsPage extends NavState {
-  ShowAlertsPage();
+final class ShowAlertsScreen extends NavState {
+  ShowAlertsScreen();
 }
 
-final class ShowSettingsPage extends NavState {
-  ShowSettingsPage();
+final class ShowSettingsScreen extends NavState {
+  ShowSettingsScreen();
 }
 
-final class ShowAboutPage extends NavState {
-  ShowAboutPage();
+final class ShowAboutScreen extends NavState {
+  ShowAboutScreen();
 }
 
-final class ShowGeneralSettingsPage extends NavState {
-  ShowGeneralSettingsPage();
+final class ShowGeneralSettingsScreen extends NavState {
+  ShowGeneralSettingsScreen();
 }
 
-final class ShowAccountSettingsPage extends NavState {
-  ShowAccountSettingsPage({required this.source});
+final class ShowAccountSettingsScreen extends NavState {
+  ShowAccountSettingsScreen({required this.source});
 
   final AlertSource? source;
 }
 
-final class ShowLicensingPage extends NavState {
-  ShowLicensingPage();
+final class ShowLicensingScreen extends NavState {
+  ShowLicensingScreen();
 }
 
-final class ShowPrivacyPage extends NavState {
-  ShowPrivacyPage();
+final class ShowPrivacyScreen extends NavState {
+  ShowPrivacyScreen();
 }

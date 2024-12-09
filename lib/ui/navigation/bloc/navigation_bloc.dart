@@ -9,44 +9,46 @@ import 'navigation_event.dart';
 import 'navigation_state.dart';
 
 class NavBloc extends Bloc<NavEvent, NavState> {
-  NavBloc() : super(ShowAlertsPage()) {
-    on<OpenAlertsPageEvent>(_openAlertsPage);
-    on<OpenSettingsPageEvent>(_openSettingsPage);
-    on<OpenGeneralSettingsPageEvent>(_openGeneralSettingsPage);
-    on<OpenAboutPageEvent>(_openAboutPage);
-    on<OpenAccountSettingsPageEvent>(_openAccountSettingsPage);
-    on<OpenLicensingPageEvent>(_openLicensingPage);
-    on<OpenPrivacyPageEvent>(_openPrivacyPage);
+  NavBloc() : super(ShowAlertsScreen()) {
+    on<OpenAlertsScreenEvent>(_openAlertsScreen);
+    on<OpenSettingsScreenEvent>(_openSettingsScreen);
+    on<OpenGeneralSettingsScreenEvent>(_openGeneralSettingsScreen);
+    on<OpenAboutScreenEvent>(_openAboutScreen);
+    on<OpenAccountSettingsScreenEvent>(_openAccountSettingsScreen);
+    on<OpenLicensingScreenEvent>(_openLicensingScreen);
+    on<OpenPrivacyScreenEvent>(_openPrivacyScreen);
   }
 
-  void _openAlertsPage(OpenAlertsPageEvent event, Emitter<NavState> emit) {
-    emit(ShowAlertsPage());
+  void _openAlertsScreen(OpenAlertsScreenEvent event, Emitter<NavState> emit) {
+    emit(ShowAlertsScreen());
   }
 
-  void _openSettingsPage(OpenSettingsPageEvent event, Emitter<NavState> emit) {
-    emit(ShowSettingsPage());
+  void _openSettingsScreen(
+      OpenSettingsScreenEvent event, Emitter<NavState> emit) {
+    emit(ShowSettingsScreen());
   }
 
-  void _openGeneralSettingsPage(
-      OpenGeneralSettingsPageEvent event, Emitter<NavState> emit) {
-    emit(ShowGeneralSettingsPage());
+  void _openGeneralSettingsScreen(
+      OpenGeneralSettingsScreenEvent event, Emitter<NavState> emit) {
+    emit(ShowGeneralSettingsScreen());
   }
 
-  void _openAboutPage(OpenAboutPageEvent event, Emitter<NavState> emit) {
-    emit(ShowAboutPage());
+  void _openAboutScreen(OpenAboutScreenEvent event, Emitter<NavState> emit) {
+    emit(ShowAboutScreen());
   }
 
-  void _openAccountSettingsPage(
-      OpenAccountSettingsPageEvent event, Emitter<NavState> emit) {
-    emit(ShowAccountSettingsPage(source: event.source));
+  void _openAccountSettingsScreen(
+      OpenAccountSettingsScreenEvent event, Emitter<NavState> emit) {
+    emit(ShowAccountSettingsScreen(source: event.source));
   }
 
-  void _openLicensingPage(
-      OpenLicensingPageEvent event, Emitter<NavState> emit) {
-    emit(ShowLicensingPage());
+  void _openLicensingScreen(
+      OpenLicensingScreenEvent event, Emitter<NavState> emit) {
+    emit(ShowLicensingScreen());
   }
 
-  void _openPrivacyPage(OpenPrivacyPageEvent event, Emitter<NavState> emit) {
-    emit(ShowPrivacyPage());
+  void _openPrivacyScreen(
+      OpenPrivacyScreenEvent event, Emitter<NavState> emit) {
+    emit(ShowPrivacyScreen());
   }
 }

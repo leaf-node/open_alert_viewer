@@ -17,7 +17,7 @@ import '../../../data/repositories/settings_repository.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import '../bloc/settings_bloc.dart';
 import '../cubit/battery_permission_cubit.dart';
-import 'settings_components.dart';
+import '../widgets/settings_widgets.dart';
 
 enum RefreshFrequencies {
   fifteenSeconds("Every 15 Seconds", 15),
@@ -64,14 +64,14 @@ enum ColorModes {
   final int value;
 }
 
-class GeneralSettingsPage extends StatelessWidget {
-  const GeneralSettingsPage({super.key, required this.title});
+class GeneralSettingsScreen extends StatelessWidget {
+  const GeneralSettingsScreen({super.key, required this.title});
 
   final String title;
 
   static Route<void> route({required title}) {
     return MaterialPageRoute<void>(
-        builder: (_) => GeneralSettingsPage(title: title));
+        builder: (_) => GeneralSettingsScreen(title: title));
   }
 
   @override

@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 import 'ui/alerts/bloc/alerts_bloc.dart';
 import 'ui/alerts/bloc/refresh_bloc.dart';
-import 'ui/alerts/view/alerts_page.dart';
+import 'ui/alerts/view/alerts_screen.dart';
 import 'data/services/database.dart';
 import 'background/background.dart';
 import 'ui/navigation/bloc/navigation_bloc.dart';
@@ -25,12 +25,12 @@ import 'ui/settings/bloc/settings_bloc.dart';
 import 'ui/settings/cubit/battery_permission_cubit.dart';
 import 'data/repositories/account_repository.dart';
 import 'data/repositories/battery_repository.dart';
-import 'ui/settings/view/about_page.dart';
-import 'ui/settings/view/licensing_page.dart';
-import 'ui/settings/view/privacy_page.dart';
-import 'ui/settings/view/settings_account.dart';
-import 'ui/settings/view/settings_general.dart';
-import 'ui/settings/view/settings_page.dart';
+import 'ui/settings/view/about_screen.dart';
+import 'ui/settings/view/licensing_screen.dart';
+import 'ui/settings/view/privacy_screen.dart';
+import 'ui/settings/view/account_settings_screen.dart';
+import 'ui/settings/view/general_settings_screen.dart';
+import 'ui/settings/view/settings_screen.dart';
 
 class OAVapp extends StatelessWidget {
   const OAVapp(
@@ -111,30 +111,32 @@ class _OAVappViewState extends State<OAVappView> {
           return BlocListener<NavBloc, NavState>(
               listener: (context, state) {
                 switch (state) {
-                  case ShowAlertsPage():
+                  case ShowAlertsScreen():
                     _navigator.pushAndRemoveUntil(
-                        AlertsPage.route(title: 'Open Alert Viewer'),
+                        AlertsScreen.route(title: 'Open Alert Viewer'),
                         (_) => false);
-                  case ShowSettingsPage():
-                    _navigator.push(SettingsPage.route(title: "OAV Settings"));
-                  case ShowGeneralSettingsPage():
-                    _navigator.push(GeneralSettingsPage.route(
+                  case ShowSettingsScreen():
+                    _navigator
+                        .push(SettingsScreen.route(title: "OAV Settings"));
+                  case ShowGeneralSettingsScreen():
+                    _navigator.push(GeneralSettingsScreen.route(
                         title: "OAV General Settings"));
-                  case ShowAboutPage():
-                    _navigator.push(AboutPage.route(title: "About OAV"));
-                  case ShowAccountSettingsPage():
-                    _navigator.push(AccountSettingsPage.route(
+                  case ShowAboutScreen():
+                    _navigator.push(AboutScreen.route(title: "About OAV"));
+                  case ShowAccountSettingsScreen():
+                    _navigator.push(AccountSettingsScreen.route(
                         title: "OAV Account Settings", source: state.source));
-                  case ShowLicensingPage():
+                  case ShowLicensingScreen():
                     _navigator.push(
-                        LicensingPage.route(title: "License Information"));
-                  case ShowPrivacyPage():
-                    _navigator.push(PrivacyPage.route(title: "Privacy Policy"));
+                        LicensingScreen.route(title: "License Information"));
+                  case ShowPrivacyScreen():
+                    _navigator
+                        .push(PrivacyScreen.route(title: "Privacy Policy"));
                 }
               },
               child: child);
         },
-        onGenerateRoute: (_) => AlertsPage.route(title: 'Open Alert Viewer'),
+        onGenerateRoute: (_) => AlertsScreen.route(title: 'Open Alert Viewer'),
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.lightBlue,

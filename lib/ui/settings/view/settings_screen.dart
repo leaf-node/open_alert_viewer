@@ -12,15 +12,16 @@ import '../../alerts/bloc/alerts_state.dart';
 import '../../../domain/alerts.dart';
 import '../../navigation/bloc/navigation_bloc.dart';
 import '../../navigation/bloc/navigation_event.dart';
-import 'settings_components.dart';
+import '../widgets/settings_widgets.dart';
 
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key, required this.title});
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key, required this.title});
 
   final String title;
 
   static Route<void> route({required title}) {
-    return MaterialPageRoute<void>(builder: (_) => SettingsPage(title: title));
+    return MaterialPageRoute<void>(
+        builder: (_) => SettingsScreen(title: title));
   }
 
   @override
@@ -57,11 +58,11 @@ class SettingsList extends StatelessWidget {
             icon: Icons.settings,
             title: "General Settings",
             onTap: () =>
-                context.read<NavBloc>().add(OpenGeneralSettingsPageEvent())),
+                context.read<NavBloc>().add(OpenGeneralSettingsScreenEvent())),
         MenuItem(
             icon: Icons.info_outline,
             title: "About App",
-            onTap: () => context.read<NavBloc>().add(OpenAboutPageEvent())),
+            onTap: () => context.read<NavBloc>().add(OpenAboutScreenEvent())),
         const MenuHeaderTile(title: "Accounts"),
         for (AlertSource account in state.sources)
           MenuItem(
@@ -69,13 +70,13 @@ class SettingsList extends StatelessWidget {
               title: account.sourceData.name,
               onTap: () => context
                   .read<NavBloc>()
-                  .add(OpenAccountSettingsPageEvent(source: account))),
+                  .add(OpenAccountSettingsScreenEvent(source: account))),
         MenuItem(
             icon: Icons.add,
             title: "Add new account",
             onTap: () => context
                 .read<NavBloc>()
-                .add(OpenAccountSettingsPageEvent(source: null))),
+                .add(OpenAccountSettingsScreenEvent(source: null))),
       ]);
     });
   }

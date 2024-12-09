@@ -19,13 +19,13 @@ import '../bloc/refresh_bloc.dart';
 import '../../../domain/alerts.dart';
 import 'alerts.dart';
 
-class AlertsPage extends StatelessWidget {
-  const AlertsPage({super.key, required this.title});
+class AlertsScreen extends StatelessWidget {
+  const AlertsScreen({super.key, required this.title});
 
   final String title;
 
   static Route<void> route({required title}) {
-    return MaterialPageRoute<void>(builder: (_) => AlertsPage(title: title));
+    return MaterialPageRoute<void>(builder: (_) => AlertsScreen(title: title));
   }
 
   @override
@@ -51,7 +51,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
         notificationsStatusWidget = HeaderButton(
             icon: Icons.notifications_off,
             onPressed: () =>
-                context.read<NavBloc>().add(OpenGeneralSettingsPageEvent()));
+                context.read<NavBloc>().add(OpenGeneralSettingsScreenEvent()));
       } else {
         notificationsStatusWidget = Container();
       }
@@ -59,7 +59,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
         soundStatusWidget = HeaderButton(
             icon: Icons.music_off_outlined,
             onPressed: () =>
-                context.read<NavBloc>().add(OpenGeneralSettingsPageEvent()));
+                context.read<NavBloc>().add(OpenGeneralSettingsScreenEvent()));
       } else {
         soundStatusWidget = Container();
       }
@@ -80,7 +80,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
         filterStatusWidget = HeaderButton(
             icon: Icons.filter_alt_off_outlined,
             onPressed: () =>
-                context.read<NavBloc>().add(OpenGeneralSettingsPageEvent()));
+                context.read<NavBloc>().add(OpenGeneralSettingsScreenEvent()));
       } else {
         filterStatusWidget = Container();
       }
@@ -90,7 +90,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
           leading: HeaderButton(
               icon: Icons.menu,
               onPressed: () =>
-                  context.read<NavBloc>().add(OpenSettingsPageEvent())),
+                  context.read<NavBloc>().add(OpenSettingsScreenEvent())),
           title: Text(title),
           actions: [
             filterStatusWidget,

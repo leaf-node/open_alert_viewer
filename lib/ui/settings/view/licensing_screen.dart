@@ -11,42 +11,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'settings_components.dart';
+import '../widgets/settings_widgets.dart';
 
-class PrivacyPage extends StatelessWidget {
-  const PrivacyPage({super.key, required this.title});
+class LicensingScreen extends StatelessWidget {
+  const LicensingScreen({super.key, required this.title});
 
   final String title;
 
   static Route<void> route({required String title}) {
-    return MaterialPageRoute<void>(builder: (_) => PrivacyPage(title: title));
+    return MaterialPageRoute<void>(
+        builder: (_) => LicensingScreen(title: title));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SettingsHeader(title: title),
-        body: const Center(child: PrivacyInfo()));
+        body: const Center(child: LicensingInfo()));
   }
 }
 
-class PrivacyInfo extends StatefulWidget {
-  const PrivacyInfo({super.key});
+class LicensingInfo extends StatefulWidget {
+  const LicensingInfo({super.key});
 
   @override
-  State<PrivacyInfo> createState() => _PrivacyInfoState();
+  State<LicensingInfo> createState() => _LicensingInfoState();
 }
 
-class _PrivacyInfoState extends State<PrivacyInfo> {
+class _LicensingInfoState extends State<LicensingInfo> {
   late String _text;
   late Future<String> _licenseString;
-  final String _errorMessage = "Error loading privacy policy. "
-      "Please check the project source code or website.";
+  final String _errorMessage =
+      "Error loading licensing info. Please check the project source code.";
 
   @override
   void initState() {
     super.initState();
-    _licenseString = rootBundle.loadString("PRIVACY.md");
+    _licenseString = rootBundle.loadString("LICENSE.md");
   }
 
   @override

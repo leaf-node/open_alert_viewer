@@ -16,10 +16,10 @@ import '../../../domain/alerts.dart';
 import '../../core/widgets/app_view_elements.dart';
 import '../bloc/account_bloc.dart';
 import '../../../data/repositories/account_repository.dart';
-import 'settings_components.dart';
+import '../widgets/settings_widgets.dart';
 
-class AccountSettingsPage extends StatefulWidget {
-  const AccountSettingsPage(
+class AccountSettingsScreen extends StatefulWidget {
+  const AccountSettingsScreen(
       {super.key, required this.title, required this.source});
 
   final String title;
@@ -28,16 +28,16 @@ class AccountSettingsPage extends StatefulWidget {
   static Route<void> route(
       {required String title, required AlertSource? source}) {
     return MaterialPageRoute<void>(
-        builder: (_) => AccountSettingsPage(title: title, source: source));
+        builder: (_) => AccountSettingsScreen(title: title, source: source));
   }
 
   @override
-  State<AccountSettingsPage> createState() => _AccountSettingsPageState();
+  State<AccountSettingsScreen> createState() => _AccountSettingsScreenState();
 }
 
-class _AccountSettingsPageState extends State<AccountSettingsPage>
+class _AccountSettingsScreenState extends State<AccountSettingsScreen>
     with NetworkFetch {
-  _AccountSettingsPageState()
+  _AccountSettingsScreenState()
       : nameController = TextEditingController(),
         typeController = TextEditingController(),
         baseURLController = TextEditingController(),

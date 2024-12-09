@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../utils/util.dart';
+import '../../../utils/utils.dart';
 import '../../../domain/alerts.dart';
 
 enum AlertTypeView {

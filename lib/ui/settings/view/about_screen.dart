@@ -13,15 +13,15 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../data/repositories/settings_repository.dart';
 import '../../navigation/bloc/navigation_bloc.dart';
 import '../../navigation/bloc/navigation_event.dart';
-import 'settings_components.dart';
+import '../widgets/settings_widgets.dart';
 
-class AboutPage extends StatelessWidget {
-  const AboutPage({super.key, required this.title});
+class AboutScreen extends StatelessWidget {
+  const AboutScreen({super.key, required this.title});
 
   final String title;
 
   static Route<void> route({required title}) {
-    return MaterialPageRoute<void>(builder: (_) => AboutPage(title: title));
+    return MaterialPageRoute<void>(builder: (_) => AboutScreen(title: title));
   }
 
   @override
@@ -41,13 +41,13 @@ class AboutList extends StatelessWidget {
           icon: Icons.article_outlined,
           title: "App and License Info",
           onTap: () async {
-            context.read<NavBloc>().add(OpenLicensingPageEvent());
+            context.read<NavBloc>().add(OpenLicensingScreenEvent());
           }),
       MenuItem(
           icon: Icons.person_search_outlined,
           title: "Privacy Policy",
           onTap: () async {
-            context.read<NavBloc>().add(OpenPrivacyPageEvent());
+            context.read<NavBloc>().add(OpenPrivacyScreenEvent());
           }),
       MenuItem(
           icon: Icons.support_outlined,

@@ -11,7 +11,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../domain/alerts.dart';
 import '../../data/repositories/settings_repository.dart';
-import '../../utils/util.dart';
+import '../../utils/utils.dart';
 import '../background.dart';
 
 const stickyNotificationChannelId = "Open Alert Viewer Background Work";
@@ -30,8 +30,8 @@ const alertsNotificationChannelDescription = "Alert Notifications";
 
 const notificationIcon = "@drawable/notification_icon";
 
-class NotificationRepo {
-  NotificationRepo({required SettingsRepo settings})
+class NotificationsBackgroundRepo {
+  NotificationsBackgroundRepo({required SettingsRepo settings})
       : _settings = settings,
         _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin() {
     _stickyAndroidNotificationDetails = const AndroidNotificationDetails(

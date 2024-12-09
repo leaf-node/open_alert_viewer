@@ -13,9 +13,9 @@ import 'package:json_annotation/json_annotation.dart';
 import '../domain/alerts.dart';
 import '../data/repositories/settings_repository.dart';
 import '../data/services/database.dart';
-import 'repositories/alerts.dart';
-import 'repositories/notifications.dart';
-import 'repositories/sources.dart';
+import 'repositories/alerts_background_repo.dart';
+import 'repositories/notifications_background_repo.dart';
+import 'repositories/sources_background_repo.dart';
 
 part 'background.g.dart';
 
@@ -151,9 +151,9 @@ class BackgroundChannelExternal with BackgroundTranslator {
 class BackgroundChannelInternal with BackgroundTranslator {
   late LocalDatabase _db;
   late SettingsRepo _settings;
-  late SourcesRepo _sourcesRepo;
-  late AlertsRepo _alertsRepo;
-  late NotificationRepo _notifier;
+  late SourcesBackgroundRepo _sourcesRepo;
+  late AlertsBackgroundRepo _alertsRepo;
+  late NotificationsBackgroundRepo _notifier;
   late StreamController<IsolateMessage> _outboundStream;
 
   Future<void> init(String appVersion, Function(IsolateMessage) sender) async {
@@ -162,13 +162,13 @@ class BackgroundChannelInternal with BackgroundTranslator {
     SettingsRepo.appVersion = appVersion;
     _settings = SettingsRepo(db: _db);
     BackgroundChannel.settings = _settings;
-    _notifier = NotificationRepo(settings: _settings);
+    _notifier = NotificationsBackgroundRepo(settings: _settings);
     await _notifier.initializeAlertNotifications();
     await _notifier.startAnroidStickyNotification();
     _outboundStream = StreamController<IsolateMessage>();
-    _sourcesRepo = SourcesRepo(
+    _sourcesRepo = SourcesBackgroundRepo(
         db: _db, outboundStream: _outboundStream, settings: _settings);
-    _alertsRepo = AlertsRepo(
+    _alertsRepo = AlertsBackgroundRepo(
         db: _db,
         settings: _settings,
         sourcesRepo: _sourcesRepo,

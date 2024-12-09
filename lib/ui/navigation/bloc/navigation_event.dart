@@ -8,20 +8,20 @@ import '../../../domain/alerts.dart';
 
 abstract class NavEvent {}
 
-final class OpenAlertsPageEvent implements NavEvent {}
+final class OpenAlertsScreenEvent implements NavEvent {}
 
-final class OpenSettingsPageEvent implements NavEvent {}
+final class OpenSettingsScreenEvent implements NavEvent {}
 
-final class OpenGeneralSettingsPageEvent implements NavEvent {}
+final class OpenGeneralSettingsScreenEvent implements NavEvent {}
 
-final class OpenAboutPageEvent implements NavEvent {}
+final class OpenAboutScreenEvent implements NavEvent {}
 
-final class OpenAccountSettingsPageEvent implements NavEvent {
-  OpenAccountSettingsPageEvent({required this.source});
+final class OpenAccountSettingsScreenEvent implements NavEvent {
+  OpenAccountSettingsScreenEvent({required this.source});
 
   final AlertSource? source;
 }
 
-final class OpenLicensingPageEvent implements NavEvent {}
+final class OpenLicensingScreenEvent implements NavEvent {}
 
-final class OpenPrivacyPageEvent implements NavEvent {}
+final class OpenPrivacyScreenEvent implements NavEvent {}
