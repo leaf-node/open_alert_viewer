@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:yaml/yaml.dart';
 
 import 'app.dart';
-import 'app/data_source/database.dart';
+import 'data/services/database.dart';
 import 'background/background.dart';
 import 'background/background_desktop.dart';
 import 'background/background_mobile.dart';
@@ -45,7 +45,8 @@ Future<void> startForeground() async {
   while (bgChannel == null || db == null) {
     await Future.delayed(Duration(milliseconds: 100));
   }
-  runApp(OAVapp(appVersion: await getVersion(), db: db!, bgChannel: bgChannel!));
+  runApp(
+      OAVapp(appVersion: await getVersion(), db: db!, bgChannel: bgChannel!));
 }
 
 Future<String> getVersion() async {

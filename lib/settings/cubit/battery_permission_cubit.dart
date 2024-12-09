@@ -7,7 +7,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../data_repository/battery_repository.dart';
+import '../../data/repositories/battery_repository.dart';
 
 part 'battery_permission_state.dart';
 

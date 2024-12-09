@@ -8,14 +8,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/app/data_source/network_fetch.dart';
+import 'package:open_alert_viewer/data/services/network_fetch.dart';
 
-import '../../alerts/bloc/alerts_bloc.dart';
-import '../../alerts/bloc/alerts_event.dart';
-import '../../alerts/model/alerts.dart';
-import '../../app/view/app_view_elements.dart';
+import '../../ui/alerts/bloc/alerts_bloc.dart';
+import '../../ui/alerts/bloc/alerts_event.dart';
+import '../../domain/alerts.dart';
+import '../../ui/core/widgets/app_view_elements.dart';
 import '../../settings/bloc/account_bloc.dart';
-import '../data_repository/account_repository.dart';
+import '../../data/repositories/account_repository.dart';
 import 'settings_components.dart';
 
 class AccountSettingsPage extends StatefulWidget {

@@ -10,12 +10,12 @@ import 'dart:isolate';
 
 import 'package:json_annotation/json_annotation.dart';
 
-import '../alerts/model/alerts.dart';
-import '../app/data_repository/settings_repository.dart';
-import '../app/data_source/database.dart';
-import 'repo/alerts.dart';
-import 'repo/notifications.dart';
-import 'repo/sources.dart';
+import '../domain/alerts.dart';
+import '../data/repositories/settings_repository.dart';
+import '../data/services/database.dart';
+import 'repositories/alerts.dart';
+import 'repositories/notifications.dart';
+import 'repositories/sources.dart';
 
 part 'background.g.dart';
 

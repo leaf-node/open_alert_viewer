@@ -7,11 +7,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../alerts/bloc/alerts_bloc.dart';
-import '../../alerts/bloc/alerts_state.dart';
-import '../../alerts/model/alerts.dart';
-import '../../navigation/bloc/navigation_bloc.dart';
-import '../../navigation/bloc/navigation_event.dart';
+import '../../ui/alerts/bloc/alerts_bloc.dart';
+import '../../ui/alerts/bloc/alerts_state.dart';
+import '../../domain/alerts.dart';
+import '../../ui/navigation/bloc/navigation_bloc.dart';
+import '../../ui/navigation/bloc/navigation_event.dart';
 import 'settings_components.dart';
 
 class SettingsPage extends StatelessWidget {

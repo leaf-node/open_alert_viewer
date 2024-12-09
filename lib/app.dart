@@ -9,21 +9,21 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'alerts/bloc/alerts_bloc.dart';
-import 'alerts/bloc/refresh_bloc.dart';
-import 'alerts/view/alerts_page.dart';
-import 'app/data_source/database.dart';
+import 'ui/alerts/bloc/alerts_bloc.dart';
+import 'ui/alerts/bloc/refresh_bloc.dart';
+import 'ui/alerts/view/alerts_page.dart';
+import 'data/services/database.dart';
 import 'background/background.dart';
-import 'navigation/bloc/navigation_bloc.dart';
-import 'navigation/bloc/navigation_state.dart';
-import 'app/data_repository/settings_repository.dart';
-import 'notifications/bloc/notification_bloc.dart';
-import 'notifications/data_repository/notification.dart';
+import 'ui/navigation/bloc/navigation_bloc.dart';
+import 'ui/navigation/bloc/navigation_state.dart';
+import 'data/repositories/settings_repository.dart';
+import 'ui/notifications/bloc/notification_bloc.dart';
+import 'data/services/notification.dart';
 import 'settings/bloc/account_bloc.dart';
 import 'settings/bloc/settings_bloc.dart';
 import 'settings/cubit/battery_permission_cubit.dart';
-import 'settings/data_repository/account_repository.dart';
-import 'settings/data_repository/battery_repository.dart';
+import 'data/repositories/account_repository.dart';
+import 'data/repositories/battery_repository.dart';
 import 'settings/view/about_page.dart';
 import 'settings/view/licensing_page.dart';
 import 'settings/view/privacy_page.dart';
@@ -67,7 +67,8 @@ class OAVapp extends StatelessWidget {
           BlocProvider(create: (context) => AlertsBloc(bgChannel: bgChannel)),
           BlocProvider(
               create: (context) => SettingsBloc(
-                  settings: context.read<SettingsRepo>(), bgChannel: bgChannel)),
+                  settings: context.read<SettingsRepo>(),
+                  bgChannel: bgChannel)),
           BlocProvider(create: (context) => AccountBloc(bgChannel: bgChannel)),
           BlocProvider(
               create: (context) => BatteryPermissionCubit(
