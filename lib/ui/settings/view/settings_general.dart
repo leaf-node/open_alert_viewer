@@ -10,11 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_settings/app_settings.dart';
 
-import '../../ui/alerts/bloc/refresh_bloc.dart';
-import '../../domain/alerts.dart';
-import '../../ui/core/widgets/app_view_elements.dart';
-import '../../data/repositories/settings_repository.dart';
-import '../../ui/notifications/bloc/notification_bloc.dart';
+import '../../alerts/bloc/refresh_bloc.dart';
+import '../../../domain/alerts.dart';
+import '../../core/widgets/app_view_elements.dart';
+import '../../../data/repositories/settings_repository.dart';
+import '../../notifications/bloc/notification_bloc.dart';
 import '../bloc/settings_bloc.dart';
 import '../cubit/battery_permission_cubit.dart';
 import 'settings_components.dart';

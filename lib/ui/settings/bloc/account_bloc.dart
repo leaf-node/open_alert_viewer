@@ -8,8 +8,8 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 
-import '../../domain/alerts.dart';
-import '../../background/background.dart';
+import '../../../domain/alerts.dart';
+import '../../../background/background.dart';
 
 part 'account_event.dart';
 part 'account_state.dart';

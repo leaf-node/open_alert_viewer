@@ -6,8 +6,8 @@
 
 import 'package:bloc/bloc.dart';
 
-import '../../data/repositories/settings_repository.dart';
-import '../../background/background.dart';
+import '../../../data/repositories/settings_repository.dart';
+import '../../../background/background.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';

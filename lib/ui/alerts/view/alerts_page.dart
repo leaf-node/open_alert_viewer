@@ -11,7 +11,7 @@ import '../../navigation/bloc/navigation_bloc.dart';
 import '../../navigation/bloc/navigation_event.dart';
 import '../../../data/repositories/settings_repository.dart';
 import '../../core/widgets/app_view_elements.dart';
-import '../../../settings/bloc/settings_bloc.dart';
+import '../../settings/bloc/settings_bloc.dart';
 import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';

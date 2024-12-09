@@ -10,9 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../data/repositories/settings_repository.dart';
-import '../../ui/navigation/bloc/navigation_bloc.dart';
-import '../../ui/navigation/bloc/navigation_event.dart';
+import '../../../data/repositories/settings_repository.dart';
+import '../../navigation/bloc/navigation_bloc.dart';
+import '../../navigation/bloc/navigation_event.dart';
 import 'settings_components.dart';
 
 class AboutPage extends StatelessWidget {

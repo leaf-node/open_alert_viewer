@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../notifications/bloc/notification_bloc.dart';
 import '../../../data/services/notification.dart';
-import '../../../settings/cubit/battery_permission_cubit.dart';
+import '../../settings/cubit/battery_permission_cubit.dart';
 import '../../../data/repositories/settings_repository.dart';
 
 class HeaderButton extends StatelessWidget {

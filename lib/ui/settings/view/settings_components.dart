@@ -6,7 +6,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../ui/core/widgets/app_view_elements.dart';
+import '../../core/widgets/app_view_elements.dart';
 
 class MenuItem extends StatelessWidget {
   const MenuItem(

@@ -19,17 +19,17 @@ import 'ui/navigation/bloc/navigation_state.dart';
 import 'data/repositories/settings_repository.dart';
 import 'ui/notifications/bloc/notification_bloc.dart';
 import 'data/services/notification.dart';
-import 'settings/bloc/account_bloc.dart';
-import 'settings/bloc/settings_bloc.dart';
-import 'settings/cubit/battery_permission_cubit.dart';
+import 'ui/settings/bloc/account_bloc.dart';
+import 'ui/settings/bloc/settings_bloc.dart';
+import 'ui/settings/cubit/battery_permission_cubit.dart';
 import 'data/repositories/account_repository.dart';
 import 'data/repositories/battery_repository.dart';
-import 'settings/view/about_page.dart';
-import 'settings/view/licensing_page.dart';
-import 'settings/view/privacy_page.dart';
-import 'settings/view/settings_account.dart';
-import 'settings/view/settings_general.dart';
-import 'settings/view/settings_page.dart';
+import 'ui/settings/view/about_page.dart';
+import 'ui/settings/view/licensing_page.dart';
+import 'ui/settings/view/privacy_page.dart';
+import 'ui/settings/view/settings_account.dart';
+import 'ui/settings/view/settings_general.dart';
+import 'ui/settings/view/settings_page.dart';
 
 class OAVapp extends StatelessWidget {
   const OAVapp(
