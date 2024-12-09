@@ -51,24 +51,20 @@ class OAVapp extends StatelessWidget {
       Provider(create: (context) => AccountsRepo(db: db)),
       Provider(
           create: (context) =>
-              StickyNotificationRepo(settings: context.read<SettingsRepo>())),
+              StickyNotificationRepo(settings: context.read())),
       Provider(
-          create: (context) =>
-              BatteryPermissionRepo(settings: context.read<SettingsRepo>())),
+          create: (context) => BatteryPermissionRepo(settings: context.read())),
       Provider(create: (context) => NavBloc()),
       Provider(
           create: (context) => NotificationBloc(
-              notificationRepo: context.read<StickyNotificationRepo>(),
-              bgChannel: bgChannel)),
+              notificationRepo: context.read(), bgChannel: bgChannel)),
       Provider(create: (context) => RefreshIconBloc(bgChannel: bgChannel)),
       Provider(create: (context) => AlertsBloc(bgChannel: bgChannel)),
       Provider(
-          create: (context) => SettingsBloc(
-              settings: context.read<SettingsRepo>(), bgChannel: bgChannel)),
-      Provider(create: (context) => AccountBloc(bgChannel: bgChannel)),
-      Provider(
           create: (context) =>
-              BatteryPermissionCubit(context.read<BatteryPermissionRepo>())),
+              SettingsBloc(settings: context.read(), bgChannel: bgChannel)),
+      Provider(create: (context) => AccountBloc(bgChannel: bgChannel)),
+      Provider(create: (context) => BatteryPermissionCubit(context.read())),
     ], child: const OAVappView());
   }
 }
