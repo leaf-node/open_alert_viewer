@@ -8,6 +8,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import 'ui/alerts/bloc/alerts_bloc.dart';
 import 'ui/alerts/bloc/refresh_bloc.dart';
@@ -45,35 +46,30 @@ class OAVapp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SettingsRepo.appVersion = appVersion;
-    return MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider(create: (context) => SettingsRepo(db: db)),
-          RepositoryProvider(create: (context) => AccountsRepo(db: db)),
-          RepositoryProvider(
-              create: (context) => StickyNotificationRepo(
-                  settings: context.read<SettingsRepo>())),
-          RepositoryProvider(
-              create: (context) => BatteryPermissionRepo(
-                  settings: context.read<SettingsRepo>())),
-        ],
-        child: MultiBlocProvider(providers: [
-          BlocProvider(create: (context) => NavBloc()),
-          BlocProvider(
-              create: (context) => NotificationBloc(
-                  notificationRepo: context.read<StickyNotificationRepo>(),
-                  bgChannel: bgChannel)),
-          BlocProvider(
-              create: (context) => RefreshIconBloc(bgChannel: bgChannel)),
-          BlocProvider(create: (context) => AlertsBloc(bgChannel: bgChannel)),
-          BlocProvider(
-              create: (context) => SettingsBloc(
-                  settings: context.read<SettingsRepo>(),
-                  bgChannel: bgChannel)),
-          BlocProvider(create: (context) => AccountBloc(bgChannel: bgChannel)),
-          BlocProvider(
-              create: (context) => BatteryPermissionCubit(
-                  context.read<BatteryPermissionRepo>())),
-        ], child: const OAVappView()));
+    return MultiProvider(providers: [
+      Provider(create: (context) => SettingsRepo(db: db)),
+      Provider(create: (context) => AccountsRepo(db: db)),
+      Provider(
+          create: (context) =>
+              StickyNotificationRepo(settings: context.read<SettingsRepo>())),
+      Provider(
+          create: (context) =>
+              BatteryPermissionRepo(settings: context.read<SettingsRepo>())),
+      Provider(create: (context) => NavBloc()),
+      Provider(
+          create: (context) => NotificationBloc(
+              notificationRepo: context.read<StickyNotificationRepo>(),
+              bgChannel: bgChannel)),
+      Provider(create: (context) => RefreshIconBloc(bgChannel: bgChannel)),
+      Provider(create: (context) => AlertsBloc(bgChannel: bgChannel)),
+      Provider(
+          create: (context) => SettingsBloc(
+              settings: context.read<SettingsRepo>(), bgChannel: bgChannel)),
+      Provider(create: (context) => AccountBloc(bgChannel: bgChannel)),
+      Provider(
+          create: (context) =>
+              BatteryPermissionCubit(context.read<BatteryPermissionRepo>())),
+    ], child: const OAVappView());
   }
 }
 
