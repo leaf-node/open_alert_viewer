@@ -64,10 +64,10 @@ class SettingsList extends StatelessWidget {
             title: "About App",
             onTap: () => context.read<NavBloc>().add(OpenAboutScreenEvent())),
         const MenuHeaderTile(title: "Accounts"),
-        for (AlertSource account in state.sources)
+        for (AlertSourceData account in state.sources)
           MenuItem(
               icon: Icons.manage_accounts,
-              title: account.sourceData.name,
+              title: account.name,
               onTap: () => context
                   .read<NavBloc>()
                   .add(OpenAccountSettingsScreenEvent(source: account))),

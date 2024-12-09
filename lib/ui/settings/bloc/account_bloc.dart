@@ -56,9 +56,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
           needsCheck: false,
           checkingNow: true,
           responded: false));
-      event.sourceData.serial = accountCheckSerial = _genRandom();
+      AlertSourceData sourceData =
+          event.sourceData.copyWith(serial: accountCheckSerial = _genRandom());
       _bgChannel.makeRequest(IsolateMessage(
-          name: MessageName.confirmSources, sourceData: event.sourceData));
+          name: MessageName.confirmSources, sourceData: sourceData));
     }
   }
 

@@ -31,7 +31,7 @@ class AlertsBackgroundRepo {
   final SourcesBackgroundRepo _sourcesRepo;
   final NotificationsBackgroundRepo _notifier;
   late StreamController<IsolateMessage> _outboundStream;
-  List<AlertSource> _alertSources;
+  List<AlertSourceData> _alertSources;
   List<Alert> _alerts;
   Timer? _timer;
   bool _fetching = false;
@@ -53,7 +53,7 @@ class AlertsBackgroundRepo {
         name: MessageName.alertsFetching,
         destination: MessageDestination.alerts,
         alerts: _alerts,
-        sources: _alertSources));
+        allSources: _alertSources));
     _outboundStream.add(const IsolateMessage(
         name: MessageName.showRefreshIndicator,
         destination: MessageDestination.refreshIcon,
@@ -86,7 +86,7 @@ class AlertsBackgroundRepo {
         .where((oldAlert) => oldAlert.kind == AlertType.syncFailure)
         .toList();
     for (var source in _alertSources) {
-      var sourceFuture = source.fetchAlerts();
+      var sourceFuture = _sourcesRepo.getClassedSource(source).fetchAlerts();
       sourceFuture = sourceFuture.catchError((Object error) {
         String message;
         if (error is Error) {
@@ -96,9 +96,9 @@ class AlertsBackgroundRepo {
         }
         return Future.value([
           Alert(
-              source: source.sourceData.id!,
+              source: source.id!,
               kind: AlertType.syncFailure,
-              hostname: source.sourceData.name,
+              hostname: source.name,
               service: "OAV",
               message: "Error fetching alerts. "
                   "Please open an issue using the link icon to the left to "
@@ -109,9 +109,9 @@ class AlertsBackgroundRepo {
               downtimeScheduled: false,
               active: true),
           Alert(
-              source: source.sourceData.id!,
+              source: source.id!,
               kind: AlertType.syncFailure,
-              hostname: source.sourceData.name,
+              hostname: source.name,
               service: "OAV",
               message: message,
               url: "https://github.com/okcode-studio/open_alert_viewer/issues",
@@ -123,21 +123,19 @@ class AlertsBackgroundRepo {
       });
       incoming.add(sourceFuture);
       incoming.last.then((List<Alert> newAlerts) {
-        bool priorValue = source.sourceData.failing;
+        bool priorValue = source.failing;
         if (newAlerts
             .where((v) => v.kind == AlertType.syncFailure)
             .isNotEmpty) {
-          source.sourceData.failing = true;
+          source = source.copyWith(failing: true);
         } else {
-          source.sourceData.failing = false;
+          source = source.copyWith(failing: false);
         }
-        if (source.sourceData.failing != priorValue) {
-          _sourcesRepo.updateSource(sourceData: source.sourceData);
+        if (source.failing != priorValue) {
+          _sourcesRepo.updateSource(sourceData: source);
         }
         var updatedAlerts = _updateSyncFailureAges(newAlerts, oldSyncFailures);
-        _alerts = _alerts
-            .where((alert) => alert.source != source.sourceData.id)
-            .toList();
+        _alerts = _alerts.where((alert) => alert.source != source.id).toList();
         _alerts.addAll(updatedAlerts);
         _alerts.sort(_alertSort);
         _outboundStream.add(IsolateMessage(
@@ -156,10 +154,10 @@ class AlertsBackgroundRepo {
         alerts: _alerts));
     _cacheAlerts();
     for (var source in _alertSources) {
-      if (!source.sourceData.failing) {
-        source.sourceData.priorFetch = source.sourceData.lastFetch;
-        source.sourceData.lastFetch = currentFetch;
-        _sourcesRepo.updateSource(sourceData: source.sourceData);
+      if (!source.failing) {
+        source = source.copyWith(
+            priorFetch: source.lastFetch, lastFetch: currentFetch);
+        _sourcesRepo.updateSource(sourceData: source);
       }
     }
     _settings.priorFetch = _settings.lastFetched;
@@ -169,7 +167,9 @@ class AlertsBackgroundRepo {
         destination: MessageDestination.alerts,
         alerts: _alerts));
     _notifier.showFilteredNotifications(
-        alerts: _alerts, sources: _alertSources, alertStream: _outboundStream);
+        alerts: _alerts,
+        allSources: _alertSources,
+        alertStream: _outboundStream);
     _fetching = false;
   }
 

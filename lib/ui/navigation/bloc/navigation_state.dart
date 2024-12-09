@@ -29,7 +29,7 @@ final class ShowGeneralSettingsScreen extends NavState {
 final class ShowAccountSettingsScreen extends NavState {
   ShowAccountSettingsScreen({required this.source});
 
-  final AlertSource? source;
+  final AlertSourceData? source;
 }
 
 final class ShowLicensingScreen extends NavState {

@@ -23,10 +23,10 @@ class AccountSettingsScreen extends StatefulWidget {
       {super.key, required this.title, required this.source});
 
   final String title;
-  final AlertSource? source;
+  final AlertSourceData? source;
 
   static Route<void> route(
-      {required String title, required AlertSource? source}) {
+      {required String title, required AlertSourceData? source}) {
     return MaterialPageRoute<void>(
         builder: (_) => AccountSettingsScreen(title: title, source: source));
   }
@@ -79,17 +79,17 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
       );
     } else {
       return AlertSourceData(
-        id: widget.source!.sourceData.id,
+        id: widget.source!.id,
         name: nameController.text,
         type: int.parse(typeController.text),
         authType: AuthTypes.basicAuth.value,
         baseURL: baseURLController.text,
         username: userController.text,
         password: passwordController.text,
-        failing: widget.source?.sourceData.failing ?? false,
-        lastSeen: widget.source?.sourceData.lastSeen ?? epoch,
-        priorFetch: widget.source?.sourceData.priorFetch ?? epoch,
-        lastFetch: widget.source?.sourceData.lastFetch ?? epoch,
+        failing: widget.source?.failing ?? false,
+        lastSeen: widget.source?.lastSeen ?? epoch,
+        priorFetch: widget.source?.priorFetch ?? epoch,
+        lastFetch: widget.source?.lastFetch ?? epoch,
         errorMessage: "",
         accessToken: accessTokenController.text,
         isValid: isValid,
@@ -112,7 +112,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
   }
 
   bool didDataChange() {
-    final sourceData = widget.source?.sourceData;
+    final sourceData = widget.source;
     if (nameController.text == (sourceData?.name ?? "") &&
         typeController.text == (sourceData?.type.toString() ?? "0") &&
         baseURLController.text == (sourceData?.baseURL ?? "") &&
@@ -137,13 +137,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
       accessTokenController.text = "";
       isValid = null;
     } else {
-      nameController.text = widget.source!.sourceData.name;
-      typeController.text = widget.source!.sourceData.type.toString();
-      baseURLController.text = widget.source!.sourceData.baseURL;
-      userController.text = widget.source!.sourceData.username;
-      passwordController.text = widget.source!.sourceData.password;
-      accessTokenController.text = widget.source!.sourceData.accessToken;
-      isValid = widget.source!.sourceData.isValid;
+      nameController.text = widget.source!.name;
+      typeController.text = widget.source!.type.toString();
+      baseURLController.text = widget.source!.baseURL;
+      userController.text = widget.source!.username;
+      passwordController.text = widget.source!.password;
+      accessTokenController.text = widget.source!.accessToken;
+      isValid = widget.source!.isValid;
     }
     accountBloc = context.read<AccountBloc>();
   }
@@ -232,7 +232,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                                 controller: nameController,
                                 validator: (String? value) {
                                   int? id;
-                                  id = widget.source?.sourceData.id;
+                                  id = widget.source?.id;
                                   if (value == null || value == "") {
                                     return "Please enter a name";
                                   }
@@ -301,8 +301,9 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                         cancellable: true,
                         reverseColors: true);
                     if (context.mounted && result) {
-                      context.read<AlertsBloc>().add(
-                          RemoveAlertSource(id: widget.source!.sourceData.id!));
+                      context
+                          .read<AlertsBloc>()
+                          .add(RemoveAlertSource(id: widget.source!.id!));
                       Navigator.of(context).pop();
                     }
                   } else {

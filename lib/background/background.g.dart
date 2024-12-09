@@ -6,8 +6,8 @@ part of 'background.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-IsolateMessage _$IsolateMessageFromJson(Map<String, dynamic> json) =>
-    IsolateMessage(
+_$IsolateMessageImpl _$$IsolateMessageImplFromJson(Map<String, dynamic> json) =>
+    _$IsolateMessageImpl(
       name: $enumDecode(_$MessageNameEnumMap, json['name']),
       destination:
           $enumDecodeNullable(_$MessageDestinationEnumMap, json['destination']),
@@ -19,21 +19,22 @@ IsolateMessage _$IsolateMessageFromJson(Map<String, dynamic> json) =>
           ? null
           : AlertSourceData.fromJson(
               json['sourceData'] as Map<String, dynamic>),
-      sources: (json['sources'] as List<dynamic>?)
-          ?.map((e) => AlertSource.fromJson(e as Map<String, dynamic>))
+      allSources: (json['allSources'] as List<dynamic>?)
+          ?.map((e) => AlertSourceData.fromJson(e as Map<String, dynamic>))
           .toList(),
       forceRefreshNow: json['forceRefreshNow'] as bool?,
       alreadyFetching: json['alreadyFetching'] as bool?,
     );
 
-Map<String, dynamic> _$IsolateMessageToJson(IsolateMessage instance) =>
+Map<String, dynamic> _$$IsolateMessageImplToJson(
+        _$IsolateMessageImpl instance) =>
     <String, dynamic>{
       'name': _$MessageNameEnumMap[instance.name]!,
       'destination': _$MessageDestinationEnumMap[instance.destination],
       'id': instance.id,
-      'alerts': instance.alerts?.map((e) => e.toJson()).toList(),
-      'sourceData': instance.sourceData?.toJson(),
-      'sources': instance.sources?.map((e) => e.toJson()).toList(),
+      'alerts': instance.alerts,
+      'sourceData': instance.sourceData,
+      'allSources': instance.allSources,
       'forceRefreshNow': instance.forceRefreshNow,
       'alreadyFetching': instance.alreadyFetching,
     };

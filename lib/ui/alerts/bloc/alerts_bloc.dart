@@ -61,11 +61,11 @@ class AlertsBloc extends Bloc<AlertEvent, AlertState> {
   Future<void> _listenForAlerts(
       ListenForAlerts event, Emitter<AlertState> emit) async {
     List<Alert> alerts = [];
-    List<AlertSource> sources = [];
+    List<AlertSourceData> sources = [];
     await for (final message
         in _bgChannel.isolateStreams[MessageDestination.alerts]!.stream) {
       alerts = message.alerts ?? alerts;
-      sources = message.sources ?? sources;
+      sources = message.allSources ?? sources;
       if (message.name == MessageName.alertsInit) {
         emit(AlertsInit(alerts: alerts, sources: sources));
       } else if (message.name == MessageName.alertsFetching) {

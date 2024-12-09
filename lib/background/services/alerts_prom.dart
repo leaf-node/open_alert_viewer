@@ -5,10 +5,10 @@
  */
 
 import '../../domain/alerts.dart';
-import '../../data/services/network_fetch.dart';
 import '../../utils/utils.dart';
+import 'alerts.dart';
 
-class PromAlerts extends AlertSource with NetworkFetch {
+class PromAlerts extends AlertSource {
   PromAlerts({required super.sourceData});
 
   static const endpoint = "/api/v2/alerts";

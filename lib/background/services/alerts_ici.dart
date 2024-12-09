@@ -5,8 +5,8 @@
  */
 
 import '../../domain/alerts.dart';
-import '../../data/services/network_fetch.dart';
 import '../../utils/utils.dart';
+import 'alerts.dart';
 
 enum StatusType { hostStatus, serviceStatus }
 
@@ -32,7 +32,7 @@ enum ServiceStatus {
   final AlertType alertType;
 }
 
-class IciAlerts extends AlertSource with NetworkFetch {
+class IciAlerts extends AlertSource {
   IciAlerts({required super.sourceData})
       : epoch = DateTime.fromMillisecondsSinceEpoch(0) {
     endpoints = {

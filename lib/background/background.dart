@@ -8,7 +8,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:isolate';
 
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../domain/alerts.dart';
 import '../data/repositories/settings_repository.dart';
@@ -17,6 +17,7 @@ import 'repositories/alerts_background_repo.dart';
 import 'repositories/notifications_background_repo.dart';
 import 'repositories/sources_background_repo.dart';
 
+part 'background.freezed.dart';
 part 'background.g.dart';
 
 enum MessageName {
@@ -47,30 +48,21 @@ enum MessageDestination {
   accountSettings,
 }
 
-@JsonSerializable(explicitToJson: true)
-class IsolateMessage {
-  const IsolateMessage(
-      {required this.name,
-      this.destination,
-      this.id,
-      this.alerts,
-      this.sourceData,
-      this.sources,
-      this.forceRefreshNow,
-      this.alreadyFetching});
-  final MessageName name;
-  final MessageDestination? destination;
-  final int? id;
-  final List<Alert>? alerts;
-  final AlertSourceData? sourceData;
-  final List<AlertSource>? sources;
-  final bool? forceRefreshNow;
-  final bool? alreadyFetching;
+@freezed
+class IsolateMessage with _$IsolateMessage {
+  const factory IsolateMessage({
+    required MessageName name,
+    MessageDestination? destination,
+    int? id,
+    List<Alert>? alerts,
+    AlertSourceData? sourceData,
+    List<AlertSourceData>? allSources,
+    bool? forceRefreshNow,
+    bool? alreadyFetching,
+  }) = _IsolateMessage;
 
   factory IsolateMessage.fromJson(Map<String, dynamic> json) =>
       _$IsolateMessageFromJson(json);
-
-  Map<String, dynamic> toJson() => _$IsolateMessageToJson(this);
 }
 
 abstract class BackgroundChannel {

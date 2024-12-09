@@ -14,6 +14,7 @@ import '../../data/repositories/settings_repository.dart';
 import '../../data/services/database.dart';
 import '../../data/services/network_fetch.dart';
 import '../background.dart';
+import '../services/alerts.dart';
 import '../services/alerts_ici.dart';
 import '../services/alerts_nag.dart';
 import '../services/alerts_null.dart';
@@ -33,30 +34,27 @@ class SourcesBackgroundRepo with NetworkFetch {
   final SettingsRepo _settings;
   final StreamController<IsolateMessage> _outboundStream;
 
-  List<AlertSource> get alertSources {
-    List<AlertSource> sources = [];
-    List<AlertSourceData> sourceDataArray = _db.listSources();
+  List<AlertSourceData> get alertSources => _db.listSources();
+
+  AlertSource getClassedSource(AlertSourceData sourceData) {
     AlertSource Function({required AlertSourceData sourceData}) alertSource;
-    for (var sourceData in sourceDataArray) {
-      var enumType =
-          SourceTypes.values.singleWhere((e) => e.value == sourceData.type);
-      switch (enumType) {
-        case SourceTypes.nullType:
-          alertSource = NullAlerts.new;
-        case SourceTypes.autodetect:
-          alertSource = NullAlerts.new;
-        case SourceTypes.demo:
-          alertSource = RandomAlerts.new;
-        case SourceTypes.prom:
-          alertSource = PromAlerts.new;
-        case SourceTypes.nag:
-          alertSource = NagAlerts.new;
-        case SourceTypes.ici:
-          alertSource = IciAlerts.new;
-      }
-      sources.add(alertSource(sourceData: sourceData));
+    var enumType =
+        SourceTypes.values.singleWhere((e) => e.value == sourceData.type);
+    switch (enumType) {
+      case SourceTypes.nullType:
+        alertSource = NullAlerts.new;
+      case SourceTypes.autodetect:
+        alertSource = NullAlerts.new;
+      case SourceTypes.demo:
+        alertSource = RandomAlerts.new;
+      case SourceTypes.prom:
+        alertSource = PromAlerts.new;
+      case SourceTypes.nag:
+        alertSource = NagAlerts.new;
+      case SourceTypes.ici:
+        alertSource = IciAlerts.new;
     }
-    return sources;
+    return alertSource(sourceData: sourceData);
   }
 
   void addSource({required AlertSourceData sourceData}) {
@@ -80,9 +78,9 @@ class SourcesBackgroundRepo with NetworkFetch {
   void updateLastSeen() {
     _settings.lastSeen = _settings.lastFetched;
     for (var source in alertSources) {
-      if (!source.sourceData.failing) {
-        source.sourceData.lastSeen = _settings.lastFetched;
-        updateSource(sourceData: source.sourceData);
+      if (!source.failing) {
+        var sourceData = source.copyWith(lastSeen: _settings.lastFetched);
+        updateSource(sourceData: sourceData);
       }
     }
   }
@@ -100,19 +98,20 @@ class SourcesBackgroundRepo with NetworkFetch {
     if ((sourceData.type == SourceTypes.demo.value ||
             sourceData.type == SourceTypes.autodetect.value) &&
         sourceData.baseURL == "demo") {
-      sourceData.type = SourceTypes.demo.value;
-      sourceData.isValid = true;
+      sourceData =
+          sourceData.copyWith(type: SourceTypes.demo.value, isValid: true);
       return sourceData;
     } else if (sourceData.type == SourceTypes.demo.value &&
         sourceData.baseURL != "demo") {
-      sourceData.isValid = false;
-      sourceData.errorMessage = "Invalid demo configuration";
+      sourceData = sourceData.copyWith(
+          isValid: false, errorMessage: "Invalid demo configuration");
       return sourceData;
     }
     bool success;
     AlertSourceData newSourceData;
     AlertSourceData prevNewSourceData;
-    sourceData.baseURL = sourceData.baseURL.replaceAll(RegExp(r"[?&].*$"), "");
+    sourceData = sourceData.copyWith(
+        baseURL: sourceData.baseURL.replaceAll(RegExp(r"[?&].*$"), ""));
     (success, newSourceData) = await checkSource(
         sourceType: SourceTypes.prom,
         sourceData: sourceData,
@@ -150,9 +149,10 @@ class SourcesBackgroundRepo with NetworkFetch {
     } else if (sourceData.type == SourceTypes.ici.value) {
       return prevNewSourceData;
     }
-    sourceData.isValid = false;
+    sourceData = sourceData.copyWith(isValid: false);
     if (sourceData.type == SourceTypes.autodetect.value) {
-      sourceData.errorMessage = "Choose account type for details";
+      sourceData =
+          sourceData.copyWith(errorMessage: "Choose account type for details");
     }
     return sourceData;
   }
@@ -163,17 +163,17 @@ class SourcesBackgroundRepo with NetworkFetch {
       required String trimRegex,
       required String apiEndpoint,
       int? fallbackPort}) async {
-    sourceData = sourceData.copy();
     if (sourceData.type == sourceType.value ||
         sourceData.type == SourceTypes.autodetect.value) {
       try {
         if (fallbackPort != null &&
             !sourceData.baseURL
                 .contains(RegExp("^(https?://)?[^:/]+:[0-9]+(/.*)?"))) {
-          sourceData.baseURL = sourceData.baseURL.replaceAllMapped(
-              RegExp(r"^((https?://)?[^:/]+)(/.*)?"), (match) {
+          sourceData = sourceData.copyWith(
+              baseURL: sourceData.baseURL.replaceAllMapped(
+                  RegExp(r"^((https?://)?[^:/]+)(/.*)?"), (match) {
             return "${match.group(1)}:$fallbackPort${match.group(3) ?? ""}";
-          });
+          }));
         }
         var trimmedBaseURL =
             sourceData.baseURL.replaceFirst(RegExp(trimRegex), "");
@@ -181,41 +181,41 @@ class SourcesBackgroundRepo with NetworkFetch {
             sourceData.password, apiEndpoint,
             maxTimeout: 5);
         if (response.statusCode == 200) {
-          sourceData.type = sourceType.value;
-          sourceData.baseURL = trimmedBaseURL;
-          sourceData.isValid = true;
+          sourceData = sourceData.copyWith(
+              type: sourceType.value, baseURL: trimmedBaseURL, isValid: true);
           return (true, sourceData);
         } else {
-          sourceData.errorMessage =
-              "${response.statusCode}: ${response.reasonPhrase ?? ""}";
+          sourceData = sourceData.copyWith(
+              errorMessage:
+                  "${response.statusCode}: ${response.reasonPhrase ?? ""}");
         }
       } on SocketException catch (e) {
-        sourceData.errorMessage = e.message;
+        sourceData = sourceData.copyWith(errorMessage: e.message);
       } on HandshakeException catch (e) {
-        sourceData.errorMessage = e.message;
+        sourceData = sourceData.copyWith(errorMessage: e.message);
       } on FormatException catch (e) {
-        sourceData.errorMessage = e.message;
+        sourceData = sourceData.copyWith(errorMessage: e.message);
       } on ClientException catch (e) {
-        sourceData.errorMessage = e.message;
+        sourceData = sourceData.copyWith(errorMessage: e.message);
       } catch (e) {
         // fall through
       }
     }
-    sourceData.isValid = false;
+    sourceData = sourceData.copyWith(isValid: false);
     return (false, sourceData);
   }
 
   static void _sourcesChangeResult(StreamController<IsolateMessage> stream,
-      List<AlertSource> sources, bool success) {
+      List<AlertSourceData> sources, bool success) {
     if (success) {
       stream.add(IsolateMessage(
           name: MessageName.sourcesChanged,
-          sources: sources,
+          allSources: sources,
           destination: MessageDestination.alerts));
     } else {
       stream.add(IsolateMessage(
           name: MessageName.sourcesFailure,
-          sources: sources,
+          allSources: sources,
           destination: MessageDestination.alerts));
     }
   }

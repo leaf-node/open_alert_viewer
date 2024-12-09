@@ -7,6 +7,7 @@
 import 'dart:math';
 
 import '../../domain/alerts.dart';
+import 'alerts.dart';
 
 class RandomAlerts extends AlertSource {
   RandomAlerts({required super.sourceData})
@@ -19,7 +20,7 @@ class RandomAlerts extends AlertSource {
   @override
   Future<List<Alert>> fetchAlerts() async {
     if (!(sourceData.isValid ?? false)) {
-      return alertForInvalidSource(sourceData);
+      return alertForInvalidSource();
     }
     List<Alert> nextAlerts = [];
     int count = 20 + _randomSeed.nextInt(20);

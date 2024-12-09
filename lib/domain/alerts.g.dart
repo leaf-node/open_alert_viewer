@@ -6,7 +6,7 @@ part of 'alerts.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Alert _$AlertFromJson(Map<String, dynamic> json) => Alert(
+_$AlertImpl _$$AlertImplFromJson(Map<String, dynamic> json) => _$AlertImpl(
       source: (json['source'] as num).toInt(),
       kind: $enumDecode(_$AlertTypeEnumMap, json['kind']),
       hostname: json['hostname'] as String,
@@ -19,7 +19,8 @@ Alert _$AlertFromJson(Map<String, dynamic> json) => Alert(
       active: json['active'] as bool,
     );
 
-Map<String, dynamic> _$AlertToJson(Alert instance) => <String, dynamic>{
+Map<String, dynamic> _$$AlertImplToJson(_$AlertImpl instance) =>
+    <String, dynamic>{
       'source': instance.source,
       'kind': _$AlertTypeEnumMap[instance.kind]!,
       'hostname': instance.hostname,
@@ -45,8 +46,9 @@ const _$AlertTypeEnumMap = {
   AlertType.syncFailure: 'syncFailure',
 };
 
-AlertSourceData _$AlertSourceDataFromJson(Map<String, dynamic> json) =>
-    AlertSourceData(
+_$AlertSourceDataImpl _$$AlertSourceDataImplFromJson(
+        Map<String, dynamic> json) =>
+    _$AlertSourceDataImpl(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String,
       type: (json['type'] as num).toInt(),
@@ -64,7 +66,8 @@ AlertSourceData _$AlertSourceDataFromJson(Map<String, dynamic> json) =>
       serial: (json['serial'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$AlertSourceDataToJson(AlertSourceData instance) =>
+Map<String, dynamic> _$$AlertSourceDataImplToJson(
+        _$AlertSourceDataImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -81,14 +84,4 @@ Map<String, dynamic> _$AlertSourceDataToJson(AlertSourceData instance) =>
       'isValid': instance.isValid,
       'accessToken': instance.accessToken,
       'serial': instance.serial,
-    };
-
-AlertSource _$AlertSourceFromJson(Map<String, dynamic> json) => AlertSource(
-      sourceData:
-          AlertSourceData.fromJson(json['sourceData'] as Map<String, dynamic>),
-    );
-
-Map<String, dynamic> _$AlertSourceToJson(AlertSource instance) =>
-    <String, dynamic>{
-      'sourceData': instance.sourceData,
     };

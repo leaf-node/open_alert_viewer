@@ -10,7 +10,7 @@ abstract class AlertState {
   const AlertState({required this.alerts, required this.sources});
 
   final List<Alert> alerts;
-  final List<AlertSource> sources;
+  final List<AlertSourceData> sources;
 }
 
 final class AlertsInit extends AlertState {

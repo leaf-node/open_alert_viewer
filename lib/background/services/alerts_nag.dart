@@ -5,8 +5,8 @@
  */
 
 import '../../domain/alerts.dart';
-import '../../data/services/network_fetch.dart';
 import '../../utils/utils.dart';
+import 'alerts.dart';
 
 enum StatusType { hostStatus, serviceStatus }
 
@@ -34,7 +34,7 @@ enum ServiceStatus {
   final AlertType alertType;
 }
 
-class NagAlerts extends AlertSource with NetworkFetch {
+class NagAlerts extends AlertSource {
   NagAlerts({required super.sourceData})
       : epoch = DateTime.fromMillisecondsSinceEpoch(0),
         apiPath = "/cgi-bin/statusjson.cgi" {

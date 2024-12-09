@@ -5,13 +5,13 @@
  */
 
 import '../../domain/alerts.dart';
-import '../../data/services/network_fetch.dart';
+import 'alerts.dart';
 
-class NullAlerts extends AlertSource with NetworkFetch {
+class NullAlerts extends AlertSource {
   NullAlerts({required super.sourceData});
 
   @override
   Future<List<Alert>> fetchAlerts() async {
-    return alertForInvalidSource(sourceData);
+    return alertForInvalidSource();
   }
 }

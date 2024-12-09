@@ -95,17 +95,17 @@ class NotificationsBackgroundRepo {
 
   Future<void> showFilteredNotifications(
       {required List<Alert> alerts,
-      required List<AlertSource> sources,
+      required List<AlertSourceData> allSources,
       StreamController<IsolateMessage>? alertStream}) async {
     Map<int, Duration> sinceLookedPerSource = {};
-    for (var source in sources) {
-      sinceLookedPerSource[source.sourceData.id!] =
-          source.sourceData.lastFetch.difference(source.sourceData.lastSeen);
+    for (var sourceData in allSources) {
+      sinceLookedPerSource[sourceData.id!] =
+          sourceData.lastFetch.difference(sourceData.lastSeen);
     }
     Map<int, Duration> sincePriorFetchPerSource = {};
-    for (var source in sources) {
-      sincePriorFetchPerSource[source.sourceData.id!] =
-          source.sourceData.lastFetch.difference(source.sourceData.priorFetch);
+    for (var sourceData in allSources) {
+      sincePriorFetchPerSource[sourceData.id!] =
+          sourceData.lastFetch.difference(sourceData.priorFetch);
     }
     Duration globalSinceLooked =
         _settings.lastFetched.difference(_settings.lastSeen);

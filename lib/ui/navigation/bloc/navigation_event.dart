@@ -19,7 +19,7 @@ final class OpenAboutScreenEvent implements NavEvent {}
 final class OpenAccountSettingsScreenEvent implements NavEvent {
   OpenAccountSettingsScreenEvent({required this.source});
 
-  final AlertSource? source;
+  final AlertSourceData? source;
 }
 
 final class OpenLicensingScreenEvent implements NavEvent {}
