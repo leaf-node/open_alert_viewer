@@ -12,12 +12,12 @@ import 'package:http/http.dart';
 import '../../data/services/network_fetch.dart';
 import '../../domain/alerts.dart';
 
-class AlertSource with NetworkFetch {
+abstract class AlertSource with NetworkFetch {
   const AlertSource({required this.sourceData});
 
   final AlertSourceData sourceData;
 
-  Future<List<Alert>> fetchAlerts() async => [];
+  Future<List<Alert>> fetchAlerts();
 
   List<Alert> alertForInvalidSource() {
     final error = sourceData.errorMessage;
