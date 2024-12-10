@@ -187,11 +187,14 @@ class BackgroundChannelInternal with BackgroundTranslator {
         _sourcesRepo.confirmSource(message);
       } else if (message.name == MessageName.addSource) {
         _sourcesRepo.addSource(sourceData: message.sourceData!);
+        _alertsRepo.fetchAlerts(forceRefreshNow: true);
       } else if (message.name == MessageName.updateSource) {
         _sourcesRepo.updateSource(
             sourceData: message.sourceData!, updateUIandRefresh: true);
+        _alertsRepo.fetchAlerts(forceRefreshNow: true);
       } else if (message.name == MessageName.removeSource) {
         _sourcesRepo.removeSource(id: message.id!);
+        _alertsRepo.fetchAlerts(forceRefreshNow: true);
       } else if (message.name == MessageName.updateLastSeen) {
         _sourcesRepo.updateLastSeen();
       } else if (message.name == MessageName.enableNotifications) {
