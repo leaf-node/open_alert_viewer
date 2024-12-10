@@ -92,7 +92,7 @@ class BackgroundChannelExternal with BackgroundTranslator {
   }
   final Map<MessageDestination, StreamController<IsolateMessage>>
       isolateStreams = {};
-  final Completer<void> isolateReady = Completer.sync();
+  final Completer<void> isolateReady = Completer();
   late SendPort sendPort;
 
   void handleResponsesFromBackground(dynamic rawMessage) {
