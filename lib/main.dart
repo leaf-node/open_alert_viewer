@@ -9,7 +9,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'app.dart';
+import 'ui/core/view/app.dart';
 import 'data/services/database.dart';
 import 'background/background.dart';
 import 'background/background_desktop.dart';

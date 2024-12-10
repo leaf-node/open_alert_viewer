@@ -11,8 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/repositories/settings_repository.dart';
-import '../../navigation/bloc/navigation_bloc.dart';
-import '../../navigation/bloc/navigation_event.dart';
+import '../../core/bloc/navigation_bloc.dart';
+import '../../core/bloc/navigation_event.dart';
 import '../widgets/settings_widgets.dart';
 
 class AboutScreen extends StatelessWidget {

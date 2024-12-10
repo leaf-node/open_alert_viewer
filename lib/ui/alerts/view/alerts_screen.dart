@@ -7,8 +7,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../navigation/bloc/navigation_bloc.dart';
-import '../../navigation/bloc/navigation_event.dart';
+import '../../core/bloc/navigation_bloc.dart';
+import '../../core/bloc/navigation_event.dart';
 import '../../../data/repositories/settings_repository.dart';
 import '../../core/widgets/app_view_elements.dart';
 import '../../settings/bloc/settings_bloc.dart';

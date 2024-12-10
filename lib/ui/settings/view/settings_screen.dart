@@ -10,8 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_state.dart';
 import '../../../domain/alerts.dart';
-import '../../navigation/bloc/navigation_bloc.dart';
-import '../../navigation/bloc/navigation_event.dart';
+import '../../core/bloc/navigation_bloc.dart';
+import '../../core/bloc/navigation_event.dart';
 import '../widgets/settings_widgets.dart';
 
 class SettingsScreen extends StatelessWidget {
