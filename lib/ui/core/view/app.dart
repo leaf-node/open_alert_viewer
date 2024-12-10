@@ -9,6 +9,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../domain/navigation.dart';
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/refresh_bloc.dart';
 import '../../alerts/view/alerts_screen.dart';
@@ -55,9 +56,12 @@ class OAVapp extends StatelessWidget {
           RepositoryProvider(
               create: (context) => BatteryPermissionRepo(
                   settings: context.read<SettingsRepo>())),
+          RepositoryProvider(create: (context) => Navigation()),
         ],
         child: MultiBlocProvider(providers: [
-          BlocProvider(create: (context) => NavBloc()),
+          BlocProvider(
+              create: (context) =>
+                  NavBloc(navigation: context.read<Navigation>())),
           BlocProvider(
               create: (context) => NotificationBloc(
                   notificationRepo: context.read<StickyNotificationRepo>(),

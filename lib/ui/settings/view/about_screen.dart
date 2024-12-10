@@ -11,8 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/repositories/settings_repository.dart';
-import '../../core/bloc/navigation_bloc.dart';
-import '../../core/bloc/navigation_event.dart';
+import '../../../domain/navigation.dart';
 import '../widgets/settings_widgets.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -41,13 +40,13 @@ class AboutList extends StatelessWidget {
           icon: Icons.article_outlined,
           title: "App and License Info",
           onTap: () async {
-            context.read<NavBloc>().add(OpenLicensingScreenEvent());
+            context.read<Navigation>().goTo(Screens.licensing);
           }),
       MenuItem(
           icon: Icons.person_search_outlined,
           title: "Privacy Policy",
           onTap: () async {
-            context.read<NavBloc>().add(OpenPrivacyScreenEvent());
+            context.read<Navigation>().goTo(Screens.privacy);
           }),
       MenuItem(
           icon: Icons.support_outlined,

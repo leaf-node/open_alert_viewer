@@ -4,51 +4,46 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+
+import '../../../domain/alerts.dart';
+import '../../../domain/navigation.dart';
 import 'navigation_event.dart';
 import 'navigation_state.dart';
 
 class NavBloc extends Bloc<NavEvent, NavState> {
-  NavBloc() : super(ShowAlertsScreen()) {
-    on<OpenAlertsScreenEvent>(_openAlertsScreen);
-    on<OpenSettingsScreenEvent>(_openSettingsScreen);
-    on<OpenGeneralSettingsScreenEvent>(_openGeneralSettingsScreen);
-    on<OpenAboutScreenEvent>(_openAboutScreen);
-    on<OpenAccountSettingsScreenEvent>(_openAccountSettingsScreen);
-    on<OpenLicensingScreenEvent>(_openLicensingScreen);
-    on<OpenPrivacyScreenEvent>(_openPrivacyScreen);
+  NavBloc({required this.navigation}) : super(ShowAlertsScreen()) {
+    on<ListenForScreens>(_listenForNavigation);
+    add(ListenForScreens());
   }
 
-  void _openAlertsScreen(OpenAlertsScreenEvent event, Emitter<NavState> emit) {
-    emit(ShowAlertsScreen());
-  }
+  final Navigation navigation;
 
-  void _openSettingsScreen(
-      OpenSettingsScreenEvent event, Emitter<NavState> emit) {
-    emit(ShowSettingsScreen());
-  }
-
-  void _openGeneralSettingsScreen(
-      OpenGeneralSettingsScreenEvent event, Emitter<NavState> emit) {
-    emit(ShowGeneralSettingsScreen());
-  }
-
-  void _openAboutScreen(OpenAboutScreenEvent event, Emitter<NavState> emit) {
-    emit(ShowAboutScreen());
-  }
-
-  void _openAccountSettingsScreen(
-      OpenAccountSettingsScreenEvent event, Emitter<NavState> emit) {
-    emit(ShowAccountSettingsScreen(source: event.source));
-  }
-
-  void _openLicensingScreen(
-      OpenLicensingScreenEvent event, Emitter<NavState> emit) {
-    emit(ShowLicensingScreen());
-  }
-
-  void _openPrivacyScreen(
-      OpenPrivacyScreenEvent event, Emitter<NavState> emit) {
-    emit(ShowPrivacyScreen());
+  Future<void> _listenForNavigation(
+      ListenForScreens event, Emitter<NavState> emit) async {
+    await navigation.ready.future;
+    await for (final tuple in navigation.stream!) {
+      Screens screen;
+      Object? data;
+      (screen, data) = tuple;
+      switch (screen) {
+        case Screens.alerts:
+          emit(ShowAlertsScreen());
+        case Screens.settings:
+          emit(ShowSettingsScreen());
+        case Screens.generalSettings:
+          emit(ShowGeneralSettingsScreen());
+        case Screens.about:
+          emit(ShowAboutScreen());
+        case Screens.accountSettings:
+          emit(ShowAccountSettingsScreen(source: data as AlertSourceData?));
+        case Screens.licensing:
+          emit(ShowLicensingScreen());
+        case Screens.privacy:
+          emit(ShowPrivacyScreen());
+      }
+    }
   }
 }

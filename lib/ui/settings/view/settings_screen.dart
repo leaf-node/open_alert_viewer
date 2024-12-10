@@ -7,11 +7,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../domain/alerts.dart';
+import '../../../domain/navigation.dart';
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_state.dart';
-import '../../../domain/alerts.dart';
-import '../../core/bloc/navigation_bloc.dart';
-import '../../core/bloc/navigation_event.dart';
 import '../widgets/settings_widgets.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -58,25 +57,24 @@ class SettingsList extends StatelessWidget {
             icon: Icons.settings,
             title: "General Settings",
             onTap: () =>
-                context.read<NavBloc>().add(OpenGeneralSettingsScreenEvent())),
+                context.read<Navigation>().goTo(Screens.generalSettings)),
         MenuItem(
             icon: Icons.info_outline,
             title: "About App",
-            onTap: () => context.read<NavBloc>().add(OpenAboutScreenEvent())),
+            onTap: () => context.read<Navigation>().goTo(Screens.about)),
         const MenuHeaderTile(title: "Accounts"),
         for (AlertSourceData account in state.sources)
           MenuItem(
               icon: Icons.manage_accounts,
               title: account.name,
               onTap: () => context
-                  .read<NavBloc>()
-                  .add(OpenAccountSettingsScreenEvent(source: account))),
+                  .read<Navigation>()
+                  .goTo(Screens.accountSettings, account)),
         MenuItem(
             icon: Icons.add,
             title: "Add new account",
-            onTap: () => context
-                .read<NavBloc>()
-                .add(OpenAccountSettingsScreenEvent(source: null))),
+            onTap: () =>
+                context.read<Navigation>().goTo(Screens.accountSettings, null)),
       ]);
     });
   }

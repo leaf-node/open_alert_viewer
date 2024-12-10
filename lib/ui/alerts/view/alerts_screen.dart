@@ -7,9 +7,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/bloc/navigation_bloc.dart';
-import '../../core/bloc/navigation_event.dart';
 import '../../../data/repositories/settings_repository.dart';
+import '../../../domain/navigation.dart';
 import '../../core/widgets/app_view_elements.dart';
 import '../../settings/bloc/settings_bloc.dart';
 import '../bloc/alerts_event.dart';
@@ -51,7 +50,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
         notificationsStatusWidget = HeaderButton(
             icon: Icons.notifications_off,
             onPressed: () =>
-                context.read<NavBloc>().add(OpenGeneralSettingsScreenEvent()));
+                context.read<Navigation>().goTo(Screens.generalSettings));
       } else {
         notificationsStatusWidget = Container();
       }
@@ -59,7 +58,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
         soundStatusWidget = HeaderButton(
             icon: Icons.music_off_outlined,
             onPressed: () =>
-                context.read<NavBloc>().add(OpenGeneralSettingsScreenEvent()));
+                context.read<Navigation>().goTo(Screens.generalSettings));
       } else {
         soundStatusWidget = Container();
       }
@@ -80,7 +79,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
         filterStatusWidget = HeaderButton(
             icon: Icons.filter_alt_off_outlined,
             onPressed: () =>
-                context.read<NavBloc>().add(OpenGeneralSettingsScreenEvent()));
+                context.read<Navigation>().goTo(Screens.generalSettings));
       } else {
         filterStatusWidget = Container();
       }
@@ -90,7 +89,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
           leading: HeaderButton(
               icon: Icons.menu,
               onPressed: () =>
-                  context.read<NavBloc>().add(OpenSettingsScreenEvent())),
+                  context.read<Navigation>().goTo(Screens.settings)),
           title: Text(title),
           actions: [
             filterStatusWidget,
