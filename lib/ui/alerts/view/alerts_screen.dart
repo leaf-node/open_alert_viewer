@@ -168,7 +168,6 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       }
     }, child: Builder(builder: (context) {
       final state = context.watch<AlertsBloc>().state;
-      context.watch<SettingsBloc>();
       List<Widget> alertWidgets = [];
       Widget child;
       List<bool> filter = _settings.alertFilter;
