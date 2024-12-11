@@ -15,13 +15,14 @@ import '../../alerts/bloc/refresh_bloc.dart';
 import '../../alerts/view/alerts_screen.dart';
 import '../../../data/services/database.dart';
 import '../../../background/background.dart';
+import '../../settings/cubit/general_settings_cubit.dart';
+import '../../settings/cubit/general_settings_state.dart';
 import '../bloc/navigation_bloc.dart';
 import '../bloc/navigation_state.dart';
 import '../../../data/repositories/settings_repository.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import '../../../data/services/notification.dart';
 import '../../settings/bloc/account_bloc.dart';
-import '../../settings/bloc/settings_bloc.dart';
 import '../../settings/cubit/battery_permission_cubit.dart';
 import '../../../data/repositories/account_repository.dart';
 import '../../../data/repositories/battery_repository.dart';
@@ -70,9 +71,11 @@ class OAVapp extends StatelessWidget {
               create: (context) => RefreshIconBloc(bgChannel: bgChannel)),
           BlocProvider(create: (context) => AlertsBloc(bgChannel: bgChannel)),
           BlocProvider(
-              create: (context) => SettingsBloc(
+              create: (context) => SettingsCubit(
                   settings: context.read<SettingsRepo>(),
-                  bgChannel: bgChannel)),
+                  bgChannel: bgChannel,
+                  notificationBloc: context.read<NotificationBloc>(),
+                  refreshIconBloc: context.read<RefreshIconBloc>())),
           BlocProvider(create: (context) => AccountBloc(bgChannel: bgChannel)),
           BlocProvider(
               create: (context) => BatteryPermissionCubit(
@@ -95,21 +98,14 @@ class _OAVappViewState extends State<OAVappView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsBloc, SettingsState>(
+    return BlocBuilder<SettingsCubit, SettingsCubitState>(
         buildWhen: (oldState, state) {
-      if (oldState is! SettingsChanged ||
-          (state is SettingsChanged &&
-              (state.settings["darkMode"] != oldState.settings["darkMoode"]))) {
+      if (state.settings["darkMode"] != oldState.settings["darkMoode"]) {
         return true;
       }
       return false;
     }, builder: (context, state) {
-      int darkModeSetting;
-      if (state is SettingsChanged) {
-        darkModeSetting = state.settings["darkMode"] as int;
-      } else {
-        darkModeSetting = 1;
-      }
+      final darkModeSetting = state.settings["darkMode"] as int? ?? 1;
       var systemBrightness = MediaQuery.of(context).platformBrightness;
       bool darkMode = switch (darkModeSetting) {
         0 => false,
@@ -132,7 +128,9 @@ class _OAVappViewState extends State<OAVappView> {
                         .push(SettingsScreen.route(title: "OAV Settings"));
                   case ShowGeneralSettingsScreen():
                     _navigator.push(GeneralSettingsScreen.route(
-                        title: "OAV General Settings"));
+                        title: "OAV General Settings",
+                        settings: context.read<SettingsRepo>(),
+                        cubit: context.read<SettingsCubit>()));
                   case ShowAboutScreen():
                     _navigator.push(AboutScreen.route(title: "About OAV"));
                   case ShowAccountSettingsScreen():
