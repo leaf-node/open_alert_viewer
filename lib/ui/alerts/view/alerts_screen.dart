@@ -10,7 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/repositories/settings_repository.dart';
 import '../../../domain/navigation.dart';
 import '../../core/widgets/app_view_elements.dart';
-import '../../settings/bloc/settings_bloc.dart';
+import '../../settings/cubit/general_settings_cubit.dart';
+import '../../settings/cubit/general_settings_state.dart';
 import '../bloc/alerts_event.dart';
 import '../bloc/alerts_state.dart';
 import '../bloc/alerts_bloc.dart';
@@ -45,7 +46,8 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
     Widget notificationsStatusWidget;
     Widget soundStatusWidget;
     Widget filterStatusWidget;
-    return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
+    return BlocBuilder<SettingsCubit, SettingsCubitState>(
+        builder: (context, state) {
       if (!settings.notificationsEnabled) {
         notificationsStatusWidget = HeaderButton(
             icon: Icons.notifications_off,
