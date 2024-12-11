@@ -76,43 +76,53 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     _state = _state!.copyWith(
         batteryPermissionSubtitle:
             (await BatteryPermissionRepo.getStatus()).name);
+    _state = _state!.copyWith(settings: {
+      "refreshInterval": _settingsRepo.refreshInterval,
+      "syncTimeout": _settingsRepo.syncTimeout,
+      "notificationsRequested": _settingsRepo.notificationsRequested,
+      "notificationsEnabled": _settingsRepo.notificationsEnabled,
+      "soundEnabled": _settingsRepo.soundEnabled,
+      "alertFilter": _settingsRepo.alertFilter,
+      "silenceFilter": _settingsRepo.silenceFilter,
+      "darkMode": _settingsRepo.darkMode,
+    });
     emit(_state!);
   }
 
   Future<void> onTapRefreshIntervalButton(int? result) async {
     if (result == -1) {
       _notificationBloc.add(DisableNotificationsEvent());
-      _pushSetting("notificationsEnabled", false);
+      await _pushSetting("notificationsEnabled", false);
     } else if (result != null) {
       _notificationBloc.add(EnableNotificationsEvent());
-      _pushSetting("notificationsEnabled", true);
+      await _pushSetting("notificationsEnabled", true);
     }
     if (result != null) {
-      _pushSetting("refreshInterval", result);
+      await _pushSetting("refreshInterval", result);
     }
   }
 
   Future<void> onTapSyncTimeoutButton(int? result) async {
     if (result != null) {
-      _pushSetting("syncTimeout", result);
+      await _pushSetting("syncTimeout", result);
       _refreshIconBloc.add(RefreshIconNow(forceRefreshNow: true));
     }
   }
 
   Future<void> onTapNotificationsEnabled(BuildContext context) async {
     if (_settingsRepo.notificationsEnabled) {
-      _pushSetting("notificationsEnabled", false);
+      await _pushSetting("notificationsEnabled", false);
       _notificationBloc.add(DisableNotificationsEvent());
     } else {
       requestAndEnableNotifications(
           askAgain: true,
           context: context,
-          callback: () {
+          callback: () async {
             if (_settingsRepo.refreshInterval == -1) {
-              _pushSetting(
+              await _pushSetting(
                   "refreshInterval", RefreshFrequencies.oneMinute.value);
             }
-            _pushSetting(
+            await _pushSetting(
                 "notificationsEnabled", _settingsRepo.notificationsEnabled);
           });
     }
@@ -123,27 +133,27 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   }
 
   Future<void> onTapPlaySoundEnabled() async {
-    _pushSetting("soundEnabled", !_settingsRepo.soundEnabled);
+    await _pushSetting("soundEnabled", !_settingsRepo.soundEnabled);
     _notificationBloc.add(ToggleSounds());
   }
 
   Future<void> onTapDarkMode(int? result) async {
     if (result != null) {
-      _pushSetting("darkMode", result);
+      await _pushSetting("darkMode", result);
     }
   }
 
   Future<void> setAlertFilterAt(
       BuildContext context, bool? newValue, int index) async {
-    _pushSetting("setAlertFilterAt", (newValue!, index));
+    await _pushSetting("setAlertFilterAt", (newValue!, index));
   }
 
   Future<void> setSilenceFilterAt(
       BuildContext context, bool? newValue, int index) async {
-    _pushSetting("setSilenceFilterAt", (newValue!, index));
+    await _pushSetting("setSilenceFilterAt", (newValue!, index));
   }
 
-  void _pushSetting(String name, Object newSetting) {
+  Future<void> _pushSetting(String name, Object newSetting) async {
     switch (name) {
       case "refreshInterval":
         _settingsRepo.refreshInterval = newSetting;
@@ -176,16 +186,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       case _:
         throw Exception("Unsupported setting: $name");
     }
-    _state = _state!.copyWith(settings: {
-      "refreshInterval": _settingsRepo.refreshInterval,
-      "syncTimeout": _settingsRepo.syncTimeout,
-      "notificationsRequested": _settingsRepo.notificationsRequested,
-      "notificationsEnabled": _settingsRepo.notificationsEnabled,
-      "soundEnabled": _settingsRepo.soundEnabled,
-      "alertFilter": _settingsRepo.alertFilter,
-      "silenceFilter": _settingsRepo.silenceFilter,
-      "darkMode": _settingsRepo.darkMode,
-    });
-    refreshState();
+    await refreshState();
   }
 }
