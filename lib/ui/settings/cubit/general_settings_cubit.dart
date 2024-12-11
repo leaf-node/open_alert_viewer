@@ -68,8 +68,9 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       return "Unknown";
     }());
     _state = _state!.copyWith(
-        notificationsEnabledSubtitle:
-            _settingsRepo.soundEnabled ? "Enabled within app" : "Disabled");
+        notificationsEnabledSubtitle: _settingsRepo.notificationsEnabled
+            ? "Enabled within app"
+            : "Disabled");
     _state = _state!.copyWith(
         soundEnabledSubtitle:
             _settingsRepo.soundEnabled ? "Enabled within app" : "Disabled");
