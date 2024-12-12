@@ -13,7 +13,7 @@ import 'package:open_alert_viewer/data/services/network_fetch.dart';
 import '../../alerts/bloc/alerts_bloc.dart';
 import '../../alerts/bloc/alerts_event.dart';
 import '../../../domain/alerts.dart';
-import '../../core/widgets/app_view_elements.dart';
+import '../../core/widgets/shared_widgets.dart';
 import '../bloc/account_bloc.dart';
 import '../../../data/repositories/account_repository.dart';
 import '../widgets/settings_widgets.dart';

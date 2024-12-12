@@ -14,7 +14,7 @@ import 'package:open_alert_viewer/ui/alerts/bloc/refresh_bloc.dart';
 import '../../../background/background.dart';
 import '../../../data/repositories/battery_repository.dart';
 import '../../../data/repositories/settings_repository.dart';
-import '../../core/widgets/app_view_elements.dart';
+import '../../core/widgets/shared_widgets.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import 'general_settings_state.dart';
 

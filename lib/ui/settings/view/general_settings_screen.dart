@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/alerts.dart';
-import '../../core/widgets/app_view_elements.dart';
+import '../../core/widgets/shared_widgets.dart';
 import '../cubit/general_settings_cubit.dart';
 import '../cubit/general_settings_state.dart';
 import '../widgets/settings_widgets.dart';

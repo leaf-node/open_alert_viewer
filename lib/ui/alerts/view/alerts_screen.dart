@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/repositories/settings_repository.dart';
 import '../../../domain/navigation.dart';
-import '../../core/widgets/app_view_elements.dart';
+import '../../core/widgets/shared_widgets.dart';
 import '../../settings/cubit/general_settings_cubit.dart';
 import '../../settings/cubit/general_settings_state.dart';
 import '../bloc/alerts_event.dart';
