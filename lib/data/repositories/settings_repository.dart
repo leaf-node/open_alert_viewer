@@ -4,13 +4,24 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:async';
 import 'dart:convert';
 
 import '../../domain/alerts.dart';
 import '../services/database.dart';
 
 class SettingsRepo {
-  SettingsRepo({required LocalDatabase db}) : _db = db;
+  SettingsRepo({required LocalDatabase db})
+      : _db = db,
+        streamController = StreamController(),
+        ready = Completer() {
+    stream = streamController.stream;
+    ready.complete();
+  }
+
+  final StreamController<String> streamController;
+  Stream<String>? stream;
+  final Completer ready;
   static late String appVersion;
   final LocalDatabase _db;
 
@@ -104,12 +115,12 @@ class SettingsRepo {
   void _setSetting<T>(String name, T newValue) {
     if (T == DateTime) {
       _setSetting<int>(name, (newValue as DateTime).millisecondsSinceEpoch);
-      return;
     } else if (T == List<bool>) {
       _setSetting<String>(name, jsonEncode(newValue as List));
-      return;
+    } else {
+      _db.setSetting(setting: name, value: newValue.toString());
     }
-    _db.setSetting(setting: name, value: newValue.toString());
+    streamController.add(name);
   }
 
   void _setListAt<T>(String name, T newValue, List<T> defaultValue, int index) {
