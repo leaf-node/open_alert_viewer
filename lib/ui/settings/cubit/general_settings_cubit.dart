@@ -28,18 +28,15 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         _bgChannel = bgChannel,
         _notificationBloc = notificationBloc,
         _refreshIconBloc = refreshIconBloc,
-        _ready = Completer(),
         super(SettingsCubitState.init()) {
     _state = state;
     refreshState();
-    _ready.complete();
   }
 
   final SettingsRepo _settingsRepo;
   final BackgroundChannel _bgChannel;
   final NotificationBloc _notificationBloc;
   final RefreshIconBloc _refreshIconBloc;
-  final Completer _ready;
   SettingsCubitState? _state;
 
   Future<void> refreshState() async {
