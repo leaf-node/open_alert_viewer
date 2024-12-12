@@ -101,7 +101,7 @@ class _OAVappViewState extends State<OAVappView> {
     final cubit = context.read<AppCubit>();
     return BlocListener<AppCubit, AppState>(
         listenWhen: (previous, current) {
-          return previous.screen != current.screen;
+          return current.screenPushed;
         },
         listener: (context, state) {
           switch (state.screen) {

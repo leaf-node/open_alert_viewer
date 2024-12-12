@@ -15,10 +15,17 @@ part 'app_state.freezed.dart';
 class AppState with _$AppState {
   const factory AppState(
       {required Screens screen,
+      required bool screenPushed,
+      required int timestamp,
       AlertSourceData? source,
       bool? darkMode}) = _AppState;
 
   factory AppState.init() {
-    return AppState(screen: Screens.none, source: null, darkMode: true);
+    return AppState(
+        screen: Screens.none,
+        screenPushed: false,
+        timestamp: 0,
+        source: null,
+        darkMode: true);
   }
 }

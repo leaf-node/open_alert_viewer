@@ -38,6 +38,8 @@ class AppCubit extends Cubit<AppState> {
       (screen, data) = tuple;
       _state =
           _state!.copyWith(screen: screen, source: data as AlertSourceData?);
+      _state = _state!.copyWith(
+          screenPushed: true, timestamp: DateTime.now().millisecondsSinceEpoch);
       emit(_state!);
     }
   }
@@ -45,8 +47,9 @@ class AppCubit extends Cubit<AppState> {
   Future<void> _listenForSettings() async {
     await settings.ready.future;
     await for (String name in settings.stream!) {
-      if (name == "dark_mode") {}
-      _setDarkMode();
+      if (name == "dark_mode") {
+        _setDarkMode();
+      }
     }
   }
 
@@ -54,6 +57,8 @@ class AppCubit extends Cubit<AppState> {
     bool? darkMode =
         switch (settings.darkMode) { 0 => false, 1 => true, _ => null };
     _state = _state!.copyWith(darkMode: darkMode);
+    _state = _state!.copyWith(
+        screenPushed: false, timestamp: DateTime.now().millisecondsSinceEpoch);
     emit(_state!);
   }
 
