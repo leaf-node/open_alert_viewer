@@ -9,7 +9,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repositories/settings_repository.dart';
 import '../../../domain/alerts.dart';
 import '../../core/widgets/app_view_elements.dart';
 import '../cubit/general_settings_cubit.dart';
@@ -18,34 +17,26 @@ import '../widgets/settings_widgets.dart';
 
 class GeneralSettingsScreen extends StatelessWidget {
   const GeneralSettingsScreen(
-      {super.key,
-      required this.title,
-      required this.settings,
-      required this.cubit});
+      {super.key, required this.title, required this.cubit});
 
   final String title;
-  final SettingsRepo settings;
   final SettingsCubit cubit;
 
-  static Route<void> route(
-      {required title, required settings, required cubit}) {
+  static Route<void> route({required title, required cubit}) {
     return MaterialPageRoute<void>(
-        builder: (_) => GeneralSettingsScreen(
-            title: title, settings: settings, cubit: cubit));
+        builder: (_) => GeneralSettingsScreen(title: title, cubit: cubit));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SettingsHeader(title: title),
-        body: GeneralSettingsList(settings: settings, cubit: cubit));
+        body: GeneralSettingsList(cubit: cubit));
   }
 }
 
 class GeneralSettingsList extends StatelessWidget {
-  const GeneralSettingsList(
-      {super.key, required this.settings, required this.cubit});
-  final SettingsRepo settings;
+  const GeneralSettingsList({super.key, required this.cubit});
   final SettingsCubit cubit;
   @override
   Widget build(BuildContext context) {
@@ -61,7 +52,7 @@ class GeneralSettingsList extends StatelessWidget {
                   await settingsRadioDialogBuilder<int>(
                       context: context,
                       text: "Refresh Interval",
-                      priorSetting: settings.refreshInterval,
+                      priorSetting: state.settings["refreshInterval"] as int,
                       valueListBuilder: listRefreshFrequencies));
             }),
         MenuItem(
@@ -73,11 +64,11 @@ class GeneralSettingsList extends StatelessWidget {
                   await settingsRadioDialogBuilder<int>(
                       context: context,
                       text: "Sync Timeout",
-                      priorSetting: settings.syncTimeout,
+                      priorSetting: state.settings["syncTimeout"] as int,
                       valueListBuilder: listSyncTimeouts));
             }),
         MenuItem(
-            icon: settings.notificationsEnabled
+            icon: state.settings["notificationsEnabled"] as bool
                 ? Icons.notifications_outlined
                 : Icons.notifications_off,
             title: "Notifications",
@@ -85,16 +76,17 @@ class GeneralSettingsList extends StatelessWidget {
             onTap: () async {
               await cubit.onTapNotificationsEnabled(context);
             }),
-        if (Platform.isAndroid && settings.notificationsEnabled)
+        if (Platform.isAndroid &&
+            state.settings["notificationsEnabled"] as bool)
           MenuItem(
               icon: Icons.tune,
               title: "System Settings",
               onTap: () async {
                 await cubit.openAppSettings();
               }),
-        if (settings.notificationsEnabled)
+        if (state.settings["notificationsEnabled"] as bool)
           MenuItem(
-              icon: settings.soundEnabled
+              icon: state.settings["soundEnabled"] as bool
                   ? Icons.music_note_outlined
                   : Icons.music_off_outlined,
               title: "Play Sound",
@@ -109,7 +101,7 @@ class GeneralSettingsList extends StatelessWidget {
               await settingsCheckBoxDialogBuilder<bool>(
                   context: context,
                   text: "Show Alert Types",
-                  priorSetting: settings.alertFilter,
+                  priorSetting: state.settings["alertFilter"] as List<bool>,
                   valueListBuilder: listFiltered);
             }),
         MenuItem(
@@ -119,7 +111,7 @@ class GeneralSettingsList extends StatelessWidget {
               await settingsCheckBoxDialogBuilder<bool>(
                   context: context,
                   text: "Show Silenced Alerts",
-                  priorSetting: settings.silenceFilter,
+                  priorSetting: state.settings["silenceFilter"] as List<bool>,
                   valueListBuilder: listSilenceFilters);
             }),
         MenuItem(
@@ -130,7 +122,7 @@ class GeneralSettingsList extends StatelessWidget {
               cubit.onTapDarkMode(await settingsRadioDialogBuilder<int>(
                   context: context,
                   text: "Dark Mode",
-                  priorSetting: settings.darkMode,
+                  priorSetting: state.settings["darkMode"] as int,
                   valueListBuilder: listColorModes));
             }),
         if (Platform.isAndroid)

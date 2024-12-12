@@ -129,7 +129,6 @@ class _OAVappViewState extends State<OAVappView> {
                   case ShowGeneralSettingsScreen():
                     _navigator.push(GeneralSettingsScreen.route(
                         title: "OAV General Settings",
-                        settings: context.read<SettingsRepo>(),
                         cubit: context.read<SettingsCubit>()));
                   case ShowAboutScreen():
                     _navigator.push(AboutScreen.route(title: "About OAV"));
