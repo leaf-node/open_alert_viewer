@@ -15,10 +15,8 @@ import '../../alerts/bloc/refresh_bloc.dart';
 import '../../alerts/view/alerts_screen.dart';
 import '../../../data/services/database.dart';
 import '../../../background/background.dart';
-import '../../settings/cubit/general_settings_cubit.dart';
-import '../../settings/cubit/general_settings_state.dart';
-import '../bloc/navigation_bloc.dart';
-import '../bloc/navigation_state.dart';
+import '../bloc/app_cubit.dart';
+import '../bloc/app_state.dart';
 import '../../../data/repositories/settings_repository.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import '../../../data/services/notification.dart';
@@ -26,6 +24,7 @@ import '../../settings/bloc/account_bloc.dart';
 import '../../settings/cubit/battery_permission_cubit.dart';
 import '../../../data/repositories/account_repository.dart';
 import '../../../data/repositories/battery_repository.dart';
+import '../../settings/cubit/general_settings_cubit.dart';
 import '../../settings/view/about_screen.dart';
 import '../../settings/view/licensing_screen.dart';
 import '../../settings/view/privacy_screen.dart';
@@ -61,8 +60,9 @@ class OAVapp extends StatelessWidget {
         ],
         child: MultiBlocProvider(providers: [
           BlocProvider(
-              create: (context) =>
-                  NavBloc(navigation: context.read<Navigation>())),
+              create: (context) => AppCubit(
+                  navigation: context.read<Navigation>(),
+                  settings: context.read<SettingsRepo>())),
           BlocProvider(
               create: (context) => NotificationBloc(
                   notificationRepo: context.read<StickyNotificationRepo>(),
@@ -98,52 +98,36 @@ class _OAVappViewState extends State<OAVappView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsCubitState>(
-        buildWhen: (oldState, state) {
-      if (state.settings["darkMode"] != oldState.settings["darkMoode"]) {
-        return true;
-      }
-      return false;
-    }, builder: (context, state) {
-      final darkModeSetting = state.settings["darkMode"] as int? ?? 1;
-      var systemBrightness = MediaQuery.of(context).platformBrightness;
-      bool darkMode = switch (darkModeSetting) {
-        0 => false,
-        1 => true,
-        _ => (systemBrightness == Brightness.dark)
-      };
+    final cubit = context.read<AppCubit>();
+    return BlocBuilder<AppCubit, AppState>(builder: (context, state) {
       return MaterialApp(
         title: 'Open Alert Viewer',
         navigatorKey: _navigatorKey,
         builder: (context, child) {
-          return BlocListener<NavBloc, NavState>(
-              listener: (context, state) {
-                switch (state) {
-                  case ShowAlertsScreen():
-                    _navigator.pushAndRemoveUntil(
-                        AlertsScreen.route(title: 'Open Alert Viewer'),
-                        (_) => false);
-                  case ShowSettingsScreen():
-                    _navigator
-                        .push(SettingsScreen.route(title: "OAV Settings"));
-                  case ShowGeneralSettingsScreen():
-                    _navigator.push(GeneralSettingsScreen.route(
-                        title: "OAV General Settings",
-                        cubit: context.read<SettingsCubit>()));
-                  case ShowAboutScreen():
-                    _navigator.push(AboutScreen.route(title: "About OAV"));
-                  case ShowAccountSettingsScreen():
-                    _navigator.push(AccountSettingsScreen.route(
-                        title: "OAV Account Settings", source: state.source));
-                  case ShowLicensingScreen():
-                    _navigator.push(
-                        LicensingScreen.route(title: "License Information"));
-                  case ShowPrivacyScreen():
-                    _navigator
-                        .push(PrivacyScreen.route(title: "Privacy Policy"));
-                }
-              },
-              child: child);
+          switch (state.screen) {
+            case Screens.none:
+              ;
+            case Screens.alerts:
+              _navigator.pushAndRemoveUntil(
+                  AlertsScreen.route(title: 'Open Alert Viewer'), (_) => false);
+            case Screens.settings:
+              _navigator.push(SettingsScreen.route(title: "OAV Settings"));
+            case Screens.generalSettings:
+              _navigator.push(GeneralSettingsScreen.route(
+                  title: "OAV General Settings",
+                  cubit: context.read<SettingsCubit>()));
+            case Screens.about:
+              _navigator.push(AboutScreen.route(title: "About OAV"));
+            case Screens.accountSettings:
+              _navigator.push(AccountSettingsScreen.route(
+                  title: "OAV Account Settings", source: state.source));
+            case Screens.licensing:
+              _navigator
+                  .push(LicensingScreen.route(title: "License Information"));
+            case Screens.privacy:
+              _navigator.push(PrivacyScreen.route(title: "Privacy Policy"));
+          }
+          return child ?? Container();
         },
         onGenerateRoute: (_) => AlertsScreen.route(title: 'Open Alert Viewer'),
         theme: ThemeData(
@@ -163,7 +147,9 @@ class _OAVappViewState extends State<OAVappView> {
           brightness: Brightness.dark,
           useMaterial3: true,
         ),
-        themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+        themeMode: cubit.getDarkMode(MediaQuery.of(context).platformBrightness)
+            ? ThemeMode.dark
+            : ThemeMode.light,
         debugShowCheckedModeBanner: false,
         scrollBehavior: CustomScrollBehavior(),
       );

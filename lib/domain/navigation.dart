@@ -7,6 +7,7 @@
 import 'dart:async';
 
 enum Screens {
+  none,
   alerts,
   settings,
   generalSettings,
