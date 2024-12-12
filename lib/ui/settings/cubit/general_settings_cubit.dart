@@ -77,7 +77,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     _state = _state!.copyWith(settings: {
       "refreshInterval": _settingsRepo.refreshInterval,
       "syncTimeout": _settingsRepo.syncTimeout,
-      "notificationsRequested": _settingsRepo.notificationsRequested,
       "notificationsEnabled": _settingsRepo.notificationsEnabled,
       "soundEnabled": _settingsRepo.soundEnabled,
       "alertFilter": _settingsRepo.alertFilter,
@@ -87,103 +86,75 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     emit(_state!);
   }
 
-  Future<void> onTapRefreshIntervalButton(int? result) async {
+  void onTapRefreshIntervalButton(int? result) {
     if (result == -1) {
       _notificationBloc.add(DisableNotificationsEvent());
-      await _pushSetting("notificationsEnabled", false);
+      _settingsRepo.notificationsEnabled = false;
     } else if (result != null) {
       _notificationBloc.add(EnableNotificationsEvent());
-      await _pushSetting("notificationsEnabled", true);
+      _settingsRepo.notificationsEnabled = true;
     }
     if (result != null) {
-      await _pushSetting("refreshInterval", result);
+      _settingsRepo.refreshInterval = result;
+      _bgChannel
+          .makeRequest(const IsolateMessage(name: MessageName.refreshTimer));
     }
+    refreshState();
   }
 
-  Future<void> onTapSyncTimeoutButton(int? result) async {
+  void onTapSyncTimeoutButton(int? result) {
     if (result != null) {
-      await _pushSetting("syncTimeout", result);
+      _settingsRepo.syncTimeout = result;
       _refreshIconBloc.add(RefreshIconNow(forceRefreshNow: true));
     }
+    refreshState();
   }
 
-  Future<void> onTapNotificationsEnabled(BuildContext context) async {
+  void onTapNotificationsEnabled(BuildContext context) {
     if (_settingsRepo.notificationsEnabled) {
-      await _pushSetting("notificationsEnabled", false);
+      _settingsRepo.notificationsEnabled = false;
       _notificationBloc.add(DisableNotificationsEvent());
     } else {
       requestAndEnableNotifications(
           askAgain: true,
           context: context,
-          callback: () async {
+          callback: () {
             if (_settingsRepo.refreshInterval == -1) {
-              await _pushSetting(
-                  "refreshInterval", RefreshFrequencies.oneMinute.value);
+              _settingsRepo.refreshInterval =
+                  RefreshFrequencies.oneMinute.value;
+              _bgChannel.makeRequest(
+                  const IsolateMessage(name: MessageName.refreshTimer));
             }
-            await _pushSetting(
-                "notificationsEnabled", _settingsRepo.notificationsEnabled);
+            refreshState();
           });
     }
+    refreshState();
   }
 
-  Future<void> openAppSettings() async {
+  void openAppSettings() {
     AppSettings.openAppSettings(type: AppSettingsType.notification);
   }
 
-  Future<void> onTapPlaySoundEnabled() async {
-    await _pushSetting("soundEnabled", !_settingsRepo.soundEnabled);
+  void onTapPlaySoundEnabled() {
+    _settingsRepo.soundEnabled = !_settingsRepo.soundEnabled;
     _notificationBloc.add(ToggleSounds());
+    refreshState();
   }
 
-  Future<void> onTapDarkMode(int? result) async {
+  void onTapDarkMode(int? result) {
     if (result != null) {
-      await _pushSetting("darkMode", result);
+      _settingsRepo.darkMode = result;
+      refreshState();
     }
   }
 
-  Future<void> setAlertFilterAt(
-      BuildContext context, bool? newValue, int index) async {
-    await _pushSetting("setAlertFilterAt", (newValue!, index));
+  void setAlertFilterAt(BuildContext context, bool? newValue, int index) {
+    _settingsRepo.setAlertFilterAt(newValue!, index);
+    refreshState();
   }
 
-  Future<void> setSilenceFilterAt(
-      BuildContext context, bool? newValue, int index) async {
-    await _pushSetting("setSilenceFilterAt", (newValue!, index));
-  }
-
-  Future<void> _pushSetting(String name, Object newSetting) async {
-    switch (name) {
-      case "refreshInterval":
-        _settingsRepo.refreshInterval = newSetting;
-        _bgChannel
-            .makeRequest(const IsolateMessage(name: MessageName.refreshTimer));
-      case "syncTimeout":
-        _settingsRepo.syncTimeout = newSetting;
-      case "notificationsRequested":
-        _settingsRepo.notificationsRequested = newSetting;
-      case "notificationsEnabled":
-        _settingsRepo.notificationsEnabled = newSetting;
-      case "soundEnabled":
-        _settingsRepo.soundEnabled = newSetting;
-      case "alertFilter":
-        _settingsRepo.alertFilter = newSetting;
-      case "setAlertFilterAt":
-        bool value;
-        int index;
-        (value, index) = newSetting as (bool, int);
-        _settingsRepo.setAlertFilterAt(value, index);
-      case "silenceFilter":
-        _settingsRepo.silenceFilter = newSetting;
-      case "setSilenceFilterAt":
-        bool value;
-        int index;
-        (value, index) = newSetting as (bool, int);
-        _settingsRepo.setSilenceFilterAt(value, index);
-      case "darkMode":
-        _settingsRepo.darkMode = newSetting;
-      case _:
-        throw Exception("Unsupported setting: $name");
-    }
-    await refreshState();
+  void setSilenceFilterAt(BuildContext context, bool? newValue, int index) {
+    _settingsRepo.setSilenceFilterAt(newValue!, index);
+    refreshState();
   }
 }

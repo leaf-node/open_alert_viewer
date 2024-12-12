@@ -73,16 +73,16 @@ class GeneralSettingsList extends StatelessWidget {
                 : Icons.notifications_off,
             title: "Notifications",
             subtitle: state.notificationsEnabledSubtitle,
-            onTap: () async {
-              await cubit.onTapNotificationsEnabled(context);
+            onTap: () {
+              cubit.onTapNotificationsEnabled(context);
             }),
         if (Platform.isAndroid &&
             state.settings["notificationsEnabled"] as bool)
           MenuItem(
               icon: Icons.tune,
               title: "System Settings",
-              onTap: () async {
-                await cubit.openAppSettings();
+              onTap: () {
+                cubit.openAppSettings();
               }),
         if (state.settings["notificationsEnabled"] as bool)
           MenuItem(
@@ -91,8 +91,8 @@ class GeneralSettingsList extends StatelessWidget {
                   : Icons.music_off_outlined,
               title: "Play Sound",
               subtitle: state.soundEnabledSubtitle,
-              onTap: () async {
-                await cubit.onTapPlaySoundEnabled();
+              onTap: () {
+                cubit.onTapPlaySoundEnabled();
               }),
         MenuItem(
             icon: Icons.filter_alt_outlined,
