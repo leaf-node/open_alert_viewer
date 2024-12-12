@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$SettingsCubitState {
+mixin _$GeneralSettingsCubitState {
   Map<String, Object> get settings => throw _privateConstructorUsedError;
   String get refreshIntervalSubtitle => throw _privateConstructorUsedError;
   String get syncTimeoutSubtitle => throw _privateConstructorUsedError;
@@ -24,18 +24,18 @@ mixin _$SettingsCubitState {
   String get batteryPermissionSubtitle => throw _privateConstructorUsedError;
   String get soundEnabledSubtitle => throw _privateConstructorUsedError;
 
-  /// Create a copy of SettingsCubitState
+  /// Create a copy of GeneralSettingsCubitState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $SettingsCubitStateCopyWith<SettingsCubitState> get copyWith =>
+  $GeneralSettingsCubitStateCopyWith<GeneralSettingsCubitState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $SettingsCubitStateCopyWith<$Res> {
-  factory $SettingsCubitStateCopyWith(
-          SettingsCubitState value, $Res Function(SettingsCubitState) then) =
-      _$SettingsCubitStateCopyWithImpl<$Res, SettingsCubitState>;
+abstract class $GeneralSettingsCubitStateCopyWith<$Res> {
+  factory $GeneralSettingsCubitStateCopyWith(GeneralSettingsCubitState value,
+          $Res Function(GeneralSettingsCubitState) then) =
+      _$GeneralSettingsCubitStateCopyWithImpl<$Res, GeneralSettingsCubitState>;
   @useResult
   $Res call(
       {Map<String, Object> settings,
@@ -48,16 +48,17 @@ abstract class $SettingsCubitStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SettingsCubitStateCopyWithImpl<$Res, $Val extends SettingsCubitState>
-    implements $SettingsCubitStateCopyWith<$Res> {
-  _$SettingsCubitStateCopyWithImpl(this._value, this._then);
+class _$GeneralSettingsCubitStateCopyWithImpl<$Res,
+        $Val extends GeneralSettingsCubitState>
+    implements $GeneralSettingsCubitStateCopyWith<$Res> {
+  _$GeneralSettingsCubitStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of SettingsCubitState
+  /// Create a copy of GeneralSettingsCubitState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -104,11 +105,12 @@ class _$SettingsCubitStateCopyWithImpl<$Res, $Val extends SettingsCubitState>
 }
 
 /// @nodoc
-abstract class _$$SettingsCubitStateImplCopyWith<$Res>
-    implements $SettingsCubitStateCopyWith<$Res> {
-  factory _$$SettingsCubitStateImplCopyWith(_$SettingsCubitStateImpl value,
-          $Res Function(_$SettingsCubitStateImpl) then) =
-      __$$SettingsCubitStateImplCopyWithImpl<$Res>;
+abstract class _$$GeneralSettingsCubitStateImplCopyWith<$Res>
+    implements $GeneralSettingsCubitStateCopyWith<$Res> {
+  factory _$$GeneralSettingsCubitStateImplCopyWith(
+          _$GeneralSettingsCubitStateImpl value,
+          $Res Function(_$GeneralSettingsCubitStateImpl) then) =
+      __$$GeneralSettingsCubitStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -122,14 +124,16 @@ abstract class _$$SettingsCubitStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$SettingsCubitStateImplCopyWithImpl<$Res>
-    extends _$SettingsCubitStateCopyWithImpl<$Res, _$SettingsCubitStateImpl>
-    implements _$$SettingsCubitStateImplCopyWith<$Res> {
-  __$$SettingsCubitStateImplCopyWithImpl(_$SettingsCubitStateImpl _value,
-      $Res Function(_$SettingsCubitStateImpl) _then)
+class __$$GeneralSettingsCubitStateImplCopyWithImpl<$Res>
+    extends _$GeneralSettingsCubitStateCopyWithImpl<$Res,
+        _$GeneralSettingsCubitStateImpl>
+    implements _$$GeneralSettingsCubitStateImplCopyWith<$Res> {
+  __$$GeneralSettingsCubitStateImplCopyWithImpl(
+      _$GeneralSettingsCubitStateImpl _value,
+      $Res Function(_$GeneralSettingsCubitStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SettingsCubitState
+  /// Create a copy of GeneralSettingsCubitState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -142,7 +146,7 @@ class __$$SettingsCubitStateImplCopyWithImpl<$Res>
     Object? batteryPermissionSubtitle = null,
     Object? soundEnabledSubtitle = null,
   }) {
-    return _then(_$SettingsCubitStateImpl(
+    return _then(_$GeneralSettingsCubitStateImpl(
       settings: null == settings
           ? _value._settings
           : settings // ignore: cast_nullable_to_non_nullable
@@ -177,8 +181,8 @@ class __$$SettingsCubitStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SettingsCubitStateImpl implements _SettingsCubitState {
-  const _$SettingsCubitStateImpl(
+class _$GeneralSettingsCubitStateImpl implements _GeneralSettingsCubitState {
+  const _$GeneralSettingsCubitStateImpl(
       {required final Map<String, Object> settings,
       required this.refreshIntervalSubtitle,
       required this.syncTimeoutSubtitle,
@@ -211,14 +215,14 @@ class _$SettingsCubitStateImpl implements _SettingsCubitState {
 
   @override
   String toString() {
-    return 'SettingsCubitState(settings: $settings, refreshIntervalSubtitle: $refreshIntervalSubtitle, syncTimeoutSubtitle: $syncTimeoutSubtitle, darkModeSubtitle: $darkModeSubtitle, notificationsEnabledSubtitle: $notificationsEnabledSubtitle, batteryPermissionSubtitle: $batteryPermissionSubtitle, soundEnabledSubtitle: $soundEnabledSubtitle)';
+    return 'GeneralSettingsCubitState(settings: $settings, refreshIntervalSubtitle: $refreshIntervalSubtitle, syncTimeoutSubtitle: $syncTimeoutSubtitle, darkModeSubtitle: $darkModeSubtitle, notificationsEnabledSubtitle: $notificationsEnabledSubtitle, batteryPermissionSubtitle: $batteryPermissionSubtitle, soundEnabledSubtitle: $soundEnabledSubtitle)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SettingsCubitStateImpl &&
+            other is _$GeneralSettingsCubitStateImpl &&
             const DeepCollectionEquality().equals(other._settings, _settings) &&
             (identical(
                     other.refreshIntervalSubtitle, refreshIntervalSubtitle) ||
@@ -249,25 +253,26 @@ class _$SettingsCubitStateImpl implements _SettingsCubitState {
       batteryPermissionSubtitle,
       soundEnabledSubtitle);
 
-  /// Create a copy of SettingsCubitState
+  /// Create a copy of GeneralSettingsCubitState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$SettingsCubitStateImplCopyWith<_$SettingsCubitStateImpl> get copyWith =>
-      __$$SettingsCubitStateImplCopyWithImpl<_$SettingsCubitStateImpl>(
-          this, _$identity);
+  _$$GeneralSettingsCubitStateImplCopyWith<_$GeneralSettingsCubitStateImpl>
+      get copyWith => __$$GeneralSettingsCubitStateImplCopyWithImpl<
+          _$GeneralSettingsCubitStateImpl>(this, _$identity);
 }
 
-abstract class _SettingsCubitState implements SettingsCubitState {
-  const factory _SettingsCubitState(
-      {required final Map<String, Object> settings,
-      required final String refreshIntervalSubtitle,
-      required final String syncTimeoutSubtitle,
-      required final String darkModeSubtitle,
-      required final String notificationsEnabledSubtitle,
-      required final String batteryPermissionSubtitle,
-      required final String soundEnabledSubtitle}) = _$SettingsCubitStateImpl;
+abstract class _GeneralSettingsCubitState implements GeneralSettingsCubitState {
+  const factory _GeneralSettingsCubitState(
+          {required final Map<String, Object> settings,
+          required final String refreshIntervalSubtitle,
+          required final String syncTimeoutSubtitle,
+          required final String darkModeSubtitle,
+          required final String notificationsEnabledSubtitle,
+          required final String batteryPermissionSubtitle,
+          required final String soundEnabledSubtitle}) =
+      _$GeneralSettingsCubitStateImpl;
 
   @override
   Map<String, Object> get settings;
@@ -284,10 +289,10 @@ abstract class _SettingsCubitState implements SettingsCubitState {
   @override
   String get soundEnabledSubtitle;
 
-  /// Create a copy of SettingsCubitState
+  /// Create a copy of GeneralSettingsCubitState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SettingsCubitStateImplCopyWith<_$SettingsCubitStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$GeneralSettingsCubitStateImplCopyWith<_$GeneralSettingsCubitStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

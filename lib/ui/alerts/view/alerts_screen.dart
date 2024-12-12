@@ -46,7 +46,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
     Widget notificationsStatusWidget;
     Widget soundStatusWidget;
     Widget filterStatusWidget;
-    return BlocBuilder<SettingsCubit, SettingsCubitState>(
+    return BlocBuilder<GeneralSettingsCubit, GeneralSettingsCubitState>(
         builder: (context, state) {
       if (!settings.notificationsEnabled) {
         notificationsStatusWidget = HeaderButton(

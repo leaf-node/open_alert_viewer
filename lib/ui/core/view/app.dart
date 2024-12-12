@@ -74,7 +74,7 @@ class OAVapp extends StatelessWidget {
           BlocProvider(
               create: (context) => RootSettingsCubit(bgChannel: bgChannel)),
           BlocProvider(
-              create: (context) => SettingsCubit(
+              create: (context) => GeneralSettingsCubit(
                   settings: context.read<SettingsRepo>(),
                   bgChannel: bgChannel,
                   notificationBloc: context.read<NotificationBloc>(),
@@ -118,7 +118,7 @@ class _OAVappViewState extends State<OAVappView> {
             case Screens.generalSettings:
               _navigator.push(GeneralSettingsScreen.route(
                   title: "OAV General Settings",
-                  cubit: context.read<SettingsCubit>()));
+                  cubit: context.read<GeneralSettingsCubit>()));
             case Screens.about:
               _navigator.push(AboutScreen.route(title: "About OAV"));
             case Screens.accountSettings:

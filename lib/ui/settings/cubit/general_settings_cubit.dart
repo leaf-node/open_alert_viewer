@@ -18,8 +18,8 @@ import '../../core/widgets/shared_widgets.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import 'general_settings_state.dart';
 
-class SettingsCubit extends Cubit<SettingsCubitState> {
-  SettingsCubit(
+class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
+  GeneralSettingsCubit(
       {required SettingsRepo settings,
       required BackgroundChannel bgChannel,
       required NotificationBloc notificationBloc,
@@ -28,18 +28,19 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         _bgChannel = bgChannel,
         _notificationBloc = notificationBloc,
         _refreshIconBloc = refreshIconBloc,
-        super(SettingsCubitState.init()) {
+        super(GeneralSettingsCubitState.init()) {
     _state = state;
-    refreshState();
+    refreshSettings();
+    refreshStateAsync();
   }
 
   final SettingsRepo _settingsRepo;
   final BackgroundChannel _bgChannel;
   final NotificationBloc _notificationBloc;
   final RefreshIconBloc _refreshIconBloc;
-  SettingsCubitState? _state;
+  GeneralSettingsCubitState? _state;
 
-  Future<void> refreshState() async {
+  Future<void> refreshStateAsync() async {
     _state = _state!.copyWith(refreshIntervalSubtitle: () {
       for (var option in RefreshFrequencies.values) {
         if (option.value == _settingsRepo.refreshInterval) {
@@ -74,6 +75,10 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     _state = _state!.copyWith(
         batteryPermissionSubtitle:
             (await BatteryPermissionRepo.getStatus()).name);
+    refreshSettings();
+  }
+
+  void refreshSettings() {
     _state = _state!.copyWith(settings: {
       "refreshInterval": _settingsRepo.refreshInterval,
       "syncTimeout": _settingsRepo.syncTimeout,
@@ -99,7 +104,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       _bgChannel
           .makeRequest(const IsolateMessage(name: MessageName.refreshTimer));
     }
-    refreshState();
+    refreshStateAsync();
   }
 
   void onTapSyncTimeoutButton(int? result) {
@@ -107,7 +112,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       _settingsRepo.syncTimeout = result;
       _refreshIconBloc.add(RefreshIconNow(forceRefreshNow: true));
     }
-    refreshState();
+    refreshStateAsync();
   }
 
   void onTapNotificationsEnabled(BuildContext context) {
@@ -125,10 +130,10 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
               _bgChannel.makeRequest(
                   const IsolateMessage(name: MessageName.refreshTimer));
             }
-            refreshState();
+            refreshStateAsync();
           });
     }
-    refreshState();
+    refreshStateAsync();
   }
 
   void openAppSettings() {
@@ -138,23 +143,23 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   void onTapPlaySoundEnabled() {
     _settingsRepo.soundEnabled = !_settingsRepo.soundEnabled;
     _notificationBloc.add(ToggleSounds());
-    refreshState();
+    refreshStateAsync();
   }
 
   void onTapDarkMode(int? result) {
     if (result != null) {
       _settingsRepo.darkMode = result;
-      refreshState();
+      refreshStateAsync();
     }
   }
 
   void setAlertFilterAt(BuildContext context, bool? newValue, int index) {
     _settingsRepo.setAlertFilterAt(newValue!, index);
-    refreshState();
+    refreshStateAsync();
   }
 
   void setSilenceFilterAt(BuildContext context, bool? newValue, int index) {
     _settingsRepo.setSilenceFilterAt(newValue!, index);
-    refreshState();
+    refreshStateAsync();
   }
 }

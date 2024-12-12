@@ -20,7 +20,7 @@ class GeneralSettingsScreen extends StatelessWidget {
       {super.key, required this.title, required this.cubit});
 
   final String title;
-  final SettingsCubit cubit;
+  final GeneralSettingsCubit cubit;
 
   static Route<void> route({required title, required cubit}) {
     return MaterialPageRoute<void>(
@@ -37,10 +37,10 @@ class GeneralSettingsScreen extends StatelessWidget {
 
 class GeneralSettingsList extends StatelessWidget {
   const GeneralSettingsList({super.key, required this.cubit});
-  final SettingsCubit cubit;
+  final GeneralSettingsCubit cubit;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsCubitState>(
+    return BlocBuilder<GeneralSettingsCubit, GeneralSettingsCubitState>(
         builder: (context, state) {
       return ListView(children: [
         MenuItem(
