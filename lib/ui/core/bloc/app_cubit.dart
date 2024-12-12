@@ -20,6 +20,7 @@ class AppCubit extends Cubit<AppState> {
         super(AppState.init()) {
     _state = state;
     ready.complete();
+    _setDarkMode();
     _listenForNavigation();
     _listenForSettings();
   }
@@ -44,13 +45,16 @@ class AppCubit extends Cubit<AppState> {
   Future<void> _listenForSettings() async {
     await settings.ready.future;
     await for (String name in settings.stream!) {
-      if (name == "dark_mode") {
-        bool? darkMode =
-            switch (settings.darkMode) { 0 => false, 1 => true, _ => null };
-        _state = _state!.copyWith(darkMode: darkMode);
-        emit(_state!);
-      }
+      if (name == "dark_mode") {}
+      _setDarkMode();
     }
+  }
+
+  void _setDarkMode() {
+    bool? darkMode =
+        switch (settings.darkMode) { 0 => false, 1 => true, _ => null };
+    _state = _state!.copyWith(darkMode: darkMode);
+    emit(_state!);
   }
 
   bool getDarkMode(Brightness systemBrightness) {

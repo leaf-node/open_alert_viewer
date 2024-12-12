@@ -99,11 +99,11 @@ class _OAVappViewState extends State<OAVappView> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AppCubit>();
-    return BlocBuilder<AppCubit, AppState>(builder: (context, state) {
-      return MaterialApp(
-        title: 'Open Alert Viewer',
-        navigatorKey: _navigatorKey,
-        builder: (context, child) {
+    return BlocListener<AppCubit, AppState>(
+        listenWhen: (previous, current) {
+          return previous.screen != current.screen;
+        },
+        listener: (context, state) {
           switch (state.screen) {
             case Screens.none:
               ;
@@ -127,33 +127,40 @@ class _OAVappViewState extends State<OAVappView> {
             case Screens.privacy:
               _navigator.push(PrivacyScreen.route(title: "Privacy Policy"));
           }
-          return child ?? Container();
         },
-        onGenerateRoute: (_) => AlertsScreen.route(title: 'Open Alert Viewer'),
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.lightBlue,
-            secondary: const Color(0xFF224488),
-            onSurface: const Color(0xFF444444),
-          ),
-          useMaterial3: true,
-        ),
-        darkTheme: ThemeData(
-          colorScheme: const ColorScheme.dark(
-              primary: Color(0xFF224488),
-              onPrimary: Colors.white,
-              secondary: Color(0xFF66AAFF),
-              onSurface: Color(0xFFBBBBBB)),
-          brightness: Brightness.dark,
-          useMaterial3: true,
-        ),
-        themeMode: cubit.getDarkMode(MediaQuery.of(context).platformBrightness)
-            ? ThemeMode.dark
-            : ThemeMode.light,
-        debugShowCheckedModeBanner: false,
-        scrollBehavior: CustomScrollBehavior(),
-      );
-    });
+        child: BlocBuilder<AppCubit, AppState>(buildWhen: (previous, current) {
+          return previous.darkMode != current.darkMode;
+        }, builder: (context, state) {
+          return MaterialApp(
+            title: 'Open Alert Viewer',
+            navigatorKey: _navigatorKey,
+            onGenerateRoute: (_) =>
+                AlertsScreen.route(title: 'Open Alert Viewer'),
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.lightBlue,
+                secondary: const Color(0xFF224488),
+                onSurface: const Color(0xFF444444),
+              ),
+              useMaterial3: true,
+            ),
+            darkTheme: ThemeData(
+              colorScheme: const ColorScheme.dark(
+                  primary: Color(0xFF224488),
+                  onPrimary: Colors.white,
+                  secondary: Color(0xFF66AAFF),
+                  onSurface: Color(0xFFBBBBBB)),
+              brightness: Brightness.dark,
+              useMaterial3: true,
+            ),
+            themeMode:
+                cubit.getDarkMode(MediaQuery.of(context).platformBrightness)
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
+            debugShowCheckedModeBanner: false,
+            scrollBehavior: CustomScrollBehavior(),
+          );
+        }));
   }
 }
 

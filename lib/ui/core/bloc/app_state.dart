@@ -19,6 +19,6 @@ class AppState with _$AppState {
       bool? darkMode}) = _AppState;
 
   factory AppState.init() {
-    return AppState(screen: Screens.none, source: null, darkMode: null);
+    return AppState(screen: Screens.none, source: null, darkMode: true);
   }
 }
