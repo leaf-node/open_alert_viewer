@@ -15,6 +15,7 @@ import '../../alerts/bloc/refresh_bloc.dart';
 import '../../alerts/view/alerts_screen.dart';
 import '../../../data/services/database.dart';
 import '../../../background/background.dart';
+import '../../settings/cubit/root_settings_cubit.dart';
 import '../bloc/app_cubit.dart';
 import '../bloc/app_state.dart';
 import '../../../data/repositories/settings_repository.dart';
@@ -30,7 +31,7 @@ import '../../settings/view/licensing_screen.dart';
 import '../../settings/view/privacy_screen.dart';
 import '../../settings/view/account_settings_screen.dart';
 import '../../settings/view/general_settings_screen.dart';
-import '../../settings/view/settings_screen.dart';
+import '../../settings/view/root_settings_screen.dart';
 
 class OAVapp extends StatelessWidget {
   const OAVapp(
@@ -70,6 +71,8 @@ class OAVapp extends StatelessWidget {
           BlocProvider(
               create: (context) => RefreshIconBloc(bgChannel: bgChannel)),
           BlocProvider(create: (context) => AlertsBloc(bgChannel: bgChannel)),
+          BlocProvider(
+              create: (context) => RootSettingsCubit(bgChannel: bgChannel)),
           BlocProvider(
               create: (context) => SettingsCubit(
                   settings: context.read<SettingsRepo>(),

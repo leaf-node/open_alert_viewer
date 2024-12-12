@@ -45,6 +45,7 @@ const _$MessageNameEnumMap = {
   MessageName.alertsFetched: 'alertsFetched',
   MessageName.fetchAlerts: 'fetchAlerts',
   MessageName.refreshTimer: 'refreshTimer',
+  MessageName.initSources: 'initSources',
   MessageName.addSource: 'addSource',
   MessageName.updateSource: 'updateSource',
   MessageName.removeSource: 'removeSource',
@@ -64,5 +65,6 @@ const _$MessageDestinationEnumMap = {
   MessageDestination.alerts: 'alerts',
   MessageDestination.notifications: 'notifications',
   MessageDestination.refreshIcon: 'refreshIcon',
+  MessageDestination.sourceSettings: 'sourceSettings',
   MessageDestination.accountSettings: 'accountSettings',
 };

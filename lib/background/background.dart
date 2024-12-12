@@ -26,6 +26,7 @@ enum MessageName {
   alertsFetched,
   fetchAlerts,
   refreshTimer,
+  initSources,
   addSource,
   updateSource,
   removeSource,
@@ -45,6 +46,7 @@ enum MessageDestination {
   alerts,
   notifications,
   refreshIcon,
+  sourceSettings,
   accountSettings,
 }
 

@@ -28,7 +28,9 @@ class SourcesBackgroundRepo with NetworkFetch {
       required StreamController<IsolateMessage> outboundStream})
       : _db = db,
         _settings = settings,
-        _outboundStream = outboundStream;
+        _outboundStream = outboundStream {
+    initSources();
+  }
 
   final LocalDatabase _db;
   final SettingsRepo _settings;
@@ -55,6 +57,13 @@ class SourcesBackgroundRepo with NetworkFetch {
         alertSource = IciAlerts.new;
     }
     return alertSource(sourceData: sourceData);
+  }
+
+  void initSources() {
+    _outboundStream.add(IsolateMessage(
+        name: MessageName.initSources,
+        destination: MessageDestination.sourceSettings,
+        allSources: alertSources));
   }
 
   void addSource({required AlertSourceData sourceData}) {
@@ -211,12 +220,12 @@ class SourcesBackgroundRepo with NetworkFetch {
       stream.add(IsolateMessage(
           name: MessageName.sourcesChanged,
           allSources: sources,
-          destination: MessageDestination.alerts));
+          destination: MessageDestination.sourceSettings));
     } else {
       stream.add(IsolateMessage(
           name: MessageName.sourcesFailure,
           allSources: sources,
-          destination: MessageDestination.alerts));
+          destination: MessageDestination.sourceSettings));
     }
   }
 }

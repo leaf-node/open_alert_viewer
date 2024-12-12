@@ -8,13 +8,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/data/services/network_fetch.dart';
 
-import '../../alerts/bloc/alerts_bloc.dart';
-import '../../alerts/bloc/alerts_event.dart';
+import '../../../data/services/network_fetch.dart';
 import '../../../domain/alerts.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../bloc/account_bloc.dart';
+import '../cubit/root_settings_cubit.dart';
 import '../../../data/repositories/account_repository.dart';
 import '../widgets/settings_widgets.dart';
 
@@ -302,8 +301,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                         reverseColors: true);
                     if (context.mounted && result) {
                       context
-                          .read<AlertsBloc>()
-                          .add(RemoveAlertSource(id: widget.source!.id!));
+                          .read<RootSettingsCubit>()
+                          .removeSource(widget.source!.id!);
                       Navigator.of(context).pop();
                     }
                   } else {
@@ -368,11 +367,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                                 checkNow: true));
                           } else {
                             if (widget.source == null) {
-                              context.read<AlertsBloc>().add(
-                                  AddAlertSource(sourceData: newSourceData));
+                              context
+                                  .read<RootSettingsCubit>()
+                                  .addSource(newSourceData);
                             } else {
-                              context.read<AlertsBloc>().add(
-                                  UpdateAlertSource(sourceData: newSourceData));
+                              context
+                                  .read<RootSettingsCubit>()
+                                  .updateSource(newSourceData);
                             }
                             Navigator.of(context).pop();
                           }

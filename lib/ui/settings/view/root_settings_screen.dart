@@ -9,8 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/alerts.dart';
 import '../../../domain/navigation.dart';
-import '../../alerts/bloc/alerts_bloc.dart';
-import '../../alerts/bloc/alerts_state.dart';
+import '../cubit/root_settings_cubit.dart';
+import '../cubit/root_settings_state.dart';
 import '../widgets/settings_widgets.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -27,13 +27,12 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SettingsHeader(title: title),
-        body: BlocListener<AlertsBloc, AlertState>(
+        body: BlocListener<RootSettingsCubit, RootSettingsCubitState>(
             listener: (context, state) {
-              switch (state) {
-                case SourcesUpdateError():
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("There was an unexpected error while "
-                          "trying to modify your accounts.")));
+              if (!state.success) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("There was an unexpected error while "
+                        "trying to modify your accounts.")));
               }
             },
             child: const SettingsList()));
@@ -45,13 +44,8 @@ class SettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AlertsBloc, AlertState>(buildWhen: (previous, current) {
-      if (current is SourcesChangedEvent || current is SourcesUpdateError) {
-        return true;
-      } else {
-        return false;
-      }
-    }, builder: (context, state) {
+    return BlocBuilder<RootSettingsCubit, RootSettingsCubitState>(
+        builder: (context, state) {
       return ListView(children: [
         MenuItem(
             icon: Icons.settings,
