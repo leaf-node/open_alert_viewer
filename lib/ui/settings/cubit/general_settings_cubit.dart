@@ -109,9 +109,9 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   Future<void> onTapSyncTimeoutButton(int? result) async {
     if (result != null) {
       _settingsRepo.syncTimeout = result;
-      _alertsRepo.fetchAlerts();
+      await refreshStateAsync();
+      _alertsRepo.fetchAlerts(forceRefreshNow: true);
     }
-    await refreshStateAsync();
   }
 
   Future<void> onTapNotificationsEnabled(BuildContext context) async {
