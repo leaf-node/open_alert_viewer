@@ -34,7 +34,14 @@ class BatteryPermissionRepo {
 
   static Future<BatterySetting> getStatus() async {
     if (Platform.isAndroid) {
-      final status = await Permission.ignoreBatteryOptimizations.status;
+      return _matchStatus(await Permission.ignoreBatteryOptimizations.status);
+    } else {
+      return BatterySetting.notApplicable;
+    }
+  }
+
+  static BatterySetting _matchStatus(PermissionStatus status) {
+    if (Platform.isAndroid) {
       if (status.isGranted) {
         return BatterySetting.granted;
       } else if (status.isLimited) {
@@ -55,10 +62,18 @@ class BatteryPermissionRepo {
     }
   }
 
-  Future<void> requestBatteryPermission() async {
+  Future<BatterySetting> requestBatteryPermission() async {
     _settings.batteryPermissionRequested = true;
     if (Platform.isAndroid) {
-      await Permission.ignoreBatteryOptimizations.request();
+      final currentStatus = await getStatus();
+      if (!currentStatus.active) {
+        return _matchStatus(
+            await Permission.ignoreBatteryOptimizations.request());
+      } else {
+        return currentStatus;
+      }
+    } else {
+      return BatterySetting.notApplicable;
     }
   }
 }

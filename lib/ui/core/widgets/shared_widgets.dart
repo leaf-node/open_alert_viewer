@@ -9,10 +9,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../notifications/bloc/notification_bloc.dart';
-import '../../../data/services/notification.dart';
-import '../../settings/cubit/battery_permission_cubit.dart';
+import '../../../data/repositories/battery_repository.dart';
 import '../../../data/repositories/settings_repository.dart';
+import '../../../data/services/notification.dart';
+import '../../notifications/bloc/notification_bloc.dart';
 
 class HeaderButton extends StatelessWidget {
   const HeaderButton({super.key, required this.icon, required this.onPressed});
@@ -119,14 +119,13 @@ Future<void> requestAndEnableNotifications(
   }
 }
 
-Future<void> requestBatteryPermission(
+Future<BatterySetting> requestBatteryPermission(
     {required BuildContext context, required bool askAgain}) async {
   final settings = context.read<SettingsRepo>();
-  final cubit = context.read<BatteryPermissionCubit>();
+  final repo = context.read<BatteryPermissionRepo>();
   bool shouldAsk = !settings.batteryPermissionRequested || askAgain;
   bool willAsk;
-  await cubit.refreshState();
-  if (Platform.isAndroid && !cubit.state.value.active) {
+  if (Platform.isAndroid && !(await BatteryPermissionRepo.getStatus()).active) {
     if (shouldAsk && context.mounted) {
       willAsk = await textDialogBuilder(
           context: context,
@@ -142,6 +141,8 @@ Future<void> requestBatteryPermission(
     willAsk = false;
   }
   if (willAsk && context.mounted) {
-    cubit.requestPermission();
+    return repo.requestBatteryPermission();
+  } else {
+    return BatteryPermissionRepo.getStatus();
   }
 }

@@ -53,7 +53,7 @@ enum ColorModes {
   final int value;
 }
 
-String placeholder = "pending...";
+String placeholder = "Pending...";
 
 @freezed
 class GeneralSettingsCubitState with _$GeneralSettingsCubitState {

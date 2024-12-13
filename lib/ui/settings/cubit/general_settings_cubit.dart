@@ -9,11 +9,11 @@ import 'dart:async';
 import 'package:app_settings/app_settings.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:open_alert_viewer/ui/alerts/bloc/refresh_bloc.dart';
 
 import '../../../background/background.dart';
 import '../../../data/repositories/battery_repository.dart';
 import '../../../data/repositories/settings_repository.dart';
+import '../../alerts/bloc/refresh_bloc.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import 'general_settings_state.dart';
@@ -31,7 +31,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
         super(GeneralSettingsCubitState.init()) {
     _state = state;
     _refreshSettings();
-    _refreshStateAsync();
+    refreshStateAsync();
   }
 
   final SettingsRepo _settingsRepo;
@@ -40,7 +40,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   final RefreshIconBloc _refreshIconBloc;
   GeneralSettingsCubitState? _state;
 
-  Future<void> _refreshStateAsync() async {
+  Future<void> refreshStateAsync({BatterySetting? overrideBattery}) async {
     _state = _state!.copyWith(refreshIntervalSubtitle: () {
       for (var option in RefreshFrequencies.values) {
         if (option.value == _settingsRepo.refreshInterval) {
@@ -73,7 +73,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
         soundEnabledSubtitle:
             _settingsRepo.soundEnabled ? "Enabled within app" : "Disabled");
     _state = _state!.copyWith(
-        batteryPermissionSubtitle:
+        batteryPermissionSubtitle: overrideBattery?.name ??
             (await BatteryPermissionRepo.getStatus()).name);
     _refreshSettings();
   }
@@ -104,7 +104,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
       _bgChannel
           .makeRequest(const IsolateMessage(name: MessageName.refreshTimer));
     }
-    await _refreshStateAsync();
+    await refreshStateAsync();
   }
 
   Future<void> onTapSyncTimeoutButton(int? result) async {
@@ -112,7 +112,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
       _settingsRepo.syncTimeout = result;
       _refreshIconBloc.add(RefreshIconNow(forceRefreshNow: true));
     }
-    await _refreshStateAsync();
+    await refreshStateAsync();
   }
 
   Future<void> onTapNotificationsEnabled(BuildContext context) async {
@@ -130,10 +130,10 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
               _bgChannel.makeRequest(
                   const IsolateMessage(name: MessageName.refreshTimer));
             }
-            await _refreshStateAsync();
+            await refreshStateAsync();
           });
     }
-    await _refreshStateAsync();
+    await refreshStateAsync();
   }
 
   void openAppSettings() {
@@ -143,25 +143,31 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   Future<void> onTapPlaySoundEnabled() async {
     _settingsRepo.soundEnabled = !_settingsRepo.soundEnabled;
     _notificationBloc.add(ToggleSounds());
-    await _refreshStateAsync();
+    await refreshStateAsync();
   }
 
   Future<void> onTapDarkMode(int? result) async {
     if (result != null) {
       _settingsRepo.darkMode = result;
-      await _refreshStateAsync();
+      await refreshStateAsync();
     }
   }
 
   Future<void> setAlertFilterAt(
       BuildContext context, bool? newValue, int index) async {
     _settingsRepo.setAlertFilterAt(newValue!, index);
-    await _refreshStateAsync();
+    await refreshStateAsync();
   }
 
   Future<void> setSilenceFilterAt(
       BuildContext context, bool? newValue, int index) async {
     _settingsRepo.setSilenceFilterAt(newValue!, index);
-    await _refreshStateAsync();
+    await refreshStateAsync();
+  }
+
+  Future<void> batteryRequest(
+      Future<BatterySetting> Function() callback) async {
+    await refreshStateAsync();
+    refreshStateAsync(overrideBattery: await callback());
   }
 }

@@ -38,8 +38,10 @@ class GeneralSettingsScreen extends StatelessWidget {
 class GeneralSettingsList extends StatelessWidget {
   const GeneralSettingsList({super.key, required this.cubit});
   final GeneralSettingsCubit cubit;
+
   @override
   Widget build(BuildContext context) {
+    context.read<GeneralSettingsCubit>().refreshStateAsync();
     return BlocBuilder<GeneralSettingsCubit, GeneralSettingsCubitState>(
         builder: (context, state) {
       return ListView(children: [
@@ -128,8 +130,10 @@ class GeneralSettingsList extends StatelessWidget {
                 title: "Battery Permission",
                 subtitle: state.batteryPermissionSubtitle,
                 onTap: () async {
-                  await requestBatteryPermission(
-                      context: context, askAgain: true);
+                  await cubit.batteryRequest(() async {
+                    return await requestBatteryPermission(
+                        context: context, askAgain: true);
+                  });
                 });
           }),
       ]);

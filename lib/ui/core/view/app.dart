@@ -21,7 +21,6 @@ import '../../alerts/cubit/alerts_cubit.dart';
 import '../../alerts/view/alerts_screen.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import '../../settings/bloc/account_bloc.dart';
-import '../../settings/cubit/battery_permission_cubit.dart';
 import '../../settings/cubit/general_settings_cubit.dart';
 import '../../settings/cubit/root_settings_cubit.dart';
 import '../../settings/view/about_screen.dart';
@@ -84,9 +83,6 @@ class OAVapp extends StatelessWidget {
                   notificationBloc: context.read<NotificationBloc>(),
                   refreshIconBloc: context.read<RefreshIconBloc>())),
           BlocProvider(create: (context) => AccountBloc(bgChannel: bgChannel)),
-          BlocProvider(
-              create: (context) => BatteryPermissionCubit(
-                  context.read<BatteryPermissionRepo>())),
         ], child: const OAVappView()));
   }
 }
