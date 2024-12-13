@@ -9,11 +9,11 @@ import 'dart:async';
 import 'package:app_settings/app_settings.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:open_alert_viewer/ui/alerts/cubit/alerts_cubit.dart';
 
 import '../../../background/background.dart';
 import '../../../data/repositories/battery_repository.dart';
 import '../../../data/repositories/settings_repository.dart';
-import '../../alerts/bloc/refresh_bloc.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import 'general_settings_state.dart';
@@ -23,11 +23,11 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
       {required SettingsRepo settings,
       required BackgroundChannel bgChannel,
       required NotificationBloc notificationBloc,
-      required RefreshIconBloc refreshIconBloc})
+      required AlertsCubit alertsCubit})
       : _settingsRepo = settings,
         _bgChannel = bgChannel,
         _notificationBloc = notificationBloc,
-        _refreshIconBloc = refreshIconBloc,
+        _alertsCubit = alertsCubit,
         super(GeneralSettingsCubitState.init()) {
     _state = state;
     _refreshSettings();
@@ -37,7 +37,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   final SettingsRepo _settingsRepo;
   final BackgroundChannel _bgChannel;
   final NotificationBloc _notificationBloc;
-  final RefreshIconBloc _refreshIconBloc;
+  final AlertsCubit _alertsCubit;
   GeneralSettingsCubitState? _state;
 
   Future<void> refreshStateAsync({BatterySetting? overrideBattery}) async {
@@ -110,7 +110,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   Future<void> onTapSyncTimeoutButton(int? result) async {
     if (result != null) {
       _settingsRepo.syncTimeout = result;
-      _refreshIconBloc.add(RefreshIconNow(forceRefreshNow: true));
+      _alertsCubit.onTapRefresh();
     }
     await refreshStateAsync();
   }

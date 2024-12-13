@@ -11,8 +11,6 @@ import '../../../data/repositories/settings_repository.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../cubit/alerts_cubit.dart';
 import '../cubit/alerts_state.dart';
-import '../bloc/refresh_bloc.dart';
-import '../../../domain/alerts.dart';
 import 'alerts.dart';
 
 class AlertsScreen extends StatelessWidget {
@@ -70,13 +68,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
             soundStatusWidget,
             notificationsStatusWidget,
             HeaderButton(
-                icon: Icons.refresh,
-                onPressed: () {
-                  cubit.updateLastSeen();
-                  context
-                      .read<RefreshIconBloc>()
-                      .add(RefreshIconNow(forceRefreshNow: true));
-                })
+                icon: Icons.refresh, onPressed: () => cubit.onTapRefresh())
           ]);
     });
   }
@@ -134,76 +126,35 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RefreshIconBloc, RefreshIconState>(
-        listener: (context, state) {
-      if (state is RefreshIconTriggered) {
+    final cubit = context.read<AlertsCubit>();
+    return BlocBuilder<AlertsCubit, AlertsCubitState>(
+        builder: (context, state) {
+      if (state.refresh.status == RefreshIconStatus.triggeredOrRunning) {
         refreshKey.currentState?.show();
       }
-    }, child: Builder(builder: (context) {
-      final state = context.watch<AlertsCubit>().state;
-      final cubit = context.read<AlertsCubit>();
-      List<Widget> alertWidgets = [];
       Widget child;
-      List<bool> filter = _settings.alertFilter;
-      List<bool> silenceFilter = _settings.silenceFilter;
-      for (var alert in state.alerts) {
-        if (filter[alert.kind.index]) {
-          if ((alert.downtimeScheduled &&
-                  !silenceFilter[SilenceTypes.downtimeScheduled.id]) ||
-              (alert.silenced &&
-                  !silenceFilter[SilenceTypes.acknowledged.id]) ||
-              (!alert.active && !silenceFilter[SilenceTypes.inactive.id])) {
-            continue;
-          }
-          alertWidgets.add(AlertWidget(alert: alert));
-        }
-      }
-      // this goes first to show any error messages even if `sources` is empty
-      if (alertWidgets.isNotEmpty) {
-        child = ListView(children: alertWidgets);
+      IconData emptyIcon;
+      if (state.filteredAlerts.isNotEmpty) {
+        child = ListView(
+            children: state.filteredAlerts
+                .map((alert) => AlertWidget(alert: alert))
+                .toList());
       } else if (state.status == FetchingStatus.init) {
         child = Container();
-      } else if (state.sources.isEmpty) {
-        child = const EmptyPane(
-            icon: Icons.login, text: "Please configure an account");
       } else {
-        String caveat = " ";
-        if (state.alerts
-            .where((v) => v.kind != AlertType.okay && v.kind != AlertType.up)
-            .isNotEmpty) {
-          caveat = " (filtered) ";
+        if (state.sources.isEmpty) {
+          emptyIcon = Icons.login;
+        } else {
+          emptyIcon = Icons.check;
         }
-        child = EmptyPane(icon: Icons.check, text: "No${caveat}alerts here!");
+        child = EmptyPane(icon: emptyIcon, text: state.emptyPaneMessage);
       }
       return RefreshIndicator(
-          onRefresh: () async {
-            var refreshIconState = context.read<RefreshIconBloc>().state;
-            bool forceRefreshNow = true;
-            bool alreadyFetching = false;
-            if (refreshIconState is RefreshIconTriggered) {
-              forceRefreshNow = refreshIconState.forceRefreshNow;
-              alreadyFetching = refreshIconState.alreadyFetching;
-            }
-            if (!alreadyFetching) {
-              cubit.fetchAlerts(forceRefreshNow: forceRefreshNow);
-              await Future.delayed(const Duration(milliseconds: 100));
-            }
-            while (true) {
-              if (context.mounted &&
-                  state.refreshStatus == RefreshIconStatus.fetchingNow) {
-                await Future.delayed(const Duration(milliseconds: 100));
-              } else {
-                break;
-              }
-            }
-            if (context.mounted) {
-              context.read<RefreshIconBloc>().add(RefreshIconFinish());
-            }
-          },
+          onRefresh: cubit.onRefresh,
           key: refreshKey,
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
           child: child);
-    }));
+    });
   }
 }
 

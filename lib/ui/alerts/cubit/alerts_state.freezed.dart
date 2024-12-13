@@ -15,15 +15,189 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
+mixin _$RefreshIconState {
+  RefreshIconStatus get status => throw _privateConstructorUsedError;
+  bool get alreadyFetching => throw _privateConstructorUsedError;
+  bool get forceRefreshNow => throw _privateConstructorUsedError;
+
+  /// Create a copy of RefreshIconState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $RefreshIconStateCopyWith<RefreshIconState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $RefreshIconStateCopyWith<$Res> {
+  factory $RefreshIconStateCopyWith(
+          RefreshIconState value, $Res Function(RefreshIconState) then) =
+      _$RefreshIconStateCopyWithImpl<$Res, RefreshIconState>;
+  @useResult
+  $Res call(
+      {RefreshIconStatus status, bool alreadyFetching, bool forceRefreshNow});
+}
+
+/// @nodoc
+class _$RefreshIconStateCopyWithImpl<$Res, $Val extends RefreshIconState>
+    implements $RefreshIconStateCopyWith<$Res> {
+  _$RefreshIconStateCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of RefreshIconState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? status = null,
+    Object? alreadyFetching = null,
+    Object? forceRefreshNow = null,
+  }) {
+    return _then(_value.copyWith(
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as RefreshIconStatus,
+      alreadyFetching: null == alreadyFetching
+          ? _value.alreadyFetching
+          : alreadyFetching // ignore: cast_nullable_to_non_nullable
+              as bool,
+      forceRefreshNow: null == forceRefreshNow
+          ? _value.forceRefreshNow
+          : forceRefreshNow // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$RefreshIconStateImplCopyWith<$Res>
+    implements $RefreshIconStateCopyWith<$Res> {
+  factory _$$RefreshIconStateImplCopyWith(_$RefreshIconStateImpl value,
+          $Res Function(_$RefreshIconStateImpl) then) =
+      __$$RefreshIconStateImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {RefreshIconStatus status, bool alreadyFetching, bool forceRefreshNow});
+}
+
+/// @nodoc
+class __$$RefreshIconStateImplCopyWithImpl<$Res>
+    extends _$RefreshIconStateCopyWithImpl<$Res, _$RefreshIconStateImpl>
+    implements _$$RefreshIconStateImplCopyWith<$Res> {
+  __$$RefreshIconStateImplCopyWithImpl(_$RefreshIconStateImpl _value,
+      $Res Function(_$RefreshIconStateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of RefreshIconState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? status = null,
+    Object? alreadyFetching = null,
+    Object? forceRefreshNow = null,
+  }) {
+    return _then(_$RefreshIconStateImpl(
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as RefreshIconStatus,
+      alreadyFetching: null == alreadyFetching
+          ? _value.alreadyFetching
+          : alreadyFetching // ignore: cast_nullable_to_non_nullable
+              as bool,
+      forceRefreshNow: null == forceRefreshNow
+          ? _value.forceRefreshNow
+          : forceRefreshNow // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$RefreshIconStateImpl implements _RefreshIconState {
+  const _$RefreshIconStateImpl(
+      {required this.status,
+      required this.alreadyFetching,
+      required this.forceRefreshNow});
+
+  @override
+  final RefreshIconStatus status;
+  @override
+  final bool alreadyFetching;
+  @override
+  final bool forceRefreshNow;
+
+  @override
+  String toString() {
+    return 'RefreshIconState(status: $status, alreadyFetching: $alreadyFetching, forceRefreshNow: $forceRefreshNow)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RefreshIconStateImpl &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.alreadyFetching, alreadyFetching) ||
+                other.alreadyFetching == alreadyFetching) &&
+            (identical(other.forceRefreshNow, forceRefreshNow) ||
+                other.forceRefreshNow == forceRefreshNow));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, status, alreadyFetching, forceRefreshNow);
+
+  /// Create a copy of RefreshIconState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$RefreshIconStateImplCopyWith<_$RefreshIconStateImpl> get copyWith =>
+      __$$RefreshIconStateImplCopyWithImpl<_$RefreshIconStateImpl>(
+          this, _$identity);
+}
+
+abstract class _RefreshIconState implements RefreshIconState {
+  const factory _RefreshIconState(
+      {required final RefreshIconStatus status,
+      required final bool alreadyFetching,
+      required final bool forceRefreshNow}) = _$RefreshIconStateImpl;
+
+  @override
+  RefreshIconStatus get status;
+  @override
+  bool get alreadyFetching;
+  @override
+  bool get forceRefreshNow;
+
+  /// Create a copy of RefreshIconState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$RefreshIconStateImplCopyWith<_$RefreshIconStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$AlertsCubitState {
   Map<String, Object> get settings => throw _privateConstructorUsedError;
   FetchingStatus get status => throw _privateConstructorUsedError;
-  RefreshIconStatus get refreshStatus => throw _privateConstructorUsedError;
+  RefreshIconState get refresh => throw _privateConstructorUsedError;
   List<Alert> get alerts => throw _privateConstructorUsedError;
+  List<Alert> get filteredAlerts => throw _privateConstructorUsedError;
   List<AlertSourceData> get sources => throw _privateConstructorUsedError;
   bool get showNotificationStatusWidget => throw _privateConstructorUsedError;
   bool get showSoundStatusWidget => throw _privateConstructorUsedError;
   bool get showFilterStatusWidget => throw _privateConstructorUsedError;
+  String get emptyPaneMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of AlertsCubitState
   /// with the given fields replaced by the non-null parameter values.
@@ -41,12 +215,16 @@ abstract class $AlertsCubitStateCopyWith<$Res> {
   $Res call(
       {Map<String, Object> settings,
       FetchingStatus status,
-      RefreshIconStatus refreshStatus,
+      RefreshIconState refresh,
       List<Alert> alerts,
+      List<Alert> filteredAlerts,
       List<AlertSourceData> sources,
       bool showNotificationStatusWidget,
       bool showSoundStatusWidget,
-      bool showFilterStatusWidget});
+      bool showFilterStatusWidget,
+      String emptyPaneMessage});
+
+  $RefreshIconStateCopyWith<$Res> get refresh;
 }
 
 /// @nodoc
@@ -66,12 +244,14 @@ class _$AlertsCubitStateCopyWithImpl<$Res, $Val extends AlertsCubitState>
   $Res call({
     Object? settings = null,
     Object? status = null,
-    Object? refreshStatus = null,
+    Object? refresh = null,
     Object? alerts = null,
+    Object? filteredAlerts = null,
     Object? sources = null,
     Object? showNotificationStatusWidget = null,
     Object? showSoundStatusWidget = null,
     Object? showFilterStatusWidget = null,
+    Object? emptyPaneMessage = null,
   }) {
     return _then(_value.copyWith(
       settings: null == settings
@@ -82,13 +262,17 @@ class _$AlertsCubitStateCopyWithImpl<$Res, $Val extends AlertsCubitState>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as FetchingStatus,
-      refreshStatus: null == refreshStatus
-          ? _value.refreshStatus
-          : refreshStatus // ignore: cast_nullable_to_non_nullable
-              as RefreshIconStatus,
+      refresh: null == refresh
+          ? _value.refresh
+          : refresh // ignore: cast_nullable_to_non_nullable
+              as RefreshIconState,
       alerts: null == alerts
           ? _value.alerts
           : alerts // ignore: cast_nullable_to_non_nullable
+              as List<Alert>,
+      filteredAlerts: null == filteredAlerts
+          ? _value.filteredAlerts
+          : filteredAlerts // ignore: cast_nullable_to_non_nullable
               as List<Alert>,
       sources: null == sources
           ? _value.sources
@@ -106,35 +290,54 @@ class _$AlertsCubitStateCopyWithImpl<$Res, $Val extends AlertsCubitState>
           ? _value.showFilterStatusWidget
           : showFilterStatusWidget // ignore: cast_nullable_to_non_nullable
               as bool,
+      emptyPaneMessage: null == emptyPaneMessage
+          ? _value.emptyPaneMessage
+          : emptyPaneMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
+  }
+
+  /// Create a copy of AlertsCubitState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RefreshIconStateCopyWith<$Res> get refresh {
+    return $RefreshIconStateCopyWith<$Res>(_value.refresh, (value) {
+      return _then(_value.copyWith(refresh: value) as $Val);
+    });
   }
 }
 
 /// @nodoc
-abstract class _$$AlertsStateImplCopyWith<$Res>
+abstract class _$$AlertsCubitStateImplCopyWith<$Res>
     implements $AlertsCubitStateCopyWith<$Res> {
-  factory _$$AlertsStateImplCopyWith(
-          _$AlertsStateImpl value, $Res Function(_$AlertsStateImpl) then) =
-      __$$AlertsStateImplCopyWithImpl<$Res>;
+  factory _$$AlertsCubitStateImplCopyWith(_$AlertsCubitStateImpl value,
+          $Res Function(_$AlertsCubitStateImpl) then) =
+      __$$AlertsCubitStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {Map<String, Object> settings,
       FetchingStatus status,
-      RefreshIconStatus refreshStatus,
+      RefreshIconState refresh,
       List<Alert> alerts,
+      List<Alert> filteredAlerts,
       List<AlertSourceData> sources,
       bool showNotificationStatusWidget,
       bool showSoundStatusWidget,
-      bool showFilterStatusWidget});
+      bool showFilterStatusWidget,
+      String emptyPaneMessage});
+
+  @override
+  $RefreshIconStateCopyWith<$Res> get refresh;
 }
 
 /// @nodoc
-class __$$AlertsStateImplCopyWithImpl<$Res>
-    extends _$AlertsCubitStateCopyWithImpl<$Res, _$AlertsStateImpl>
-    implements _$$AlertsStateImplCopyWith<$Res> {
-  __$$AlertsStateImplCopyWithImpl(
-      _$AlertsStateImpl _value, $Res Function(_$AlertsStateImpl) _then)
+class __$$AlertsCubitStateImplCopyWithImpl<$Res>
+    extends _$AlertsCubitStateCopyWithImpl<$Res, _$AlertsCubitStateImpl>
+    implements _$$AlertsCubitStateImplCopyWith<$Res> {
+  __$$AlertsCubitStateImplCopyWithImpl(_$AlertsCubitStateImpl _value,
+      $Res Function(_$AlertsCubitStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of AlertsCubitState
@@ -144,14 +347,16 @@ class __$$AlertsStateImplCopyWithImpl<$Res>
   $Res call({
     Object? settings = null,
     Object? status = null,
-    Object? refreshStatus = null,
+    Object? refresh = null,
     Object? alerts = null,
+    Object? filteredAlerts = null,
     Object? sources = null,
     Object? showNotificationStatusWidget = null,
     Object? showSoundStatusWidget = null,
     Object? showFilterStatusWidget = null,
+    Object? emptyPaneMessage = null,
   }) {
-    return _then(_$AlertsStateImpl(
+    return _then(_$AlertsCubitStateImpl(
       settings: null == settings
           ? _value._settings
           : settings // ignore: cast_nullable_to_non_nullable
@@ -160,13 +365,17 @@ class __$$AlertsStateImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as FetchingStatus,
-      refreshStatus: null == refreshStatus
-          ? _value.refreshStatus
-          : refreshStatus // ignore: cast_nullable_to_non_nullable
-              as RefreshIconStatus,
+      refresh: null == refresh
+          ? _value.refresh
+          : refresh // ignore: cast_nullable_to_non_nullable
+              as RefreshIconState,
       alerts: null == alerts
           ? _value._alerts
           : alerts // ignore: cast_nullable_to_non_nullable
+              as List<Alert>,
+      filteredAlerts: null == filteredAlerts
+          ? _value._filteredAlerts
+          : filteredAlerts // ignore: cast_nullable_to_non_nullable
               as List<Alert>,
       sources: null == sources
           ? _value._sources
@@ -184,24 +393,31 @@ class __$$AlertsStateImplCopyWithImpl<$Res>
           ? _value.showFilterStatusWidget
           : showFilterStatusWidget // ignore: cast_nullable_to_non_nullable
               as bool,
+      emptyPaneMessage: null == emptyPaneMessage
+          ? _value.emptyPaneMessage
+          : emptyPaneMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
 
-class _$AlertsStateImpl implements _AlertsState {
-  const _$AlertsStateImpl(
+class _$AlertsCubitStateImpl implements _AlertsCubitState {
+  const _$AlertsCubitStateImpl(
       {required final Map<String, Object> settings,
       required this.status,
-      required this.refreshStatus,
+      required this.refresh,
       required final List<Alert> alerts,
+      required final List<Alert> filteredAlerts,
       required final List<AlertSourceData> sources,
       required this.showNotificationStatusWidget,
       required this.showSoundStatusWidget,
-      required this.showFilterStatusWidget})
+      required this.showFilterStatusWidget,
+      required this.emptyPaneMessage})
       : _settings = settings,
         _alerts = alerts,
+        _filteredAlerts = filteredAlerts,
         _sources = sources;
 
   final Map<String, Object> _settings;
@@ -215,13 +431,21 @@ class _$AlertsStateImpl implements _AlertsState {
   @override
   final FetchingStatus status;
   @override
-  final RefreshIconStatus refreshStatus;
+  final RefreshIconState refresh;
   final List<Alert> _alerts;
   @override
   List<Alert> get alerts {
     if (_alerts is EqualUnmodifiableListView) return _alerts;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_alerts);
+  }
+
+  final List<Alert> _filteredAlerts;
+  @override
+  List<Alert> get filteredAlerts {
+    if (_filteredAlerts is EqualUnmodifiableListView) return _filteredAlerts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_filteredAlerts);
   }
 
   final List<AlertSourceData> _sources;
@@ -238,22 +462,25 @@ class _$AlertsStateImpl implements _AlertsState {
   final bool showSoundStatusWidget;
   @override
   final bool showFilterStatusWidget;
+  @override
+  final String emptyPaneMessage;
 
   @override
   String toString() {
-    return 'AlertsCubitState(settings: $settings, status: $status, refreshStatus: $refreshStatus, alerts: $alerts, sources: $sources, showNotificationStatusWidget: $showNotificationStatusWidget, showSoundStatusWidget: $showSoundStatusWidget, showFilterStatusWidget: $showFilterStatusWidget)';
+    return 'AlertsCubitState(settings: $settings, status: $status, refresh: $refresh, alerts: $alerts, filteredAlerts: $filteredAlerts, sources: $sources, showNotificationStatusWidget: $showNotificationStatusWidget, showSoundStatusWidget: $showSoundStatusWidget, showFilterStatusWidget: $showFilterStatusWidget, emptyPaneMessage: $emptyPaneMessage)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AlertsStateImpl &&
+            other is _$AlertsCubitStateImpl &&
             const DeepCollectionEquality().equals(other._settings, _settings) &&
             (identical(other.status, status) || other.status == status) &&
-            (identical(other.refreshStatus, refreshStatus) ||
-                other.refreshStatus == refreshStatus) &&
+            (identical(other.refresh, refresh) || other.refresh == refresh) &&
             const DeepCollectionEquality().equals(other._alerts, _alerts) &&
+            const DeepCollectionEquality()
+                .equals(other._filteredAlerts, _filteredAlerts) &&
             const DeepCollectionEquality().equals(other._sources, _sources) &&
             (identical(other.showNotificationStatusWidget,
                     showNotificationStatusWidget) ||
@@ -262,7 +489,9 @@ class _$AlertsStateImpl implements _AlertsState {
             (identical(other.showSoundStatusWidget, showSoundStatusWidget) ||
                 other.showSoundStatusWidget == showSoundStatusWidget) &&
             (identical(other.showFilterStatusWidget, showFilterStatusWidget) ||
-                other.showFilterStatusWidget == showFilterStatusWidget));
+                other.showFilterStatusWidget == showFilterStatusWidget) &&
+            (identical(other.emptyPaneMessage, emptyPaneMessage) ||
+                other.emptyPaneMessage == emptyPaneMessage));
   }
 
   @override
@@ -270,41 +499,48 @@ class _$AlertsStateImpl implements _AlertsState {
       runtimeType,
       const DeepCollectionEquality().hash(_settings),
       status,
-      refreshStatus,
+      refresh,
       const DeepCollectionEquality().hash(_alerts),
+      const DeepCollectionEquality().hash(_filteredAlerts),
       const DeepCollectionEquality().hash(_sources),
       showNotificationStatusWidget,
       showSoundStatusWidget,
-      showFilterStatusWidget);
+      showFilterStatusWidget,
+      emptyPaneMessage);
 
   /// Create a copy of AlertsCubitState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$AlertsStateImplCopyWith<_$AlertsStateImpl> get copyWith =>
-      __$$AlertsStateImplCopyWithImpl<_$AlertsStateImpl>(this, _$identity);
+  _$$AlertsCubitStateImplCopyWith<_$AlertsCubitStateImpl> get copyWith =>
+      __$$AlertsCubitStateImplCopyWithImpl<_$AlertsCubitStateImpl>(
+          this, _$identity);
 }
 
-abstract class _AlertsState implements AlertsCubitState {
-  const factory _AlertsState(
+abstract class _AlertsCubitState implements AlertsCubitState {
+  const factory _AlertsCubitState(
       {required final Map<String, Object> settings,
       required final FetchingStatus status,
-      required final RefreshIconStatus refreshStatus,
+      required final RefreshIconState refresh,
       required final List<Alert> alerts,
+      required final List<Alert> filteredAlerts,
       required final List<AlertSourceData> sources,
       required final bool showNotificationStatusWidget,
       required final bool showSoundStatusWidget,
-      required final bool showFilterStatusWidget}) = _$AlertsStateImpl;
+      required final bool showFilterStatusWidget,
+      required final String emptyPaneMessage}) = _$AlertsCubitStateImpl;
 
   @override
   Map<String, Object> get settings;
   @override
   FetchingStatus get status;
   @override
-  RefreshIconStatus get refreshStatus;
+  RefreshIconState get refresh;
   @override
   List<Alert> get alerts;
+  @override
+  List<Alert> get filteredAlerts;
   @override
   List<AlertSourceData> get sources;
   @override
@@ -313,11 +549,13 @@ abstract class _AlertsState implements AlertsCubitState {
   bool get showSoundStatusWidget;
   @override
   bool get showFilterStatusWidget;
+  @override
+  String get emptyPaneMessage;
 
   /// Create a copy of AlertsCubitState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AlertsStateImplCopyWith<_$AlertsStateImpl> get copyWith =>
+  _$$AlertsCubitStateImplCopyWith<_$AlertsCubitStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

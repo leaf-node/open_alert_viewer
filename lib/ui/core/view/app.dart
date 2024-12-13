@@ -16,7 +16,6 @@ import '../../../data/services/database.dart';
 import '../../../data/services/notification.dart';
 import '../../../data/repositories/settings_repository.dart';
 import '../../../domain/navigation.dart';
-import '../../alerts/bloc/refresh_bloc.dart';
 import '../../alerts/cubit/alerts_cubit.dart';
 import '../../alerts/view/alerts_screen.dart';
 import '../../notifications/bloc/notification_bloc.dart';
@@ -68,8 +67,6 @@ class OAVapp extends StatelessWidget {
                   notificationRepo: context.read<StickyNotificationRepo>(),
                   bgChannel: bgChannel)),
           BlocProvider(
-              create: (context) => RefreshIconBloc(bgChannel: bgChannel)),
-          BlocProvider(
               create: (context) => AlertsCubit(
                   bgChannel: bgChannel,
                   settings: context.read<SettingsRepo>(),
@@ -81,7 +78,7 @@ class OAVapp extends StatelessWidget {
                   settings: context.read<SettingsRepo>(),
                   bgChannel: bgChannel,
                   notificationBloc: context.read<NotificationBloc>(),
-                  refreshIconBloc: context.read<RefreshIconBloc>())),
+                  alertsCubit: context.read<AlertsCubit>())),
           BlocProvider(create: (context) => AccountBloc(bgChannel: bgChannel)),
         ], child: const OAVappView()));
   }

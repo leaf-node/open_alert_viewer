@@ -26,6 +26,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     _state = state;
     _listenForSettings();
     _listenForAlerts();
+    _listenForRefreshIcon();
     _refreshState();
   }
 
@@ -59,6 +60,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
         showNotificationStatusWidget: !notifyEnabled,
         showSoundStatusWidget: !soundEnabled && notifyEnabled,
         showFilterStatusWidget: !areImportantShown);
+    _updateAlertsState();
     emit(_state!);
   }
 
@@ -70,14 +72,98 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     _navigation.goTo(Screens.generalSettings);
   }
 
-  void fetchAlerts({bool? forceRefreshNow}) async {
+  void fetchAlerts({bool? forceRefreshNow}) {
     _bgChannel.makeRequest(IsolateMessage(
         name: MessageName.fetchAlerts, forceRefreshNow: forceRefreshNow));
+  }
+
+  void onTapRefresh() {
+    updateLastSeen();
+    if (_state!.refresh.status != RefreshIconStatus.triggeredOrRunning) {
+      _triggerRefreshIcon(forceRefreshNow: true);
+    }
   }
 
   void updateLastSeen() {
     _bgChannel
         .makeRequest(const IsolateMessage(name: MessageName.updateLastSeen));
+  }
+
+  void _triggerRefreshIcon(
+      {required bool forceRefreshNow, bool? alreadyFetching}) {
+    _state = _state!.copyWith(
+        refresh: RefreshIconState(
+            status: RefreshIconStatus.triggeredOrRunning,
+            forceRefreshNow: forceRefreshNow,
+            alreadyFetching:
+                alreadyFetching ?? _state!.refresh.alreadyFetching));
+    _refreshState();
+  }
+
+  void _updateAlertsState() {
+    List<bool> filter = _settings.alertFilter;
+    List<bool> silenceFilter = _settings.silenceFilter;
+    List<Alert> filteredAlerts = [];
+    for (var alert in _state!.alerts) {
+      if (filter[alert.kind.index]) {
+        if ((alert.downtimeScheduled &&
+                !silenceFilter[SilenceTypes.downtimeScheduled.id]) ||
+            (alert.silenced && !silenceFilter[SilenceTypes.acknowledged.id]) ||
+            (!alert.active && !silenceFilter[SilenceTypes.inactive.id])) {
+          continue;
+        }
+        filteredAlerts.add(alert);
+      }
+    }
+    _state = _state!.copyWith(filteredAlerts: filteredAlerts);
+    if (_state!.sources.isEmpty) {
+      _state =
+          _state!.copyWith(emptyPaneMessage: "Please configure an account");
+    } else if (filteredAlerts.isEmpty) {
+      String caveat = " ";
+      if (_state!.alerts
+          .where((v) => v.kind != AlertType.okay && v.kind != AlertType.up)
+          .isNotEmpty) {
+        caveat = " (filtered) ";
+      }
+      _state = _state!.copyWith(emptyPaneMessage: "No${caveat}alerts here!");
+    }
+  }
+
+  Future<void> onRefresh() async {
+    bool forceRefreshNow = true;
+    bool alreadyFetching = false;
+    if (_state!.refresh.status == RefreshIconStatus.triggeredOrRunning) {
+      forceRefreshNow = _state!.refresh.forceRefreshNow;
+      alreadyFetching = _state!.refresh.alreadyFetching;
+    }
+    if (!alreadyFetching) {
+      fetchAlerts(forceRefreshNow: forceRefreshNow);
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+    while (_state!.status == FetchingStatus.fetching) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+    _state = _state!.copyWith(
+        refresh: RefreshIconState(
+            status: RefreshIconStatus.stopped,
+            forceRefreshNow: false,
+            alreadyFetching: false));
+    _refreshState();
+  }
+
+  Future<void> _listenForRefreshIcon() async {
+    await for (final message
+        in _bgChannel.isolateStreams[MessageDestination.refreshIcon]!.stream) {
+      if (message.name == MessageName.showRefreshIndicator) {
+        _triggerRefreshIcon(
+            forceRefreshNow: message.forceRefreshNow ?? false,
+            alreadyFetching: message.alreadyFetching ?? false);
+      } else {
+        throw Exception(
+            "OAV Invalid 'refresh' stream message name: ${message.name}");
+      }
+    }
   }
 
   Future<void> _listenForSettings() async {
@@ -111,7 +197,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
       }
       _state =
           _state!.copyWith(status: status, alerts: alerts, sources: sources);
-      emit(_state!);
+      _refreshState();
     }
   }
 }

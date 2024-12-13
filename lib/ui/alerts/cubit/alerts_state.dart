@@ -18,8 +18,16 @@ enum FetchingStatus {
 
 enum RefreshIconStatus {
   init,
-  fetchingNow,
+  triggeredOrRunning,
   stopped,
+}
+
+@freezed
+class RefreshIconState with _$RefreshIconState {
+  const factory RefreshIconState(
+      {required RefreshIconStatus status,
+      required bool alreadyFetching,
+      required bool forceRefreshNow}) = _RefreshIconState;
 }
 
 @freezed
@@ -27,22 +35,29 @@ class AlertsCubitState with _$AlertsCubitState {
   const factory AlertsCubitState(
       {required Map<String, Object> settings,
       required FetchingStatus status,
-      required RefreshIconStatus refreshStatus,
+      required RefreshIconState refresh,
       required List<Alert> alerts,
+      required List<Alert> filteredAlerts,
       required List<AlertSourceData> sources,
       required bool showNotificationStatusWidget,
       required bool showSoundStatusWidget,
-      required bool showFilterStatusWidget}) = _AlertsState;
+      required bool showFilterStatusWidget,
+      required String emptyPaneMessage}) = _AlertsCubitState;
 
   factory AlertsCubitState.init() {
     return AlertsCubitState(
         settings: {},
         status: FetchingStatus.init,
-        refreshStatus: RefreshIconStatus.init,
+        refresh: RefreshIconState(
+            status: RefreshIconStatus.init,
+            alreadyFetching: false,
+            forceRefreshNow: false),
         alerts: [],
+        filteredAlerts: [],
         sources: [],
         showNotificationStatusWidget: false,
         showSoundStatusWidget: false,
-        showFilterStatusWidget: false);
+        showFilterStatusWidget: false,
+        emptyPaneMessage: "");
   }
 }
