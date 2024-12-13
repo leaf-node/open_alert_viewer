@@ -10,6 +10,7 @@ import 'package:bloc/bloc.dart';
 
 import '../../../background/background.dart';
 import '../../../data/repositories/settings_repository.dart';
+import '../../../data/services/alerts.dart';
 import '../../../domain/alerts.dart';
 import '../../../domain/navigation.dart';
 import 'alerts_state.dart';
@@ -17,9 +18,11 @@ import 'alerts_state.dart';
 class AlertsCubit extends Cubit<AlertsCubitState> {
   AlertsCubit(
       {required BackgroundChannel bgChannel,
+      required AlertsRepo alertsRepo,
       required Navigation navigation,
       required SettingsRepo settings})
       : _bgChannel = bgChannel,
+        _alertsRepo = alertsRepo,
         _navigation = navigation,
         _settings = settings,
         super(AlertsCubitState.init()) {
@@ -32,6 +35,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
 
   AlertsCubitState? _state;
   final BackgroundChannel _bgChannel;
+  final AlertsRepo _alertsRepo;
   final Navigation _navigation;
   final SettingsRepo _settings;
 
@@ -72,11 +76,6 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     _navigation.goTo(Screens.generalSettings);
   }
 
-  void fetchAlerts({bool? forceRefreshNow}) {
-    _bgChannel.makeRequest(IsolateMessage(
-        name: MessageName.fetchAlerts, forceRefreshNow: forceRefreshNow));
-  }
-
   void onTapRefresh() {
     updateLastSeen();
     if (_state!.refresh.status != RefreshIconStatus.triggeredOrRunning) {
@@ -85,8 +84,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
   }
 
   void updateLastSeen() {
-    _bgChannel
-        .makeRequest(const IsolateMessage(name: MessageName.updateLastSeen));
+    _alertsRepo.updateLastSeen();
   }
 
   void _triggerRefreshIcon(
@@ -138,7 +136,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
       alreadyFetching = _state!.refresh.alreadyFetching;
     }
     if (!alreadyFetching) {
-      fetchAlerts(forceRefreshNow: forceRefreshNow);
+      _alertsRepo.fetchAlerts(forceRefreshNow: forceRefreshNow);
       await Future.delayed(const Duration(milliseconds: 100));
     }
     while (_state!.status == FetchingStatus.fetching) {

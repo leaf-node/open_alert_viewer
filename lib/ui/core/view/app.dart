@@ -8,6 +8,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_alert_viewer/data/services/alerts.dart';
 
 import '../../../background/background.dart';
 import '../../../data/repositories/account_repository.dart';
@@ -47,6 +48,8 @@ class OAVapp extends StatelessWidget {
     SettingsRepo.appVersion = appVersion;
     return MultiRepositoryProvider(
         providers: [
+          RepositoryProvider(
+              create: (context) => AlertsRepo(bgChannel: bgChannel)),
           RepositoryProvider(create: (context) => SettingsRepo(db: db)),
           RepositoryProvider(create: (context) => AccountsRepo(db: db)),
           RepositoryProvider(
@@ -69,6 +72,7 @@ class OAVapp extends StatelessWidget {
           BlocProvider(
               create: (context) => AlertsCubit(
                   bgChannel: bgChannel,
+                  alertsRepo: context.read<AlertsRepo>(),
                   settings: context.read<SettingsRepo>(),
                   navigation: context.read<Navigation>())),
           BlocProvider(
@@ -78,7 +82,7 @@ class OAVapp extends StatelessWidget {
                   settings: context.read<SettingsRepo>(),
                   bgChannel: bgChannel,
                   notificationBloc: context.read<NotificationBloc>(),
-                  alertsCubit: context.read<AlertsCubit>())),
+                  alertsRepo: context.read<AlertsRepo>())),
           BlocProvider(create: (context) => AccountBloc(bgChannel: bgChannel)),
         ], child: const OAVappView()));
   }

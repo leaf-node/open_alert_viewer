@@ -9,11 +9,11 @@ import 'dart:async';
 import 'package:app_settings/app_settings.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:open_alert_viewer/ui/alerts/cubit/alerts_cubit.dart';
 
 import '../../../background/background.dart';
 import '../../../data/repositories/battery_repository.dart';
 import '../../../data/repositories/settings_repository.dart';
+import '../../../data/services/alerts.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import 'general_settings_state.dart';
@@ -23,11 +23,11 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
       {required SettingsRepo settings,
       required BackgroundChannel bgChannel,
       required NotificationBloc notificationBloc,
-      required AlertsCubit alertsCubit})
+      required AlertsRepo alertsRepo})
       : _settingsRepo = settings,
         _bgChannel = bgChannel,
         _notificationBloc = notificationBloc,
-        _alertsCubit = alertsCubit,
+        _alertsRepo = alertsRepo,
         super(GeneralSettingsCubitState.init()) {
     _state = state;
     _refreshSettings();
@@ -37,7 +37,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   final SettingsRepo _settingsRepo;
   final BackgroundChannel _bgChannel;
   final NotificationBloc _notificationBloc;
-  final AlertsCubit _alertsCubit;
+  final AlertsRepo _alertsRepo;
   GeneralSettingsCubitState? _state;
 
   Future<void> refreshStateAsync({BatterySetting? overrideBattery}) async {
@@ -101,8 +101,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
     }
     if (result != null) {
       _settingsRepo.refreshInterval = result;
-      _bgChannel
-          .makeRequest(const IsolateMessage(name: MessageName.refreshTimer));
+      _alertsRepo.refreshTimer();
     }
     await refreshStateAsync();
   }
@@ -110,7 +109,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   Future<void> onTapSyncTimeoutButton(int? result) async {
     if (result != null) {
       _settingsRepo.syncTimeout = result;
-      _alertsCubit.onTapRefresh();
+      _alertsRepo.fetchAlerts();
     }
     await refreshStateAsync();
   }
