@@ -91,7 +91,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
     emit(_state!);
   }
 
-  void onTapRefreshIntervalButton(int? result) {
+  Future<void> onTapRefreshIntervalButton(int? result) async {
     if (result == -1) {
       _notificationBloc.add(DisableNotificationsEvent());
       _settingsRepo.notificationsEnabled = false;
@@ -104,18 +104,18 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
       _bgChannel
           .makeRequest(const IsolateMessage(name: MessageName.refreshTimer));
     }
-    refreshStateAsync();
+    await refreshStateAsync();
   }
 
-  void onTapSyncTimeoutButton(int? result) {
+  Future<void> onTapSyncTimeoutButton(int? result) async {
     if (result != null) {
       _settingsRepo.syncTimeout = result;
       _refreshIconBloc.add(RefreshIconNow(forceRefreshNow: true));
     }
-    refreshStateAsync();
+    await refreshStateAsync();
   }
 
-  void onTapNotificationsEnabled(BuildContext context) {
+  Future<void> onTapNotificationsEnabled(BuildContext context) async {
     if (_settingsRepo.notificationsEnabled) {
       _settingsRepo.notificationsEnabled = false;
       _notificationBloc.add(DisableNotificationsEvent());
@@ -123,43 +123,45 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
       requestAndEnableNotifications(
           askAgain: true,
           context: context,
-          callback: () {
+          callback: () async {
             if (_settingsRepo.refreshInterval == -1) {
               _settingsRepo.refreshInterval =
                   RefreshFrequencies.oneMinute.value;
               _bgChannel.makeRequest(
                   const IsolateMessage(name: MessageName.refreshTimer));
             }
-            refreshStateAsync();
+            await refreshStateAsync();
           });
     }
-    refreshStateAsync();
+    await refreshStateAsync();
   }
 
   void openAppSettings() {
     AppSettings.openAppSettings(type: AppSettingsType.notification);
   }
 
-  void onTapPlaySoundEnabled() {
+  Future<void> onTapPlaySoundEnabled() async {
     _settingsRepo.soundEnabled = !_settingsRepo.soundEnabled;
     _notificationBloc.add(ToggleSounds());
-    refreshStateAsync();
+    await refreshStateAsync();
   }
 
-  void onTapDarkMode(int? result) {
+  Future<void> onTapDarkMode(int? result) async {
     if (result != null) {
       _settingsRepo.darkMode = result;
-      refreshStateAsync();
+      await refreshStateAsync();
     }
   }
 
-  void setAlertFilterAt(BuildContext context, bool? newValue, int index) {
+  Future<void> setAlertFilterAt(
+      BuildContext context, bool? newValue, int index) async {
     _settingsRepo.setAlertFilterAt(newValue!, index);
-    refreshStateAsync();
+    await refreshStateAsync();
   }
 
-  void setSilenceFilterAt(BuildContext context, bool? newValue, int index) {
+  Future<void> setSilenceFilterAt(
+      BuildContext context, bool? newValue, int index) async {
     _settingsRepo.setSilenceFilterAt(newValue!, index);
-    refreshStateAsync();
+    await refreshStateAsync();
   }
 }

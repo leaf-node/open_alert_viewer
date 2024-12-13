@@ -48,7 +48,7 @@ class GeneralSettingsList extends StatelessWidget {
             title: "Refresh Interval",
             subtitle: state.refreshIntervalSubtitle,
             onTap: () async {
-              cubit.onTapRefreshIntervalButton(
+              await cubit.onTapRefreshIntervalButton(
                   await settingsRadioDialogBuilder<int>(
                       context: context,
                       text: "Refresh Interval",
@@ -60,7 +60,7 @@ class GeneralSettingsList extends StatelessWidget {
             title: "Sync Timeout",
             subtitle: state.syncTimeoutSubtitle,
             onTap: () async {
-              cubit.onTapSyncTimeoutButton(
+              await cubit.onTapSyncTimeoutButton(
                   await settingsRadioDialogBuilder<int>(
                       context: context,
                       text: "Sync Timeout",
@@ -73,17 +73,15 @@ class GeneralSettingsList extends StatelessWidget {
                 : Icons.notifications_off,
             title: "Notifications",
             subtitle: state.notificationsEnabledSubtitle,
-            onTap: () {
-              cubit.onTapNotificationsEnabled(context);
+            onTap: () async {
+              await cubit.onTapNotificationsEnabled(context);
             }),
         if (Platform.isAndroid &&
             state.settings["notificationsEnabled"] as bool)
           MenuItem(
               icon: Icons.tune,
               title: "System Settings",
-              onTap: () {
-                cubit.openAppSettings();
-              }),
+              onTap: cubit.openAppSettings),
         if (state.settings["notificationsEnabled"] as bool)
           MenuItem(
               icon: state.settings["soundEnabled"] as bool
@@ -91,9 +89,7 @@ class GeneralSettingsList extends StatelessWidget {
                   : Icons.music_off_outlined,
               title: "Play Sound",
               subtitle: state.soundEnabledSubtitle,
-              onTap: () {
-                cubit.onTapPlaySoundEnabled();
-              }),
+              onTap: cubit.onTapPlaySoundEnabled),
         MenuItem(
             icon: Icons.filter_alt_outlined,
             title: "Alerts Filter",
@@ -119,7 +115,7 @@ class GeneralSettingsList extends StatelessWidget {
             title: "Dark Mode",
             subtitle: state.darkModeSubtitle,
             onTap: () async {
-              cubit.onTapDarkMode(await settingsRadioDialogBuilder<int>(
+              await cubit.onTapDarkMode(await settingsRadioDialogBuilder<int>(
                   context: context,
                   text: "Dark Mode",
                   priorSetting: state.settings["darkMode"] as int,
