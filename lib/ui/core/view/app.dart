@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/navigation.dart';
-import '../../alerts/bloc/alerts_bloc.dart';
+import '../../alerts/cubit/alerts_cubit.dart';
 import '../../alerts/bloc/refresh_bloc.dart';
 import '../../alerts/view/alerts_screen.dart';
 import '../../../data/services/database.dart';
@@ -70,7 +70,11 @@ class OAVapp extends StatelessWidget {
                   bgChannel: bgChannel)),
           BlocProvider(
               create: (context) => RefreshIconBloc(bgChannel: bgChannel)),
-          BlocProvider(create: (context) => AlertsBloc(bgChannel: bgChannel)),
+          BlocProvider(
+              create: (context) => AlertsCubit(
+                  bgChannel: bgChannel,
+                  settings: context.read<SettingsRepo>(),
+                  navigation: context.read<Navigation>())),
           BlocProvider(
               create: (context) => RootSettingsCubit(bgChannel: bgChannel)),
           BlocProvider(
@@ -113,7 +117,7 @@ class _OAVappViewState extends State<OAVappView> {
             case Screens.alerts:
               _navigator.pushAndRemoveUntil(
                   AlertsScreen.route(title: 'Open Alert Viewer'), (_) => false);
-            case Screens.settings:
+            case Screens.rootSettings:
               _navigator.push(SettingsScreen.route(title: "OAV Settings"));
             case Screens.generalSettings:
               _navigator.push(GeneralSettingsScreen.route(

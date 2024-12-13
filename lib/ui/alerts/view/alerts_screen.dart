@@ -8,13 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/repositories/settings_repository.dart';
-import '../../../domain/navigation.dart';
 import '../../core/widgets/shared_widgets.dart';
-import '../../settings/cubit/general_settings_cubit.dart';
-import '../../settings/cubit/general_settings_state.dart';
-import '../bloc/alerts_event.dart';
-import '../bloc/alerts_state.dart';
-import '../bloc/alerts_bloc.dart';
+import '../cubit/alerts_cubit.dart';
+import '../cubit/alerts_state.dart';
 import '../bloc/refresh_bloc.dart';
 import '../../../domain/alerts.dart';
 import 'alerts.dart';
@@ -42,56 +38,32 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    var settings = context.read<SettingsRepo>();
+    var cubit = context.read<AlertsCubit>();
     Widget notificationsStatusWidget;
     Widget soundStatusWidget;
     Widget filterStatusWidget;
-    return BlocBuilder<GeneralSettingsCubit, GeneralSettingsCubitState>(
+    return BlocBuilder<AlertsCubit, AlertsCubitState>(
         builder: (context, state) {
-      if (!settings.notificationsEnabled) {
-        notificationsStatusWidget = HeaderButton(
-            icon: Icons.notifications_off,
-            onPressed: () =>
-                context.read<Navigation>().goTo(Screens.generalSettings));
-      } else {
-        notificationsStatusWidget = Container();
-      }
-      if (!settings.soundEnabled && settings.notificationsEnabled) {
-        soundStatusWidget = HeaderButton(
-            icon: Icons.music_off_outlined,
-            onPressed: () =>
-                context.read<Navigation>().goTo(Screens.generalSettings));
-      } else {
-        soundStatusWidget = Container();
-      }
-      List<bool> filter = settings.alertFilter;
-      bool areImportantShown = true;
-      for (var kind in [
-        AlertType.error,
-        AlertType.down,
-        AlertType.unreachable,
-        AlertType.syncFailure
-      ]) {
-        if (filter[kind.index] == false) {
-          areImportantShown = false;
-          break;
-        }
-      }
-      if (!areImportantShown) {
-        filterStatusWidget = HeaderButton(
-            icon: Icons.filter_alt_off_outlined,
-            onPressed: () =>
-                context.read<Navigation>().goTo(Screens.generalSettings));
-      } else {
-        filterStatusWidget = Container();
-      }
+      notificationsStatusWidget = state.showNotificationStatusWidget
+          ? HeaderButton(
+              icon: Icons.notifications_off,
+              onPressed: cubit.openGeneralSettings)
+          : Container();
+      soundStatusWidget = state.showSoundStatusWidget
+          ? HeaderButton(
+              icon: Icons.music_off_outlined,
+              onPressed: cubit.openGeneralSettings)
+          : Container();
+      filterStatusWidget = state.showFilterStatusWidget
+          ? HeaderButton(
+              icon: Icons.filter_alt_off_outlined,
+              onPressed: cubit.openGeneralSettings)
+          : Container();
       return AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           foregroundColor: Theme.of(context).colorScheme.onPrimary,
-          leading: HeaderButton(
-              icon: Icons.menu,
-              onPressed: () =>
-                  context.read<Navigation>().goTo(Screens.settings)),
+          leading:
+              HeaderButton(icon: Icons.menu, onPressed: cubit.openRootSettings),
           title: Text(title),
           actions: [
             filterStatusWidget,
@@ -100,7 +72,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
             HeaderButton(
                 icon: Icons.refresh,
                 onPressed: () {
-                  context.read<AlertsBloc>().add(UpdateLastSeen());
+                  cubit.updateLastSeen();
                   context
                       .read<RefreshIconBloc>()
                       .add(RefreshIconNow(forceRefreshNow: true));
@@ -131,14 +103,14 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
     super.initState();
     _settings = context.read<SettingsRepo>();
     WidgetsBinding.instance.addObserver(this);
-    context.read<AlertsBloc>().add(UpdateLastSeen());
+    context.read<AlertsCubit>().updateLastSeen();
     _requestPermissions(context);
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (ModalRoute.of(context)?.isCurrent ?? false) {
-      context.read<AlertsBloc>().add(UpdateLastSeen());
+      context.read<AlertsCubit>().updateLastSeen();
     }
     if (state == AppLifecycleState.resumed && _settings.notificationsEnabled) {
       requestAndEnableNotifications(
@@ -168,7 +140,8 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
         refreshKey.currentState?.show();
       }
     }, child: Builder(builder: (context) {
-      final state = context.watch<AlertsBloc>().state;
+      final state = context.watch<AlertsCubit>().state;
+      final cubit = context.read<AlertsCubit>();
       List<Widget> alertWidgets = [];
       Widget child;
       List<bool> filter = _settings.alertFilter;
@@ -188,7 +161,7 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
       // this goes first to show any error messages even if `sources` is empty
       if (alertWidgets.isNotEmpty) {
         child = ListView(children: alertWidgets);
-      } else if (state is AlertsInit) {
+      } else if (state.status == FetchingStatus.init) {
         child = Container();
       } else if (state.sources.isEmpty) {
         child = const EmptyPane(
@@ -212,14 +185,12 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
               alreadyFetching = refreshIconState.alreadyFetching;
             }
             if (!alreadyFetching) {
-              context
-                  .read<AlertsBloc>()
-                  .add(FetchAlerts(forceRefreshNow: forceRefreshNow));
+              cubit.fetchAlerts(forceRefreshNow: forceRefreshNow);
               await Future.delayed(const Duration(milliseconds: 100));
             }
             while (true) {
               if (context.mounted &&
-                  context.read<AlertsBloc>().state is AlertsFetching) {
+                  state.refreshStatus == RefreshIconStatus.fetchingNow) {
                 await Future.delayed(const Duration(milliseconds: 100));
               } else {
                 break;

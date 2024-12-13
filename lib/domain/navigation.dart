@@ -9,10 +9,10 @@ import 'dart:async';
 enum Screens {
   none,
   alerts,
-  settings,
+  rootSettings,
   generalSettings,
-  about,
   accountSettings,
+  about,
   licensing,
   privacy
 }

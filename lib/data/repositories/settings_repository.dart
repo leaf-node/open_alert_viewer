@@ -15,7 +15,7 @@ class SettingsRepo {
       : _db = db,
         streamController = StreamController(),
         ready = Completer() {
-    stream = streamController.stream;
+    stream = streamController.stream.asBroadcastStream();
     ready.complete();
   }
 
