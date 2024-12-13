@@ -9,29 +9,29 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../domain/navigation.dart';
-import '../../alerts/cubit/alerts_cubit.dart';
-import '../../alerts/bloc/refresh_bloc.dart';
-import '../../alerts/view/alerts_screen.dart';
-import '../../../data/services/database.dart';
 import '../../../background/background.dart';
-import '../../settings/cubit/root_settings_cubit.dart';
-import '../bloc/app_cubit.dart';
-import '../bloc/app_state.dart';
-import '../../../data/repositories/settings_repository.dart';
-import '../../notifications/bloc/notification_bloc.dart';
-import '../../../data/services/notification.dart';
-import '../../settings/bloc/account_bloc.dart';
-import '../../settings/cubit/battery_permission_cubit.dart';
 import '../../../data/repositories/account_repository.dart';
 import '../../../data/repositories/battery_repository.dart';
+import '../../../data/services/database.dart';
+import '../../../data/services/notification.dart';
+import '../../../data/repositories/settings_repository.dart';
+import '../../../domain/navigation.dart';
+import '../../alerts/bloc/refresh_bloc.dart';
+import '../../alerts/cubit/alerts_cubit.dart';
+import '../../alerts/view/alerts_screen.dart';
+import '../../notifications/bloc/notification_bloc.dart';
+import '../../settings/bloc/account_bloc.dart';
+import '../../settings/cubit/battery_permission_cubit.dart';
 import '../../settings/cubit/general_settings_cubit.dart';
+import '../../settings/cubit/root_settings_cubit.dart';
 import '../../settings/view/about_screen.dart';
-import '../../settings/view/licensing_screen.dart';
-import '../../settings/view/privacy_screen.dart';
 import '../../settings/view/account_settings_screen.dart';
 import '../../settings/view/general_settings_screen.dart';
+import '../../settings/view/licensing_screen.dart';
+import '../../settings/view/privacy_screen.dart';
 import '../../settings/view/root_settings_screen.dart';
+import '../bloc/app_cubit.dart';
+import '../bloc/app_state.dart';
 
 class OAVapp extends StatelessWidget {
   const OAVapp(
