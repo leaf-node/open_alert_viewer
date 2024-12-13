@@ -10,7 +10,7 @@ import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../domain/alerts.dart';
-import '../../data/repositories/settings_repository.dart';
+import '../../data/repositories/settings_repo.dart';
 import '../../utils/utils.dart';
 import '../background.dart';
 

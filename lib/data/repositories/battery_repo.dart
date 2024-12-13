@@ -8,7 +8,7 @@ import 'dart:io';
 
 import 'package:permission_handler/permission_handler.dart';
 
-import 'settings_repository.dart';
+import 'settings_repo.dart';
 
 enum BatterySetting {
   notApplicable("Not Applicable", false),

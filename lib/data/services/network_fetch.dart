@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 import '../../background/background.dart';
-import '../repositories/settings_repository.dart';
+import '../repositories/settings_repo.dart';
 
 mixin NetworkFetch {
   Future<http.Response> networkFetch(

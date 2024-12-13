@@ -9,9 +9,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repositories/battery_repository.dart';
-import '../../../data/repositories/settings_repository.dart';
-import '../../../data/services/notification.dart';
+import '../../../data/repositories/battery_repo.dart';
+import '../../../data/repositories/settings_repo.dart';
+import '../../../data/repositories/sticky_notification_repo.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 
 class HeaderButton extends StatelessWidget {

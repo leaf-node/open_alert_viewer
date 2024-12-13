@@ -9,7 +9,7 @@ import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 
-import '../../../data/repositories/settings_repository.dart';
+import '../../../data/repositories/settings_repo.dart';
 import '../../../domain/alerts.dart';
 import '../../../domain/navigation.dart';
 import 'app_state.dart';

@@ -8,7 +8,7 @@ import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import '../repositories/settings_repository.dart';
+import 'settings_repo.dart';
 
 class StickyNotificationRepo {
   StickyNotificationRepo({required SettingsRepo settings})

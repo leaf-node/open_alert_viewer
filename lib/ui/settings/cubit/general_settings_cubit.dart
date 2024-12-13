@@ -11,9 +11,9 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../../background/background.dart';
-import '../../../data/repositories/battery_repository.dart';
-import '../../../data/repositories/settings_repository.dart';
-import '../../../data/services/alerts.dart';
+import '../../../data/repositories/battery_repo.dart';
+import '../../../data/repositories/settings_repo.dart';
+import '../../../data/repositories/alerts_repo.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../../notifications/bloc/notification_bloc.dart';
 import 'general_settings_state.dart';

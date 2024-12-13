@@ -14,7 +14,7 @@ import '../../../domain/alerts.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../bloc/account_bloc.dart';
 import '../cubit/root_settings_cubit.dart';
-import '../../../data/repositories/account_repository.dart';
+import '../../../data/repositories/account_repo.dart';
 import '../widgets/settings_widgets.dart';
 
 class AccountSettingsScreen extends StatefulWidget {

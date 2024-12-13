@@ -10,7 +10,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 
 import '../../domain/alerts.dart';
-import '../../data/repositories/settings_repository.dart';
+import '../../data/repositories/settings_repo.dart';
 import '../../data/services/database.dart';
 import '../../data/services/network_fetch.dart';
 import '../background.dart';

@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repositories/settings_repository.dart';
+import '../../../data/repositories/settings_repo.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../cubit/alerts_cubit.dart';
 import '../cubit/alerts_state.dart';

@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../data/repositories/settings_repository.dart';
+import '../../../data/repositories/settings_repo.dart';
 import '../../../domain/navigation.dart';
 import '../widgets/settings_widgets.dart';
 

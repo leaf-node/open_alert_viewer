@@ -11,7 +11,7 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 import '../../../background/background.dart';
-import '../../../data/services/notification.dart';
+import '../../../data/repositories/sticky_notification_repo.dart';
 
 part 'notification_event.dart';
 part 'notification_state.dart';

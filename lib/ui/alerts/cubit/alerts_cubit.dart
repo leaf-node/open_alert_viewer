@@ -9,8 +9,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 
 import '../../../background/background.dart';
-import '../../../data/repositories/settings_repository.dart';
-import '../../../data/services/alerts.dart';
+import '../../../data/repositories/settings_repo.dart';
+import '../../../data/repositories/alerts_repo.dart';
 import '../../../domain/alerts.dart';
 import '../../../domain/navigation.dart';
 import 'alerts_state.dart';

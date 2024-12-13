@@ -8,14 +8,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/data/services/alerts.dart';
+import 'package:open_alert_viewer/data/repositories/alerts_repo.dart';
 
 import '../../../background/background.dart';
-import '../../../data/repositories/account_repository.dart';
-import '../../../data/repositories/battery_repository.dart';
+import '../../../data/repositories/account_repo.dart';
+import '../../../data/repositories/battery_repo.dart';
 import '../../../data/services/database.dart';
-import '../../../data/services/notification.dart';
-import '../../../data/repositories/settings_repository.dart';
+import '../../../data/repositories/sticky_notification_repo.dart';
+import '../../../data/repositories/settings_repo.dart';
 import '../../../domain/navigation.dart';
 import '../../alerts/cubit/alerts_cubit.dart';
 import '../../alerts/view/alerts_screen.dart';
