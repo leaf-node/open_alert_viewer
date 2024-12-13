@@ -41,7 +41,7 @@ class GeneralSettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<GeneralSettingsCubit>().refreshStateAsync();
+    cubit.refreshStateAsync();
     return BlocBuilder<GeneralSettingsCubit, GeneralSettingsCubitState>(
         builder: (context, state) {
       return ListView(children: [
