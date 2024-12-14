@@ -10,12 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_alert_viewer/ui/settings/cubit/account_settings_state.dart';
 
+import '../../../data/repositories/account_repo.dart';
 import '../../../data/services/network_fetch.dart';
 import '../../../domain/alerts.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../cubit/account_settings_cubit.dart';
-import '../cubit/root_settings_cubit.dart';
-import '../../../data/repositories/account_repo.dart';
 import '../widgets/settings_widgets.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
@@ -290,24 +289,15 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
             child: ElevatedButton(
                 onPressed: () async {
                   if (widget.source != null) {
-                    bool result = await textDialogBuilder(
-                        context: context,
-                        text: "Are you sure you want to remove this account?",
-                        okayText: "Remove",
-                        cancellable: true,
-                        reverseColors: true);
-                    if (context.mounted && result) {
-                      context
-                          .read<RootSettingsCubit>()
-                          .removeSource(widget.source!.id!);
+                    bool remove = await removeDialog(context: context);
+                    if (context.mounted && remove) {
+                      cubit!.removeSource(widget.source!.id!);
                       Navigator.of(context).pop();
                     }
                   } else {
-                    if (context.mounted) {
-                      bool stay = await discardDialog(context: context);
-                      if (context.mounted && !stay) {
-                        Navigator.of(context).pop();
-                      }
+                    bool stay = await discardDialog(context: context);
+                    if (context.mounted && !stay) {
+                      Navigator.of(context).pop();
                     }
                   }
                 },
@@ -363,13 +353,9 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                                 checkNow: true);
                           } else {
                             if (widget.source == null) {
-                              context
-                                  .read<RootSettingsCubit>()
-                                  .addSource(newSourceData);
+                              cubit!.addSource(newSourceData);
                             } else {
-                              context
-                                  .read<RootSettingsCubit>()
-                                  .updateSource(newSourceData);
+                              cubit!.updateSource(newSourceData);
                             }
                             Navigator.of(context).pop();
                           }
@@ -385,6 +371,15 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
     if (!systemIsUpdatingValues) {
       cubit!.confirmSource(sourceData: newSourceData, needsCheck: true);
     }
+  }
+
+  Future<bool> removeDialog({required BuildContext context}) async {
+    return await textDialogBuilder(
+        context: context,
+        text: "Are you sure you want to remove this account?",
+        okayText: "Remove",
+        cancellable: true,
+        reverseColors: true);
   }
 
   Future<bool> discardDialog({required BuildContext context}) async {

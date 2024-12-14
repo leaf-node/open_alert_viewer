@@ -43,6 +43,21 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState>
     }
   }
 
+  void addSource(AlertSourceData sourceData) {
+    _bgChannel.makeRequest(
+        IsolateMessage(name: MessageName.addSource, sourceData: sourceData));
+  }
+
+  void updateSource(AlertSourceData sourceData) {
+    _bgChannel.makeRequest(
+        IsolateMessage(name: MessageName.updateSource, sourceData: sourceData));
+  }
+
+  void removeSource(int id) {
+    _bgChannel
+        .makeRequest(IsolateMessage(name: MessageName.removeSource, id: id));
+  }
+
   void cleanOut() {
     accountCheckSerial = Util.genRandom();
     lastNeedsCheck = true;

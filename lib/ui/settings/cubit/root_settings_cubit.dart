@@ -23,21 +23,6 @@ class RootSettingsCubit extends Cubit<RootSettingsCubitState> {
   RootSettingsCubitState? _state;
   final BackgroundChannel _bgChannel;
 
-  void addSource(AlertSourceData sourceData) {
-    _bgChannel.makeRequest(
-        IsolateMessage(name: MessageName.addSource, sourceData: sourceData));
-  }
-
-  void updateSource(AlertSourceData sourceData) {
-    _bgChannel.makeRequest(
-        IsolateMessage(name: MessageName.updateSource, sourceData: sourceData));
-  }
-
-  void removeSource(int id) {
-    _bgChannel
-        .makeRequest(IsolateMessage(name: MessageName.removeSource, id: id));
-  }
-
   Future<void> _listenForSourceChanges() async {
     List<AlertSourceData> sources = [];
     await for (final message in _bgChannel
