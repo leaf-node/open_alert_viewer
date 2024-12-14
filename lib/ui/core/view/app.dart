@@ -19,7 +19,7 @@ import '../../../data/repositories/settings_repo.dart';
 import '../../../domain/navigation.dart';
 import '../../alerts/cubit/alerts_cubit.dart';
 import '../../alerts/view/alerts_screen.dart';
-import '../../notifications/bloc/notification_bloc.dart';
+import '../../../data/repositories/notifications_repo.dart';
 import '../../settings/bloc/account_bloc.dart';
 import '../../settings/cubit/general_settings_cubit.dart';
 import '../../settings/cubit/root_settings_cubit.dart';
@@ -59,16 +59,17 @@ class OAVapp extends StatelessWidget {
               create: (context) => BatteryPermissionRepo(
                   settings: context.read<SettingsRepo>())),
           RepositoryProvider(create: (context) => Navigation()),
+          RepositoryProvider(
+              create: (context) => NotificationsRepo(
+                  stickyNotificationRepo:
+                      context.read<StickyNotificationRepo>(),
+                  bgChannel: bgChannel)),
         ],
         child: MultiBlocProvider(providers: [
           BlocProvider(
               create: (context) => AppCubit(
                   navigation: context.read<Navigation>(),
                   settings: context.read<SettingsRepo>())),
-          BlocProvider(
-              create: (context) => NotificationBloc(
-                  notificationRepo: context.read<StickyNotificationRepo>(),
-                  bgChannel: bgChannel)),
           BlocProvider(
               create: (context) => AlertsCubit(
                   bgChannel: bgChannel,
@@ -81,7 +82,7 @@ class OAVapp extends StatelessWidget {
               create: (context) => GeneralSettingsCubit(
                   settings: context.read<SettingsRepo>(),
                   bgChannel: bgChannel,
-                  notificationBloc: context.read<NotificationBloc>(),
+                  notificationsRepo: context.read<NotificationsRepo>(),
                   alertsRepo: context.read<AlertsRepo>())),
           BlocProvider(create: (context) => AccountBloc(bgChannel: bgChannel)),
         ], child: const OAVappView()));

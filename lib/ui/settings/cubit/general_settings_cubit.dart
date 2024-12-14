@@ -15,18 +15,18 @@ import '../../../data/repositories/battery_repo.dart';
 import '../../../data/repositories/settings_repo.dart';
 import '../../../data/repositories/alerts_repo.dart';
 import '../../core/widgets/shared_widgets.dart';
-import '../../notifications/bloc/notification_bloc.dart';
+import '../../../data/repositories/notifications_repo.dart';
 import 'general_settings_state.dart';
 
 class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   GeneralSettingsCubit(
       {required SettingsRepo settings,
       required BackgroundChannel bgChannel,
-      required NotificationBloc notificationBloc,
+      required NotificationsRepo notificationsRepo,
       required AlertsRepo alertsRepo})
       : _settingsRepo = settings,
         _bgChannel = bgChannel,
-        _notificationBloc = notificationBloc,
+        _notificationsRepo = notificationsRepo,
         _alertsRepo = alertsRepo,
         super(GeneralSettingsCubitState.init()) {
     _state = state;
@@ -36,7 +36,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
 
   final SettingsRepo _settingsRepo;
   final BackgroundChannel _bgChannel;
-  final NotificationBloc _notificationBloc;
+  final NotificationsRepo _notificationsRepo;
   final AlertsRepo _alertsRepo;
   GeneralSettingsCubitState? _state;
 
@@ -93,10 +93,10 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
 
   Future<void> onTapRefreshIntervalButton(int? result) async {
     if (result == -1) {
-      _notificationBloc.add(DisableNotificationsEvent());
+      _notificationsRepo.disableNotifications();
       _settingsRepo.notificationsEnabled = false;
     } else if (result != null) {
-      _notificationBloc.add(EnableNotificationsEvent());
+      _notificationsRepo.enableNotifications();
       _settingsRepo.notificationsEnabled = true;
     }
     if (result != null) {
@@ -117,7 +117,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   Future<void> onTapNotificationsEnabled(BuildContext context) async {
     if (_settingsRepo.notificationsEnabled) {
       _settingsRepo.notificationsEnabled = false;
-      _notificationBloc.add(DisableNotificationsEvent());
+      _notificationsRepo.disableNotifications();
     } else {
       requestAndEnableNotifications(
           askAgain: true,
@@ -141,7 +141,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
 
   Future<void> onTapPlaySoundEnabled() async {
     _settingsRepo.soundEnabled = !_settingsRepo.soundEnabled;
-    _notificationBloc.add(ToggleSounds());
+    _notificationsRepo.toggleIntegratedAlertSounds();
     await refreshStateAsync();
   }
 

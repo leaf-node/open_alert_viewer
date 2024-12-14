@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/repositories/battery_repo.dart';
 import '../../../data/repositories/settings_repo.dart';
 import '../../../data/repositories/sticky_notification_repo.dart';
-import '../../notifications/bloc/notification_bloc.dart';
+import '../../../data/repositories/notifications_repo.dart';
 
 class HeaderButton extends StatelessWidget {
   const HeaderButton({super.key, required this.icon, required this.onPressed});
@@ -96,7 +96,7 @@ Future<void> requestAndEnableNotifications(
     required Function() callback}) async {
   final settings = context.read<SettingsRepo>();
   final stickyRepo = context.read<StickyNotificationRepo>();
-  final notificationBloc = context.read<NotificationBloc>();
+  final notificationsRepo = context.read<NotificationsRepo>();
   bool result;
   if (!(await stickyRepo.areNotificationsAllowed()) &&
       (!settings.notificationsRequested || askAgain) &&
@@ -114,8 +114,8 @@ Future<void> requestAndEnableNotifications(
     result = true;
   }
   if (result == true) {
-    notificationBloc.add(RequestAndEnableNotificationEvent(
-        askAgain: askAgain, callback: callback));
+    notificationsRepo.requestAndEnableNotifications(
+        askAgain: askAgain, callback: callback);
   }
 }
 
