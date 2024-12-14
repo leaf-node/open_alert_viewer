@@ -8,11 +8,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_alert_viewer/ui/settings/cubit/account_settings_state.dart';
 
 import '../../../data/services/network_fetch.dart';
 import '../../../domain/alerts.dart';
 import '../../core/widgets/shared_widgets.dart';
-import '../bloc/account_bloc.dart';
+import '../cubit/account_settings_cubit.dart';
 import '../cubit/root_settings_cubit.dart';
 import '../../../data/repositories/account_repo.dart';
 import '../widgets/settings_widgets.dart';
@@ -42,10 +43,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
         baseURLController = TextEditingController(),
         userController = TextEditingController(),
         passwordController = TextEditingController(),
-        accessTokenController = TextEditingController(),
-        isValid = null,
-        epoch = DateTime.fromMillisecondsSinceEpoch(0),
-        systemIsUpdatingValues = false;
+        accessTokenController = TextEditingController();
 
   final TextEditingController nameController;
   final TextEditingController typeController;
@@ -53,10 +51,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
   final TextEditingController userController;
   final TextEditingController passwordController;
   final TextEditingController accessTokenController;
+  final DateTime epoch = DateTime.fromMillisecondsSinceEpoch(0);
+  bool systemIsUpdatingValues = false;
+  AccountSettingsCubit? cubit;
   bool? isValid;
-  final DateTime epoch;
-  late final AccountBloc accountBloc;
-  bool systemIsUpdatingValues;
 
   AlertSourceData get newSourceData {
     if (widget.source == null) {
@@ -144,7 +142,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
       accessTokenController.text = widget.source!.accessToken;
       isValid = widget.source!.isValid;
     }
-    accountBloc = context.read<AccountBloc>();
+    cubit = context.read<AccountSettingsCubit>();
   }
 
   @override
@@ -156,7 +154,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
     userController.dispose();
     passwordController.dispose();
     accessTokenController.dispose();
-    accountBloc.add(CleanOutAccountEvent());
+    cubit?.cleanOut();
   }
 
   @override
@@ -181,8 +179,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                     onChanged: setNeedsCheck,
                     child: SizedBox(
                         width: 400,
-                        child: BlocBuilder<AccountBloc, AccountState>(
-                            builder: (context, state) {
+                        child: BlocBuilder<AccountSettingsCubit,
+                            AccountSettingsState>(builder: (context, state) {
                           String status;
                           IconData? icon;
                           if (state.responded) {
@@ -361,10 +359,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                     : () {
                         if (Form.of(context).validate()) {
                           if (needsCheck || !isValid) {
-                            context.read<AccountBloc>().add(ConfirmAccountEvent(
+                            cubit!.confirmSource(
                                 sourceData: newSourceData,
                                 needsCheck: false,
-                                checkNow: true));
+                                checkNow: true);
                           } else {
                             if (widget.source == null) {
                               context
@@ -387,8 +385,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
 
   void setNeedsCheck() {
     if (!systemIsUpdatingValues) {
-      context.read<AccountBloc>().add(
-          ConfirmAccountEvent(sourceData: newSourceData, needsCheck: true));
+      cubit!.confirmSource(sourceData: newSourceData, needsCheck: true);
     }
   }
 

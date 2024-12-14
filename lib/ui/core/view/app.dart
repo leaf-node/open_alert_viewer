@@ -20,7 +20,7 @@ import '../../../domain/navigation.dart';
 import '../../alerts/cubit/alerts_cubit.dart';
 import '../../alerts/view/alerts_screen.dart';
 import '../../../data/repositories/notifications_repo.dart';
-import '../../settings/bloc/account_bloc.dart';
+import '../../settings/cubit/account_settings_cubit.dart';
 import '../../settings/cubit/general_settings_cubit.dart';
 import '../../settings/cubit/root_settings_cubit.dart';
 import '../../settings/view/about_screen.dart';
@@ -84,7 +84,8 @@ class OAVapp extends StatelessWidget {
                   bgChannel: bgChannel,
                   notificationsRepo: context.read<NotificationsRepo>(),
                   alertsRepo: context.read<AlertsRepo>())),
-          BlocProvider(create: (context) => AccountBloc(bgChannel: bgChannel)),
+          BlocProvider(
+              create: (context) => AccountSettingsCubit(bgChannel: bgChannel)),
         ], child: const OAVappView()));
   }
 }

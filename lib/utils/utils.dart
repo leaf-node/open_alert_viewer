@@ -4,10 +4,14 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:math';
+
 import 'package:flutter/services.dart';
 import 'package:yaml/yaml.dart';
 
 class Util {
+  static final random = Random(DateTime.now().microsecondsSinceEpoch);
+
   static Map<String, T> mapConvert<T>(Map<String, dynamic> data) {
     return {for (var MapEntry(:key, :value) in data.entries) key: value as T};
   }
@@ -86,5 +90,9 @@ class Util {
     } catch (e) {
       return "version-unknown";
     }
+  }
+
+  static int genRandom() {
+    return random.nextInt(1 << 32);
   }
 }
