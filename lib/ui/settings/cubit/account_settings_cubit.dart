@@ -19,9 +19,11 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState>
         accountCheckSerial = -1,
         lastNeedsCheck = true,
         super(AccountSettingsState.init()) {
+    _state = state;
     _listenForConfirmations();
   }
 
+  AccountSettingsState? _state;
   final BackgroundChannel _bgChannel;
   int accountCheckSerial;
   bool lastNeedsCheck;
@@ -31,11 +33,11 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState>
     needsCheck = lastNeedsCheck = needsCheck ?? false;
     checkNow = checkNow ?? false;
     if (needsCheck) {
-      emit(AccountSettingsState(
-          sourceData: sourceData, status: CheckStatus.needsCheck));
+      emit(_state = _state!
+          .copyWith(sourceData: sourceData, status: CheckStatus.needsCheck));
     } else if (checkNow) {
-      emit(AccountSettingsState(
-          sourceData: sourceData, status: CheckStatus.checkingNow));
+      emit(_state = _state!
+          .copyWith(sourceData: sourceData, status: CheckStatus.checkingNow));
       sourceData =
           sourceData.copyWith(serial: accountCheckSerial = Util.genRandom());
       _bgChannel.makeRequest(IsolateMessage(
@@ -61,7 +63,7 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState>
   void cleanOut() {
     accountCheckSerial = Util.genRandom();
     lastNeedsCheck = true;
-    emit(AccountSettingsState.init());
+    emit(_state = AccountSettingsState.init());
   }
 
   Future<void> _listenForConfirmations() async {
@@ -70,7 +72,7 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState>
       if (message.name == MessageName.confirmSourcesReply) {
         if (message.sourceData!.serial == accountCheckSerial &&
             !lastNeedsCheck) {
-          emit(AccountSettingsState(
+          emit(_state = _state!.copyWith(
               sourceData: message.sourceData, status: CheckStatus.responded));
         }
       } else {
