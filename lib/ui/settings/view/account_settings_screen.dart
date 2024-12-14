@@ -183,7 +183,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                             AccountSettingsState>(builder: (context, state) {
                           String status;
                           IconData? icon;
-                          if (state.responded) {
+                          if (state.status == CheckStatus.responded) {
                             setNewSourceData(sourceData: state.sourceData!);
                             if (state.sourceData!.isValid ?? false) {
                               status = "Found API endpoint";
@@ -196,7 +196,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                               status = "Error: $error";
                               icon = Icons.close_outlined;
                             }
-                          } else if (state.needsCheck) {
+                          } else if (state.status == CheckStatus.needsCheck) {
                             status = "";
                             icon = null;
                           } else {
@@ -274,11 +274,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                                 children: [
                                   cancelButton(context),
                                   acceptButton(
-                                      context: context,
-                                      needsCheck: state.needsCheck,
-                                      isValid:
-                                          state.sourceData?.isValid ?? false,
-                                      responded: state.responded),
+                                    context: context,
+                                    status: state.status,
+                                    isValid: state.sourceData?.isValid ?? false,
+                                  ),
                                 ]),
                             const SizedBox(height: 40),
                           ]);
@@ -326,30 +325,29 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
 
   Widget acceptButton(
       {required BuildContext context,
-      required bool needsCheck,
-      required bool isValid,
-      required bool responded}) {
+      required CheckStatus status,
+      required bool isValid}) {
     bool allowClick;
-    if (needsCheck || responded) {
+    if (status == CheckStatus.needsCheck || status == CheckStatus.responded) {
       allowClick = true;
     } else {
       allowClick = false;
     }
-    String status;
-    if (needsCheck) {
-      status = "Check Account";
-    } else if (responded) {
+    String title;
+    if (status == CheckStatus.needsCheck) {
+      title = "Check Account";
+    } else if (status == CheckStatus.responded) {
       if (isValid) {
         if (widget.source == null) {
-          status = "Add Account";
+          title = "Add Account";
         } else {
-          status = "Update Account";
+          title = "Update Account";
         }
       } else {
-        status = "Try Again";
+        title = "Try Again";
       }
     } else {
-      status = "Checking...";
+      title = "Checking...";
     }
     return Expanded(
         child: Center(
@@ -358,7 +356,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                     ? () {}
                     : () {
                         if (Form.of(context).validate()) {
-                          if (needsCheck || !isValid) {
+                          if (status == CheckStatus.needsCheck || !isValid) {
                             cubit!.confirmSource(
                                 sourceData: newSourceData,
                                 needsCheck: false,
@@ -377,7 +375,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                           }
                         }
                       },
-                child: Text(status,
+                child: Text(title,
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                         fontWeight: FontWeight.bold)))));

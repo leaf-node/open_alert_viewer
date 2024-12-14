@@ -32,16 +32,10 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState>
     checkNow = checkNow ?? false;
     if (needsCheck) {
       emit(AccountSettingsState(
-          sourceData: sourceData,
-          needsCheck: true,
-          checkingNow: false,
-          responded: false));
+          sourceData: sourceData, status: CheckStatus.needsCheck));
     } else if (checkNow) {
       emit(AccountSettingsState(
-          sourceData: sourceData,
-          needsCheck: false,
-          checkingNow: true,
-          responded: false));
+          sourceData: sourceData, status: CheckStatus.checkingNow));
       sourceData =
           sourceData.copyWith(serial: accountCheckSerial = Util.genRandom());
       _bgChannel.makeRequest(IsolateMessage(
@@ -62,10 +56,7 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState>
         if (message.sourceData!.serial == accountCheckSerial &&
             !lastNeedsCheck) {
           emit(AccountSettingsState(
-              sourceData: message.sourceData,
-              needsCheck: false,
-              checkingNow: false,
-              responded: true));
+              sourceData: message.sourceData, status: CheckStatus.responded));
         }
       } else {
         throw Exception(

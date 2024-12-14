@@ -10,19 +10,16 @@ import '../../../domain/alerts.dart';
 
 part 'account_settings_state.freezed.dart';
 
+enum CheckStatus { needsCheck, checkingNow, responded }
+
 @freezed
 class AccountSettingsState with _$AccountSettingsState {
   const factory AccountSettingsState(
       {required AlertSourceData? sourceData,
-      required bool needsCheck,
-      required bool checkingNow,
-      required bool responded}) = _AccountSettingsState;
+      required CheckStatus status}) = _AccountSettingsState;
 
   factory AccountSettingsState.init() {
     return AccountSettingsState(
-        sourceData: null,
-        needsCheck: true,
-        checkingNow: false,
-        responded: false);
+        sourceData: null, status: CheckStatus.needsCheck);
   }
 }

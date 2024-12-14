@@ -17,9 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$AccountSettingsState {
   AlertSourceData? get sourceData => throw _privateConstructorUsedError;
-  bool get needsCheck => throw _privateConstructorUsedError;
-  bool get checkingNow => throw _privateConstructorUsedError;
-  bool get responded => throw _privateConstructorUsedError;
+  CheckStatus get status => throw _privateConstructorUsedError;
 
   /// Create a copy of AccountSettingsState
   /// with the given fields replaced by the non-null parameter values.
@@ -34,11 +32,7 @@ abstract class $AccountSettingsStateCopyWith<$Res> {
           $Res Function(AccountSettingsState) then) =
       _$AccountSettingsStateCopyWithImpl<$Res, AccountSettingsState>;
   @useResult
-  $Res call(
-      {AlertSourceData? sourceData,
-      bool needsCheck,
-      bool checkingNow,
-      bool responded});
+  $Res call({AlertSourceData? sourceData, CheckStatus status});
 
   $AlertSourceDataCopyWith<$Res>? get sourceData;
 }
@@ -60,27 +54,17 @@ class _$AccountSettingsStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? sourceData = freezed,
-    Object? needsCheck = null,
-    Object? checkingNow = null,
-    Object? responded = null,
+    Object? status = null,
   }) {
     return _then(_value.copyWith(
       sourceData: freezed == sourceData
           ? _value.sourceData
           : sourceData // ignore: cast_nullable_to_non_nullable
               as AlertSourceData?,
-      needsCheck: null == needsCheck
-          ? _value.needsCheck
-          : needsCheck // ignore: cast_nullable_to_non_nullable
-              as bool,
-      checkingNow: null == checkingNow
-          ? _value.checkingNow
-          : checkingNow // ignore: cast_nullable_to_non_nullable
-              as bool,
-      responded: null == responded
-          ? _value.responded
-          : responded // ignore: cast_nullable_to_non_nullable
-              as bool,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as CheckStatus,
     ) as $Val);
   }
 
@@ -107,11 +91,7 @@ abstract class _$$AccountSettingsStateImplCopyWith<$Res>
       __$$AccountSettingsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {AlertSourceData? sourceData,
-      bool needsCheck,
-      bool checkingNow,
-      bool responded});
+  $Res call({AlertSourceData? sourceData, CheckStatus status});
 
   @override
   $AlertSourceDataCopyWith<$Res>? get sourceData;
@@ -131,27 +111,17 @@ class __$$AccountSettingsStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? sourceData = freezed,
-    Object? needsCheck = null,
-    Object? checkingNow = null,
-    Object? responded = null,
+    Object? status = null,
   }) {
     return _then(_$AccountSettingsStateImpl(
       sourceData: freezed == sourceData
           ? _value.sourceData
           : sourceData // ignore: cast_nullable_to_non_nullable
               as AlertSourceData?,
-      needsCheck: null == needsCheck
-          ? _value.needsCheck
-          : needsCheck // ignore: cast_nullable_to_non_nullable
-              as bool,
-      checkingNow: null == checkingNow
-          ? _value.checkingNow
-          : checkingNow // ignore: cast_nullable_to_non_nullable
-              as bool,
-      responded: null == responded
-          ? _value.responded
-          : responded // ignore: cast_nullable_to_non_nullable
-              as bool,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as CheckStatus,
     ));
   }
 }
@@ -160,23 +130,16 @@ class __$$AccountSettingsStateImplCopyWithImpl<$Res>
 
 class _$AccountSettingsStateImpl implements _AccountSettingsState {
   const _$AccountSettingsStateImpl(
-      {required this.sourceData,
-      required this.needsCheck,
-      required this.checkingNow,
-      required this.responded});
+      {required this.sourceData, required this.status});
 
   @override
   final AlertSourceData? sourceData;
   @override
-  final bool needsCheck;
-  @override
-  final bool checkingNow;
-  @override
-  final bool responded;
+  final CheckStatus status;
 
   @override
   String toString() {
-    return 'AccountSettingsState(sourceData: $sourceData, needsCheck: $needsCheck, checkingNow: $checkingNow, responded: $responded)';
+    return 'AccountSettingsState(sourceData: $sourceData, status: $status)';
   }
 
   @override
@@ -186,17 +149,11 @@ class _$AccountSettingsStateImpl implements _AccountSettingsState {
             other is _$AccountSettingsStateImpl &&
             (identical(other.sourceData, sourceData) ||
                 other.sourceData == sourceData) &&
-            (identical(other.needsCheck, needsCheck) ||
-                other.needsCheck == needsCheck) &&
-            (identical(other.checkingNow, checkingNow) ||
-                other.checkingNow == checkingNow) &&
-            (identical(other.responded, responded) ||
-                other.responded == responded));
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, sourceData, needsCheck, checkingNow, responded);
+  int get hashCode => Object.hash(runtimeType, sourceData, status);
 
   /// Create a copy of AccountSettingsState
   /// with the given fields replaced by the non-null parameter values.
@@ -212,18 +169,12 @@ class _$AccountSettingsStateImpl implements _AccountSettingsState {
 abstract class _AccountSettingsState implements AccountSettingsState {
   const factory _AccountSettingsState(
       {required final AlertSourceData? sourceData,
-      required final bool needsCheck,
-      required final bool checkingNow,
-      required final bool responded}) = _$AccountSettingsStateImpl;
+      required final CheckStatus status}) = _$AccountSettingsStateImpl;
 
   @override
   AlertSourceData? get sourceData;
   @override
-  bool get needsCheck;
-  @override
-  bool get checkingNow;
-  @override
-  bool get responded;
+  CheckStatus get status;
 
   /// Create a copy of AccountSettingsState
   /// with the given fields replaced by the non-null parameter values.
