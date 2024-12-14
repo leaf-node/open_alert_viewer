@@ -55,6 +55,41 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
   AccountSettingsCubit? cubit;
   bool? isValid;
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.source == null) {
+      nameController.text = "";
+      typeController.text = "0";
+      baseURLController.text = "";
+      userController.text = "";
+      passwordController.text = "";
+      accessTokenController.text = "";
+      isValid = null;
+    } else {
+      nameController.text = widget.source!.name;
+      typeController.text = widget.source!.type.toString();
+      baseURLController.text = widget.source!.baseURL;
+      userController.text = widget.source!.username;
+      passwordController.text = widget.source!.password;
+      accessTokenController.text = widget.source!.accessToken;
+      isValid = widget.source!.isValid;
+    }
+    cubit = context.read<AccountSettingsCubit>();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+    typeController.dispose();
+    baseURLController.dispose();
+    userController.dispose();
+    passwordController.dispose();
+    accessTokenController.dispose();
+    cubit?.cleanOut();
+  }
+
   AlertSourceData get newSourceData {
     if (widget.source == null) {
       return AlertSourceData(
@@ -119,41 +154,6 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
     } else {
       return true;
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.source == null) {
-      nameController.text = "";
-      typeController.text = "0";
-      baseURLController.text = "";
-      userController.text = "";
-      passwordController.text = "";
-      accessTokenController.text = "";
-      isValid = null;
-    } else {
-      nameController.text = widget.source!.name;
-      typeController.text = widget.source!.type.toString();
-      baseURLController.text = widget.source!.baseURL;
-      userController.text = widget.source!.username;
-      passwordController.text = widget.source!.password;
-      accessTokenController.text = widget.source!.accessToken;
-      isValid = widget.source!.isValid;
-    }
-    cubit = context.read<AccountSettingsCubit>();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    nameController.dispose();
-    typeController.dispose();
-    baseURLController.dispose();
-    userController.dispose();
-    passwordController.dispose();
-    accessTokenController.dispose();
-    cubit?.cleanOut();
   }
 
   @override
