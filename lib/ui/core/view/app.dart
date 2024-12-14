@@ -29,8 +29,8 @@ import '../../settings/view/general_settings_screen.dart';
 import '../../settings/view/licensing_screen.dart';
 import '../../settings/view/privacy_screen.dart';
 import '../../settings/view/root_settings_screen.dart';
-import '../bloc/app_cubit.dart';
-import '../bloc/app_state.dart';
+import '../cubit/app_cubit.dart';
+import '../cubit/app_state.dart';
 
 class OAVapp extends StatelessWidget {
   const OAVapp(
