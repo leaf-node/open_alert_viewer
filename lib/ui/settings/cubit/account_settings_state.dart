@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../domain/alerts.dart';
@@ -16,10 +17,19 @@ enum CheckStatus { needsCheck, checkingNow, responded }
 class AccountSettingsState with _$AccountSettingsState {
   const factory AccountSettingsState(
       {required AlertSourceData? sourceData,
-      required CheckStatus status}) = _AccountSettingsState;
+      required CheckStatus status,
+      required String statusText,
+      required IconData? statusIcon,
+      required bool allowClickAccept,
+      required String acceptButtonText}) = _AccountSettingsState;
 
   factory AccountSettingsState.init() {
     return AccountSettingsState(
-        sourceData: null, status: CheckStatus.needsCheck);
+        sourceData: null,
+        status: CheckStatus.needsCheck,
+        statusText: "",
+        statusIcon: null,
+        allowClickAccept: true,
+        acceptButtonText: "Pending...");
   }
 }

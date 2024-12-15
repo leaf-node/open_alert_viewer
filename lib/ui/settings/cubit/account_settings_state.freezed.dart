@@ -18,6 +18,10 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AccountSettingsState {
   AlertSourceData? get sourceData => throw _privateConstructorUsedError;
   CheckStatus get status => throw _privateConstructorUsedError;
+  String get statusText => throw _privateConstructorUsedError;
+  IconData? get statusIcon => throw _privateConstructorUsedError;
+  bool get allowClickAccept => throw _privateConstructorUsedError;
+  String get acceptButtonText => throw _privateConstructorUsedError;
 
   /// Create a copy of AccountSettingsState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +36,13 @@ abstract class $AccountSettingsStateCopyWith<$Res> {
           $Res Function(AccountSettingsState) then) =
       _$AccountSettingsStateCopyWithImpl<$Res, AccountSettingsState>;
   @useResult
-  $Res call({AlertSourceData? sourceData, CheckStatus status});
+  $Res call(
+      {AlertSourceData? sourceData,
+      CheckStatus status,
+      String statusText,
+      IconData? statusIcon,
+      bool allowClickAccept,
+      String acceptButtonText});
 
   $AlertSourceDataCopyWith<$Res>? get sourceData;
 }
@@ -55,6 +65,10 @@ class _$AccountSettingsStateCopyWithImpl<$Res,
   $Res call({
     Object? sourceData = freezed,
     Object? status = null,
+    Object? statusText = null,
+    Object? statusIcon = freezed,
+    Object? allowClickAccept = null,
+    Object? acceptButtonText = null,
   }) {
     return _then(_value.copyWith(
       sourceData: freezed == sourceData
@@ -65,6 +79,22 @@ class _$AccountSettingsStateCopyWithImpl<$Res,
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as CheckStatus,
+      statusText: null == statusText
+          ? _value.statusText
+          : statusText // ignore: cast_nullable_to_non_nullable
+              as String,
+      statusIcon: freezed == statusIcon
+          ? _value.statusIcon
+          : statusIcon // ignore: cast_nullable_to_non_nullable
+              as IconData?,
+      allowClickAccept: null == allowClickAccept
+          ? _value.allowClickAccept
+          : allowClickAccept // ignore: cast_nullable_to_non_nullable
+              as bool,
+      acceptButtonText: null == acceptButtonText
+          ? _value.acceptButtonText
+          : acceptButtonText // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -91,7 +121,13 @@ abstract class _$$AccountSettingsStateImplCopyWith<$Res>
       __$$AccountSettingsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({AlertSourceData? sourceData, CheckStatus status});
+  $Res call(
+      {AlertSourceData? sourceData,
+      CheckStatus status,
+      String statusText,
+      IconData? statusIcon,
+      bool allowClickAccept,
+      String acceptButtonText});
 
   @override
   $AlertSourceDataCopyWith<$Res>? get sourceData;
@@ -112,6 +148,10 @@ class __$$AccountSettingsStateImplCopyWithImpl<$Res>
   $Res call({
     Object? sourceData = freezed,
     Object? status = null,
+    Object? statusText = null,
+    Object? statusIcon = freezed,
+    Object? allowClickAccept = null,
+    Object? acceptButtonText = null,
   }) {
     return _then(_$AccountSettingsStateImpl(
       sourceData: freezed == sourceData
@@ -122,6 +162,22 @@ class __$$AccountSettingsStateImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as CheckStatus,
+      statusText: null == statusText
+          ? _value.statusText
+          : statusText // ignore: cast_nullable_to_non_nullable
+              as String,
+      statusIcon: freezed == statusIcon
+          ? _value.statusIcon
+          : statusIcon // ignore: cast_nullable_to_non_nullable
+              as IconData?,
+      allowClickAccept: null == allowClickAccept
+          ? _value.allowClickAccept
+          : allowClickAccept // ignore: cast_nullable_to_non_nullable
+              as bool,
+      acceptButtonText: null == acceptButtonText
+          ? _value.acceptButtonText
+          : acceptButtonText // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -130,16 +186,29 @@ class __$$AccountSettingsStateImplCopyWithImpl<$Res>
 
 class _$AccountSettingsStateImpl implements _AccountSettingsState {
   const _$AccountSettingsStateImpl(
-      {required this.sourceData, required this.status});
+      {required this.sourceData,
+      required this.status,
+      required this.statusText,
+      required this.statusIcon,
+      required this.allowClickAccept,
+      required this.acceptButtonText});
 
   @override
   final AlertSourceData? sourceData;
   @override
   final CheckStatus status;
+  @override
+  final String statusText;
+  @override
+  final IconData? statusIcon;
+  @override
+  final bool allowClickAccept;
+  @override
+  final String acceptButtonText;
 
   @override
   String toString() {
-    return 'AccountSettingsState(sourceData: $sourceData, status: $status)';
+    return 'AccountSettingsState(sourceData: $sourceData, status: $status, statusText: $statusText, statusIcon: $statusIcon, allowClickAccept: $allowClickAccept, acceptButtonText: $acceptButtonText)';
   }
 
   @override
@@ -149,11 +218,20 @@ class _$AccountSettingsStateImpl implements _AccountSettingsState {
             other is _$AccountSettingsStateImpl &&
             (identical(other.sourceData, sourceData) ||
                 other.sourceData == sourceData) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.statusText, statusText) ||
+                other.statusText == statusText) &&
+            (identical(other.statusIcon, statusIcon) ||
+                other.statusIcon == statusIcon) &&
+            (identical(other.allowClickAccept, allowClickAccept) ||
+                other.allowClickAccept == allowClickAccept) &&
+            (identical(other.acceptButtonText, acceptButtonText) ||
+                other.acceptButtonText == acceptButtonText));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, sourceData, status);
+  int get hashCode => Object.hash(runtimeType, sourceData, status, statusText,
+      statusIcon, allowClickAccept, acceptButtonText);
 
   /// Create a copy of AccountSettingsState
   /// with the given fields replaced by the non-null parameter values.
@@ -169,12 +247,24 @@ class _$AccountSettingsStateImpl implements _AccountSettingsState {
 abstract class _AccountSettingsState implements AccountSettingsState {
   const factory _AccountSettingsState(
       {required final AlertSourceData? sourceData,
-      required final CheckStatus status}) = _$AccountSettingsStateImpl;
+      required final CheckStatus status,
+      required final String statusText,
+      required final IconData? statusIcon,
+      required final bool allowClickAccept,
+      required final String acceptButtonText}) = _$AccountSettingsStateImpl;
 
   @override
   AlertSourceData? get sourceData;
   @override
   CheckStatus get status;
+  @override
+  String get statusText;
+  @override
+  IconData? get statusIcon;
+  @override
+  bool get allowClickAccept;
+  @override
+  String get acceptButtonText;
 
   /// Create a copy of AccountSettingsState
   /// with the given fields replaced by the non-null parameter values.

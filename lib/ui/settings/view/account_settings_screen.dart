@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_alert_viewer/ui/settings/cubit/account_settings_state.dart';
 
-import '../../../data/repositories/account_repo.dart';
 import '../../../data/services/network_fetch.dart';
 import '../../../domain/alerts.dart';
 import '../../core/widgets/shared_widgets.dart';
@@ -180,35 +179,15 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                         width: 400,
                         child: BlocBuilder<AccountSettingsCubit,
                             AccountSettingsState>(builder: (context, state) {
-                          String status;
-                          IconData? icon;
-                          if (state.status == CheckStatus.responded) {
-                            setNewSourceData(sourceData: state.sourceData!);
-                            if (state.sourceData!.isValid ?? false) {
-                              status = "Found API endpoint";
-                              icon = Icons.check_outlined;
-                            } else {
-                              var error = state.sourceData!.errorMessage;
-                              if (error == "") {
-                                error = "Unkown Error";
-                              }
-                              status = "Error: $error";
-                              icon = Icons.close_outlined;
-                            }
-                          } else if (state.status == CheckStatus.needsCheck) {
-                            status = "";
-                            icon = null;
-                          } else {
-                            status = "Checking...";
-                            icon = Icons.sync_outlined;
-                          }
+                          cubit!.getStatusDetails(() =>
+                              setNewSourceData(sourceData: state.sourceData!));
                           return ListView(children: [
                             const SizedBox(height: 20),
                             const MenuHeader(
                                 title: "Account Details", padding: 8.0),
                             AccountRadioField(
                                 title: "Third-Party Account",
-                                controller: typeController,
+                                typeController: typeController,
                                 onTap: () async {
                                   String? result =
                                       await settingsRadioDialogBuilder<String>(
@@ -226,36 +205,12 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                             AccountField(
                                 title: "Account Name",
                                 controller: nameController,
-                                validator: (String? value) {
-                                  int? id;
-                                  id = widget.source?.id;
-                                  if (value == null || value == "") {
-                                    return "Please enter a name";
-                                  }
-                                  return context
-                                          .read<AccountsRepo>()
-                                          .checkUniqueSource(
-                                              id: id, name: value)
-                                      ? null
-                                      : "Name already used";
-                                }),
+                                validator: cubit!.generateAccountNameValidator(
+                                    widget.source?.id)),
                             AccountField(
                                 title: "Base URL",
                                 controller: baseURLController,
-                                validator: (String? value) {
-                                  if (value == null || value == "") {
-                                    return "Please enter a valid URL";
-                                  }
-                                  try {
-                                    if (Uri.parse(generateURL(value, ""))
-                                        .isAbsolute) {
-                                      return null;
-                                    }
-                                  } catch (e) {
-                                    // fall through
-                                  }
-                                  return "Please enter a valid URL";
-                                }),
+                                validator: cubit!.baseUrlValidator),
                             AccountField(
                                 title: "User Name", controller: userController),
                             AccountField(
@@ -264,8 +219,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                                 passwordField: true),
                             const SizedBox(height: 10),
                             ListTile(
-                                leading: Icon(icon),
-                                title: Text(status),
+                                leading: Icon(state.statusIcon),
+                                title: Text(state.statusText),
                                 contentPadding: const EdgeInsets.all(8)),
                             const SizedBox(height: 10),
                             Row(
@@ -274,7 +229,6 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                                   cancelButton(context),
                                   acceptButton(
                                     context: context,
-                                    status: state.status,
                                     isValid: state.sourceData?.isValid ?? false,
                                   ),
                                 ]),
@@ -313,63 +267,41 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                         fontWeight: FontWeight.bold)))));
   }
 
-  Widget acceptButton(
-      {required BuildContext context,
-      required CheckStatus status,
-      required bool isValid}) {
-    bool allowClick;
-    if (status == CheckStatus.needsCheck || status == CheckStatus.responded) {
-      allowClick = true;
-    } else {
-      allowClick = false;
-    }
-    String title;
-    if (status == CheckStatus.needsCheck) {
-      title = "Check Account";
-    } else if (status == CheckStatus.responded) {
-      if (isValid) {
-        if (widget.source == null) {
-          title = "Add Account";
-        } else {
-          title = "Update Account";
-        }
-      } else {
-        title = "Try Again";
-      }
-    } else {
-      title = "Checking...";
-    }
-    return Expanded(
-        child: Center(
-            child: ElevatedButton(
-                onPressed: (!allowClick)
-                    ? () {}
-                    : () {
-                        if (Form.of(context).validate()) {
-                          if (status == CheckStatus.needsCheck || !isValid) {
-                            cubit!.confirmSource(
-                                sourceData: newSourceData,
-                                needsCheck: false,
-                                checkNow: true);
-                          } else {
-                            if (widget.source == null) {
-                              cubit!.addSource(newSourceData);
+  Widget acceptButton({required BuildContext context, required bool isValid}) {
+    cubit!.setAcceptButtonText(widget.source, isValid);
+    return BlocBuilder<AccountSettingsCubit, AccountSettingsState>(
+        builder: (context, state) {
+      return Expanded(
+          child: Center(
+              child: ElevatedButton(
+                  onPressed: (!state.allowClickAccept)
+                      ? () {}
+                      : () {
+                          if (Form.of(context).validate()) {
+                            if (state.status == CheckStatus.needsCheck ||
+                                !isValid) {
+                              cubit!.confirmSource(
+                                  newSourceData: newSourceData, checkNow: true);
                             } else {
-                              cubit!.updateSource(newSourceData);
+                              if (widget.source == null) {
+                                cubit!.addSource(newSourceData);
+                              } else {
+                                cubit!.updateSource(newSourceData);
+                              }
+                              Navigator.of(context).pop();
                             }
-                            Navigator.of(context).pop();
                           }
-                        }
-                      },
-                child: Text(title,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontWeight: FontWeight.bold)))));
+                        },
+                  child: Text(state.acceptButtonText,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.bold)))));
+    });
   }
 
   void setNeedsCheck() {
     if (!systemIsUpdatingValues) {
-      cubit!.confirmSource(sourceData: newSourceData, needsCheck: true);
+      cubit!.confirmSource(newSourceData: newSourceData, needsCheck: true);
     }
   }
 
@@ -433,7 +365,7 @@ class _AccountFieldState extends State<AccountField> {
                 onSaved: (String? value) {},
                 decoration: InputDecoration(
                   labelText: widget.title,
-                  suffixIcon: widget.passwordField ?? false
+                  suffixIcon: !_textVisible
                       ? IconButton(
                           icon: Icon(_textVisible
                               ? Icons.visibility
@@ -466,10 +398,10 @@ class AccountRadioField extends StatefulWidget {
   const AccountRadioField(
       {super.key,
       required this.title,
-      required this.controller,
+      required this.typeController,
       required this.onTap});
 
-  final TextEditingController controller;
+  final TextEditingController typeController;
   final String title;
   final Future<String?> Function() onTap;
 
@@ -483,14 +415,14 @@ class _AccountRadioFieldState extends State<AccountRadioField> {
   String getName() {
     return SourceTypes.values
         .firstWhere((sourceType) =>
-            sourceType.value.toString() == widget.controller.text)
+            sourceType.value.toString() == widget.typeController.text)
         .text;
   }
 
   @override
   void initState() {
     super.initState();
-    widget.controller.addListener(() => setState(() => _name = getName()));
+    widget.typeController.addListener(() => setState(() => _name = getName()));
     _name = getName();
   }
 
