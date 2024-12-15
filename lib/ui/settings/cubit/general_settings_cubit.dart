@@ -153,13 +153,13 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   }
 
   Future<void> setAlertFilterAt(
-      BuildContext context, bool? newValue, int index) async {
+      BuildContext _, bool? newValue, int index) async {
     _settingsRepo.setAlertFilterAt(newValue!, index);
     await refreshStateAsync();
   }
 
   Future<void> setSilenceFilterAt(
-      BuildContext context, bool? newValue, int index) async {
+      BuildContext _, bool? newValue, int index) async {
     _settingsRepo.setSilenceFilterAt(newValue!, index);
     await refreshStateAsync();
   }
