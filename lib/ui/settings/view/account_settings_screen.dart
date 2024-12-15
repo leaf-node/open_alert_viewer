@@ -223,7 +223,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                                   null => null,
                                   IconType.checking => Transform.scale(
                                       scale: 0.5,
-                                      child: CircularProgressIndicator()),
+                                      child: CircularProgressIndicator(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface)),
                                   IconType.valid => Icon(Icons.check_outlined),
                                   IconType.invalid => Icon(Icons.close_outlined)
                                 },
