@@ -19,7 +19,7 @@ mixin _$AccountSettingsState {
   AlertSourceData? get sourceData => throw _privateConstructorUsedError;
   CheckStatus get status => throw _privateConstructorUsedError;
   String get statusText => throw _privateConstructorUsedError;
-  IconData? get statusIcon => throw _privateConstructorUsedError;
+  IconType? get statusIcon => throw _privateConstructorUsedError;
   bool get allowClickAccept => throw _privateConstructorUsedError;
   String get acceptButtonText => throw _privateConstructorUsedError;
 
@@ -40,7 +40,7 @@ abstract class $AccountSettingsStateCopyWith<$Res> {
       {AlertSourceData? sourceData,
       CheckStatus status,
       String statusText,
-      IconData? statusIcon,
+      IconType? statusIcon,
       bool allowClickAccept,
       String acceptButtonText});
 
@@ -86,7 +86,7 @@ class _$AccountSettingsStateCopyWithImpl<$Res,
       statusIcon: freezed == statusIcon
           ? _value.statusIcon
           : statusIcon // ignore: cast_nullable_to_non_nullable
-              as IconData?,
+              as IconType?,
       allowClickAccept: null == allowClickAccept
           ? _value.allowClickAccept
           : allowClickAccept // ignore: cast_nullable_to_non_nullable
@@ -125,7 +125,7 @@ abstract class _$$AccountSettingsStateImplCopyWith<$Res>
       {AlertSourceData? sourceData,
       CheckStatus status,
       String statusText,
-      IconData? statusIcon,
+      IconType? statusIcon,
       bool allowClickAccept,
       String acceptButtonText});
 
@@ -169,7 +169,7 @@ class __$$AccountSettingsStateImplCopyWithImpl<$Res>
       statusIcon: freezed == statusIcon
           ? _value.statusIcon
           : statusIcon // ignore: cast_nullable_to_non_nullable
-              as IconData?,
+              as IconType?,
       allowClickAccept: null == allowClickAccept
           ? _value.allowClickAccept
           : allowClickAccept // ignore: cast_nullable_to_non_nullable
@@ -200,7 +200,7 @@ class _$AccountSettingsStateImpl implements _AccountSettingsState {
   @override
   final String statusText;
   @override
-  final IconData? statusIcon;
+  final IconType? statusIcon;
   @override
   final bool allowClickAccept;
   @override
@@ -249,7 +249,7 @@ abstract class _AccountSettingsState implements AccountSettingsState {
       {required final AlertSourceData? sourceData,
       required final CheckStatus status,
       required final String statusText,
-      required final IconData? statusIcon,
+      required final IconType? statusIcon,
       required final bool allowClickAccept,
       required final String acceptButtonText}) = _$AccountSettingsStateImpl;
 
@@ -260,7 +260,7 @@ abstract class _AccountSettingsState implements AccountSettingsState {
   @override
   String get statusText;
   @override
-  IconData? get statusIcon;
+  IconType? get statusIcon;
   @override
   bool get allowClickAccept;
   @override

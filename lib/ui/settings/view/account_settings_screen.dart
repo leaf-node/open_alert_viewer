@@ -219,7 +219,14 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                                 passwordField: true),
                             const SizedBox(height: 10),
                             ListTile(
-                                leading: Icon(state.statusIcon),
+                                leading: switch (state.statusIcon) {
+                                  null => null,
+                                  IconType.checking => Transform.scale(
+                                      scale: 0.5,
+                                      child: CircularProgressIndicator()),
+                                  IconType.valid => Icon(Icons.check_outlined),
+                                  IconType.invalid => Icon(Icons.close_outlined)
+                                },
                                 title: Text(state.statusText),
                                 contentPadding: const EdgeInsets.all(8)),
                             const SizedBox(height: 10),

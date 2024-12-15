@@ -5,7 +5,6 @@
  */
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:open_alert_viewer/data/services/network_fetch.dart';
 
 import '../../../data/repositories/account_repo.dart';
@@ -105,26 +104,26 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState>
 
   void getStatusDetails(Function() onResponseCallback) {
     String status;
-    IconData? icon;
+    IconType? icon;
     if (state.status == CheckStatus.responded) {
       onResponseCallback();
       if (state.sourceData!.isValid ?? false) {
         status = "Found API endpoint";
-        icon = Icons.check_outlined;
+        icon = IconType.valid;
       } else {
         var error = state.sourceData!.errorMessage;
         if (error == "") {
           error = "Unkown Error";
         }
         status = "Error: $error";
-        icon = Icons.close_outlined;
+        icon = IconType.invalid;
       }
     } else if (state.status == CheckStatus.needsCheck) {
       status = "";
       icon = null;
     } else {
       status = "Checking...";
-      icon = Icons.sync_outlined;
+      icon = IconType.checking;
     }
     emit(_state = _state!.copyWith(statusText: status, statusIcon: icon));
   }
