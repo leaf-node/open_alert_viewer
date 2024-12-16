@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import '../../background/background.dart';
+import '../../background/domain/background.dart';
 
 class AlertsRepo {
   AlertsRepo({required BackgroundChannel bgChannel}) : _bgChannel = bgChannel;

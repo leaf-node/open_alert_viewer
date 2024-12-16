@@ -11,9 +11,9 @@ import 'package:flutter/material.dart';
 
 import 'ui/core/view/app.dart';
 import 'data/services/database.dart';
-import 'background/background.dart';
-import 'background/background_default.dart';
-import 'background/background_sticky_notification.dart';
+import 'background/domain/background.dart';
+import 'background/domain/background_default.dart';
+import 'background/domain/background_sticky_notification.dart';
 import 'utils/utils.dart';
 
 LocalDatabase? db;

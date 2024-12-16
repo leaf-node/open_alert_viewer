@@ -10,7 +10,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../../background/background.dart';
+import '../../../background/domain/background.dart';
 import '../../../data/repositories/battery_repo.dart';
 import '../../../data/repositories/settings_repo.dart';
 import '../../../data/repositories/alerts_repo.dart';

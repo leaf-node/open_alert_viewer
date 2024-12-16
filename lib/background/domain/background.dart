@@ -10,12 +10,12 @@ import 'dart:isolate';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../domain/alerts.dart';
-import '../data/repositories/settings_repo.dart';
-import '../data/services/database.dart';
-import 'repositories/alerts_background_repo.dart';
-import 'repositories/notifications_background_repo.dart';
-import 'repositories/sources_background_repo.dart';
+import '../../domain/alerts.dart';
+import '../../data/repositories/settings_repo.dart';
+import '../../data/services/database.dart';
+import '../repositories/alerts_background_repo.dart';
+import '../repositories/notifications_background_repo.dart';
+import '../repositories/sources_background_repo.dart';
 
 part 'background.freezed.dart';
 part 'background.g.dart';

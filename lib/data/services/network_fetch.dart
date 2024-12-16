@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-import '../../background/background.dart';
+import '../../background/domain/background.dart';
 import '../repositories/settings_repo.dart';
 
 mixin NetworkFetch {

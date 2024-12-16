@@ -9,7 +9,7 @@ import 'dart:async';
 import '../../domain/alerts.dart';
 import '../../data/services/database.dart';
 import '../../data/repositories/settings_repo.dart';
-import '../background.dart';
+import '../domain/background.dart';
 import 'notifications_background_repo.dart';
 import 'sources_background_repo.dart';
 

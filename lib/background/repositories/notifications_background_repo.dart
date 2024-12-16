@@ -12,7 +12,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../domain/alerts.dart';
 import '../../data/repositories/settings_repo.dart';
 import '../../utils/utils.dart';
-import '../background.dart';
+import '../domain/background.dart';
 
 const stickyNotificationChannelId = "Open Alert Viewer Background Work";
 const stickyNotificationChannelName = "Background Work";

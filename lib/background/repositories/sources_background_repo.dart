@@ -13,7 +13,7 @@ import '../../domain/alerts.dart';
 import '../../data/repositories/settings_repo.dart';
 import '../../data/services/database.dart';
 import '../../data/services/network_fetch.dart';
-import '../background.dart';
+import '../domain/background.dart';
 import '../services/alerts.dart';
 import '../services/alerts_ici.dart';
 import '../services/alerts_nag.dart';
