@@ -4,6 +4,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'background_desktop.dart';
+import 'background_default.dart';
 
-class BackgroundMobile extends BackgroundDesktop {}
+class BackgroundStickyNotification extends BackgroundDefault {}

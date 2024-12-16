@@ -11,7 +11,7 @@ import 'package:flutter/services.dart';
 
 import 'background.dart';
 
-class BackgroundDesktop extends BackgroundChannelExternal
+class BackgroundDefault extends BackgroundChannelExternal
     implements BackgroundChannel {
   @override
   Future<void> spawn({required String appVersion}) async {
