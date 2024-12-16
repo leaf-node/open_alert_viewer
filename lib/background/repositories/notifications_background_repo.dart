@@ -20,7 +20,7 @@ const stickyNotificationChannelDescription =
     "Allow Fetching Alerts in Background";
 const stickyNotificationId = 1;
 const stickyNotificationTitle = "Periodically checking for new alerts";
-const stickyNotificationContentStart = "Synchronizing every";
+const stickyNotificationContentStart = "Sync scheduled for every";
 
 const alertsNotificationId = 2;
 const alertsNotificationTitle = "Open Alert Viewer";
