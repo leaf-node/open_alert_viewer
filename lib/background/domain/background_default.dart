@@ -27,11 +27,11 @@ class BackgroundDefault extends BackgroundChannelExternal
   @override
   Future<void> makeRequest(IsolateMessage message) async {
     await isolateReady.future;
-    sendPort.send(serialize(message));
+    sendPort.send(BackgroundTranslator.serialize(message));
   }
 }
 
-class BackgroundIsolate extends BackgroundChannelInternal {
+class BackgroundIsolate with BackgroundChannelInternal {
   Future<void> spawned((SendPort, RootIsolateToken?, String) initArgs) async {
     SendPort port;
     RootIsolateToken token;
@@ -40,7 +40,8 @@ class BackgroundIsolate extends BackgroundChannelInternal {
     final receivePort = ReceivePort();
     port.send(receivePort.sendPort);
     BackgroundIsolateBinaryMessenger.ensureInitialized(token);
-    await init(appVersion, (message) => port.send(serialize(message)));
+    await init(appVersion,
+        (message) => port.send(BackgroundTranslator.serialize(message)));
     receivePort.listen(handleRequestsToBackground);
   }
 }

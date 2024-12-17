@@ -75,18 +75,18 @@ abstract class BackgroundChannel {
   static SettingsRepo? settings;
 }
 
-mixin BackgroundTranslator {
-  String serialize(IsolateMessage message) {
+class BackgroundTranslator {
+  static String serialize(IsolateMessage message) {
     return jsonEncode(message);
   }
 
-  IsolateMessage deserialize(String message) {
+  static IsolateMessage deserialize(String message) {
     final messageMap = jsonDecode(message) as Map<String, dynamic>;
     return IsolateMessage.fromJson(messageMap);
   }
 }
 
-class BackgroundChannelExternal with BackgroundTranslator {
+class BackgroundChannelExternal {
   BackgroundChannelExternal() {
     for (var destination in MessageDestination.values) {
       isolateStreams[destination] = StreamController<IsolateMessage>();
@@ -103,7 +103,7 @@ class BackgroundChannelExternal with BackgroundTranslator {
       sendPort = rawMessage;
       isolateReady.complete();
     } else if (rawMessage is String) {
-      message = deserialize(rawMessage);
+      message = BackgroundTranslator.deserialize(rawMessage);
       isolateStreams[message.destination]!.add(message);
     } else if (rawMessage is List<dynamic>) {
       isolateStreams[MessageDestination.alerts]!
@@ -142,7 +142,7 @@ class BackgroundChannelExternal with BackgroundTranslator {
   }
 }
 
-class BackgroundChannelInternal with BackgroundTranslator {
+mixin BackgroundChannelInternal {
   late LocalDatabase _db;
   late SettingsRepo _settings;
   late SourcesBackgroundRepo _sourcesRepo;
@@ -179,7 +179,7 @@ class BackgroundChannelInternal with BackgroundTranslator {
 
   void handleRequestsToBackground(dynamic rawMessage) async {
     if (rawMessage is String) {
-      final message = deserialize(rawMessage);
+      final message = BackgroundTranslator.deserialize(rawMessage);
       if (message.name == MessageName.fetchAlerts) {
         _alertsRepo.fetchAlerts(
             forceRefreshNow: message.forceRefreshNow ?? false);
