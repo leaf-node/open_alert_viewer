@@ -68,7 +68,7 @@ class IsolateMessage with _$IsolateMessage {
 }
 
 abstract class BackgroundChannel {
-  Future<void> spawn({required String appVersion});
+  Future<void> spawn();
   Future<void> makeRequest(IsolateMessage message);
   final Map<MessageDestination, StreamController<IsolateMessage>>
       isolateStreams = {};

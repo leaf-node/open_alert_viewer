@@ -22,7 +22,7 @@ class SettingsRepo {
   final StreamController<String> streamController;
   Stream<String>? stream;
   final Completer ready;
-  static late String appVersion;
+  static String? appVersion;
   final LocalDatabase _db;
 
   DateTime get lastFetched => _getSetting<DateTime>(

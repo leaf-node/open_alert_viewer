@@ -14,7 +14,6 @@ import 'data/services/database.dart';
 import 'background/domain/background.dart';
 import 'background/domain/background_default.dart';
 import 'background/domain/background_sticky_notification.dart';
-import 'utils/utils.dart';
 
 LocalDatabase? db;
 BackgroundChannel? bgChannel;
@@ -36,7 +35,7 @@ Future<void> startBackground() async {
     } else {
       bgChannel = BackgroundDefault();
     }
-    await bgChannel!.spawn(appVersion: await Util.getVersion());
+    await bgChannel!.spawn();
   }
 }
 
@@ -44,6 +43,5 @@ Future<void> startForeground() async {
   while (bgChannel == null || db == null) {
     await Future.delayed(Duration(milliseconds: 100));
   }
-  runApp(OAVapp(
-      appVersion: await Util.getVersion(), db: db!, bgChannel: bgChannel!));
+  runApp(OAVapp(db: db!, bgChannel: bgChannel!));
 }

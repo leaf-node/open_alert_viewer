@@ -9,12 +9,14 @@ import 'dart:isolate';
 
 import 'package:flutter/services.dart';
 
+import '../../utils/utils.dart';
 import 'background.dart';
 
 class BackgroundDefault extends BackgroundChannelExternal
     implements BackgroundChannel {
   @override
-  Future<void> spawn({required String appVersion}) async {
+  Future<void> spawn() async {
+    String appVersion = await Util.getVersion();
     final receivePort = ReceivePort();
     receivePort.listen(handleResponsesFromBackground);
     var isolate = await Isolate.spawn(BackgroundIsolate().spawned,

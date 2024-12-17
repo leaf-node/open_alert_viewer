@@ -33,19 +33,13 @@ import '../cubit/app_cubit.dart';
 import '../cubit/app_state.dart';
 
 class OAVapp extends StatelessWidget {
-  const OAVapp(
-      {super.key,
-      required this.appVersion,
-      required this.db,
-      required this.bgChannel});
+  const OAVapp({super.key, required this.db, required this.bgChannel});
 
-  final String appVersion;
   final LocalDatabase db;
   final BackgroundChannel bgChannel;
 
   @override
   Widget build(BuildContext context) {
-    SettingsRepo.appVersion = appVersion;
     return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(

@@ -12,6 +12,7 @@ import 'package:bloc/bloc.dart';
 import '../../../data/repositories/settings_repo.dart';
 import '../../../domain/alerts.dart';
 import '../../../domain/navigation.dart';
+import '../../../utils/utils.dart';
 import 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
@@ -23,6 +24,7 @@ class AppCubit extends Cubit<AppState> {
     _setDarkMode();
     _listenForNavigation();
     _listenForSettings();
+    _setAppVersion();
   }
 
   AppState? _state;
@@ -64,5 +66,9 @@ class AppCubit extends Cubit<AppState> {
 
   bool getDarkMode(Brightness systemBrightness) {
     return _state!.darkMode ?? (systemBrightness == Brightness.dark);
+  }
+
+  Future<void> _setAppVersion() async {
+    SettingsRepo.appVersion = await Util.getVersion();
   }
 }
