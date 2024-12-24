@@ -17,31 +17,33 @@ class BackgroundDefault extends BackgroundChannelExternal
   @override
   Future<void> spawn() async {
     String appVersion = await Util.getVersion();
-    final receivePort = ReceivePort();
-    receivePort.listen(handleResponsesFromBackground);
+    final portFromBackground = ReceivePort();
+    portFromBackground.listen(handleResponsesFromBackground);
     var isolate = await Isolate.spawn(BackgroundIsolate().spawned,
-        (receivePort.sendPort, RootIsolateToken.instance, appVersion));
-    isolate.addErrorListener(receivePort.sendPort);
+        (portFromBackground.sendPort, RootIsolateToken.instance, appVersion));
+    isolate.addErrorListener(portFromBackground.sendPort);
   }
 
   @override
   Future<void> makeRequest(IsolateMessage message) async {
     await isolateReady.future;
-    sendPort.send(BackgroundTranslator.serialize(message));
+    portToBackground.send(BackgroundTranslator.serialize(message));
   }
 }
 
 class BackgroundIsolate with BackgroundChannelInternal {
   Future<void> spawned((SendPort, RootIsolateToken?, String) initArgs) async {
-    SendPort port;
+    SendPort portToForeground;
     RootIsolateToken token;
     String appVersion;
-    (port, token!, appVersion) = initArgs;
-    final receivePort = ReceivePort();
-    port.send(receivePort.sendPort);
+    (portToForeground, token!, appVersion) = initArgs;
+    final portFromForeground = ReceivePort();
+    portToForeground.send(portFromForeground.sendPort);
     BackgroundIsolateBinaryMessenger.ensureInitialized(token);
-    await init(appVersion,
-        (message) => port.send(BackgroundTranslator.serialize(message)));
-    receivePort.listen(handleRequestsToBackground);
+    await init(
+        appVersion,
+        (message) =>
+            portToForeground.send(BackgroundTranslator.serialize(message)));
+    portFromForeground.listen(handleRequestsToBackground);
   }
 }

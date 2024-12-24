@@ -95,12 +95,12 @@ class BackgroundChannelExternal {
   final Map<MessageDestination, StreamController<IsolateMessage>>
       isolateStreams = {};
   final Completer<void> isolateReady = Completer();
-  late SendPort sendPort;
+  late SendPort portToBackground;
 
   void handleResponsesFromBackground(dynamic rawMessage) {
     IsolateMessage message;
     if (rawMessage is SendPort) {
-      sendPort = rawMessage;
+      portToBackground = rawMessage;
       isolateReady.complete();
     } else if (rawMessage is String) {
       message = BackgroundTranslator.deserialize(rawMessage);
