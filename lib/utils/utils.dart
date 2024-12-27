@@ -95,4 +95,14 @@ class Util {
   static int genRandom() {
     return random.nextInt(1 << 32);
   }
+
+  static String getTimeString(DateTime now) {
+    return "${_timePad(now.hour)}"
+        ":${_timePad(now.minute)}"
+        ":${_timePad(now.second)}";
+  }
+
+  static String _timePad(int number) {
+    return number.toString().padLeft(2, "0");
+  }
 }

@@ -20,7 +20,7 @@ const stickyNotificationChannelDescription =
     "Allow Fetching Alerts in Background";
 const stickyNotificationId = 1;
 const stickyNotificationTitle = "Periodically checking for new alerts";
-const stickyNotificationContentStart = "Sync scheduled for every";
+const stickyNotificationContentStart = "Sync every";
 
 const alertsNotificationId = 2;
 const alertsNotificationTitle = "Open Alert Viewer";
@@ -167,6 +167,7 @@ class NotificationsBackgroundRepo {
     } else if (messages.isEmpty) {
       await _removeAlertNotification();
     }
+    await updateAnroidStickyNotification();
   }
 
   Future<void> startAnroidStickyNotification() async {
@@ -185,8 +186,11 @@ class NotificationsBackgroundRepo {
     await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
-        ?.startForegroundService(stickyNotificationId, stickyNotificationTitle,
-            "$stickyNotificationContentStart $duration",
+        ?.startForegroundService(
+            stickyNotificationId,
+            stickyNotificationTitle,
+            "$stickyNotificationContentStart $duration. "
+            "Last: ${Util.getTimeString(_settings.lastFetched)}",
             notificationDetails: _stickyAndroidNotificationDetails,
             startType: AndroidServiceStartType.startRedeliverIntent,
             foregroundServiceTypes: {
@@ -211,8 +215,11 @@ class NotificationsBackgroundRepo {
     await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
-        ?.show(stickyNotificationId, stickyNotificationTitle,
-            "$stickyNotificationContentStart $duration",
+        ?.show(
+            stickyNotificationId,
+            stickyNotificationTitle,
+            "$stickyNotificationContentStart $duration. "
+            "Last: ${Util.getTimeString(DateTime.now())}",
             notificationDetails: _stickyAndroidNotificationDetails);
   }
 
