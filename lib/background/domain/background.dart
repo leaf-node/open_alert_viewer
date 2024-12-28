@@ -153,6 +153,7 @@ mixin BackgroundChannelInternal {
   Future<void> init(String appVersion, Function(IsolateMessage) sender) async {
     _db = LocalDatabase();
     await _db.open();
+    await _db.migrate();
     SettingsRepo.appVersion = appVersion;
     _settings = SettingsRepo(db: _db);
     BackgroundChannel.settings = _settings;
