@@ -98,8 +98,7 @@ class Util {
 
   static String getTimeString(DateTime now) {
     return "${_timePad(now.hour)}"
-        ":${_timePad(now.minute)}"
-        ":${_timePad(now.second)}";
+        ":${_timePad(now.minute)}";
   }
 
   static String _timePad(int number) {

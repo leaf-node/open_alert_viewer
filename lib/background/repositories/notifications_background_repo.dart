@@ -189,8 +189,8 @@ class NotificationsBackgroundRepo {
         ?.startForegroundService(
             stickyNotificationId,
             stickyNotificationTitle,
-            "$stickyNotificationContentStart $duration. "
-            "Last: ${Util.getTimeString(_settings.lastFetched)}",
+            "$stickyNotificationContentStart $duration "
+            "- last: ${Util.getTimeString(_settings.lastFetched)}",
             notificationDetails: _stickyAndroidNotificationDetails,
             startType: AndroidServiceStartType.startRedeliverIntent,
             foregroundServiceTypes: {
@@ -218,8 +218,8 @@ class NotificationsBackgroundRepo {
         ?.show(
             stickyNotificationId,
             stickyNotificationTitle,
-            "$stickyNotificationContentStart $duration. "
-            "Last: ${Util.getTimeString(DateTime.now())}",
+            "$stickyNotificationContentStart $duration "
+            "- last: ${Util.getTimeString(DateTime.now())}",
             notificationDetails: _stickyAndroidNotificationDetails);
   }
 
