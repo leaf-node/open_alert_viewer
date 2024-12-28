@@ -18,6 +18,7 @@ class LocalDatabase {
 
   bool _isOpen;
   late Database _db;
+  final _migrationSetting = "migration_version";
 
   Future<void> open({bool? showPath}) async {
     if (!_isOpen) {
@@ -43,10 +44,13 @@ class LocalDatabase {
       await open(showPath: showPath);
     }
     if (!_checkIfTableExists(name: "settings") ||
-        getSetting(setting: "migration_version") == "") {
+        getSetting(setting: _migrationSetting) == "") {
       var sqlString = await rootBundle.loadString("lib/schema/version_0.sql");
       _db.execute(sqlString);
-      setSetting(setting: "migration_version", value: "0.0.0");
+      setSetting(setting: _migrationSetting, value: "0.0.0");
+    }
+    if (getSetting(setting: _migrationSetting) == "0.0.0") {
+      setSetting(setting: _migrationSetting, value: "1.0.0");
     }
   }
 
