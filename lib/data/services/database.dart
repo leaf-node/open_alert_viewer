@@ -43,6 +43,7 @@ class LocalDatabase {
     if (!_isOpen) {
       await open(showPath: showPath);
     }
+    _db.execute("BEGIN TRANSACTION;");
     if (!_checkIfTableExists(name: "settings") ||
         getSetting(setting: _migrationSetting) == "") {
       var sqlString = await rootBundle.loadString("lib/schema/version_0.sql");
@@ -51,6 +52,15 @@ class LocalDatabase {
     }
     if (getSetting(setting: _migrationSetting) == "0.0.0") {
       setSetting(setting: _migrationSetting, value: "1.0.0");
+    }
+    try {
+      _db.execute("COMMIT TRANSACTION;");
+    } on SqliteException catch (e) {
+      if (e.extendedResultCode == 1) {
+        // already committed
+      } else {
+        rethrow;
+      }
     }
   }
 
@@ -67,8 +77,12 @@ class LocalDatabase {
   }
 
   int _insertIntoTable(
-      {required String query, required List<List<Object>> values}) {
-    _db.execute("BEGIN TRANSACTION;");
+      {required String query,
+      required List<List<Object>> values,
+      bool transaction = true}) {
+    if (transaction) {
+      _db.execute("BEGIN TRANSACTION;");
+    }
     try {
       for (var value in values) {
         _db.execute(query, value);
@@ -81,7 +95,9 @@ class LocalDatabase {
         rethrow;
       }
     } finally {
-      _db.execute("COMMIT TRANSACTION;");
+      if (transaction) {
+        _db.execute("COMMIT TRANSACTION;");
+      }
     }
     return _db.lastInsertRowId;
   }
@@ -280,7 +296,8 @@ class LocalDatabase {
           query: "INSERT INTO settings (key, value) VALUES (?, ?);",
           values: [
             [setting, value]
-          ]);
+          ],
+          transaction: false);
     } else {
       _updateTable(
           query: "UPDATE settings SET value = ? WHERE key = ?;",
