@@ -16,12 +16,10 @@ import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
 class StartFlutterOnce (context: Context, serviceOnly: Boolean) {
     private val serviceEngineName: String = "single_service_engine"
     private val withGuiEngineName: String = "single_with_ui_engine"
-    private val flutterEngine: FlutterEngine
+    val flutterEngine: FlutterEngine
     init {
         val engineName: String
         val entrypoint: DartEntrypoint
-        val group = FlutterEngineGroup(context)
-        flutterEngine = group.createAndRunDefaultEngine(context)
         if (serviceOnly) {
             engineName = serviceEngineName
             entrypoint = DartEntrypoint(
@@ -34,12 +32,14 @@ class StartFlutterOnce (context: Context, serviceOnly: Boolean) {
             engineName = withGuiEngineName
             entrypoint = DartEntrypoint.createDefault()
         }
-        if (FlutterEngineCache.getInstance().get(engineName) == null) {
+        val flutterEngineTmp = FlutterEngineCache.getInstance().get(engineName)
+        if (flutterEngineTmp == null) {
+            val group = FlutterEngineGroup(context)
+            flutterEngine = group.createAndRunDefaultEngine(context)
             flutterEngine.dartExecutor.executeDartEntrypoint(entrypoint)
             FlutterEngineCache.getInstance().put(engineName, flutterEngine)
+        } else {
+            flutterEngine = flutterEngineTmp
         }
-    }
-    fun getFlutterEngine() : FlutterEngine {
-        return flutterEngine
     }
 }
