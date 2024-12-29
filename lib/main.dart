@@ -23,6 +23,7 @@ Future<void> main() async {
   await startForeground();
 }
 
+@pragma("vm:entry-point")
 Future<void> startBackground() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (db == null) {

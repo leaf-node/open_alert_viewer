@@ -11,23 +11,31 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.FlutterEngineGroup
 import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
 
-class StartFlutterOnce (context: Context, backgroundOnly: Boolean) {
+class StartFlutterOnce (context: Context, serviceOnly: Boolean) {
     private val serviceEngineName: String = "single_service_engine"
     private val withGuiEngineName: String = "single_with_ui_engine"
-    lateinit private var flutterEngine: FlutterEngine
+    private val flutterEngine: FlutterEngine
     init {
         val engineName: String
-        if (backgroundOnly) {
+        val entrypoint: DartEntrypoint
+        val group = FlutterEngineGroup(context)
+        flutterEngine = group.createAndRunDefaultEngine(context)
+        if (serviceOnly) {
             engineName = serviceEngineName
+            entrypoint = DartEntrypoint(
+                "lib/main.dart", "startBackground")
         } else {
-            FlutterEngineCache.getInstance().get(serviceEngineName)?.destroy()
+            val serviceEngine = FlutterEngineCache.getInstance().get(serviceEngineName)
+            try {
+                serviceEngine?.destroy()
+            } catch (_: RuntimeException) {}
             engineName = withGuiEngineName
+            entrypoint = DartEntrypoint.createDefault()
         }
         if (FlutterEngineCache.getInstance().get(engineName) == null) {
-            val group = FlutterEngineGroup(context)
-            flutterEngine = group.createAndRunDefaultEngine(context)
-            flutterEngine.dartExecutor.executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault())
+            flutterEngine.dartExecutor.executeDartEntrypoint(entrypoint)
             FlutterEngineCache.getInstance().put(engineName, flutterEngine)
         }
     }
