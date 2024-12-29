@@ -21,20 +21,23 @@ class StartFlutterOnce (context: Context, serviceOnly: Boolean) {
         val entrypoint: DartEntrypoint
         if (serviceOnly) {
             engineName = serviceEngineName
-            entrypoint = DartEntrypoint(
-                "lib/main.dart", "startBackground")
         } else {
             val serviceEngine = FlutterEngineCache.getInstance().get(serviceEngineName)
             try {
                 serviceEngine?.destroy()
             } catch (_: RuntimeException) {}
             engineName = withGuiEngineName
-            entrypoint = DartEntrypoint.createDefault()
         }
         val flutterEngineTmp = FlutterEngineCache.getInstance().get(engineName)
         if (flutterEngineTmp == null) {
             val group = FlutterEngineGroup(context)
             flutterEngine = group.createAndRunDefaultEngine(context)
+            if (serviceOnly) {
+                entrypoint = DartEntrypoint(
+                    "lib/main.dart", "startBackground")
+            } else {
+                entrypoint = DartEntrypoint.createDefault()
+            }
             flutterEngine.dartExecutor.executeDartEntrypoint(entrypoint)
             FlutterEngineCache.getInstance().put(engineName, flutterEngine)
         } else {
