@@ -13,16 +13,16 @@ import io.flutter.embedding.engine.FlutterEngineGroup
 import io.flutter.embedding.engine.dart.DartExecutor
 
 class StartFlutterOnce (context: Context, backgroundOnly: Boolean) {
-    private val bgEngineName: String = "single_bg_engine"
-    private val fgEngineName: String = "single_fg_engine"
+    private val serviceEngineName: String = "single_service_engine"
+    private val withGuiEngineName: String = "single_with_ui_engine"
     lateinit private var flutterEngine: FlutterEngine
     init {
         val engineName: String
         if (backgroundOnly) {
-            engineName = bgEngineName
+            engineName = serviceEngineName
         } else {
-            FlutterEngineCache.getInstance().get(bgEngineName)?.destroy()
-            engineName = fgEngineName
+            FlutterEngineCache.getInstance().get(serviceEngineName)?.destroy()
+            engineName = withGuiEngineName
         }
         if (FlutterEngineCache.getInstance().get(engineName) == null) {
             val group = FlutterEngineGroup(context)
