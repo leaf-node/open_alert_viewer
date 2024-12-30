@@ -10,8 +10,8 @@ import '../../domain/alerts.dart';
 import '../../data/services/database.dart';
 import '../../data/repositories/settings_repo.dart';
 import '../domain/background.dart';
-import 'notifications_background_repo.dart';
-import 'sources_background_repo.dart';
+import 'notifications_bg_repo.dart';
+import 'sources_bg_repo.dart';
 
 class AlertsBackgroundRepo {
   AlertsBackgroundRepo(
