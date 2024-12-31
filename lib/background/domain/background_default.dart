@@ -26,8 +26,8 @@ class BackgroundDefault extends BackgroundChannelExternal
 
   @override
   Future<void> makeRequest(IsolateMessage message) async {
-    await isolateReady.future;
-    portToBackground.send(BackgroundTranslator.serialize(message));
+    await backgroundReady.future;
+    portToBackground!.send(BackgroundTranslator.serialize(message));
   }
 }
 
