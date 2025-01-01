@@ -12,7 +12,8 @@ import io.flutter.embedding.engine.FlutterEngine
 
 class MainActivity: FlutterActivity() {
     override fun provideFlutterEngine(context: Context): FlutterEngine {
-        val engine = StartFlutterOnce(context, false)
-        return engine.flutterEngine
+        var args: List<String> = getDartEntrypointArgs() ?: listOf<String>()
+        val launcher = StartFlutterOnce(context, false, args.toTypedArray())
+        return launcher.flutterEngine
     }
 }
