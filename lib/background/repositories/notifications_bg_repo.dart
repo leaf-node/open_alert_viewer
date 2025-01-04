@@ -14,6 +14,7 @@ import '../../data/repositories/settings_repo.dart';
 import '../../utils/utils.dart';
 import '../domain/background.dart';
 
+// must match here: lib/background/domain/background_sticky_notification.dart
 const stickyNotificationChannelId = "Open Alert Viewer Background Work";
 const stickyNotificationChannelName = "Background Work";
 const stickyNotificationChannelDescription =

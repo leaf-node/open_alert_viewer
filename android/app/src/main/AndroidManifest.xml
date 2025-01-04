@@ -32,8 +32,7 @@
             android:name="flutterEmbedding"
             android:value="2" />
         <service
-            android:name="com.dexterous.flutterlocalnotifications.ForegroundService"
-            android:exported="false"
+            android:name="id.flutter.flutter_background_service.BackgroundService"
             android:stopWithTask="false"
             android:foregroundServiceType="dataSync" />
         <receiver

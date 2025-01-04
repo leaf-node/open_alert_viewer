@@ -54,6 +54,7 @@ dependencies:
   json_annotation: ^4.9.0
   freezed: ^2.5.7
   freezed_annotation: ^2.4.4
+  flutter_background_service: ^5.1.0
 
 dev_dependencies:
   flutter_test:
