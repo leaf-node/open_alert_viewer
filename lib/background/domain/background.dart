@@ -106,39 +106,43 @@ class BackgroundChannelExternal {
       message = BackgroundTranslator.deserialize(rawMessage);
       isolateStreams[message.destination]!.add(message);
     } else if (rawMessage is List<dynamic>) {
-      isolateStreams[MessageDestination.alerts]!
-          .add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
-        const Alert(
-            source: 0,
-            kind: AlertType.syncFailure,
-            hostname: "Open Alert Viewer",
-            service: "Background Isolate",
-            message: "Oh no! The background isolate crashed. "
-                "Please check whether an app upgrade is available and "
-                "resolves this issue. If that does not help, "
-                "please take a screen shot, and submit it using "
-                "the link icon to the left so we can help resolve the "
-                "problem. Sorry for the inconvenience.",
-            url: "https://github.com/okcode-studio/open_alert_viewer/issues",
-            age: Duration.zero,
-            silenced: false,
-            downtimeScheduled: false,
-            active: true),
-        Alert(
-            source: 0,
-            kind: AlertType.syncFailure,
-            hostname: "Open Alert Viewer version ${SettingsRepo.appVersion}",
-            service: "Stack Trace",
-            message: rawMessage.toString(),
-            url: "https://github.com/okcode-studio/open_alert_viewer/issues",
-            age: Duration.zero,
-            silenced: false,
-            downtimeScheduled: false,
-            active: true),
-      ]));
+      internalErrorsToAlerts(rawMessage.toString());
     } else {
       throw Exception("Invalid message type: $rawMessage");
     }
+  }
+
+  void internalErrorsToAlerts(String errorMessage) {
+    isolateStreams[MessageDestination.alerts]!
+        .add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
+      const Alert(
+          source: 0,
+          kind: AlertType.syncFailure,
+          hostname: "Open Alert Viewer",
+          service: "Background Isolate",
+          message: "Oh no! The background isolate crashed. "
+              "Please check whether an app upgrade is available and "
+              "resolves this issue. If that does not help, "
+              "please take a screen shot, and submit it using "
+              "the link icon to the left so we can help resolve the "
+              "problem. Sorry for the inconvenience.",
+          url: "https://github.com/okcode-studio/open_alert_viewer/issues",
+          age: Duration.zero,
+          silenced: false,
+          downtimeScheduled: false,
+          active: true),
+      Alert(
+          source: 0,
+          kind: AlertType.syncFailure,
+          hostname: "Open Alert Viewer version ${SettingsRepo.appVersion}",
+          service: "Stack Trace",
+          message: errorMessage,
+          url: "https://github.com/okcode-studio/open_alert_viewer/issues",
+          age: Duration.zero,
+          silenced: false,
+          downtimeScheduled: false,
+          active: true),
+    ]));
   }
 }
 
@@ -150,32 +154,41 @@ mixin BackgroundChannelInternal {
   late NotificationsBackgroundRepo _notifier;
   late StreamController<IsolateMessage> _outboundStream;
 
-  Future<void> init(String appVersion, Function(IsolateMessage) sender) async {
-    _db = LocalDatabase();
-    await _db.open();
-    await _db.migrate();
-    SettingsRepo.appVersion = appVersion;
-    _settings = SettingsRepo(db: _db);
-    BackgroundChannel.settings = _settings;
-    _notifier = NotificationsBackgroundRepo(settings: _settings);
-    await _notifier.initializeAlertNotifications();
-    await _notifier.startAnroidStickyNotification();
-    _outboundStream = StreamController<IsolateMessage>();
-    _sourcesRepo = SourcesBackgroundRepo(
-        db: _db, outboundStream: _outboundStream, settings: _settings);
-    _alertsRepo = AlertsBackgroundRepo(
-        db: _db,
-        settings: _settings,
-        sourcesRepo: _sourcesRepo,
-        notifier: _notifier);
-    _alertsRepo.init(_outboundStream);
-    _outboundStream.stream.listen((event) {
-      if (event.destination == null) {
-        throw Exception(
-            "Background worker sending message without destination");
+  Future<void> init(String appVersion, Function(IsolateMessage) sender,
+      [Function(String)? errorSender]) async {
+    try {
+      _db = LocalDatabase();
+      await _db.open();
+      await _db.migrate();
+      SettingsRepo.appVersion = appVersion;
+      _settings = SettingsRepo(db: _db);
+      BackgroundChannel.settings = _settings;
+      _notifier = NotificationsBackgroundRepo(settings: _settings);
+      await _notifier.initializeAlertNotifications();
+      await _notifier.startAnroidStickyNotification();
+      _outboundStream = StreamController<IsolateMessage>();
+      _sourcesRepo = SourcesBackgroundRepo(
+          db: _db, outboundStream: _outboundStream, settings: _settings);
+      _alertsRepo = AlertsBackgroundRepo(
+          db: _db,
+          settings: _settings,
+          sourcesRepo: _sourcesRepo,
+          notifier: _notifier);
+      _alertsRepo.init(_outboundStream);
+      _outboundStream.stream.listen((event) {
+        if (event.destination == null) {
+          throw Exception(
+              "Background worker sending message without destination");
+        }
+        sender(event);
+      });
+    } catch (e) {
+      if (errorSender == null) {
+        rethrow;
+      } else {
+        errorSender(e.toString());
       }
-      sender(event);
-    });
+    }
   }
 
   void handleRequestsToBackground(dynamic rawMessage) async {

@@ -54,6 +54,9 @@ class BackgroundStickyNotification extends BackgroundChannelExternal
     _service?.on("outbound").listen((data) {
       handleResponsesFromBackground(data!["message"]!);
     });
+    _service?.on("error").listen((data) {
+      internalErrorsToAlerts(data!["message"]!);
+    });
   }
 
   @override
@@ -88,6 +91,8 @@ class BackgroundService with BackgroundChannelInternal {
     await init(data!["version"]!, (message) {
       _service?.invoke(
           "outbound", {"message": BackgroundTranslator.serialize(message)});
+    }, (errorMessage) {
+      _service?.invoke("error", {"message": errorMessage});
     });
     _service?.invoke("fgInit", {});
   }
