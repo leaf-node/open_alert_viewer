@@ -17,7 +17,7 @@ class BootReceiver : BroadcastReceiver() {
             intent.action.equals("com.htc.intent.action.QUICKBOOT_POWERON") ||
             intent.action.equals("android.intent.action.MY_PACKAGE_REPLACED")) {
 
-            StartFlutterOnce(context, true, arrayOf<String>())
+            CreateOrDestroyService(context, true)
         }
     }
 }

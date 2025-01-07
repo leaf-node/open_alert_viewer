@@ -6,14 +6,11 @@
 
 package studio.okcode.open_alert_viewer
 
-import android.content.Context
 import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.engine.FlutterEngine
 
 class MainActivity: FlutterActivity() {
-    override fun provideFlutterEngine(context: Context): FlutterEngine {
-        var args: List<String> = getDartEntrypointArgs() ?: listOf<String>()
-        val launcher = StartFlutterOnce(context, false, args.toTypedArray())
-        return launcher.flutterEngine
+    override fun onStart() {
+        super.onStart()
+        CreateOrDestroyService(context, false)
     }
 }
