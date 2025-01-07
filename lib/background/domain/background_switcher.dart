@@ -39,11 +39,11 @@ class BackgroundSwitcher extends BackgroundChannelExternal
 
   @override
   Future<void> makeRequest(IsolateMessage message) async {
-    await backgroundReady?.future;
     if (message.name == MessageName.enableNotifications ||
         message.name == MessageName.disableNotifications) {
-      spawn();
+      await spawn();
     }
+    await backgroundReady?.future;
     _bgChannelChild!.makeRequest(message);
   }
 }
