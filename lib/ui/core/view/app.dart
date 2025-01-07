@@ -36,7 +36,7 @@ class OAVapp extends StatelessWidget {
   const OAVapp({super.key, required this.db, required this.bgChannel});
 
   final LocalDatabase db;
-  final BackgroundChannel bgChannel;
+  final BackgroundExternalChannel bgChannel;
 
   @override
   Widget build(BuildContext context) {

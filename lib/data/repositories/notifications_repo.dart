@@ -14,7 +14,7 @@ import '../../../data/repositories/sticky_notification_repo.dart';
 class NotificationsRepo {
   NotificationsRepo(
       {required StickyNotificationRepo stickyNotificationRepo,
-      required BackgroundChannel bgChannel})
+      required BackgroundExternalChannel bgChannel})
       : _stickyNotificationRepo = stickyNotificationRepo,
         _bgChannel = bgChannel {
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -24,7 +24,7 @@ class NotificationsRepo {
   }
 
   final StickyNotificationRepo _stickyNotificationRepo;
-  final BackgroundChannel _bgChannel;
+  final BackgroundExternalChannel _bgChannel;
   late AudioPlayer? player;
 
   Future<void> requestAndEnableNotifications(
