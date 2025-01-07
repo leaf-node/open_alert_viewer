@@ -30,8 +30,8 @@ Future<void> startBackground() async {
     await db!.migrate(showPath: true);
   }
   if (bgChannel == null) {
-    bgChannel = BackgroundSwitcher();
-    await bgChannel!.spawn(SettingsRepo(db: db!));
+    bgChannel = BackgroundSwitcher(SettingsRepo(db: db!));
+    await bgChannel!.spawn();
   }
 }
 
