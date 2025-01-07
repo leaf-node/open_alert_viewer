@@ -13,15 +13,15 @@ import '../../utils/utils.dart';
 import 'background.dart';
 
 class BackgroundIsolate implements BackgroundInnerChannel {
-  SendPort? portToBackground;
-  final Completer<void> backgroundReady = Completer();
+  SendPort? _portToBackground;
+  final Completer<void> _backgroundReady = Completer();
   @override
   Future<void> spawn(SendPort portToForeground) async {
     final portFromBackground = ReceivePort();
     portFromBackground.listen((message) {
       if (message is SendPort) {
-        portToBackground = message;
-        backgroundReady.complete();
+        _portToBackground = message;
+        _backgroundReady.complete();
       } else {
         portToForeground.send(message);
       }
@@ -35,8 +35,8 @@ class BackgroundIsolate implements BackgroundInnerChannel {
 
   @override
   Future<void> makeRequest(IsolateMessage message) async {
-    await backgroundReady.future;
-    portToBackground!.send(BackgroundTranslator.serialize(message));
+    await _backgroundReady.future;
+    _portToBackground!.send(BackgroundTranslator.serialize(message));
   }
 }
 
