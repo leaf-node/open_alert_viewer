@@ -29,7 +29,7 @@ class BackgroundSwitcher extends BackgroundChannelExternal
         handleResponsesFromBackground(message);
       }
     });
-    if (Platform.isAndroid && (_settings.notificationsEnabled)) {
+    if (Platform.isAndroid && _settings.notificationsEnabled) {
       _bgChannelChild = BackgroundAndroidService();
     } else {
       _bgChannelChild = BackgroundIsolate();
@@ -41,7 +41,7 @@ class BackgroundSwitcher extends BackgroundChannelExternal
   Future<void> makeRequest(IsolateMessage message) async {
     await backgroundReady?.future;
     if (message.name == MessageName.enableNotifications ||
-        message.name == MessageName.enableNotifications) {
+        message.name == MessageName.disableNotifications) {
       spawn();
     }
     _bgChannelChild!.makeRequest(message);
