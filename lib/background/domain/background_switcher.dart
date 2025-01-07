@@ -39,8 +39,9 @@ class BackgroundSwitcher extends BackgroundChannelExternal
 
   @override
   Future<void> makeRequest(IsolateMessage message) async {
-    if (message.name == MessageName.enableNotifications ||
-        message.name == MessageName.disableNotifications) {
+    if (Platform.isAndroid &&
+        (message.name == MessageName.enableNotifications ||
+            message.name == MessageName.disableNotifications)) {
       await spawn();
     }
     await backgroundReady?.future;
