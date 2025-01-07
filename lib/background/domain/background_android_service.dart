@@ -4,6 +4,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'background_default.dart';
+import 'background_isolate.dart';
 
-class BackgroundStickyNotification extends BackgroundDefault {}
+class BackgroundAndroidService extends BackgroundIsolate {}

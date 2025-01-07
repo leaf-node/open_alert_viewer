@@ -12,16 +12,23 @@ import 'package:flutter/services.dart';
 import '../../utils/utils.dart';
 import 'background.dart';
 
-class BackgroundDefault extends BackgroundChannelExternal
+class BackgroundIsolate extends BackgroundChannelExternal
     implements BackgroundChannel {
   @override
-  Future<void> spawn() async {
-    String appVersion = await Util.getVersion();
+  Future<void> spawn([SendPort? portToForeground]) async {
     final portFromBackground = ReceivePort();
-    portFromBackground.listen(handleResponsesFromBackground);
-    var isolate = await Isolate.spawn(BackgroundIsolate().spawned,
+    portFromBackground.listen((message) {
+      if (message is SendPort) {
+        initPortToBackground(message);
+      } else {
+        portToForeground!.send(message);
+      }
+    });
+    String appVersion = await Util.getVersion();
+    var isolate = await Isolate.spawn(BackgroundIsolateInternal().spawned,
         (portFromBackground.sendPort, RootIsolateToken.instance, appVersion));
     isolate.addErrorListener(portFromBackground.sendPort);
+    portToForeground!.send("ready");
   }
 
   @override
@@ -31,7 +38,7 @@ class BackgroundDefault extends BackgroundChannelExternal
   }
 }
 
-class BackgroundIsolate with BackgroundChannelInternal {
+class BackgroundIsolateInternal with BackgroundChannelInternal {
   Future<void> spawned((SendPort, RootIsolateToken?, String) initArgs) async {
     SendPort portToForeground;
     RootIsolateToken token;

@@ -68,7 +68,7 @@ class IsolateMessage with _$IsolateMessage {
 }
 
 abstract class BackgroundChannel {
-  Future<void> spawn();
+  Future<void> spawn([SendPort? portToForeground]);
   Future<void> makeRequest(IsolateMessage message);
   final Map<MessageDestination, StreamController<IsolateMessage>>
       isolateStreams = {};
@@ -97,48 +97,54 @@ class BackgroundChannelExternal {
   final Completer<void> backgroundReady = Completer();
   SendPort? portToBackground;
 
+  void initPortToBackground(SendPort port) {
+    portToBackground = port;
+    backgroundReady.complete();
+  }
+
   void handleResponsesFromBackground(dynamic rawMessage) {
     IsolateMessage message;
-    if (rawMessage is SendPort) {
-      portToBackground = rawMessage;
-      backgroundReady.complete();
-    } else if (rawMessage is String) {
+    if (rawMessage is String) {
       message = BackgroundTranslator.deserialize(rawMessage);
       isolateStreams[message.destination]!.add(message);
     } else if (rawMessage is List<dynamic>) {
-      isolateStreams[MessageDestination.alerts]!
-          .add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
-        const Alert(
-            source: 0,
-            kind: AlertType.syncFailure,
-            hostname: "Open Alert Viewer",
-            service: "Background Isolate",
-            message: "Oh no! The background isolate crashed. "
-                "Please check whether an app upgrade is available and "
-                "resolves this issue. If that does not help, "
-                "please take a screen shot, and submit it using "
-                "the link icon to the left so we can help resolve the "
-                "problem. Sorry for the inconvenience.",
-            url: "https://github.com/okcode-studio/open_alert_viewer/issues",
-            age: Duration.zero,
-            silenced: false,
-            downtimeScheduled: false,
-            active: true),
-        Alert(
-            source: 0,
-            kind: AlertType.syncFailure,
-            hostname: "Open Alert Viewer version ${SettingsRepo.appVersion}",
-            service: "Stack Trace",
-            message: rawMessage.toString(),
-            url: "https://github.com/okcode-studio/open_alert_viewer/issues",
-            age: Duration.zero,
-            silenced: false,
-            downtimeScheduled: false,
-            active: true),
-      ]));
+      internalErrorsToAlerts(rawMessage.toString());
     } else {
       throw Exception("Invalid message type: $rawMessage");
     }
+  }
+
+  void internalErrorsToAlerts(String errorMessage) {
+    isolateStreams[MessageDestination.alerts]!
+        .add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
+      const Alert(
+          source: 0,
+          kind: AlertType.syncFailure,
+          hostname: "Open Alert Viewer",
+          service: "Background Isolate",
+          message: "Oh no! The background isolate crashed. "
+              "Please check whether an app upgrade is available and "
+              "resolves this issue. If that does not help, "
+              "please take a screen shot, and submit it using "
+              "the link icon to the left so we can help resolve the "
+              "problem. Sorry for the inconvenience.",
+          url: "https://github.com/okcode-studio/open_alert_viewer/issues",
+          age: Duration.zero,
+          silenced: false,
+          downtimeScheduled: false,
+          active: true),
+      Alert(
+          source: 0,
+          kind: AlertType.syncFailure,
+          hostname: "Open Alert Viewer version ${SettingsRepo.appVersion}",
+          service: "Stack Trace",
+          message: errorMessage,
+          url: "https://github.com/okcode-studio/open_alert_viewer/issues",
+          age: Duration.zero,
+          silenced: false,
+          downtimeScheduled: false,
+          active: true),
+    ]));
   }
 }
 

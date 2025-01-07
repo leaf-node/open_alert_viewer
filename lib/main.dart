@@ -5,15 +5,13 @@
  */
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'ui/core/view/app.dart';
-import 'data/services/database.dart';
 import 'background/domain/background.dart';
-import 'background/domain/background_default.dart';
-import 'background/domain/background_sticky_notification.dart';
+import 'background/domain/background_switcher.dart';
+import 'data/services/database.dart';
+import 'ui/core/view/app.dart';
 
 LocalDatabase? db;
 BackgroundChannel? bgChannel;
@@ -31,11 +29,7 @@ Future<void> startBackground() async {
     await db!.migrate(showPath: true);
   }
   if (bgChannel == null) {
-    if (Platform.isAndroid) {
-      bgChannel = BackgroundStickyNotification();
-    } else {
-      bgChannel = BackgroundDefault();
-    }
+    bgChannel = BackgroundSwitcher();
     await bgChannel!.spawn();
   }
 }
