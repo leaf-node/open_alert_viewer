@@ -14,7 +14,7 @@ import 'data/services/database.dart';
 import 'ui/core/view/app.dart';
 
 LocalDatabase? db;
-BackgroundChannel? bgChannel;
+BackgroundExternalChannel? bgChannel;
 
 Future<void> main() async {
   await startBackground();

@@ -14,10 +14,10 @@ import 'background.dart';
 import 'background_isolate.dart';
 
 class BackgroundSwitcher extends BackgroundChannelExternal
-    implements BackgroundChannel {
-  BackgroundChannel? bgChannelChild;
+    implements BackgroundExternalChannel {
+  BackgroundInnerChannel? bgChannelChild;
   @override
-  Future<void> spawn([SendPort? _]) async {
+  Future<void> spawn() async {
     final portFromBackground = ReceivePort();
     portFromBackground.listen((message) {
       if (message is String && message == "ready") {
