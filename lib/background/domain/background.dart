@@ -77,7 +77,7 @@ abstract class BackgroundInnerChannel implements BackgroundChannel {
 }
 
 abstract class BackgroundExternalChannel implements BackgroundChannel {
-  Future<void> spawn();
+  Future<void> spawn(SettingsRepo settings);
   final Map<MessageDestination, StreamController<IsolateMessage>>
       isolateStreams = {};
 }
@@ -101,7 +101,7 @@ class BackgroundChannelExternal {
   }
   final Map<MessageDestination, StreamController<IsolateMessage>>
       isolateStreams = {};
-  final Completer<void> backgroundReady = Completer();
+  Completer<void>? backgroundReady;
   SendPort? portToBackground;
 
   void handleResponsesFromBackground(dynamic rawMessage) {

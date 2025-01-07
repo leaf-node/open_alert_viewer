@@ -8,8 +8,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:open_alert_viewer/background/domain/background_android_service.dart';
-
+import '../../background/domain/background_android_service.dart';
+import '../../data/repositories/settings_repo.dart';
 import 'background.dart';
 import 'background_isolate.dart';
 
@@ -17,16 +17,17 @@ class BackgroundSwitcher extends BackgroundChannelExternal
     implements BackgroundExternalChannel {
   BackgroundInnerChannel? bgChannelChild;
   @override
-  Future<void> spawn() async {
+  Future<void> spawn(SettingsRepo settings) async {
+    backgroundReady = Completer();
     final portFromBackground = ReceivePort();
     portFromBackground.listen((message) {
       if (message is String && message == "ready") {
-        backgroundReady.complete();
+        backgroundReady?.complete();
       } else {
         handleResponsesFromBackground(message);
       }
     });
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid && (settings.notificationsEnabled)) {
       bgChannelChild = BackgroundAndroidService();
     } else {
       bgChannelChild = BackgroundIsolate();
@@ -36,7 +37,7 @@ class BackgroundSwitcher extends BackgroundChannelExternal
 
   @override
   Future<void> makeRequest(IsolateMessage message) async {
-    await backgroundReady.future;
+    await backgroundReady?.future;
     bgChannelChild!.makeRequest(message);
   }
 }

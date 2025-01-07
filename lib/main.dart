@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import 'background/domain/background.dart';
 import 'background/domain/background_switcher.dart';
+import 'data/repositories/settings_repo.dart';
 import 'data/services/database.dart';
 import 'ui/core/view/app.dart';
 
@@ -30,7 +31,7 @@ Future<void> startBackground() async {
   }
   if (bgChannel == null) {
     bgChannel = BackgroundSwitcher();
-    await bgChannel!.spawn();
+    await bgChannel!.spawn(SettingsRepo(db: db!));
   }
 }
 
