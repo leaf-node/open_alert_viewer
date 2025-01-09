@@ -16,7 +16,7 @@ import 'account_settings_state.dart';
 class AccountSettingsCubit extends Cubit<AccountSettingsState>
     with NetworkFetch {
   AccountSettingsCubit(
-      {required BackgroundExternalChannel bgChannel,
+      {required BackgroundChannel bgChannel,
       required AccountsRepo accountsRepo})
       : _bgChannel = bgChannel,
         _accountsRepo = accountsRepo,
@@ -28,7 +28,7 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState>
   }
 
   AccountSettingsState? _state;
-  final BackgroundExternalChannel _bgChannel;
+  final BackgroundChannel _bgChannel;
   final AccountsRepo _accountsRepo;
   int accountCheckSerial;
   bool lastNeedsCheck;

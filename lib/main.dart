@@ -9,13 +9,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'background/domain/background.dart';
-import 'background/domain/background_switcher.dart';
-import 'data/repositories/settings_repo.dart';
+import 'background/domain/background_isolate.dart';
 import 'data/services/database.dart';
 import 'ui/core/view/app.dart';
 
 LocalDatabase? db;
-BackgroundExternalChannel? bgChannel;
+BackgroundChannel? bgChannel;
 
 Future<void> main() async {
   await startBackground();
@@ -30,7 +29,7 @@ Future<void> startBackground() async {
     await db!.migrate(showPath: true);
   }
   if (bgChannel == null) {
-    bgChannel = BackgroundSwitcher(SettingsRepo(db: db!));
+    bgChannel = BackgroundIsolate();
     await bgChannel!.spawn();
   }
 }

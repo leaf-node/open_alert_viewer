@@ -17,7 +17,7 @@ import 'alerts_state.dart';
 
 class AlertsCubit extends Cubit<AlertsCubitState> {
   AlertsCubit(
-      {required BackgroundExternalChannel bgChannel,
+      {required BackgroundChannel bgChannel,
       required AlertsRepo alertsRepo,
       required Navigation navigation,
       required SettingsRepo settings})
@@ -34,7 +34,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
   }
 
   AlertsCubitState? _state;
-  final BackgroundExternalChannel _bgChannel;
+  final BackgroundChannel _bgChannel;
   final AlertsRepo _alertsRepo;
   final Navigation _navigation;
   final SettingsRepo _settings;

@@ -13,7 +13,7 @@ import '../../../domain/alerts.dart';
 import 'root_settings_state.dart';
 
 class RootSettingsCubit extends Cubit<RootSettingsCubitState> {
-  RootSettingsCubit({required BackgroundExternalChannel bgChannel})
+  RootSettingsCubit({required BackgroundChannel bgChannel})
       : _bgChannel = bgChannel,
         super(RootSettingsCubitState.init()) {
     _state = state;
@@ -21,7 +21,7 @@ class RootSettingsCubit extends Cubit<RootSettingsCubitState> {
   }
 
   RootSettingsCubitState? _state;
-  final BackgroundExternalChannel _bgChannel;
+  final BackgroundChannel _bgChannel;
 
   Future<void> _listenForSourceChanges() async {
     List<AlertSourceData> sources = [];

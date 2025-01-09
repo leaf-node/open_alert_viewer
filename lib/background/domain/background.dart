@@ -69,15 +69,8 @@ class IsolateMessage with _$IsolateMessage {
 
 abstract class BackgroundChannel {
   Future<void> makeRequest(IsolateMessage message);
-  static SettingsRepo? settings;
-}
-
-abstract class BackgroundInnerChannel implements BackgroundChannel {
-  Future<void> spawn(SendPort portToForeground);
-}
-
-abstract class BackgroundExternalChannel implements BackgroundChannel {
   Future<void> spawn();
+  static SettingsRepo? settings;
   final Map<MessageDestination, StreamController<IsolateMessage>>
       isolateStreams = {};
 }
