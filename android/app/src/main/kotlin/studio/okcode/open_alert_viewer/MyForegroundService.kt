@@ -28,13 +28,16 @@ class MyForegroundService: Service() {
             stopSelf()
             return START_NOT_STICKY
         }
-        val engineId = intent.getStringExtra("engineId")!!
-        if (engineId == "service") {
+        var engineId = intent.getStringExtra("engineId") ?: "service"
+        if (FlutterEngineCache.getInstance().get("main") == null) {
+            engineId = "service"
+        }
+        if (engineId == "service" && FlutterEngineCache.getInstance().get(engineId) == null) {
             CreateOrDestroyService(baseContext, true)
         }
-        val flutterEngine = FlutterEngineCache.getInstance().get(engineId)
+        val flutterEngine = FlutterEngineCache.getInstance().get(engineId)!!
         MethodChannel(
-            flutterEngine!!.dartExecutor.binaryMessenger,
+            flutterEngine.dartExecutor.binaryMessenger,
             channel
         ).setMethodCallHandler { call, result ->
             if (call.method == "stopForeground") {
