@@ -17,7 +17,9 @@ class BootReceiver : BroadcastReceiver() {
             intent.action.equals("com.htc.intent.action.QUICKBOOT_POWERON") ||
             intent.action.equals("android.intent.action.MY_PACKAGE_REPLACED")) {
 
-            CreateOrDestroyService(context, true)
+            val myIntent = Intent(context, MyForegroundService::class.java)
+            myIntent.putExtra("engineId", "service")
+            context.startForegroundService(myIntent)
         }
     }
 }

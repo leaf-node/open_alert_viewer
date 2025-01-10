@@ -12,7 +12,7 @@ import io.flutter.embedding.engine.FlutterEngineGroup
 import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
 
 class CreateOrDestroyService (context: Context, createService: Boolean) {
-    private val serviceEngineId: String = "single_service_engine"
+    private val serviceEngineId: String = "service"
     init {
         if (createService) {
             var serviceEngine = FlutterEngineCache.getInstance().get(serviceEngineId)

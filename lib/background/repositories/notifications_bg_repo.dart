@@ -11,9 +11,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../domain/alerts.dart';
 import '../../data/repositories/settings_repo.dart';
+import '../../domain/platform_channel.dart';
 import '../../utils/utils.dart';
 import '../domain/background.dart';
 
+// must match android/app/src/main/kotlin/studio/okcode/open_alert_viewer/ForegroundService.kt
 const stickyNotificationChannelId = "Open Alert Viewer Background Work";
 const stickyNotificationChannelName = "Background Work";
 const stickyNotificationChannelDescription =
@@ -31,8 +33,11 @@ const alertsNotificationChannelDescription = "Alert Notifications";
 const notificationIcon = "@drawable/notification_icon";
 
 class NotificationsBackgroundRepo {
-  NotificationsBackgroundRepo({required SettingsRepo settings})
+  NotificationsBackgroundRepo(
+      {required SettingsRepo settings,
+      required PlatformChannel platformChannel})
       : _settings = settings,
+        _platformChannel = platformChannel,
         _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin() {
     _stickyAndroidNotificationDetails = const AndroidNotificationDetails(
         stickyNotificationChannelId, stickyNotificationChannelName,
@@ -46,6 +51,7 @@ class NotificationsBackgroundRepo {
   }
 
   final SettingsRepo _settings;
+  final PlatformChannel _platformChannel;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   late AndroidNotificationDetails _stickyAndroidNotificationDetails;
   late NotificationDetails _notificationDetails;
@@ -176,9 +182,8 @@ class NotificationsBackgroundRepo {
         _settings.refreshInterval == -1) {
       return;
     }
-    if (await _stickyAlreadyExists()) {
-      return;
-    }
+    _platformChannel.startForegroundService();
+    await Future.delayed(Duration(seconds: 1));
     var duration = Util.prettyPrintDuration(
         duration: Duration(seconds: _settings.refreshInterval),
         longForm: true,
@@ -241,6 +246,7 @@ class NotificationsBackgroundRepo {
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.stopForegroundService();
+      _platformChannel.stopForegroundService();
     }
     await _removeAlertNotification();
   }

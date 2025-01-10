@@ -10,9 +10,10 @@ import 'dart:isolate';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/alerts.dart';
 import '../../data/repositories/settings_repo.dart';
 import '../../data/services/database.dart';
+import '../../domain/alerts.dart';
+import '../../domain/platform_channel.dart';
 import '../repositories/alerts_bg_repo.dart';
 import '../repositories/notifications_bg_repo.dart';
 import '../repositories/sources_bg_repo.dart';
@@ -146,6 +147,7 @@ class BackgroundChannelExternal {
 mixin BackgroundChannelInternal {
   late LocalDatabase _db;
   late SettingsRepo _settings;
+  late PlatformChannel _platformChannel;
   late SourcesBackgroundRepo _sourcesRepo;
   late AlertsBackgroundRepo _alertsRepo;
   late NotificationsBackgroundRepo _notifier;
@@ -157,8 +159,10 @@ mixin BackgroundChannelInternal {
     await _db.migrate();
     SettingsRepo.appVersion = appVersion;
     _settings = SettingsRepo(db: _db);
+    _platformChannel = PlatformChannel();
     BackgroundChannel.settings = _settings;
-    _notifier = NotificationsBackgroundRepo(settings: _settings);
+    _notifier = NotificationsBackgroundRepo(
+        settings: _settings, platformChannel: _platformChannel);
     await _notifier.initializeAlertNotifications();
     await _notifier.startAnroidStickyNotification();
     _outboundStream = StreamController<IsolateMessage>();
