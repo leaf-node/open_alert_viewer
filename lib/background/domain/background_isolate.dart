@@ -43,12 +43,12 @@ class BackgroundIsolate extends BackgroundChannelExternal
 class BackgroundIsolateInternal with BackgroundChannelInternal {
   Future<void> spawned((SendPort, RootIsolateToken?, String) initArgs) async {
     SendPort portToForeground;
-    RootIsolateToken token;
+    RootIsolateToken? token;
     String appVersion;
-    (portToForeground, token!, appVersion) = initArgs;
+    (portToForeground, token, appVersion) = initArgs;
     final portFromForeground = ReceivePort();
     portToForeground.send(portFromForeground.sendPort);
-    BackgroundIsolateBinaryMessenger.ensureInitialized(token);
+    BackgroundIsolateBinaryMessenger.ensureInitialized(token!);
     await init(
         appVersion,
         (message) =>

@@ -16,8 +16,8 @@ class MainActivity: FlutterActivity() {
 
     override fun onStart() {
         super.onStart()
-        CreateOrDestroyService(context, false)
         FlutterEngineCache.getInstance().put("main", flutterEngine)
+        CreateOrDestroyService(context, false)
         MethodChannel(flutterEngine!!.dartExecutor.binaryMessenger, channel).setMethodCallHandler {
         call, result ->
             if (call.method == "startForeground") {

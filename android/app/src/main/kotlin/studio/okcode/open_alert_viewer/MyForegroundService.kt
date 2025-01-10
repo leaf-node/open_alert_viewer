@@ -51,10 +51,7 @@ class MyForegroundService : Service() {
                 this, stickyNotificationId, notification!!.build(), serviceInfo
             )
             var engineId = intent.getStringExtra("engineId") ?: "service"
-            if (FlutterEngineCache.getInstance().get("main") == null) {
-                engineId = "service"
-            }
-            if (engineId == "service" && FlutterEngineCache.getInstance().get(engineId) == null) {
+            if (FlutterEngineCache.getInstance().get("main") == null || engineId == "service") {
                 CreateOrDestroyService(baseContext, true)
             }
             val flutterEngine = FlutterEngineCache.getInstance().get(engineId)!!

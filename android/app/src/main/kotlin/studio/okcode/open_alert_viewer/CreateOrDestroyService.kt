@@ -13,10 +13,12 @@ import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
 
 class CreateOrDestroyService (context: Context, createService: Boolean) {
     private val serviceEngineId: String = "service"
+    private val mainEngineId: String = "main"
     init {
         if (createService) {
             var serviceEngine = FlutterEngineCache.getInstance().get(serviceEngineId)
-            if (serviceEngine == null) {
+            var mainEngine = FlutterEngineCache.getInstance().get(mainEngineId)
+            if (mainEngine == null && serviceEngine == null) {
                 val group = FlutterEngineGroup(context)
                 val entrypoint = DartEntrypoint(
                     "lib/main.dart", "startBackground")
