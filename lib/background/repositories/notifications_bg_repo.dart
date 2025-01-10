@@ -15,15 +15,6 @@ import '../../domain/platform_channel.dart';
 import '../../utils/utils.dart';
 import '../domain/background.dart';
 
-// must match android/app/src/main/kotlin/studio/okcode/open_alert_viewer/ForegroundService.kt
-const stickyNotificationChannelId = "Open Alert Viewer Background Work";
-const stickyNotificationChannelName = "Background Work";
-const stickyNotificationChannelDescription =
-    "Allow Fetching Alerts in Background";
-const stickyNotificationId = 1;
-const stickyNotificationTitle = "Periodically checking for new alerts";
-const stickyNotificationContentStart = "Sync every";
-
 const alertsNotificationId = 2;
 const alertsNotificationTitle = "Open Alert Viewer";
 const alertsNotificationChannelId = "Open Alert Viewer";
@@ -39,21 +30,12 @@ class NotificationsBackgroundRepo {
       : _settings = settings,
         _platformChannel = platformChannel,
         _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin() {
-    _stickyAndroidNotificationDetails = const AndroidNotificationDetails(
-        stickyNotificationChannelId, stickyNotificationChannelName,
-        icon: notificationIcon,
-        channelDescription: stickyNotificationChannelDescription,
-        ongoing: true,
-        importance: Importance.low,
-        priority: Priority.low,
-        silent: true);
     updateAlertDetails();
   }
 
   final SettingsRepo _settings;
   final PlatformChannel _platformChannel;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
-  late AndroidNotificationDetails _stickyAndroidNotificationDetails;
   late NotificationDetails _notificationDetails;
 
   Future<void> initializeAlertNotifications() async {
@@ -64,20 +46,11 @@ class NotificationsBackgroundRepo {
           InitializationSettings(linux: initializationSettingsLinux);
       await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
     } else if (Platform.isAndroid) {
-      const AndroidNotificationChannel stickyChannel =
-          AndroidNotificationChannel(
-              stickyNotificationChannelId, stickyNotificationChannelName,
-              description: stickyNotificationChannelDescription,
-              importance: Importance.low);
       const AndroidNotificationChannel alertChannel =
           AndroidNotificationChannel(
               alertsNotificationChannelId, alertsNotificationChannelName,
               description: alertsNotificationChannelDescription,
               importance: Importance.max);
-      await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(stickyChannel);
       await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
@@ -191,24 +164,7 @@ class NotificationsBackgroundRepo {
       return;
     }
     _platformChannel.startForegroundService();
-    await Future.delayed(Duration(seconds: 1));
-    var duration = Util.prettyPrintDuration(
-        duration: Duration(seconds: _settings.refreshInterval),
-        longForm: true,
-        stripLeadingOne: true);
-    await _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.startForegroundService(
-            stickyNotificationId,
-            stickyNotificationTitle,
-            "$stickyNotificationContentStart $duration "
-            "- last: ${Util.getTimeString(_settings.lastFetched)}",
-            notificationDetails: _stickyAndroidNotificationDetails,
-            startType: AndroidServiceStartType.startRedeliverIntent,
-            foregroundServiceTypes: {
-          AndroidServiceForegroundType.foregroundServiceTypeDataSync
-        });
+    updateAnroidStickyNotification();
   }
 
   Future<void> updateAnroidStickyNotification() async {
@@ -217,43 +173,17 @@ class NotificationsBackgroundRepo {
         _settings.refreshInterval == -1) {
       return;
     }
-    if (!(await _stickyAlreadyExists())) {
-      startAnroidStickyNotification();
-      return;
-    }
     var duration = Util.prettyPrintDuration(
         duration: Duration(seconds: _settings.refreshInterval),
         longForm: true,
         stripLeadingOne: true);
-    await _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.show(
-            stickyNotificationId,
-            stickyNotificationTitle,
-            "$stickyNotificationContentStart $duration "
-            "- last: ${Util.getTimeString(DateTime.now())}",
-            notificationDetails: _stickyAndroidNotificationDetails);
-  }
-
-  Future<bool> _stickyAlreadyExists() async {
-    var activeAlerts = await _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.getActiveNotifications();
-    final exists = activeAlerts
-            ?.where((alert) => alert.id == stickyNotificationId)
-            .isNotEmpty ??
-        false;
-    return exists;
+    final text = "Sync every $duration "
+        "- last: ${Util.getTimeString(_settings.lastFetched)}";
+    _platformChannel.updateNotification(text);
   }
 
   Future<void> disableNotifications() async {
     if (Platform.isAndroid) {
-      await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.stopForegroundService();
       _platformChannel.stopForegroundService();
     }
     await _removeAlertNotification();

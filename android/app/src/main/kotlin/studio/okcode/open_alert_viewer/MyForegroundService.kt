@@ -6,64 +6,92 @@
 
 package studio.okcode.open_alert_viewer
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.ServiceCompat
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.plugin.common.MethodChannel
 
-class MyForegroundService: Service() {
-    // must match lib/background/repositories/notifications_bg_repo.dart
-    private val stickyNotificationChannelId = "Open Alert Viewer Background Work"
-    private val stickyNotificationId = 1
+class MyForegroundService : Service() {
     private val channel = "studio.okcode.open_alert_viewer/service"
+    private val stickyNotificationChannelId = "Open Alert Viewer Background Work"
+    private val stickyNotificationChannelName = "Background Work"
+    private val stickyNotificationChannelDescription = "Allow Fetching Alerts in Background"
+    private val stickyNotificationId = 1
+    private val stickyNotificationTitle = "Periodically checking for new alerts"
+    private var notificationManager: NotificationManager? = null
+    private var notification: NotificationCompat.Builder? = null
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int) : Int {
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
             stopSelf()
             return START_NOT_STICKY
         }
-        var engineId = intent.getStringExtra("engineId") ?: "service"
-        if (FlutterEngineCache.getInstance().get("main") == null) {
-            engineId = "service"
-        }
-        if (engineId == "service" && FlutterEngineCache.getInstance().get(engineId) == null) {
-            CreateOrDestroyService(baseContext, true)
-        }
-        val flutterEngine = FlutterEngineCache.getInstance().get(engineId)!!
-        MethodChannel(
-            flutterEngine.dartExecutor.binaryMessenger,
-            channel
-        ).setMethodCallHandler { call, result ->
-            if (call.method == "stopForeground") {
-                stopSelf()
-                result.success("stopped")
-            } else {
-                result.notImplemented()
-            }
-        }
         try {
-            val notification = NotificationCompat.Builder(this, stickyNotificationChannelId)
-                .build()
+            createChannel()
+            notification = NotificationCompat.Builder(this, stickyNotificationChannelId)
+            notification?.setSmallIcon(R.drawable.notification_icon)
+                ?.setContentTitle(stickyNotificationTitle)
+                ?.setContentText("Initializing...")
             val serviceInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             } else {
                 0
             }
             ServiceCompat.startForeground(
-                this, stickyNotificationId, notification, serviceInfo)
+                this, stickyNotificationId, notification!!.build(), serviceInfo
+            )
+            var engineId = intent.getStringExtra("engineId") ?: "service"
+            if (FlutterEngineCache.getInstance().get("main") == null) {
+                engineId = "service"
+            }
+            if (engineId == "service" && FlutterEngineCache.getInstance().get(engineId) == null) {
+                CreateOrDestroyService(baseContext, true)
+            }
+            val flutterEngine = FlutterEngineCache.getInstance().get(engineId)!!
+            MethodChannel(
+                flutterEngine.dartExecutor.binaryMessenger,
+                channel
+            ).setMethodCallHandler { call, result ->
+                if (call.method == "stopForeground") {
+                    stopSelf()
+                    result.success("stopped")
+                }
+                if (call.method == "updateNotification") {
+                    notification?.setContentText(call.arguments<String>())
+                    notificationManager?.notify(stickyNotificationId, notification!!.build())
+                } else {
+                    result.notImplemented()
+                }
+            }
         } catch (e: Exception) {
-            throw e
+            Log.d("open_alert_viewer", e.toString())
+            stopSelf()
+            return START_NOT_STICKY
         }
         return START_REDELIVER_INTENT
     }
 
-    override fun onBind(intent: Intent) : IBinder? {
+    private fun createChannel() {
+        val mChannel = NotificationChannel(
+            stickyNotificationChannelId,
+            stickyNotificationChannelName, NotificationManager.IMPORTANCE_LOW
+        )
+        mChannel.description = stickyNotificationChannelDescription
+        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager?.createNotificationChannel(mChannel)
+    }
+
+    override fun onBind(intent: Intent): IBinder? {
         return null
     }
 
