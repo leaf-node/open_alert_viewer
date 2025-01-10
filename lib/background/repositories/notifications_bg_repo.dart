@@ -176,6 +176,14 @@ class NotificationsBackgroundRepo {
     await updateAnroidStickyNotification();
   }
 
+  Future<void> startOrStopStickyNotification() async {
+    if (!_settings.notificationsEnabled || _settings.refreshInterval == -1) {
+      await disableNotifications();
+    } else {
+      await startAnroidStickyNotification();
+    }
+  }
+
   Future<void> startAnroidStickyNotification() async {
     if (!Platform.isAndroid ||
         !_settings.notificationsEnabled ||

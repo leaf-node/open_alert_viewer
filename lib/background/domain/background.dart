@@ -164,7 +164,7 @@ mixin BackgroundChannelInternal {
     _notifier = NotificationsBackgroundRepo(
         settings: _settings, platformChannel: _platformChannel);
     await _notifier.initializeAlertNotifications();
-    await _notifier.startAnroidStickyNotification();
+    await _notifier.startOrStopStickyNotification();
     _outboundStream = StreamController<IsolateMessage>();
     _sourcesRepo = SourcesBackgroundRepo(
         db: _db, outboundStream: _outboundStream, settings: _settings);
