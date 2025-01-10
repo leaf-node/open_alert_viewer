@@ -63,4 +63,8 @@ class MyForegroundService: Service() {
     override fun onBind(intent: Intent) : IBinder? {
         return null
     }
+
+    override fun onTimeout(p0: Int) {
+        stopSelf()
+    }
 }
