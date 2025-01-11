@@ -21,7 +21,7 @@ class MainActivity: FlutterActivity() {
         MethodChannel(flutterEngine!!.dartExecutor.binaryMessenger, channel).setMethodCallHandler {
         call, result ->
             if (call.method == "startForeground") {
-                val intent = Intent(this, MyForegroundService::class.java)
+                val intent = Intent(this, OAVForegroundService::class.java)
                 intent.putExtra("engineId", "main")
                 context.startForegroundService(intent)
                 result.success("started")

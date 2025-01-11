@@ -6,7 +6,6 @@
 
 package studio.okcode.open_alert_viewer
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
@@ -21,7 +20,7 @@ import androidx.core.app.ServiceCompat
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.plugin.common.MethodChannel
 
-class MyForegroundService : Service() {
+class OAVForegroundService : Service() {
     private val channel = "studio.okcode.open_alert_viewer/service"
     private val stickyNotificationChannelId = "Open Alert Viewer Background Work"
     private val stickyNotificationChannelName = "Background Work"
