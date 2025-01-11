@@ -17,6 +17,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.ServiceCompat
+import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.plugin.common.MethodChannel
 
@@ -52,11 +53,19 @@ class OAVForegroundService : Service() {
             )
             var engineId = intent.getStringExtra("engineId") ?: "service"
             val force = intent.getBooleanExtra("force", false)
-            if (FlutterEngineCache.getInstance().get("main") == null || engineId == "service" || force) {
-                engineId = "service"
+            if (engineId == "service") {
                 CreateOrDestroyService(baseContext, true, force)
             }
-            val flutterEngine = FlutterEngineCache.getInstance().get(engineId)!!
+            val flutterEngine: FlutterEngine
+            val mainEngine = FlutterEngineCache.getInstance().get("main")
+            val serviceEngine = FlutterEngineCache.getInstance().get("service")
+            if (engineId == "main" && mainEngine !== null) {
+                flutterEngine = mainEngine
+            } else if (engineId == "service" && serviceEngine !== null) {
+                flutterEngine = serviceEngine
+            } else {
+                flutterEngine = mainEngine ?: serviceEngine!!
+            }
             MethodChannel(
                 flutterEngine.dartExecutor.binaryMessenger,
                 channel

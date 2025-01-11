@@ -11,12 +11,12 @@ import android.content.Context
 import android.content.Intent
 
 class BootReceiver : BroadcastReceiver() {
-    override fun onReceive(context : Context, intent : Intent) {
+    override fun onReceive(context: Context, intent: Intent) {
         if (intent.action.equals("android.intent.action.BOOT_COMPLETED") ||
             intent.action.equals("android.intent.action.QUICKBOOT_POWERON") ||
             intent.action.equals("com.htc.intent.action.QUICKBOOT_POWERON") ||
-            intent.action.equals("android.intent.action.MY_PACKAGE_REPLACED")) {
-
+            intent.action.equals("android.intent.action.MY_PACKAGE_REPLACED")
+        ) {
             val myIntent = Intent(context, OAVForegroundService::class.java)
             myIntent.putExtra("engineId", "service")
             myIntent.putExtra("force", false)
@@ -24,4 +24,3 @@ class BootReceiver : BroadcastReceiver() {
         }
     }
 }
-
