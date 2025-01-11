@@ -47,11 +47,6 @@ class NotificationsRepo {
         const IsolateMessage(name: MessageName.enableNotifications));
   }
 
-  void toggleIntegratedAlertSounds() async {
-    await _bgChannel
-        .makeRequest(const IsolateMessage(name: MessageName.toggleSounds));
-  }
-
   Future<void> _listenForNotificationEvents() async {
     await for (final message in _bgChannel
         .isolateStreams[MessageDestination.notifications]!.stream) {

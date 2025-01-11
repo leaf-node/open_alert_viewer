@@ -141,7 +141,6 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
 
   Future<void> onTapPlaySoundEnabled() async {
     _settingsRepo.soundEnabled = !_settingsRepo.soundEnabled;
-    _notificationsRepo.toggleIntegratedAlertSounds();
     await refreshStateAsync();
   }
 

@@ -208,8 +208,6 @@ mixin BackgroundChannelInternal {
         _notifier.startAnroidStickyNotification();
       } else if (message.name == MessageName.disableNotifications) {
         _notifier.disableNotifications();
-      } else if (message.name == MessageName.toggleSounds) {
-        _notifier.updateAlertDetails();
       } else {
         throw Exception("Invalid message name: $message");
       }

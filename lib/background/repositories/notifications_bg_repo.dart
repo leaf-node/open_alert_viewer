@@ -30,7 +30,7 @@ class NotificationsBackgroundRepo {
       : _settings = settings,
         _platformChannel = platformChannel,
         _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin() {
-    updateAlertDetails();
+    updateAlertDetails(important: true);
   }
 
   final SettingsRepo _settings;
@@ -132,10 +132,12 @@ class NotificationsBackgroundRepo {
     if (newErrorCount > 0) {
       messages.add("$newErrorCount New Error${newErrorCount == 1 ? "" : "s"}");
     }
-
-    if (brandNew > 0) {
+    final important = (brandNew > 0);
+    await updateAlertDetails(important: important);
+    if (messages.isNotEmpty) {
       await _showNotification(message: messages.join(", "));
       if (_settings.notificationsEnabled &&
+          important &&
           _settings.soundEnabled &&
           !Platform.isAndroid &&
           !Platform.isIOS) {
@@ -143,7 +145,7 @@ class NotificationsBackgroundRepo {
             name: MessageName.playDesktopSound,
             destination: MessageDestination.notifications));
       }
-    } else if (messages.isEmpty) {
+    } else {
       await _removeAlertNotification();
     }
     await updateAnroidStickyNotification();
@@ -189,15 +191,17 @@ class NotificationsBackgroundRepo {
     await _removeAlertNotification();
   }
 
-  Future<void> updateAlertDetails() async {
-    const linuxNotificationDetails = LinuxNotificationDetails();
+  Future<void> updateAlertDetails({required bool important}) async {
+    final linuxUrgency = important ? null : LinuxNotificationUrgency.low;
+    final androidImportance = important ? Importance.max : Importance.low;
+    final linuxNotificationDetails =
+        LinuxNotificationDetails(urgency: linuxUrgency);
     var androidNotificationDetails = AndroidNotificationDetails(
         alertsNotificationChannelId, alertsNotificationChannelName,
         icon: notificationIcon,
         channelDescription: alertsNotificationChannelDescription,
-        importance: Importance.max,
-        priority: Priority.high,
-        silent: !_settings.soundEnabled);
+        importance: androidImportance,
+        silent: !(important && _settings.soundEnabled));
     _notificationDetails = NotificationDetails(
         linux: linuxNotificationDetails, android: androidNotificationDetails);
   }
