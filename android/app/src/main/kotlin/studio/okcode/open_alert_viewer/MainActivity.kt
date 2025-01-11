@@ -7,6 +7,7 @@
 package studio.okcode.open_alert_viewer
 
 import android.content.Intent
+import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.plugin.common.MethodChannel
@@ -14,8 +15,8 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity: FlutterActivity() {
     private val channel = "studio.okcode.open_alert_viewer/main"
 
-    override fun onStart() {
-        super.onStart()
+    override fun onCreate(bundle: Bundle?) {
+        super.onCreate(bundle)
         FlutterEngineCache.getInstance().put("main", flutterEngine)
         CreateOrDestroyService(context, false)
         MethodChannel(flutterEngine!!.dartExecutor.binaryMessenger, channel).setMethodCallHandler {
