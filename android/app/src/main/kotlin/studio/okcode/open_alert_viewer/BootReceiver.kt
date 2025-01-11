@@ -19,6 +19,7 @@ class BootReceiver : BroadcastReceiver() {
 
             val myIntent = Intent(context, OAVForegroundService::class.java)
             myIntent.putExtra("engineId", "service")
+            myIntent.putExtra("force", false)
             context.startForegroundService(myIntent)
         }
     }

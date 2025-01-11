@@ -26,16 +26,17 @@ class OAVForegroundService : Service() {
     private val stickyNotificationChannelName = "Background Work"
     private val stickyNotificationChannelDescription = "Allow Fetching Alerts in Background"
     private val stickyNotificationId = 1
-    private val stickyNotificationTitle = "Periodically checking for new alerts"
+    private val stickyNotificationTitle = "Periodically check for new alerts"
     private var notificationManager: NotificationManager? = null
     private var notification: NotificationCompat.Builder? = null
-
+    
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
-            stopSelf()
-            return START_NOT_STICKY
-        }
         try {
+            if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+                stopForeground(STOP_FOREGROUND_REMOVE)
+                stopSelf()
+                return START_NOT_STICKY
+            }
             createChannel()
             notification = NotificationCompat.Builder(this, stickyNotificationChannelId)
             notification?.setSmallIcon(R.drawable.notification_icon)
@@ -50,8 +51,10 @@ class OAVForegroundService : Service() {
                 this, stickyNotificationId, notification!!.build(), serviceInfo
             )
             var engineId = intent.getStringExtra("engineId") ?: "service"
-            if (FlutterEngineCache.getInstance().get("main") == null || engineId == "service") {
-                CreateOrDestroyService(baseContext, true)
+            val force = intent.getBooleanExtra("force", false)
+            if (FlutterEngineCache.getInstance().get("main") == null || engineId == "service" || force) {
+                engineId = "service"
+                CreateOrDestroyService(baseContext, true, force)
             }
             val flutterEngine = FlutterEngineCache.getInstance().get(engineId)!!
             MethodChannel(
@@ -59,6 +62,7 @@ class OAVForegroundService : Service() {
                 channel
             ).setMethodCallHandler { call, result ->
                 if (call.method == "stopForeground") {
+                    stopForeground(STOP_FOREGROUND_REMOVE)
                     stopSelf()
                     result.success("stopped")
                 }
@@ -71,6 +75,7 @@ class OAVForegroundService : Service() {
             }
         } catch (e: Exception) {
             Log.d("open_alert_viewer", e.toString())
+            stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
             return START_NOT_STICKY
         }
@@ -92,6 +97,14 @@ class OAVForegroundService : Service() {
     }
 
     override fun onTimeout(p0: Int) {
+        super.onTimeout(p0)
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
 }

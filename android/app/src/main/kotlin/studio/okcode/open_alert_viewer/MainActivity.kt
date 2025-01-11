@@ -12,23 +12,35 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity: FlutterActivity() {
+class MainActivity : FlutterActivity() {
     private val channel = "studio.okcode.open_alert_viewer/main"
+
+    private fun startForegroundService(engineId: String, force: Boolean) {
+        val intent = Intent(this, OAVForegroundService::class.java)
+        intent.putExtra("engineId", engineId)
+        intent.putExtra("force", force)
+        context.startForegroundService(intent)
+    }
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
         FlutterEngineCache.getInstance().put("main", flutterEngine)
-        CreateOrDestroyService(context, false)
-        MethodChannel(flutterEngine!!.dartExecutor.binaryMessenger, channel).setMethodCallHandler {
-        call, result ->
+        CreateOrDestroyService(context, false, false)
+        MethodChannel(
+            flutterEngine!!.dartExecutor.binaryMessenger,
+            channel
+        ).setMethodCallHandler { call, result ->
             if (call.method == "startForeground") {
-                val intent = Intent(this, OAVForegroundService::class.java)
-                intent.putExtra("engineId", "main")
-                context.startForegroundService(intent)
+                startForegroundService("main", false)
                 result.success("started")
             } else {
                 result.notImplemented()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        startForegroundService("service", true)
     }
 }
