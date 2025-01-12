@@ -38,39 +38,8 @@ class OAVForegroundService : Service() {
                 stopOAVService()
                 return START_NOT_STICKY
             }
-            createChannel()
-            val onClickNotificationIntent = PendingIntent.getActivity(
-                this, 0,
-                Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
-            )
-            notification = NotificationCompat.Builder(this, stickyNotificationChannelId)
-            notification?.setSmallIcon(R.drawable.notification_icon)
-                ?.setContentTitle(stickyNotificationTitle)
-                ?.setContentText("Initializing...")
-                ?.setContentIntent(onClickNotificationIntent)
-            val serviceInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
-            } else {
-                0
-            }
-            ServiceCompat.startForeground(
-                this, stickyNotificationId, notification!!.build(), serviceInfo
-            )
-            var engineId = intent.getStringExtra("engineId") ?: "service"
-            val force = intent.getBooleanExtra("force", false)
-            if (engineId == "service") {
-                CreateOrDestroyService(baseContext, true, force)
-            }
-            val flutterEngine: FlutterEngine
-            val mainEngine = FlutterEngineCache.getInstance().get("main")
-            val serviceEngine = FlutterEngineCache.getInstance().get("service")
-            if (engineId == "main" && mainEngine !== null) {
-                flutterEngine = mainEngine
-            } else if (engineId == "service" && serviceEngine !== null) {
-                flutterEngine = serviceEngine
-            } else {
-                flutterEngine = mainEngine ?: serviceEngine!!
-            }
+            val serviceInfo = initNotification()
+            val flutterEngine = selectEngine(intent)
             MethodChannel(
                 flutterEngine.dartExecutor.binaryMessenger,
                 channel
@@ -93,7 +62,7 @@ class OAVForegroundService : Service() {
         return START_REDELIVER_INTENT
     }
 
-    private fun createChannel() {
+    private fun initNotification() {
         val mChannel = NotificationChannel(
             stickyNotificationChannelId,
             stickyNotificationChannelName, NotificationManager.IMPORTANCE_LOW
@@ -101,6 +70,42 @@ class OAVForegroundService : Service() {
         mChannel.description = stickyNotificationChannelDescription
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager?.createNotificationChannel(mChannel)
+        val onClickNotificationIntent = PendingIntent.getActivity(
+            this, 0,
+            Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+        )
+        notification = NotificationCompat.Builder(this, stickyNotificationChannelId)
+        notification?.setSmallIcon(R.drawable.notification_icon)
+            ?.setContentTitle(stickyNotificationTitle)
+            ?.setContentText("Initializing...")
+            ?.setContentIntent(onClickNotificationIntent)
+        val serviceInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+        } else {
+            0
+        }
+        ServiceCompat.startForeground(
+            this, stickyNotificationId, notification!!.build(), serviceInfo
+        )
+    }
+
+    private fun selectEngine(intent: Intent): FlutterEngine {
+        val engineId = intent.getStringExtra("engineId") ?: "service"
+        val force = intent.getBooleanExtra("force", false)
+        if (engineId == "service") {
+            CreateOrDestroyService(baseContext, true, force)
+        }
+        val flutterEngine: FlutterEngine
+        val mainEngine = FlutterEngineCache.getInstance().get("main")
+        val serviceEngine = FlutterEngineCache.getInstance().get("service")
+        if (engineId == "main" && mainEngine !== null) {
+            flutterEngine = mainEngine
+        } else if (engineId == "service" && serviceEngine !== null) {
+            flutterEngine = serviceEngine
+        } else {
+            flutterEngine = mainEngine ?: serviceEngine!!
+        }
+        return flutterEngine
     }
 
     override fun onBind(intent: Intent): IBinder? {
