@@ -26,7 +26,7 @@ class MainActivity : FlutterActivity() {
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
         FlutterEngineCache.getInstance().put("main", flutterEngine)
-        CreateOrDestroyService(context, false, false)
+        CreateOrDestroyService(context, createService = false, force = false)
         MethodChannel(
             flutterEngine!!.dartExecutor.binaryMessenger,
             channel

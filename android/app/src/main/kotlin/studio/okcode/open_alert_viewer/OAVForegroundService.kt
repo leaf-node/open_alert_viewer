@@ -38,20 +38,24 @@ class OAVForegroundService : Service() {
                 stopOAVService()
                 return START_NOT_STICKY
             }
-            val serviceInfo = initNotification()
+            initNotification()
             val flutterEngine = selectEngine(intent)
             MethodChannel(
                 flutterEngine.dartExecutor.binaryMessenger,
                 channel
             ).setMethodCallHandler { call, result ->
-                if (call.method == "stopForeground") {
-                    stopOAVService()
-                    result.success("stopped")
-                } else if (call.method == "updateNotification") {
-                    notification?.setContentText(call.arguments<String>())
-                    notificationManager?.notify(stickyNotificationId, notification!!.build())
-                } else {
-                    result.notImplemented()
+                when (call.method) {
+                    "stopForeground" -> {
+                        stopOAVService()
+                        result.success("stopped")
+                    }
+                    "updateNotification" -> {
+                        notification?.setContentText(call.arguments<String>())
+                        notificationManager?.notify(stickyNotificationId, notification!!.build())
+                    }
+                    else -> {
+                        result.notImplemented()
+                    }
                 }
             }
         } catch (e: Exception) {
@@ -98,12 +102,12 @@ class OAVForegroundService : Service() {
         val flutterEngine: FlutterEngine
         val mainEngine = FlutterEngineCache.getInstance().get("main")
         val serviceEngine = FlutterEngineCache.getInstance().get("service")
-        if (engineId == "main" && mainEngine !== null) {
-            flutterEngine = mainEngine
+        flutterEngine = if (engineId == "main" && mainEngine !== null) {
+            mainEngine
         } else if (engineId == "service" && serviceEngine !== null) {
-            flutterEngine = serviceEngine
+            serviceEngine
         } else {
-            flutterEngine = mainEngine ?: serviceEngine!!
+            mainEngine ?: serviceEngine!!
         }
         return flutterEngine
     }
