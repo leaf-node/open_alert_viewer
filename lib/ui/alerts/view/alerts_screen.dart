@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -117,8 +119,13 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
   }
 
   void _requestPermissions(BuildContext context) async {
+    Completer notificationsRequested = Completer();
     await requestAndEnableNotifications(
-        askAgain: false, context: context, callback: () {});
+        askAgain: false,
+        context: context,
+        callback: notificationsRequested.complete);
+    await notificationsRequested.future;
+    await Future.delayed(Duration(milliseconds: 500));
     if (context.mounted) {
       await requestBatteryPermission(context: context, askAgain: false);
     }
