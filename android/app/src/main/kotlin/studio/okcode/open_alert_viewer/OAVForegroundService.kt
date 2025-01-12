@@ -72,8 +72,7 @@ class OAVForegroundService : Service() {
                 if (call.method == "stopForeground") {
                     stopOAVService()
                     result.success("stopped")
-                }
-                if (call.method == "updateNotification") {
+                } else if (call.method == "updateNotification") {
                     notification?.setContentText(call.arguments<String>())
                     notificationManager?.notify(stickyNotificationId, notification!!.build())
                 } else {
