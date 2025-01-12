@@ -119,6 +119,7 @@ Future<void> requestAndEnableNotifications(
   } else {
     callback();
   }
+  settings.notificationsRequested = true;
 }
 
 Future<BatterySetting> requestBatteryPermission(
@@ -145,6 +146,7 @@ Future<BatterySetting> requestBatteryPermission(
   if (willAsk && context.mounted) {
     return repo.requestBatteryPermission();
   } else {
+    settings.batteryPermissionRequested = true;
     return BatteryPermissionRepo.getStatus();
   }
 }
