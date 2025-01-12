@@ -11,9 +11,10 @@ import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.FlutterEngineGroup
 import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
 
-class CreateOrDestroyService (context: Context, createService: Boolean, force: Boolean) {
+class CreateOrDestroyService(context: Context, createService: Boolean, force: Boolean) {
     private val serviceEngineId: String = "service"
     private val mainEngineId: String = "main"
+
     init {
         if (createService) {
             var serviceEngine = FlutterEngineCache.getInstance().get(serviceEngineId)
@@ -21,7 +22,8 @@ class CreateOrDestroyService (context: Context, createService: Boolean, force: B
             if ((mainEngine == null || force) && serviceEngine == null) {
                 val group = FlutterEngineGroup(context)
                 val entrypoint = DartEntrypoint(
-                    "lib/main.dart", "startBackground")
+                    "lib/main.dart", "startBackground"
+                )
                 serviceEngine = group.createAndRunEngine(context, entrypoint)
                 FlutterEngineCache.getInstance().put(serviceEngineId, serviceEngine)
             }
@@ -29,7 +31,9 @@ class CreateOrDestroyService (context: Context, createService: Boolean, force: B
             val serviceEngine = FlutterEngineCache.getInstance().get(serviceEngineId)
             try {
                 serviceEngine?.destroy()
-            } catch (_: RuntimeException) {}
+            } catch (_: RuntimeException) {
+            }
+            FlutterEngineCache.getInstance().put(serviceEngineId, null)
         }
     }
 }

@@ -30,7 +30,7 @@ class OAVForegroundService : Service() {
     private val stickyNotificationTitle = "Periodically check for new alerts"
     private var notificationManager: NotificationManager? = null
     private var notification: NotificationCompat.Builder? = null
-    
+
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         try {
             if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
