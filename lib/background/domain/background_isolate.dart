@@ -46,9 +46,9 @@ class BackgroundIsolateInternal with BackgroundChannelInternal {
     RootIsolateToken? token;
     String appVersion;
     (portToForeground, token, appVersion) = initArgs;
+    BackgroundIsolateBinaryMessenger.ensureInitialized(token!);
     final portFromForeground = ReceivePort();
     portToForeground.send(portFromForeground.sendPort);
-    BackgroundIsolateBinaryMessenger.ensureInitialized(token!);
     await init(
         appVersion,
         (message) =>
