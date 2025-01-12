@@ -119,11 +119,14 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
   }
 
   void _requestPermissions(BuildContext context) async {
+    await Future.delayed(Duration(milliseconds: 500));
     Completer notificationsRequested = Completer();
-    await requestAndEnableNotifications(
-        askAgain: false,
-        context: context,
-        callback: notificationsRequested.complete);
+    if (context.mounted) {
+      await requestAndEnableNotifications(
+          askAgain: false,
+          context: context,
+          callback: notificationsRequested.complete);
+    }
     await notificationsRequested.future;
     await Future.delayed(Duration(milliseconds: 500));
     if (context.mounted) {
