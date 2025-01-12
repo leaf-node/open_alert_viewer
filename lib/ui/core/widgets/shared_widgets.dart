@@ -116,6 +116,8 @@ Future<void> requestAndEnableNotifications(
   if (result == true) {
     notificationsRepo.requestAndEnableNotifications(
         askAgain: askAgain, callback: callback);
+  } else {
+    callback();
   }
 }
 

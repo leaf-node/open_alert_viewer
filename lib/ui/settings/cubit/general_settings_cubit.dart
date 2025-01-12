@@ -123,7 +123,8 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
           askAgain: true,
           context: context,
           callback: () async {
-            if (_settingsRepo.refreshInterval == -1) {
+            if (_settingsRepo.notificationsEnabled &&
+                _settingsRepo.refreshInterval == -1) {
               _settingsRepo.refreshInterval =
                   RefreshFrequencies.oneMinute.value;
               _bgChannel.makeRequest(
