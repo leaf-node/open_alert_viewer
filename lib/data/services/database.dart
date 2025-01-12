@@ -5,6 +5,7 @@
  */
 
 import 'dart:developer';
+import 'dart:math' show Random;
 
 import 'package:flutter/services.dart';
 import 'package:open_alert_viewer/domain/alerts.dart';
@@ -19,18 +20,32 @@ class LocalDatabase {
   bool _isOpen;
   late Database _db;
   final _migrationSetting = "migration_version";
+  int openReattempts = 0;
 
   Future<void> open({bool? showPath}) async {
     if (!_isOpen) {
-      final path = await getApplicationSupportDirectory();
-      if (showPath ?? false) {
-        log('App data directory: ${path.path}/');
-      }
+      try {
+        final path = await getApplicationSupportDirectory();
+        if (showPath ?? false) {
+          log('App data directory: ${path.path}/');
+        }
 
-      _db = sqlite3.open("${path.path}/oav_data.sqlite3");
-      _db.execute("PRAGMA journal_mode=WAL;");
-      _db.execute("PRAGMA busy_timeout = 5000;");
-      _isOpen = true;
+        _db = sqlite3.open("${path.path}/oav_data.sqlite3");
+        _db.execute("PRAGMA journal_mode=WAL;");
+        _db.execute("PRAGMA busy_timeout = 5000;");
+        _isOpen = true;
+      } catch (e) {
+        if (openReattempts < 5) {
+          openReattempts += 1;
+          await Future.delayed(Duration(
+              seconds: 1,
+              milliseconds:
+                  Random(DateTime.now().microsecondsSinceEpoch).nextInt(1000)));
+          open();
+        } else {
+          rethrow;
+        }
+      }
     }
   }
 
