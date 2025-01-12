@@ -34,8 +34,7 @@ class OAVForegroundService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         try {
             if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
-                stopForeground(STOP_FOREGROUND_REMOVE)
-                stopSelf()
+                stopForeground()
                 return START_NOT_STICKY
             }
             createChannel()
@@ -84,8 +83,7 @@ class OAVForegroundService : Service() {
             }
         } catch (e: Exception) {
             Log.d("open_alert_viewer", e.toString())
-            stopForeground(STOP_FOREGROUND_REMOVE)
-            stopSelf()
+            stopForeground()
             return START_NOT_STICKY
         }
         return START_REDELIVER_INTENT
@@ -107,13 +105,17 @@ class OAVForegroundService : Service() {
 
     override fun onTimeout(p0: Int) {
         super.onTimeout(p0)
-        stopForeground(STOP_FOREGROUND_REMOVE)
-        stopSelf()
+        stopForeground()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        stopForeground()
+    }
+
+    private fun stopForeground() {
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
+
 }
