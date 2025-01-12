@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/services.dart';
@@ -86,7 +87,9 @@ class Util {
       } else {
         gitVersion = head;
       }
-      return "$pubspecVersion-${gitVersion.substring(0, 8)}";
+      final dartVersion = Platform.version.split(" ")[0];
+      return "$pubspecVersion-${gitVersion.substring(0, 8)}"
+          " - Dart $dartVersion";
     } catch (e) {
       return "version-unknown";
     }
