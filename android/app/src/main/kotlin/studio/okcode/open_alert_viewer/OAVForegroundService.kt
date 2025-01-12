@@ -8,6 +8,7 @@ package studio.okcode.open_alert_viewer
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
@@ -38,10 +39,15 @@ class OAVForegroundService : Service() {
                 return START_NOT_STICKY
             }
             createChannel()
+            val onClickNotificationIntent = PendingIntent.getActivity(
+                this, 0,
+                Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+            )
             notification = NotificationCompat.Builder(this, stickyNotificationChannelId)
             notification?.setSmallIcon(R.drawable.notification_icon)
                 ?.setContentTitle(stickyNotificationTitle)
                 ?.setContentText("Initializing...")
+                ?.setContentIntent(onClickNotificationIntent)
             val serviceInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             } else {
