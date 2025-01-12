@@ -16,6 +16,7 @@ class MainActivity : FlutterActivity() {
     private val channel = "studio.okcode.open_alert_viewer/main"
 
     private fun startForegroundService(engineId: String, force: Boolean) {
+        stopService(Intent(this, OAVForegroundService::class.java))
         val intent = Intent(this, OAVForegroundService::class.java)
         intent.putExtra("engineId", engineId)
         intent.putExtra("force", force)
