@@ -114,7 +114,7 @@ Future<void> requestAndEnableNotifications(
     result = true;
   }
   if (result == true) {
-    notificationsRepo.requestAndEnableNotifications(
+    await notificationsRepo.requestAndEnableNotifications(
         askAgain: askAgain, callback: callback);
   } else {
     callback();
