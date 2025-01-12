@@ -70,7 +70,8 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
             soundStatusWidget,
             notificationsStatusWidget,
             HeaderButton(
-                icon: Icons.refresh, onPressed: () => cubit.onTapRefresh())
+                icon: Icons.refresh,
+                onPressed: () async => await cubit.onTapRefresh())
           ]);
     });
   }
@@ -102,13 +103,17 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (ModalRoute.of(context)?.isCurrent ?? false) {
       context.read<AlertsCubit>().updateLastSeen();
     }
-    if (state == AppLifecycleState.resumed && _settings.notificationsEnabled) {
-      requestAndEnableNotifications(
-          askAgain: false, context: context, callback: () {});
+    final storedContext = context;
+    if (state == AppLifecycleState.resumed &&
+        await _settings.notificationsEnabledSafe()) {
+      if (storedContext.mounted) {
+        await requestAndEnableNotifications(
+            askAgain: false, context: storedContext, callback: () {});
+      }
     }
   }
 

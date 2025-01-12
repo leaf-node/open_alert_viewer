@@ -61,7 +61,7 @@ class NotificationsBackgroundRepo {
   }
 
   Future<void> _showNotification({required String message}) async {
-    if (!_settings.notificationsEnabled) {
+    if (!await _settings.notificationsEnabledSafe()) {
       return;
     }
     await _flutterLocalNotificationsPlugin.show(alertsNotificationId,
@@ -136,7 +136,7 @@ class NotificationsBackgroundRepo {
     await updateAlertDetails(important: important);
     if (messages.isNotEmpty) {
       await _showNotification(message: messages.join(", "));
-      if (_settings.notificationsEnabled &&
+      if (await _settings.notificationsEnabledSafe() &&
           important &&
           _settings.soundEnabled &&
           !Platform.isAndroid &&
@@ -152,7 +152,8 @@ class NotificationsBackgroundRepo {
   }
 
   Future<void> startOrStopStickyNotification() async {
-    if (!_settings.notificationsEnabled || _settings.refreshInterval == -1) {
+    if (!await _settings.notificationsEnabledSafe() ||
+        _settings.refreshInterval == -1) {
       await disableNotifications();
     } else {
       await startAnroidStickyNotification();
@@ -161,7 +162,7 @@ class NotificationsBackgroundRepo {
 
   Future<void> startAnroidStickyNotification() async {
     if (!Platform.isAndroid ||
-        !_settings.notificationsEnabled ||
+        !await _settings.notificationsEnabledSafe() ||
         _settings.refreshInterval == -1) {
       return;
     }
@@ -173,7 +174,7 @@ class NotificationsBackgroundRepo {
 
   Future<void> updateAnroidStickyNotification() async {
     if (!Platform.isAndroid ||
-        !_settings.notificationsEnabled ||
+        !await _settings.notificationsEnabledSafe() ||
         _settings.refreshInterval == -1) {
       return;
     }

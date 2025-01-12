@@ -235,7 +235,7 @@ class AlertsBackgroundRepo {
     });
   }
 
-  void refreshTimer() {
+  void refreshTimer() async {
     _timer?.cancel();
     if (_settings.refreshInterval != -1) {
       _timer =
@@ -244,7 +244,7 @@ class AlertsBackgroundRepo {
       });
     }
     fetchAlerts(forceRefreshNow: true);
-    if (_settings.notificationsEnabled) {
+    if (await _settings.notificationsEnabledSafe()) {
       _notifier.updateAnroidStickyNotification();
     }
   }

@@ -95,10 +95,9 @@ Future<void> requestAndEnableNotifications(
     required bool askAgain,
     required Function() callback}) async {
   final settings = context.read<SettingsRepo>();
-  final stickyRepo = context.read<StickyNotificationRepo>();
   final notificationsRepo = context.read<NotificationsRepo>();
   bool result;
-  if (!(await stickyRepo.areNotificationsAllowed()) &&
+  if (!(await StickyNotificationRepo.areNotificationsAllowed()) &&
       (!settings.notificationsRequested || askAgain) &&
       context.mounted) {
     result = await textDialogBuilder(

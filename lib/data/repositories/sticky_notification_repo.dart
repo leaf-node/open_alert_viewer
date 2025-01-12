@@ -6,25 +6,19 @@
 
 import 'dart:io';
 
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'settings_repo.dart';
 
 class StickyNotificationRepo {
   StickyNotificationRepo({required SettingsRepo settings})
-      : _settings = settings,
-        _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+      : _settings = settings;
 
   final SettingsRepo _settings;
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
-  Future<bool> areNotificationsAllowed() async {
+  static Future<bool> areNotificationsAllowed() async {
     if (Platform.isAndroid) {
-      return await _flutterLocalNotificationsPlugin
-              .resolvePlatformSpecificImplementation<
-                  AndroidFlutterLocalNotificationsPlugin>()
-              ?.areNotificationsEnabled() ??
-          false;
+      return await Permission.notification.isGranted;
     }
     return true;
   }
@@ -35,24 +29,19 @@ class StickyNotificationRepo {
       bool? isAppVisible}) async {
     if (Platform.isAndroid) {
       bool systemNotificationsGranted = await areNotificationsAllowed();
-      bool? result;
+      bool result;
       if (!_settings.notificationsRequested ||
           askAgain ||
-          (!systemNotificationsGranted && _settings.notificationsEnabled)) {
-        result = await _flutterLocalNotificationsPlugin
-            .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>()
-            ?.requestNotificationsPermission();
-        _settings.notificationsRequested = true;
-        if (result != null) {
-          _settings.notificationsEnabled = result;
-        }
+          (!systemNotificationsGranted &&
+              _settings.notificationsEnabledUnsafe)) {
+        result = await Permission.notification.request().isGranted;
+        _settings.notificationsEnabledUnsafe = result;
       }
     } else if (!_settings.notificationsRequested || askAgain) {
       _settings.notificationsRequested = true;
-      _settings.notificationsEnabled = true;
+      _settings.notificationsEnabledUnsafe = true;
     }
     callback();
-    return _settings.notificationsEnabled;
+    return await _settings.notificationsEnabledSafe();
   }
 }

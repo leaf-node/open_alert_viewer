@@ -39,7 +39,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
   final Navigation _navigation;
   final SettingsRepo _settings;
 
-  void _refreshState() {
+  Future<void> _refreshState() async {
     final filter = _settings.alertFilter;
     bool areImportantShown = true;
     for (var kind in [
@@ -53,7 +53,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
         break;
       }
     }
-    bool notifyEnabled = _settings.notificationsEnabled;
+    bool notifyEnabled = await _settings.notificationsEnabledSafe();
     bool soundEnabled = _settings.soundEnabled;
     _state = _state!.copyWith(settings: {
       "notifications_enabled": notifyEnabled,
@@ -76,10 +76,10 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     _navigation.goTo(Screens.generalSettings);
   }
 
-  void onTapRefresh() {
+  Future<void> onTapRefresh() async {
     updateLastSeen();
     if (_state!.refresh.status != RefreshIconStatus.triggeredOrRunning) {
-      _triggerRefreshIcon(forceRefreshNow: true);
+      await _triggerRefreshIcon(forceRefreshNow: true);
     }
   }
 
@@ -87,15 +87,15 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     _alertsRepo.updateLastSeen();
   }
 
-  void _triggerRefreshIcon(
-      {required bool forceRefreshNow, bool? alreadyFetching}) {
+  Future<void> _triggerRefreshIcon(
+      {required bool forceRefreshNow, bool? alreadyFetching}) async {
     _state = _state!.copyWith(
         refresh: RefreshIconState(
             status: RefreshIconStatus.triggeredOrRunning,
             forceRefreshNow: forceRefreshNow,
             alreadyFetching:
                 alreadyFetching ?? _state!.refresh.alreadyFetching));
-    _refreshState();
+    await _refreshState();
   }
 
   void _updateAlertsState() {
@@ -147,14 +147,14 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
             status: RefreshIconStatus.stopped,
             forceRefreshNow: false,
             alreadyFetching: false));
-    _refreshState();
+    await _refreshState();
   }
 
   Future<void> _listenForRefreshIcon() async {
     await for (final message
         in _bgChannel.isolateStreams[MessageDestination.refreshIcon]!.stream) {
       if (message.name == MessageName.showRefreshIndicator) {
-        _triggerRefreshIcon(
+        await _triggerRefreshIcon(
             forceRefreshNow: message.forceRefreshNow ?? false,
             alreadyFetching: message.alreadyFetching ?? false);
       } else {
@@ -170,7 +170,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
       if (name == "notifications_enabled" ||
           name == "sound_enabled" ||
           name == "alert_filter") {
-        _refreshState();
+        await _refreshState();
       }
     }
   }
@@ -195,7 +195,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
       }
       _state =
           _state!.copyWith(status: status, alerts: alerts, sources: sources);
-      _refreshState();
+      await _refreshState();
     }
   }
 }

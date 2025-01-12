@@ -7,6 +7,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:open_alert_viewer/data/repositories/sticky_notification_repo.dart';
+
 import '../../domain/alerts.dart';
 import '../services/database.dart';
 
@@ -36,9 +38,9 @@ class SettingsRepo {
       _getSetting<bool>("notifications_requested", false);
   set notificationsRequested(value) =>
       _setSetting<bool>("notifications_requested", value);
-  bool get notificationsEnabled =>
+  bool get notificationsEnabledUnsafe =>
       _getSetting<bool>("notifications_enabled", false);
-  set notificationsEnabled(value) =>
+  set notificationsEnabledUnsafe(value) =>
       _setSetting<bool>("notifications_enabled", value);
   DateTime get lastSeen => _getSetting<DateTime>(
       "last_seen", DateTime.fromMillisecondsSinceEpoch(0));
@@ -128,5 +130,10 @@ class SettingsRepo {
         _getSetting<List<T>>(name, defaultValue, opt: index + 1);
     currentSetting[index] = newValue;
     _setSetting<List<T>>(name, currentSetting);
+  }
+
+  notificationsEnabledSafe() async {
+    return await StickyNotificationRepo.areNotificationsAllowed() &&
+        notificationsEnabledUnsafe;
   }
 }

@@ -30,7 +30,6 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
         _alertsRepo = alertsRepo,
         super(GeneralSettingsCubitState.init()) {
     _state = state;
-    _refreshSettings();
     refreshStateAsync();
   }
 
@@ -66,23 +65,20 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
       return "Unknown";
     }());
     _state = _state!.copyWith(
-        notificationsEnabledSubtitle: _settingsRepo.notificationsEnabled
-            ? "Enabled within app"
-            : "Disabled");
+        notificationsEnabledSubtitle:
+            (await _settingsRepo.notificationsEnabledSafe())
+                ? "Enabled within app"
+                : "Disabled");
     _state = _state!.copyWith(
         soundEnabledSubtitle:
             _settingsRepo.soundEnabled ? "Enabled within app" : "Disabled");
     _state = _state!.copyWith(
         batteryPermissionSubtitle: overrideBattery?.name ??
             (await BatteryPermissionRepo.getStatus()).name);
-    _refreshSettings();
-  }
-
-  void _refreshSettings() {
     _state = _state!.copyWith(settings: {
       "refreshInterval": _settingsRepo.refreshInterval,
       "syncTimeout": _settingsRepo.syncTimeout,
-      "notificationsEnabled": _settingsRepo.notificationsEnabled,
+      "notificationsEnabled": await _settingsRepo.notificationsEnabledSafe(),
       "soundEnabled": _settingsRepo.soundEnabled,
       "alertFilter": _settingsRepo.alertFilter,
       "silenceFilter": _settingsRepo.silenceFilter,
@@ -93,10 +89,10 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
 
   Future<void> onTapRefreshIntervalButton(int? result) async {
     if (result == -1) {
-      _settingsRepo.notificationsEnabled = false;
+      _settingsRepo.notificationsEnabledUnsafe = false;
       _notificationsRepo.disableNotifications();
     } else if (result != null) {
-      _settingsRepo.notificationsEnabled = true;
+      _settingsRepo.notificationsEnabledUnsafe = true;
       _notificationsRepo.enableNotifications();
     }
     if (result != null) {
@@ -115,23 +111,25 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   }
 
   Future<void> onTapNotificationsEnabled(BuildContext context) async {
-    if (_settingsRepo.notificationsEnabled) {
-      _settingsRepo.notificationsEnabled = false;
+    if (await _settingsRepo.notificationsEnabledSafe()) {
+      _settingsRepo.notificationsEnabledUnsafe = false;
       _notificationsRepo.disableNotifications();
     } else {
-      requestAndEnableNotifications(
-          askAgain: true,
-          context: context,
-          callback: () async {
-            if (_settingsRepo.notificationsEnabled &&
-                _settingsRepo.refreshInterval == -1) {
-              _settingsRepo.refreshInterval =
-                  RefreshFrequencies.oneMinute.value;
-              _bgChannel.makeRequest(
-                  const IsolateMessage(name: MessageName.refreshTimer));
-            }
-            await refreshStateAsync();
-          });
+      if (context.mounted) {
+        requestAndEnableNotifications(
+            askAgain: true,
+            context: context,
+            callback: () async {
+              if (await _settingsRepo.notificationsEnabledSafe() &&
+                  _settingsRepo.refreshInterval == -1) {
+                _settingsRepo.refreshInterval =
+                    RefreshFrequencies.oneMinute.value;
+                _bgChannel.makeRequest(
+                    const IsolateMessage(name: MessageName.refreshTimer));
+              }
+              await refreshStateAsync();
+            });
+      }
     }
     await refreshStateAsync();
   }
