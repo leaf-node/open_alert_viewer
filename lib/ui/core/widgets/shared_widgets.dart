@@ -103,9 +103,8 @@ Future<void> requestAndEnableNotifications(
       context.mounted) {
     result = await textDialogBuilder(
         context: context,
-        text: "Please enable notifications to allow background data "
-            "synchronization. Notifications can also be enabled later in "
-            "the settings menu.",
+        text: "Enable notifications? This allows background data "
+            "to sync.\n\nYou can also set it later.",
         okayText: "Continue",
         cancellable: true);
   } else if (!askAgain && Platform.isAndroid) {
@@ -132,9 +131,8 @@ Future<BatterySetting> requestBatteryPermission(
     if (shouldAsk && context.mounted) {
       willAsk = await textDialogBuilder(
           context: context,
-          text: "Please disable battery optimizations to allow the "
-              "app to run in the background. This permission can "
-              "also be set later in the app's settings.",
+          text: "Disable battery optimizations? This allows the "
+              "app to stay active.\n\nYou can also set it later.",
           okayText: "Continue",
           cancellable: true);
     } else {
