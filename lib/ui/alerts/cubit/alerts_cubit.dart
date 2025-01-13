@@ -53,7 +53,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
         break;
       }
     }
-    bool notifyEnabled = await _settings.notificationsEnabledSafe();
+    bool notifyEnabled = await _settings.notificationsEnabledSafe;
     bool soundEnabled = _settings.soundEnabled;
     _state = _state!.copyWith(settings: {
       "notifications_enabled": notifyEnabled,

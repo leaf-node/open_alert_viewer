@@ -40,7 +40,10 @@ class SettingsRepo {
       _setSetting<bool>("notifications_requested", value);
   bool get notificationsEnabledUnsafe =>
       _getSetting<bool>("notifications_enabled", false);
-  set notificationsEnabledUnsafe(value) =>
+  Future<bool> get notificationsEnabledSafe async =>
+      await StickyNotificationRepo.areNotificationsAllowed() &&
+      notificationsEnabledUnsafe;
+  set notificationsEnabled(value) =>
       _setSetting<bool>("notifications_enabled", value);
   DateTime get lastSeen => _getSetting<DateTime>(
       "last_seen", DateTime.fromMillisecondsSinceEpoch(0));
@@ -130,10 +133,5 @@ class SettingsRepo {
         _getSetting<List<T>>(name, defaultValue, opt: index + 1);
     currentSetting[index] = newValue;
     _setSetting<List<T>>(name, currentSetting);
-  }
-
-  notificationsEnabledSafe() async {
-    return await StickyNotificationRepo.areNotificationsAllowed() &&
-        notificationsEnabledUnsafe;
   }
 }

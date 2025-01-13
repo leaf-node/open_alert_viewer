@@ -109,7 +109,7 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
     }
     final storedContext = context;
     if (state == AppLifecycleState.resumed &&
-        await _settings.notificationsEnabledSafe()) {
+        await _settings.notificationsEnabledSafe) {
       if (storedContext.mounted) {
         await requestAndEnableNotifications(
             askAgain: false, context: storedContext, callback: () {});

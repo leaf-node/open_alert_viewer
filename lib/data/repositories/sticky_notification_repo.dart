@@ -35,13 +35,13 @@ class StickyNotificationRepo {
           (!systemNotificationsGranted &&
               _settings.notificationsEnabledUnsafe)) {
         result = await Permission.notification.request().isGranted;
-        _settings.notificationsEnabledUnsafe = result;
+        _settings.notificationsEnabled = result;
       }
     } else if (!_settings.notificationsRequested || askAgain) {
       _settings.notificationsRequested = true;
-      _settings.notificationsEnabledUnsafe = true;
+      _settings.notificationsEnabled = true;
     }
     callback();
-    return await _settings.notificationsEnabledSafe();
+    return await _settings.notificationsEnabledSafe;
   }
 }

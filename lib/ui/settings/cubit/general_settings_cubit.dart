@@ -66,7 +66,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
     }());
     _state = _state!.copyWith(
         notificationsEnabledSubtitle:
-            (await _settingsRepo.notificationsEnabledSafe())
+            (await _settingsRepo.notificationsEnabledSafe)
                 ? "Enabled within app"
                 : "Disabled");
     _state = _state!.copyWith(
@@ -78,7 +78,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
     _state = _state!.copyWith(settings: {
       "refreshInterval": _settingsRepo.refreshInterval,
       "syncTimeout": _settingsRepo.syncTimeout,
-      "notificationsEnabled": await _settingsRepo.notificationsEnabledSafe(),
+      "notificationsEnabled": await _settingsRepo.notificationsEnabledSafe,
       "soundEnabled": _settingsRepo.soundEnabled,
       "alertFilter": _settingsRepo.alertFilter,
       "silenceFilter": _settingsRepo.silenceFilter,
@@ -89,10 +89,10 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
 
   Future<void> onTapRefreshIntervalButton(int? result) async {
     if (result == -1) {
-      _settingsRepo.notificationsEnabledUnsafe = false;
+      _settingsRepo.notificationsEnabled = false;
       _notificationsRepo.disableNotifications();
     } else if (result != null) {
-      _settingsRepo.notificationsEnabledUnsafe = true;
+      _settingsRepo.notificationsEnabled = true;
       _notificationsRepo.enableNotifications();
     }
     if (result != null) {
@@ -111,8 +111,8 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   }
 
   Future<void> onTapNotificationsEnabled(BuildContext context) async {
-    if (await _settingsRepo.notificationsEnabledSafe()) {
-      _settingsRepo.notificationsEnabledUnsafe = false;
+    if (await _settingsRepo.notificationsEnabledSafe) {
+      _settingsRepo.notificationsEnabled = false;
       _notificationsRepo.disableNotifications();
     } else {
       if (context.mounted) {
@@ -120,7 +120,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
             askAgain: true,
             context: context,
             callback: () async {
-              if (await _settingsRepo.notificationsEnabledSafe() &&
+              if (await _settingsRepo.notificationsEnabledSafe &&
                   _settingsRepo.refreshInterval == -1) {
                 _settingsRepo.refreshInterval =
                     RefreshFrequencies.oneMinute.value;

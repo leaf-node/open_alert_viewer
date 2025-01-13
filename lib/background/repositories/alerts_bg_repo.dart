@@ -244,7 +244,7 @@ class AlertsBackgroundRepo {
       });
     }
     fetchAlerts(forceRefreshNow: true);
-    if (await _settings.notificationsEnabledSafe()) {
+    if (await _settings.notificationsEnabledSafe) {
       _notifier.updateAnroidStickyNotification();
     }
   }
