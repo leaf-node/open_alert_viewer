@@ -162,8 +162,8 @@ mixin BackgroundChannelInternal {
     BackgroundChannel.settings = _settings;
     _notifier = NotificationsBackgroundRepo(
         settings: _settings, platformChannel: _platformChannel);
-    await _notifier.initializeAlertNotifications();
     await _notifier.startOrStopStickyNotification();
+    await _notifier.initializeAlertNotifications();
     _outboundStream = StreamController<IsolateMessage>();
     _sourcesRepo = SourcesBackgroundRepo(
         db: _db, outboundStream: _outboundStream, settings: _settings);
