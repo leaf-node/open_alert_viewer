@@ -8,6 +8,7 @@ package studio.okcode.open_alert_viewer
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.app.NotificationManagerCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.plugin.common.MethodChannel
