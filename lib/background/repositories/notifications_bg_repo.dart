@@ -72,6 +72,19 @@ class NotificationsBackgroundRepo {
     await _flutterLocalNotificationsPlugin.cancel(alertsNotificationId);
   }
 
+  Future<void> _playDesktopSound(
+      StreamController<IsolateMessage>? alertStream, bool important) async {
+    if (await _settings.notificationsEnabledSafe &&
+        important &&
+        _settings.soundEnabled &&
+        !Platform.isAndroid &&
+        !Platform.isIOS) {
+      alertStream?.add(const IsolateMessage(
+          name: MessageName.playDesktopSound,
+          destination: MessageDestination.notifications));
+    }
+  }
+
   Future<void> showFilteredNotifications(
       {required List<Alert> alerts,
       required List<AlertSourceData> allSources,
@@ -136,15 +149,7 @@ class NotificationsBackgroundRepo {
     await updateAlertDetails(important: important);
     if (messages.isNotEmpty) {
       await _showNotification(message: messages.join(", "));
-      if (await _settings.notificationsEnabledSafe &&
-          important &&
-          _settings.soundEnabled &&
-          !Platform.isAndroid &&
-          !Platform.isIOS) {
-        alertStream?.add(const IsolateMessage(
-            name: MessageName.playDesktopSound,
-            destination: MessageDestination.notifications));
-      }
+      await _playDesktopSound(alertStream, important);
     } else {
       await _removeAlertNotification();
     }
