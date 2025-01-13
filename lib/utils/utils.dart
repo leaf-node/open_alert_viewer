@@ -107,4 +107,8 @@ class Util {
   static String _timePad(int number) {
     return number.toString().padLeft(2, "0");
   }
+
+  static void runWithDelay(int seconds, Function() callback) {
+    Future.delayed(Duration(seconds: seconds)).then((_) => callback());
+  }
 }

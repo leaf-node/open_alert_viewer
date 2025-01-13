@@ -167,9 +167,9 @@ class NotificationsBackgroundRepo {
       return;
     }
     _platformChannel.startForegroundService();
-    updateAnroidStickyNotification();
-    Future.delayed(Duration(seconds: 2))
-        .then((_) => updateAnroidStickyNotification);
+    Util.runWithDelay(2, updateAnroidStickyNotification);
+    Util.runWithDelay(5, updateAnroidStickyNotification);
+    Util.runWithDelay(10, updateAnroidStickyNotification);
   }
 
   Future<void> updateAnroidStickyNotification() async {
