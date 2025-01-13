@@ -67,7 +67,15 @@ class GeneralSettingsCubitState with _$GeneralSettingsCubitState {
       required String soundEnabledSubtitle}) = _GeneralSettingsCubitState;
 
   factory GeneralSettingsCubitState.init() {
-    return GeneralSettingsCubitState.withSettings({});
+    return GeneralSettingsCubitState.withSettings({
+      "refreshInterval": RefreshFrequencies.off,
+      "syncTimeout": SyncTimeouts.off,
+      "notificationsEnabled": false,
+      "soundEnabled": false,
+      "alertFilter": [],
+      "silenceFilter": [],
+      "darkMode": ColorModes.auto,
+    });
   }
 
   factory GeneralSettingsCubitState.withSettings(Map<String, Object> settings) {
