@@ -90,10 +90,10 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   Future<void> onTapRefreshIntervalButton(int? result) async {
     if (result == -1) {
       _settingsRepo.notificationsEnabled = false;
-      _notificationsRepo.disableNotifications();
+      await _notificationsRepo.disableNotifications();
     } else if (result != null) {
       _settingsRepo.notificationsEnabled = true;
-      _notificationsRepo.enableNotifications();
+      await _notificationsRepo.enableNotifications();
     }
     if (result != null) {
       _settingsRepo.refreshInterval = result;
@@ -113,7 +113,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   Future<void> onTapNotificationsEnabled(BuildContext context) async {
     if (await _settingsRepo.notificationsEnabledSafe) {
       _settingsRepo.notificationsEnabled = false;
-      _notificationsRepo.disableNotifications();
+      await _notificationsRepo.disableNotifications();
     } else {
       if (context.mounted) {
         requestAndEnableNotifications(

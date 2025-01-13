@@ -32,17 +32,16 @@ class NotificationsRepo {
     var enabled = await _stickyNotificationRepo.requestAndEnableNotifications(
         askAgain: askAgain, callback: callback);
     if (enabled) {
-      await _bgChannel.makeRequest(
-          const IsolateMessage(name: MessageName.enableNotifications));
+      await enableNotifications();
     }
   }
 
-  void disableNotifications() async {
+  Future<void> disableNotifications() async {
     await _bgChannel.makeRequest(
         const IsolateMessage(name: MessageName.disableNotifications));
   }
 
-  void enableNotifications() async {
+  Future<void> enableNotifications() async {
     await _bgChannel.makeRequest(
         const IsolateMessage(name: MessageName.enableNotifications));
   }
