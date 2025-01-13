@@ -16,7 +16,10 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterActivity() {
     private val channel = "studio.okcode.open_alert_viewer/main"
 
-    private fun startOAVForegroundService(engineId: String, force: Boolean) {
+    private fun conditionallyStartOAVForegroundService(engineId: String, force: Boolean) {
+        if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+            return
+        }
         stopService(Intent(this, OAVForegroundService::class.java))
         val intent = Intent(this, OAVForegroundService::class.java)
         intent.putExtra("engineId", engineId)
@@ -33,7 +36,7 @@ class MainActivity : FlutterActivity() {
             channel
         ).setMethodCallHandler { call, result ->
             if (call.method == "startForeground") {
-                startOAVForegroundService("main", false)
+                conditionallyStartOAVForegroundService("main", false)
                 result.success("started")
             } else {
                 result.notImplemented()
@@ -43,8 +46,6 @@ class MainActivity : FlutterActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
-            startOAVForegroundService("service", true)
-        }
+        conditionallyStartOAVForegroundService("service", true)
     }
 }
