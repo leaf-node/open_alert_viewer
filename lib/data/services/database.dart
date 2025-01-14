@@ -62,27 +62,16 @@ class LocalDatabase {
     if (Isolate.current.debugName == "main") {
       throw Exception("Only the background isolate should migrate the DB.");
     }
-    try {
-      _db.execute("BEGIN TRANSACTION;");
-      if (!_checkIfTableExists(name: "settings") ||
-          getSetting(setting: _migrationSetting) == "") {
-        _db.execute(version0sql);
-        setSetting(setting: _migrationSetting, value: "0.0.0");
-      }
-      if (getSetting(setting: _migrationSetting) == "0.0.0") {
-        setSetting(setting: _migrationSetting, value: "1.0.0");
-      }
-      _db.execute("COMMIT TRANSACTION;");
-    } on SqliteException catch (e) {
-      if (e.extendedResultCode == 1) {
-        // transaction already committed
-      } else if (e.extendedResultCode == 5) {
-        // another transaction is holding the db locked for a long time
-        rethrow;
-      } else {
-        rethrow;
-      }
+    _db.execute("BEGIN TRANSACTION;");
+    if (!_checkIfTableExists(name: "settings") ||
+        getSetting(setting: _migrationSetting) == "") {
+      _db.execute(version0sql);
+      setSetting(setting: _migrationSetting, value: "0.0.0");
     }
+    if (getSetting(setting: _migrationSetting) == "0.0.0") {
+      setSetting(setting: _migrationSetting, value: "1.0.0");
+    }
+    _db.execute("COMMIT TRANSACTION;");
   }
 
   // Generic querying methods
