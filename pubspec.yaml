@@ -93,7 +93,6 @@ flutter:
     - pubspec.yaml
     - .git/HEAD
     - .git/refs/heads/
-    - lib/schema/version_0.sql
     - assets/sound/alarm.ogg
 
   # An image asset can refer to one or more resolution-specific "variants", see

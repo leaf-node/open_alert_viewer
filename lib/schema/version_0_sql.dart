@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+final version0sql = """
+
 CREATE TABLE IF NOT EXISTS sources (
     id INTEGER NOT NULL PRIMARY KEY,
     name TEXT NOT NULL UNIQUE,
@@ -40,3 +42,5 @@ CREATE TABLE IF NOT EXISTS alerts_cache (
     downtime_scheduled INTEGER NOT NULL,
     active INTEGER NOT NULL
 );
+
+""";

@@ -5,13 +5,14 @@
  */
 
 import 'dart:developer';
+import 'dart:isolate';
 import 'dart:math' show Random;
 
-import 'package:flutter/services.dart';
-import 'package:open_alert_viewer/domain/alerts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 
+import '../../domain/alerts.dart';
+import '../../schema/version_0_sql.dart';
 import '../../utils/utils.dart';
 
 class LocalDatabase {
@@ -58,12 +59,14 @@ class LocalDatabase {
     if (!_isOpen) {
       await open(showPath: showPath);
     }
+    if (Isolate.current.debugName == "main") {
+      throw Exception("Only the background isolate should migrate the DB.");
+    }
     try {
       _db.execute("BEGIN TRANSACTION;");
       if (!_checkIfTableExists(name: "settings") ||
           getSetting(setting: _migrationSetting) == "") {
-        var sqlString = await rootBundle.loadString("lib/schema/version_0.sql");
-        _db.execute(sqlString);
+        _db.execute(version0sql);
         setSetting(setting: _migrationSetting, value: "0.0.0");
       }
       if (getSetting(setting: _migrationSetting) == "0.0.0") {
