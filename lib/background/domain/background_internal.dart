@@ -26,29 +26,29 @@ class BackgroundChannelInternal {
   late AlertsBackgroundRepo _alertsRepo;
   late NotificationsBackgroundRepo _notifier;
   late StreamController<IsolateMessage> _outboundStream;
+  late ReceivePort portFromForeground;
+  late SendPort portToForeground;
 
   Future<void> spawned((SendPort, RootIsolateToken?, String) initArgs) async {
-    SendPort portToForeground;
+    SendPort localPortToForeground;
     RootIsolateToken? token;
     String appVersion;
-    (portToForeground, token, appVersion) = initArgs;
+    (localPortToForeground, token, appVersion) = initArgs;
     BackgroundIsolateBinaryMessenger.ensureInitialized(token!);
+    portToForeground = localPortToForeground;
+    SettingsRepo.appVersion = appVersion;
     final portFromForeground = ReceivePort();
     portToForeground.send(portFromForeground.sendPort);
-    await init(
-        appVersion,
-        (message) =>
-            portToForeground.send(BackgroundTranslator.serialize(message)));
+    await init();
     portFromForeground.listen(handleRequestsToBackground);
     portToForeground.send(BackgroundTranslator.serialize(IsolateMessage(
         name: MessageName.backgroundReady,
         destination: MessageDestination.drop)));
   }
 
-  Future<void> init(String appVersion, Function(IsolateMessage) sender) async {
+  Future<void> init() async {
     _db = LocalDatabase();
     await _db.openAndMigrate(showPath: true);
-    SettingsRepo.appVersion = appVersion;
     _settings = SettingsRepo(db: _db);
     _platformChannel = PlatformChannel();
     BackgroundChannel.settings = _settings;
@@ -70,8 +70,12 @@ class BackgroundChannelInternal {
         throw Exception(
             "Background worker sending message without destination");
       }
-      sender(event);
+      sendMessageToForeground(event);
     });
+  }
+
+  void sendMessageToForeground(IsolateMessage message) {
+    portToForeground.send(BackgroundTranslator.serialize(message));
   }
 
   void handleRequestsToBackground(dynamic rawMessage) async {
