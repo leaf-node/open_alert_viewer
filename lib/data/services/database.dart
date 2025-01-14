@@ -58,21 +58,24 @@ class LocalDatabase {
     if (!_isOpen) {
       await open(showPath: showPath);
     }
-    _db.execute("BEGIN TRANSACTION;");
-    if (!_checkIfTableExists(name: "settings") ||
-        getSetting(setting: _migrationSetting) == "") {
-      var sqlString = await rootBundle.loadString("lib/schema/version_0.sql");
-      _db.execute(sqlString);
-      setSetting(setting: _migrationSetting, value: "0.0.0");
-    }
-    if (getSetting(setting: _migrationSetting) == "0.0.0") {
-      setSetting(setting: _migrationSetting, value: "1.0.0");
-    }
     try {
+      _db.execute("BEGIN TRANSACTION;");
+      if (!_checkIfTableExists(name: "settings") ||
+          getSetting(setting: _migrationSetting) == "") {
+        var sqlString = await rootBundle.loadString("lib/schema/version_0.sql");
+        _db.execute(sqlString);
+        setSetting(setting: _migrationSetting, value: "0.0.0");
+      }
+      if (getSetting(setting: _migrationSetting) == "0.0.0") {
+        setSetting(setting: _migrationSetting, value: "1.0.0");
+      }
       _db.execute("COMMIT TRANSACTION;");
     } on SqliteException catch (e) {
       if (e.extendedResultCode == 1) {
-        // already committed
+        // transaction already committed
+      } else if (e.extendedResultCode == 5) {
+        // another transaction is holding the db locked for a long time
+        rethrow;
       } else {
         rethrow;
       }
