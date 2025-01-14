@@ -126,6 +126,12 @@ class SourcesBackgroundRepo with NetworkFetch {
         sourceData: sourceData,
         trimRegex: r"(/#/alerts/?|/api/v2/alerts/?)$",
         apiEndpoint: "/api/v2/alerts");
+    if (!success && sourceData.type == SourceTypes.prom.value) {
+      newSourceData = newSourceData.copyWith(
+          errorMessage: "${newSourceData.errorMessage}\n\n"
+              "FYI: Alertmanager may be on another port or "
+              "base URL than Prometheus.");
+    }
     if (success || sourceData.type == SourceTypes.prom.value) {
       return newSourceData;
     }
