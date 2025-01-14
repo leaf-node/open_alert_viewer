@@ -183,8 +183,6 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                               setNewSourceData(sourceData: state.sourceData!));
                           return ListView(children: [
                             const SizedBox(height: 20),
-                            const MenuHeader(
-                                title: "Account Details", padding: 8.0),
                             AccountRadioField(
                                 title: "Third-Party Account",
                                 typeController: typeController,
@@ -439,7 +437,7 @@ class _AccountRadioFieldState extends State<AccountRadioField> {
   @override
   build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
         child: Align(
             alignment: Alignment.topCenter,
             child: Row(children: [
