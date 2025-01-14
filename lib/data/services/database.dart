@@ -54,7 +54,7 @@ class LocalDatabase {
     _isOpen = false;
   }
 
-  Future<void> migrate({bool? showPath}) async {
+  Future<void> openAndMigrate({bool? showPath}) async {
     if (!_isOpen) {
       await open(showPath: showPath);
     }

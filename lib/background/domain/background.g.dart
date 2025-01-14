@@ -59,9 +59,11 @@ const _$MessageNameEnumMap = {
   MessageName.updateLastSeen: 'updateLastSeen',
   MessageName.confirmSources: 'confirmSources',
   MessageName.confirmSourcesReply: 'confirmSourcesReply',
+  MessageName.backgroundReady: 'backgroundReady',
 };
 
 const _$MessageDestinationEnumMap = {
+  MessageDestination.drop: 'drop',
   MessageDestination.alerts: 'alerts',
   MessageDestination.notifications: 'notifications',
   MessageDestination.refreshIcon: 'refreshIcon',

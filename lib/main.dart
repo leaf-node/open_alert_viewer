@@ -24,13 +24,14 @@ Future<void> main() async {
 @pragma("vm:entry-point")
 Future<void> startBackground() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (db == null) {
-    db = LocalDatabase();
-    await db!.migrate(showPath: true);
-  }
   if (bgChannel == null) {
     bgChannel = BackgroundIsolate();
     await bgChannel!.spawn();
+  }
+  if (db == null) {
+    db = LocalDatabase();
+    await bgChannel!.backgroundReady.future;
+    await db!.open();
   }
 }
 

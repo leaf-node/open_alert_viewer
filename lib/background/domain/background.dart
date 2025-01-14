@@ -41,9 +41,11 @@ enum MessageName {
   updateLastSeen,
   confirmSources,
   confirmSourcesReply,
+  backgroundReady,
 }
 
 enum MessageDestination {
+  drop,
   alerts,
   notifications,
   refreshIcon,
@@ -74,6 +76,7 @@ abstract class BackgroundChannel {
   static SettingsRepo? settings;
   final Map<MessageDestination, StreamController<IsolateMessage>>
       isolateStreams = {};
+  final Completer<void> backgroundReady = Completer();
 }
 
 class BackgroundTranslator {
@@ -95,14 +98,20 @@ class BackgroundChannelExternal {
   }
   final Map<MessageDestination, StreamController<IsolateMessage>>
       isolateStreams = {};
-  Completer<void>? backgroundReady;
   SendPort? portToBackground;
+  final Completer<void> backgroundReady = Completer();
 
   void handleResponsesFromBackground(dynamic rawMessage) {
     IsolateMessage message;
     if (rawMessage is String) {
       message = BackgroundTranslator.deserialize(rawMessage);
-      isolateStreams[message.destination]!.add(message);
+      if (message.destination == MessageDestination.drop) {
+        if (message.name == MessageName.backgroundReady) {
+          backgroundReady.complete();
+        }
+      } else {
+        isolateStreams[message.destination]!.add(message);
+      }
     } else if (rawMessage is List<dynamic>) {
       internalErrorsToAlerts(rawMessage.toString());
     } else {
@@ -155,7 +164,7 @@ mixin BackgroundChannelInternal {
 
   Future<void> init(String appVersion, Function(IsolateMessage) sender) async {
     _db = LocalDatabase();
-    await _db.migrate();
+    await _db.openAndMigrate(showPath: true);
     SettingsRepo.appVersion = appVersion;
     _settings = SettingsRepo(db: _db);
     _platformChannel = PlatformChannel();
