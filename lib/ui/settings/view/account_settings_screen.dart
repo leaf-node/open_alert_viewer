@@ -373,7 +373,7 @@ class _AccountFieldState extends State<AccountField> {
                 onSaved: (String? value) {},
                 decoration: InputDecoration(
                   labelText: widget.title,
-                  suffixIcon: !_textVisible
+                  suffixIcon: widget.passwordField ?? false
                       ? IconButton(
                           icon: Icon(_textVisible
                               ? Icons.visibility
