@@ -290,8 +290,15 @@ class LocalDatabase {
   }
 
   String getSetting({required String setting}) {
-    var results = _fetchFromTable(
-        query: "SELECT value from settings where key = ?;", values: [setting]);
+    List<Map<String, Object>> results;
+    try {
+      results = _fetchFromTable(
+          query: "SELECT value from settings where key = ?;",
+          values: [setting]);
+    } catch (_) {
+      // Database is broken. Allow basic functions of app to continue
+      results = [];
+    }
     return switch (results.length) {
       0 => "",
       _ => results[0]["value"] as String,
@@ -299,8 +306,15 @@ class LocalDatabase {
   }
 
   void setSetting({required String setting, required String value}) {
-    var results = _fetchFromTable(
-        query: "SELECT value from settings WHERE key = ?;", values: [setting]);
+    List<Map<String, Object>> results;
+    try {
+      results = _fetchFromTable(
+          query: "SELECT value from settings WHERE key = ?;",
+          values: [setting]);
+    } catch (_) {
+      // Database is broken. Allow basic functions of app to continue
+      return;
+    }
     if (results.isEmpty) {
       _insertIntoTable(
           query: "INSERT INTO settings (key, value) VALUES (?, ?);",
