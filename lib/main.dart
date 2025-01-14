@@ -24,20 +24,13 @@ Future<void> main() async {
 @pragma("vm:entry-point")
 Future<void> startBackground() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (bgChannel == null) {
-    bgChannel = BackgroundIsolate();
-    await bgChannel!.spawn();
-  }
-  if (db == null) {
-    db = LocalDatabase();
-    await bgChannel!.backgroundReady.future;
-    await db!.open();
-  }
+  bgChannel = BackgroundIsolate();
+  await bgChannel!.spawn();
+  db = LocalDatabase();
+  await bgChannel!.backgroundReady.future;
+  await db!.open();
 }
 
 Future<void> startForeground() async {
-  while (bgChannel == null || db == null) {
-    await Future.delayed(Duration(milliseconds: 100));
-  }
   runApp(OAVapp(db: db!, bgChannel: bgChannel!));
 }
