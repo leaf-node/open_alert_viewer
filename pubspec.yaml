@@ -35,10 +35,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  bloc: ^8.1.4
-  flutter_bloc: ^8.1.6
+  bloc: ^9.0.0
+  flutter_bloc: ^9.0.0
   sprintf: ^7.0.0
-  bloc_concurrency: ^0.2.5
+  bloc_concurrency: ^0.3.0
   sqlite3: ^2.4.7
   sqlite3_flutter_libs: ^0.5.26
   path_provider: ^2.1.5
