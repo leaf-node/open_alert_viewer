@@ -26,7 +26,6 @@ class BackgroundChannelInternal {
   late AlertsBackgroundRepo _alertsRepo;
   late NotificationsBackgroundRepo _notifier;
   late StreamController<IsolateMessage> _outboundStream;
-  late ReceivePort portFromForeground;
   late SendPort portToForeground;
 
   Future<void> spawned((SendPort, RootIsolateToken?, String) initArgs) async {
@@ -39,11 +38,14 @@ class BackgroundChannelInternal {
     SettingsRepo.appVersion = appVersion;
     final portFromForeground = ReceivePort();
     portToForeground.send(portFromForeground.sendPort);
-    await init();
-    portFromForeground.listen(handleRequestsToBackground);
-    portToForeground.send(BackgroundTranslator.serialize(IsolateMessage(
-        name: MessageName.backgroundReady,
-        destination: MessageDestination.drop)));
+    try {
+      await init();
+      portFromForeground.listen(handleRequestsToBackground);
+    } catch (e) {
+      sendBackgroundReady();
+      rethrow;
+    }
+    sendBackgroundReady();
   }
 
   Future<void> init() async {
@@ -76,6 +78,12 @@ class BackgroundChannelInternal {
 
   void sendMessageToForeground(IsolateMessage message) {
     portToForeground.send(BackgroundTranslator.serialize(message));
+  }
+
+  void sendBackgroundReady() {
+    portToForeground.send(BackgroundTranslator.serialize(IsolateMessage(
+        name: MessageName.backgroundReady,
+        destination: MessageDestination.drop)));
   }
 
   void handleRequestsToBackground(dynamic rawMessage) async {
