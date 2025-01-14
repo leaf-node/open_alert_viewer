@@ -229,7 +229,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                                   IconType.invalid => Icon(Icons.close_outlined)
                                 },
                                 title: Text(state.statusText),
-                                contentPadding: const EdgeInsets.all(8)),
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(8, 0, 8, 0)),
                             const SizedBox(height: 10),
                             Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
