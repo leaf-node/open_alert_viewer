@@ -24,30 +24,31 @@ class LocalDatabase {
   int openReattempts = 0;
 
   Future<void> open({bool? showPath}) async {
-    if (!_isOpen) {
+    if (_isOpen) {
+      return;
+    }
+    final path = await getApplicationSupportDirectory();
+    if (showPath ?? false) {
+      log('App data directory: ${path.path}/');
+    }
+    int openReattempts = 0;
+    Object? storedException;
+    do {
       try {
-        final path = await getApplicationSupportDirectory();
-        if (showPath ?? false) {
-          log('App data directory: ${path.path}/');
-        }
-
         _db = sqlite3.open("${path.path}/oav_data.sqlite3");
         _db.execute("PRAGMA journal_mode=WAL;");
         _db.execute("PRAGMA busy_timeout = 5000;");
-        _isOpen = true;
+        return;
       } catch (e) {
-        if (openReattempts < 5) {
-          openReattempts += 1;
-          await Future.delayed(Duration(
-              seconds: 1,
-              milliseconds:
-                  Random(DateTime.now().microsecondsSinceEpoch).nextInt(1000)));
-          open();
-        } else {
-          rethrow;
-        }
+        openReattempts += 1;
+        await Future.delayed(Duration(
+            milliseconds:
+                Random(DateTime.now().microsecondsSinceEpoch).nextInt(500) +
+                    500));
+        storedException = e;
       }
-    }
+    } while (openReattempts < 5);
+    throw storedException;
   }
 
   void close() {
