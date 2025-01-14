@@ -8,7 +8,8 @@ import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 
-import '../../background/domain/background.dart';
+import '../../background/domain/background_external.dart';
+import '../../background/domain/background_shared.dart';
 import '../../../data/repositories/sticky_notification_repo.dart';
 
 class NotificationsRepo {

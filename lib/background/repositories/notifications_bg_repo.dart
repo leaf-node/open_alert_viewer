@@ -13,7 +13,7 @@ import '../../domain/alerts.dart';
 import '../../data/repositories/settings_repo.dart';
 import '../../domain/platform_channel.dart';
 import '../../utils/utils.dart';
-import '../domain/background.dart';
+import '../domain/background_shared.dart';
 
 const alertsNotificationId = 2;
 const alertsNotificationTitle = "Open Alert Viewer";

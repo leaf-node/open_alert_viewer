@@ -8,8 +8,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'background/domain/background.dart';
-import 'background/domain/background_isolate.dart';
+import 'background/domain/background_external.dart';
 import 'data/services/database.dart';
 import 'ui/core/view/app.dart';
 
@@ -24,7 +23,7 @@ Future<void> main() async {
 @pragma("vm:entry-point")
 Future<void> startBackground() async {
   WidgetsFlutterBinding.ensureInitialized();
-  bgChannel = BackgroundIsolate();
+  bgChannel = BackgroundChannel();
   await bgChannel!.spawn();
   db = LocalDatabase();
   await bgChannel!.backgroundReady.future;

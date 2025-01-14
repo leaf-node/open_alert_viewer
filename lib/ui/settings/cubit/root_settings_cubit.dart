@@ -8,7 +8,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 
-import '../../../background/domain/background.dart';
+import '../../../background/domain/background_external.dart';
+import '../../../background/domain/background_shared.dart';
 import '../../../domain/alerts.dart';
 import 'root_settings_state.dart';
 

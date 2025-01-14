@@ -7,9 +7,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:open_alert_viewer/data/services/network_fetch.dart';
 
+import '../../../background/domain/background_external.dart';
 import '../../../data/repositories/account_repo.dart';
 import '../../../domain/alerts.dart';
-import '../../../background/domain/background.dart';
+import '../../../background/domain/background_shared.dart';
 import '../../../utils/utils.dart';
 import 'account_settings_state.dart';
 
