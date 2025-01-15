@@ -44,7 +44,7 @@ class OAVForegroundService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         try {
             if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
-                stopOAVService(false, false)
+                stopOAVService(timedOut = false, error = false)
                 return START_NOT_STICKY
             }
             initAppErrorNotificationChannel()
@@ -58,7 +58,7 @@ class OAVForegroundService : Service() {
             ).setMethodCallHandler { call, result ->
                 when (call.method) {
                     "stopForeground" -> {
-                        stopOAVService(false, false)
+                        stopOAVService(timedOut = false, error = false)
                         result.success("stopped")
                     }
 
@@ -78,7 +78,7 @@ class OAVForegroundService : Service() {
             }
         } catch (e: Exception) {
             Log.d("open_alert_viewer", e.toString())
-            stopOAVService(false, true)
+            stopOAVService(timedOut = false, error = true)
             return START_NOT_STICKY
         }
         return START_REDELIVER_INTENT
@@ -170,21 +170,21 @@ class OAVForegroundService : Service() {
 
     override fun onTimeout(p0: Int) {
         super.onTimeout(p0)
-        stopOAVService(true, false)
+        stopOAVService(timedOut = true, error = false)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        stopOAVService(false, false)
+        stopOAVService(timedOut = false, error = false)
     }
 
     private fun stopOAVService(timedOut: Boolean, error: Boolean) {
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
         if (error) {
-            showAppErrorNotification(true)
+            showAppErrorNotification(error = true)
         } else if (timedOut) {
-            showAppErrorNotification(false)
+            showAppErrorNotification(error = false)
         }
     }
 }
