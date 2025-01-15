@@ -29,16 +29,28 @@ class OAVForegroundService : Service() {
     private val stickyNotificationChannelDescription = "Allow Fetching Alerts in Background"
     private val stickyNotificationId = 1
     private val stickyNotificationTitle = "Periodically check for new alerts"
-    private var notificationManager: NotificationManager? = null
-    private var notification: NotificationCompat.Builder? = null
+    private var stickyNotificationManager: NotificationManager? = null
+    private var stickyNotification: NotificationCompat.Builder? = null
+    private val appErrorNotificationChannelId = "Open Alert Viewer Error"
+    private val appErrorNotificationChannelName = "App Error"
+    private val appErrorNotificationChannelDescription = "Notifications About App Errors"
+    private val appErrorNotificationId = 0
+    private val appErrorNotificationTitleTimeout = "App timed out due to inactivity"
+    private val appErrorNotificationTitleError = "App stopped due to an error"
+    private var appErrorNotificationText = "Tap to resume"
+    private var appErrorNotificationManager: NotificationManager? = null
+    private var appErrorNotification: NotificationCompat.Builder? = null
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         try {
             if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
-                stopOAVService()
+                stopOAVService(false, false)
                 return START_NOT_STICKY
             }
-            initNotification()
+            initAppErrorNotificationChannel()
+            initStickyNotificationChannel()
+            closeAppErrorNotification()
+            showStickyNotification()
             val flutterEngine = selectEngine(intent)
             MethodChannel(
                 flutterEngine.dartExecutor.binaryMessenger,
@@ -46,13 +58,19 @@ class OAVForegroundService : Service() {
             ).setMethodCallHandler { call, result ->
                 when (call.method) {
                     "stopForeground" -> {
-                        stopOAVService()
+                        stopOAVService(false, false)
                         result.success("stopped")
                     }
+
                     "updateNotification" -> {
-                        notification?.setContentText(call.arguments<String>())
-                        notificationManager?.notify(stickyNotificationId, notification!!.build())
+                        stickyNotification?.setContentText(call.arguments<String>())
+                        stickyNotificationManager?.notify(
+                            stickyNotificationId,
+                            stickyNotification!!.build()
+                        )
+                        result.success("updated")
                     }
+
                     else -> {
                         result.notImplemented()
                     }
@@ -60,26 +78,29 @@ class OAVForegroundService : Service() {
             }
         } catch (e: Exception) {
             Log.d("open_alert_viewer", e.toString())
-            stopOAVService()
+            stopOAVService(false, true)
             return START_NOT_STICKY
         }
         return START_REDELIVER_INTENT
     }
 
-    private fun initNotification() {
+    private fun initStickyNotificationChannel() {
         val mChannel = NotificationChannel(
             stickyNotificationChannelId,
             stickyNotificationChannelName, NotificationManager.IMPORTANCE_LOW
         )
         mChannel.description = stickyNotificationChannelDescription
-        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager?.createNotificationChannel(mChannel)
+        stickyNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        stickyNotificationManager?.createNotificationChannel(mChannel)
+    }
+
+    private fun showStickyNotification() {
         val onClickNotificationIntent = PendingIntent.getActivity(
             this, 0,
             Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
         )
-        notification = NotificationCompat.Builder(this, stickyNotificationChannelId)
-        notification?.setSmallIcon(R.drawable.notification_icon)
+        stickyNotification = NotificationCompat.Builder(this, stickyNotificationChannelId)
+        stickyNotification?.setSmallIcon(R.drawable.notification_icon)
             ?.setContentTitle(stickyNotificationTitle)
             ?.setContentText("Initializing...")
             ?.setContentIntent(onClickNotificationIntent)
@@ -89,8 +110,39 @@ class OAVForegroundService : Service() {
             0
         }
         ServiceCompat.startForeground(
-            this, stickyNotificationId, notification!!.build(), serviceInfo
+            this, stickyNotificationId, stickyNotification!!.build(), serviceInfo
         )
+    }
+
+    private fun initAppErrorNotificationChannel() {
+        val mChannel = NotificationChannel(
+            appErrorNotificationChannelId,
+            appErrorNotificationChannelName, NotificationManager.IMPORTANCE_HIGH
+        )
+        mChannel.description = appErrorNotificationChannelDescription
+        appErrorNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        appErrorNotificationManager?.createNotificationChannel(mChannel)
+    }
+
+    private fun showAppErrorNotification(error: Boolean) {
+        val onClickNotificationIntent = PendingIntent.getActivity(
+            this, 0,
+            Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+        )
+        appErrorNotification = NotificationCompat.Builder(this, appErrorNotificationChannelId)
+        appErrorNotification?.setSmallIcon(R.drawable.notification_icon)
+            ?.setContentText(appErrorNotificationText)
+            ?.setContentIntent(onClickNotificationIntent)
+        if (error) {
+            appErrorNotification?.setContentTitle(appErrorNotificationTitleError)
+        } else {
+            appErrorNotification?.setContentTitle(appErrorNotificationTitleTimeout)
+        }
+        appErrorNotificationManager!!.notify(appErrorNotificationId, appErrorNotification!!.build())
+    }
+
+    private fun closeAppErrorNotification() {
+        appErrorNotificationManager!!.cancel(appErrorNotificationId)
     }
 
     private fun selectEngine(intent: Intent): FlutterEngine {
@@ -118,17 +170,21 @@ class OAVForegroundService : Service() {
 
     override fun onTimeout(p0: Int) {
         super.onTimeout(p0)
-        stopOAVService()
+        stopOAVService(true, false)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        stopOAVService()
+        stopOAVService(false, false)
     }
 
-    private fun stopOAVService() {
+    private fun stopOAVService(timedOut: Boolean, error: Boolean) {
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
+        if (error) {
+            showAppErrorNotification(true)
+        } else if (timedOut) {
+            showAppErrorNotification(false)
+        }
     }
-
 }
