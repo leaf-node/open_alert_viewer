@@ -22,7 +22,6 @@ class MainActivity : FlutterActivity() {
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) {
             return
         }
-        stopService(Intent(this, OAVForegroundService::class.java))
         val intent = Intent(this, OAVForegroundService::class.java)
         intent.putExtra("engineId", engineId)
         intent.putExtra("force", force)
