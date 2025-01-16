@@ -53,38 +53,42 @@ class OAVForegroundService : Service() {
             initStickyNotificationChannel()
             closeAppErrorNotification()
             showStickyNotificationAndStart(intent)
-            val flutterEngine = selectEngine(intent)
-            MethodChannel(
-                flutterEngine.dartExecutor.binaryMessenger,
-                channel
-            ).setMethodCallHandler { call, result ->
-                when (call.method) {
-                    "stopForeground" -> {
-                        stopOAVService(timedOut = false, error = false)
-                        result.success("stopped")
-                    }
-
-                    "updateNotification" -> {
-                        stickyNotificationText = call.arguments<String>() ?: stickyNotificationText
-                        stickyNotification?.setContentText(stickyNotificationText)
-                        stickyNotificationManager?.notify(
-                            stickyNotificationId,
-                            stickyNotification!!.build()
-                        )
-                        result.success("updated")
-                    }
-
-                    else -> {
-                        result.notImplemented()
-                    }
-                }
-            }
+            listenToDart(intent)
         } catch (e: Exception) {
             Log.d("open_alert_viewer", e.toString())
             stopOAVService(timedOut = false, error = true)
             return START_NOT_STICKY
         }
         return START_REDELIVER_INTENT
+    }
+
+    private fun listenToDart(intent: Intent) {
+        val flutterEngine = selectEngine(intent)
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            channel
+        ).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "stopForeground" -> {
+                    stopOAVService(timedOut = false, error = false)
+                    result.success("stopped")
+                }
+
+                "updateNotification" -> {
+                    stickyNotificationText = call.arguments<String>() ?: stickyNotificationText
+                    stickyNotification?.setContentText(stickyNotificationText)
+                    stickyNotificationManager?.notify(
+                        stickyNotificationId,
+                        stickyNotification!!.build()
+                    )
+                    result.success("updated")
+                }
+
+                else -> {
+                    result.notImplemented()
+                }
+            }
+        }
     }
 
     private fun initStickyNotificationChannel() {
