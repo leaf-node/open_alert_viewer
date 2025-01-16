@@ -24,6 +24,7 @@ import io.flutter.plugin.common.MethodChannel
 
 class OAVForegroundService : Service() {
     private val channel = "studio.okcode.open_alert_viewer/service"
+    private var methodChannel: MethodChannel? = null
     private val stickyNotificationChannelId = "Open Alert Viewer Background Work"
     private val stickyNotificationChannelName = "Background Work"
     private val stickyNotificationChannelDescription = "Allow Fetching Alerts in Background"
@@ -64,10 +65,11 @@ class OAVForegroundService : Service() {
 
     private fun listenToDart(intent: Intent) {
         val flutterEngine = selectEngine(intent)
-        MethodChannel(
+        methodChannel = MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
             channel
-        ).setMethodCallHandler { call, result ->
+        )
+        methodChannel?.setMethodCallHandler { call, result ->
             when (call.method) {
                 "stopForeground" -> {
                     stopOAVService(timedOut = false, error = false)
@@ -187,6 +189,7 @@ class OAVForegroundService : Service() {
     }
 
     private fun stopOAVService(timedOut: Boolean, error: Boolean) {
+        methodChannel?.setMethodCallHandler(null)
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
         if (error) {
