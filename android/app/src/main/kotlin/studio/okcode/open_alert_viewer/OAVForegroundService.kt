@@ -98,7 +98,7 @@ class OAVForegroundService : Service() {
     }
 
     private fun showStickyNotificationAndStart(intent: Intent) {
-        stickyNotificationText = intent.getStringExtra("initText") ?: stickyNotificationText
+        stickyNotificationText = intent.getStringExtra("initText") ?: ""
         val onClickNotificationIntent = PendingIntent.getActivity(
             this, 0,
             Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
