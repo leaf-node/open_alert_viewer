@@ -28,6 +28,7 @@ class PlatformChannel {
 
   void updateNotification(String text) {
     try {
+      _platformMain.invokeMethod<String>("updateNotificationInit", text);
       _platformForeground.invokeMethod<String>("updateNotification", text);
     } catch (e) {
       log("$e");
@@ -36,6 +37,7 @@ class PlatformChannel {
 
   void stopForegroundService() {
     try {
+      _platformMain.invokeMethod<String>("dontAutostartForeground");
       _platformForeground.invokeMethod<String>("stopForeground");
     } catch (e) {
       log("$e");

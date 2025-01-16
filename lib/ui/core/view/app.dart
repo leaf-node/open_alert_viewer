@@ -8,10 +8,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/data/repositories/alerts_repo.dart';
 
 import '../../../background/domain/background_external.dart';
 import '../../../data/repositories/account_repo.dart';
+import '../../../data/repositories/alerts_repo.dart';
 import '../../../data/repositories/battery_repo.dart';
 import '../../../data/services/database.dart';
 import '../../../data/repositories/sticky_notification_repo.dart';
