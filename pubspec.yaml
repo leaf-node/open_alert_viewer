@@ -68,7 +68,7 @@ dev_dependencies:
 
   flutter_launcher_icons: ^0.14.1
 
-  license_generator: ^2.0.0
+  flutter_oss_licenses: ^3.0.4
   build_runner: ^2.4.13
   json_serializable: ^6.9.0
 

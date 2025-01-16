@@ -31,6 +31,13 @@ support for additional back end alerting services.
 * OpenJDK ~17 (or similar, for Android)
 * Gstreamer and headers (for Linux)
 
+### Pre-build
+
+```
+flutter pub get
+dart run flutter_oss_licenses:generate
+```
+
 ### Android
 
 ```
