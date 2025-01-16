@@ -28,13 +28,15 @@ support for additional back end alerting services.
 ### Dependencies
 
 * [Flutter](https://docs.flutter.dev/get-started/install)
-* OpenJDK ~17 (or similar, for Android)
+* OpenJDK 17 (or similar, for Android)
 * Gstreamer and headers (for Linux)
 
 ### Pre-build
 
 ```
+cd open_alert_viewer
 flutter pub get
+dart run build_runner build
 dart run flutter_oss_licenses:generate
 ```
 
