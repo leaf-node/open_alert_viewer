@@ -6,12 +6,15 @@
 
 import 'dart:developer';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../domain/navigation.dart';
 import '../widgets/settings_widgets.dart';
+import '../../../oss_licenses.dart';
 
 class LicensingScreen extends StatelessWidget {
   const LicensingScreen({super.key, required this.title});
@@ -62,16 +65,24 @@ class _LicensingInfoState extends State<LicensingInfo> {
           }
           return Padding(
               padding: const EdgeInsets.all(15),
-              child: Markdown(
-                  data: _text,
-                  onTapLink: (_, href, __) async {
-                    try {
-                      var uri = Uri.parse(href ?? "");
-                      await launchUrl(uri);
-                    } catch (e) {
-                      log("Error launching URL: $href");
-                    }
-                  }));
+              child: ListView(children: [
+                MarkdownBody(
+                    data: _text,
+                    onTapLink: (_, href, __) async {
+                      try {
+                        var uri = Uri.parse(href ?? "");
+                        await launchUrl(uri);
+                      } catch (e) {
+                        log("Error launching URL: $href");
+                      }
+                    }),
+                for (Package dep in allDependencies)
+                  ListTile(
+                      title: Text(dep.name),
+                      onTap: () => context
+                          .read<Navigation>()
+                          .goTo(Screens.licensingDetails, dep))
+              ]));
         });
   }
 }

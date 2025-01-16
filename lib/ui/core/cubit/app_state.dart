@@ -6,7 +6,6 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../domain/alerts.dart';
 import '../../../domain/navigation.dart';
 
 part 'app_state.freezed.dart';
@@ -17,7 +16,7 @@ class AppState with _$AppState {
       {required Screens screen,
       required bool screenPushed,
       required int timestamp,
-      AlertSourceData? source,
+      Object? data,
       bool? darkMode}) = _AppState;
 
   factory AppState.init() {
@@ -25,7 +24,7 @@ class AppState with _$AppState {
         screen: Screens.none,
         screenPushed: false,
         timestamp: 0,
-        source: null,
+        data: null,
         darkMode: true);
   }
 }

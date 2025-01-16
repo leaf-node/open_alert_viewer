@@ -19,7 +19,7 @@ mixin _$AppState {
   Screens get screen => throw _privateConstructorUsedError;
   bool get screenPushed => throw _privateConstructorUsedError;
   int get timestamp => throw _privateConstructorUsedError;
-  AlertSourceData? get source => throw _privateConstructorUsedError;
+  Object? get data => throw _privateConstructorUsedError;
   bool? get darkMode => throw _privateConstructorUsedError;
 
   /// Create a copy of AppState
@@ -38,10 +38,8 @@ abstract class $AppStateCopyWith<$Res> {
       {Screens screen,
       bool screenPushed,
       int timestamp,
-      AlertSourceData? source,
+      Object? data,
       bool? darkMode});
-
-  $AlertSourceDataCopyWith<$Res>? get source;
 }
 
 /// @nodoc
@@ -62,7 +60,7 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
     Object? screen = null,
     Object? screenPushed = null,
     Object? timestamp = null,
-    Object? source = freezed,
+    Object? data = freezed,
     Object? darkMode = freezed,
   }) {
     return _then(_value.copyWith(
@@ -78,29 +76,12 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int,
-      source: freezed == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as AlertSourceData?,
+      data: freezed == data ? _value.data : data,
       darkMode: freezed == darkMode
           ? _value.darkMode
           : darkMode // ignore: cast_nullable_to_non_nullable
               as bool?,
     ) as $Val);
-  }
-
-  /// Create a copy of AppState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AlertSourceDataCopyWith<$Res>? get source {
-    if (_value.source == null) {
-      return null;
-    }
-
-    return $AlertSourceDataCopyWith<$Res>(_value.source!, (value) {
-      return _then(_value.copyWith(source: value) as $Val);
-    });
   }
 }
 
@@ -116,11 +97,8 @@ abstract class _$$AppStateImplCopyWith<$Res>
       {Screens screen,
       bool screenPushed,
       int timestamp,
-      AlertSourceData? source,
+      Object? data,
       bool? darkMode});
-
-  @override
-  $AlertSourceDataCopyWith<$Res>? get source;
 }
 
 /// @nodoc
@@ -139,7 +117,7 @@ class __$$AppStateImplCopyWithImpl<$Res>
     Object? screen = null,
     Object? screenPushed = null,
     Object? timestamp = null,
-    Object? source = freezed,
+    Object? data = freezed,
     Object? darkMode = freezed,
   }) {
     return _then(_$AppStateImpl(
@@ -155,10 +133,7 @@ class __$$AppStateImplCopyWithImpl<$Res>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int,
-      source: freezed == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as AlertSourceData?,
+      data: freezed == data ? _value.data : data,
       darkMode: freezed == darkMode
           ? _value.darkMode
           : darkMode // ignore: cast_nullable_to_non_nullable
@@ -174,7 +149,7 @@ class _$AppStateImpl implements _AppState {
       {required this.screen,
       required this.screenPushed,
       required this.timestamp,
-      this.source,
+      this.data,
       this.darkMode});
 
   @override
@@ -184,13 +159,13 @@ class _$AppStateImpl implements _AppState {
   @override
   final int timestamp;
   @override
-  final AlertSourceData? source;
+  final Object? data;
   @override
   final bool? darkMode;
 
   @override
   String toString() {
-    return 'AppState(screen: $screen, screenPushed: $screenPushed, timestamp: $timestamp, source: $source, darkMode: $darkMode)';
+    return 'AppState(screen: $screen, screenPushed: $screenPushed, timestamp: $timestamp, data: $data, darkMode: $darkMode)';
   }
 
   @override
@@ -203,14 +178,14 @@ class _$AppStateImpl implements _AppState {
                 other.screenPushed == screenPushed) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp) &&
-            (identical(other.source, source) || other.source == source) &&
+            const DeepCollectionEquality().equals(other.data, data) &&
             (identical(other.darkMode, darkMode) ||
                 other.darkMode == darkMode));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, screen, screenPushed, timestamp, source, darkMode);
+  int get hashCode => Object.hash(runtimeType, screen, screenPushed, timestamp,
+      const DeepCollectionEquality().hash(data), darkMode);
 
   /// Create a copy of AppState
   /// with the given fields replaced by the non-null parameter values.
@@ -226,7 +201,7 @@ abstract class _AppState implements AppState {
       {required final Screens screen,
       required final bool screenPushed,
       required final int timestamp,
-      final AlertSourceData? source,
+      final Object? data,
       final bool? darkMode}) = _$AppStateImpl;
 
   @override
@@ -236,7 +211,7 @@ abstract class _AppState implements AppState {
   @override
   int get timestamp;
   @override
-  AlertSourceData? get source;
+  Object? get data;
   @override
   bool? get darkMode;
 

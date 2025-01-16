@@ -10,7 +10,6 @@ import 'dart:ui';
 import 'package:bloc/bloc.dart';
 
 import '../../../data/repositories/settings_repo.dart';
-import '../../../domain/alerts.dart';
 import '../../../domain/navigation.dart';
 import '../../../utils/utils.dart';
 import 'app_state.dart';
@@ -38,8 +37,7 @@ class AppCubit extends Cubit<AppState> {
       Screens screen;
       Object? data;
       (screen, data) = tuple;
-      _state =
-          _state!.copyWith(screen: screen, source: data as AlertSourceData?);
+      _state = _state!.copyWith(screen: screen, data: data);
       _state = _state!.copyWith(
           screenPushed: true, timestamp: DateTime.now().millisecondsSinceEpoch);
       emit(_state!);

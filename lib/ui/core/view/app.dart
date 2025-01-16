@@ -16,7 +16,9 @@ import '../../../data/repositories/battery_repo.dart';
 import '../../../data/services/database.dart';
 import '../../../data/repositories/sticky_notification_repo.dart';
 import '../../../data/repositories/settings_repo.dart';
+import '../../../domain/alerts.dart';
 import '../../../domain/navigation.dart';
+import '../../../oss_licenses.dart';
 import '../../alerts/cubit/alerts_cubit.dart';
 import '../../alerts/view/alerts_screen.dart';
 import '../../../data/repositories/notifications_repo.dart';
@@ -26,6 +28,7 @@ import '../../settings/cubit/root_settings_cubit.dart';
 import '../../settings/view/about_screen.dart';
 import '../../settings/view/account_settings_screen.dart';
 import '../../settings/view/general_settings_screen.dart';
+import '../../settings/view/licensing_details_screen.dart';
 import '../../settings/view/licensing_screen.dart';
 import '../../settings/view/privacy_screen.dart';
 import '../../settings/view/root_settings_screen.dart';
@@ -122,10 +125,14 @@ class _OAVappViewState extends State<OAVappView> {
               _navigator.push(AboutScreen.route(title: "About OAV"));
             case Screens.accountSettings:
               _navigator.push(AccountSettingsScreen.route(
-                  title: "OAV Account Settings", source: state.source));
+                  title: "OAV Account Settings",
+                  source: state.data as AlertSourceData?));
             case Screens.licensing:
               _navigator
                   .push(LicensingScreen.route(title: "License Information"));
+            case Screens.licensingDetails:
+              _navigator.push(LicensingDetailsScreen.route(
+                  dependency: state.data as Package));
             case Screens.privacy:
               _navigator.push(PrivacyScreen.route(title: "Privacy Policy"));
           }

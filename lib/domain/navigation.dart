@@ -14,6 +14,7 @@ enum Screens {
   accountSettings,
   about,
   licensing,
+  licensingDetails,
   privacy
 }
 
