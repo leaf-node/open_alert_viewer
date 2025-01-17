@@ -23,7 +23,15 @@ class LicensingDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SettingsHeader(title: "License of ${dependency.name}"),
-        body:
-            Center(child: Text("${dependency.name}\n\n${dependency.license}")));
+        body: ListView(children: [
+          SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.all(32),
+              child: Text(
+                  "Package name: ${dependency.name}\n\n"
+                  "Version: ${dependency.version}\n\n"
+                  "${dependency.license}",
+                  style: TextStyle(fontFamily: "monospace")))
+        ]));
   }
 }
