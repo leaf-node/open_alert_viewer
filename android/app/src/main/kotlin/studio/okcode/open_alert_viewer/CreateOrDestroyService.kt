@@ -7,6 +7,7 @@
 package studio.okcode.open_alert_viewer
 
 import android.content.Context
+import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.FlutterEngineGroup
 import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
@@ -19,7 +20,11 @@ class CreateOrDestroyService(context: Context, createService: Boolean, force: Bo
         if (createService) {
             var serviceEngine = FlutterEngineCache.getInstance().get(serviceEngineId)
             val mainEngine = FlutterEngineCache.getInstance().get(mainEngineId)
-            if ((mainEngine == null || force) && serviceEngine == null) {
+            if (force) {
+                destroy(mainEngine)
+                FlutterEngineCache.getInstance().put(mainEngineId, null)
+            }
+            if ((force || mainEngine == null) && serviceEngine == null) {
                 val group = FlutterEngineGroup(context)
                 val entrypoint = DartEntrypoint(
                     "lib/main.dart", "startBackground"
@@ -28,12 +33,15 @@ class CreateOrDestroyService(context: Context, createService: Boolean, force: Bo
                 FlutterEngineCache.getInstance().put(serviceEngineId, serviceEngine)
             }
         } else {
-            val serviceEngine = FlutterEngineCache.getInstance().get(serviceEngineId)
-            try {
-                serviceEngine?.destroy()
-            } catch (_: RuntimeException) {
-            }
+            destroy(FlutterEngineCache.getInstance().get(serviceEngineId))
             FlutterEngineCache.getInstance().put(serviceEngineId, null)
+        }
+    }
+
+    private fun destroy(engine: FlutterEngine?) {
+        try {
+            engine?.destroy()
+        } catch (_: RuntimeException) {
         }
     }
 }
