@@ -30,7 +30,7 @@ class OAVForegroundService : Service() {
     private val stickyNotificationChannelDescription = "Allow Fetching Alerts in Background"
     private val stickyNotificationId = 1
     private val stickyNotificationTitle = "Periodically check for new alerts"
-    private var stickyNotificationText = ""
+    private var stickyNotificationText = "Initializing..."
     private var stickyNotificationManager: NotificationManager? = null
     private var stickyNotification: NotificationCompat.Builder? = null
     private val appErrorNotificationChannelId = "Open Alert Viewer Error"
@@ -43,7 +43,7 @@ class OAVForegroundService : Service() {
     private var appErrorNotificationManager: NotificationManager? = null
     private var appErrorNotification: NotificationCompat.Builder? = null
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         try {
             if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
@@ -60,10 +60,10 @@ class OAVForegroundService : Service() {
             stopOAVService(timedOut = false, error = true)
             return START_NOT_STICKY
         }
-        return START_REDELIVER_INTENT
+        return START_STICKY
     }
 
-    private fun listenToDart(intent: Intent) {
+    private fun listenToDart(intent: Intent?) {
         val flutterEngine = selectEngine(intent)
         methodChannel = MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
@@ -103,8 +103,8 @@ class OAVForegroundService : Service() {
         stickyNotificationManager?.createNotificationChannel(mChannel)
     }
 
-    private fun showStickyNotificationAndStart(intent: Intent) {
-        stickyNotificationText = intent.getStringExtra("initText") ?: ""
+    private fun showStickyNotificationAndStart(intent: Intent?) {
+        stickyNotificationText = intent?.getStringExtra("initText") ?: stickyNotificationText
         val onClickNotificationIntent = PendingIntent.getActivity(
             this, 0,
             Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
@@ -155,9 +155,9 @@ class OAVForegroundService : Service() {
         appErrorNotificationManager!!.cancel(appErrorNotificationId)
     }
 
-    private fun selectEngine(intent: Intent): FlutterEngine {
-        val engineId = intent.getStringExtra("engineId") ?: "service"
-        val force = intent.getBooleanExtra("force", false)
+    private fun selectEngine(intent: Intent?): FlutterEngine {
+        val engineId = intent?.getStringExtra("engineId") ?: "service"
+        val force = intent?.getBooleanExtra("force", false) ?: false
         if (engineId == "service") {
             CreateOrDestroyService(baseContext, true, force)
         }
