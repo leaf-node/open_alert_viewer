@@ -56,7 +56,7 @@ class OAVForegroundService : Service() {
             showStickyNotificationAndStart(intent)
             listenToDart(intent)
         } catch (e: Exception) {
-            Log.d("open_alert_viewer", e.toString())
+            Log.e("open_alert_viewer", e.toString())
             stopOAVService(timedOut = false, error = true)
             return START_NOT_STICKY
         }
