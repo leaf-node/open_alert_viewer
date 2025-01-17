@@ -5,9 +5,8 @@ Open Alert Viewer
 Open Alert Viewer is libre / open source software, meaning that it respects
 your freedom to run, study, change and share the code.
 
-If you distribute a compiled fork of this project, use a different name than
-"Open Alert Viewer", and change the logo and application ID. Include this
-licensing page with the source code and the compiled app.
+If you distribute a compiled fork of this project, please use a different name
+than "Open Alert Viewer", and change the logo and application ID.
 
 
 Open Alert Viewer License (MIT)
