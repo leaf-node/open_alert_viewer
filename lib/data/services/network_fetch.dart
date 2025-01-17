@@ -10,7 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 import '../../background/domain/background_external.dart';
-import '../repositories/settings_repo.dart';
+
+String useragent = "open_alert_viewer/1";
 
 mixin NetworkFetch {
   Future<http.Response> networkFetch(
@@ -19,9 +20,7 @@ mixin NetworkFetch {
       bool? authOverride,
       Map<String, String>? headers,
       int? maxTimeout}) async {
-    Map<String, String> collectedHeaders = {
-      "User-Agent": "open_alert_viewer/${SettingsRepo.appVersion}"
-    };
+    Map<String, String> collectedHeaders = {"User-Agent": useragent};
     collectedHeaders.addAll(headers ?? {});
     if ((username != "" || password != "") && !(authOverride ?? false)) {
       var basicAuth =
