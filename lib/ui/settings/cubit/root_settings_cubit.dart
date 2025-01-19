@@ -24,6 +24,11 @@ class RootSettingsCubit extends Cubit<RootSettingsCubitState> {
   RootSettingsCubitState? _state;
   final BackgroundChannel _bgChannel;
 
+  void accountUpdated() {
+    _state = _state!.copyWith(accountUpdated: true);
+    emit(_state!);
+  }
+
   Future<void> _listenForSourceChanges() async {
     List<AlertSourceData> sources = [];
     await for (final message in _bgChannel

@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$RootSettingsCubitState {
   List<AlertSourceData> get sources => throw _privateConstructorUsedError;
-  bool get success => throw _privateConstructorUsedError;
+  bool? get accountUpdated => throw _privateConstructorUsedError;
 
   /// Create a copy of RootSettingsCubitState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +32,7 @@ abstract class $RootSettingsCubitStateCopyWith<$Res> {
           $Res Function(RootSettingsCubitState) then) =
       _$RootSettingsCubitStateCopyWithImpl<$Res, RootSettingsCubitState>;
   @useResult
-  $Res call({List<AlertSourceData> sources, bool success});
+  $Res call({List<AlertSourceData> sources, bool? accountUpdated});
 }
 
 /// @nodoc
@@ -52,17 +52,17 @@ class _$RootSettingsCubitStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? sources = null,
-    Object? success = null,
+    Object? accountUpdated = freezed,
   }) {
     return _then(_value.copyWith(
       sources: null == sources
           ? _value.sources
           : sources // ignore: cast_nullable_to_non_nullable
               as List<AlertSourceData>,
-      success: null == success
-          ? _value.success
-          : success // ignore: cast_nullable_to_non_nullable
-              as bool,
+      accountUpdated: freezed == accountUpdated
+          ? _value.accountUpdated
+          : accountUpdated // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -75,7 +75,7 @@ abstract class _$$RootSettingsStateImplCopyWith<$Res>
       __$$RootSettingsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<AlertSourceData> sources, bool success});
+  $Res call({List<AlertSourceData> sources, bool? accountUpdated});
 }
 
 /// @nodoc
@@ -92,17 +92,17 @@ class __$$RootSettingsStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? sources = null,
-    Object? success = null,
+    Object? accountUpdated = freezed,
   }) {
     return _then(_$RootSettingsStateImpl(
       sources: null == sources
           ? _value._sources
           : sources // ignore: cast_nullable_to_non_nullable
               as List<AlertSourceData>,
-      success: null == success
-          ? _value.success
-          : success // ignore: cast_nullable_to_non_nullable
-              as bool,
+      accountUpdated: freezed == accountUpdated
+          ? _value.accountUpdated
+          : accountUpdated // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -111,7 +111,8 @@ class __$$RootSettingsStateImplCopyWithImpl<$Res>
 
 class _$RootSettingsStateImpl implements _RootSettingsState {
   const _$RootSettingsStateImpl(
-      {required final List<AlertSourceData> sources, required this.success})
+      {required final List<AlertSourceData> sources,
+      required this.accountUpdated})
       : _sources = sources;
 
   final List<AlertSourceData> _sources;
@@ -123,11 +124,11 @@ class _$RootSettingsStateImpl implements _RootSettingsState {
   }
 
   @override
-  final bool success;
+  final bool? accountUpdated;
 
   @override
   String toString() {
-    return 'RootSettingsCubitState(sources: $sources, success: $success)';
+    return 'RootSettingsCubitState(sources: $sources, accountUpdated: $accountUpdated)';
   }
 
   @override
@@ -136,12 +137,13 @@ class _$RootSettingsStateImpl implements _RootSettingsState {
         (other.runtimeType == runtimeType &&
             other is _$RootSettingsStateImpl &&
             const DeepCollectionEquality().equals(other._sources, _sources) &&
-            (identical(other.success, success) || other.success == success));
+            (identical(other.accountUpdated, accountUpdated) ||
+                other.accountUpdated == accountUpdated));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_sources), success);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_sources), accountUpdated);
 
   /// Create a copy of RootSettingsCubitState
   /// with the given fields replaced by the non-null parameter values.
@@ -156,12 +158,12 @@ class _$RootSettingsStateImpl implements _RootSettingsState {
 abstract class _RootSettingsState implements RootSettingsCubitState {
   const factory _RootSettingsState(
       {required final List<AlertSourceData> sources,
-      required final bool success}) = _$RootSettingsStateImpl;
+      required final bool? accountUpdated}) = _$RootSettingsStateImpl;
 
   @override
   List<AlertSourceData> get sources;
   @override
-  bool get success;
+  bool? get accountUpdated;
 
   /// Create a copy of RootSettingsCubitState
   /// with the given fields replaced by the non-null parameter values.

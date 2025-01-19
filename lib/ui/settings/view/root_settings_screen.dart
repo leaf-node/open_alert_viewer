@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/alerts.dart';
 import '../../../domain/navigation.dart';
+import '../../core/widgets/shared_widgets.dart';
 import '../cubit/root_settings_cubit.dart';
 import '../cubit/root_settings_state.dart';
 import '../widgets/settings_widgets.dart';
@@ -28,14 +29,26 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
         appBar: SettingsHeader(title: title),
         body: BlocListener<RootSettingsCubit, RootSettingsCubitState>(
+            listenWhen: (previous, current) =>
+                previous.accountUpdated != current.accountUpdated,
             listener: (context, state) {
-              if (!state.success) {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("There was an unexpected error while "
-                        "trying to modify your accounts.")));
+              if (state.accountUpdated ?? false) {
+                _requestPermissions(context);
               }
             },
             child: const SettingsList()));
+  }
+
+  void _requestPermissions(BuildContext context) async {
+    await Future.delayed(Duration(milliseconds: 500));
+    if (context.mounted) {
+      await requestAndEnableNotifications(
+          askAgain: false, context: context, callback: () {});
+    }
+    await Future.delayed(Duration(milliseconds: 500));
+    if (context.mounted) {
+      await requestBatteryPermission(context: context, askAgain: false);
+    }
   }
 }
 

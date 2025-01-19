@@ -163,7 +163,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
           if (!didPop) {
             final stay = await discardDialog(context: context);
             if (context.mounted && !stay) {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(false);
             }
           }
         },
@@ -255,12 +255,12 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                     bool remove = await removeDialog(context: context);
                     if (context.mounted && remove) {
                       cubit!.removeSource(widget.source!.id!);
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(false);
                     }
                   } else {
                     bool stay = await discardDialog(context: context);
                     if (context.mounted && !stay) {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(false);
                     }
                   }
                 },
@@ -297,7 +297,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                               } else {
                                 cubit!.updateSource(newSourceData);
                               }
-                              Navigator.of(context).pop();
+                              Navigator.of(context).pop(true);
                             }
                           }
                         },

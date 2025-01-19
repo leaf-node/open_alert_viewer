@@ -124,9 +124,15 @@ class _OAVappViewState extends State<OAVappView> {
             case Screens.about:
               _navigator.push(AboutScreen.route(title: "About OAV"));
             case Screens.accountSettings:
-              _navigator.push(AccountSettingsScreen.route(
-                  title: "OAV Account Settings",
-                  source: state.data as AlertSourceData?));
+              _navigator
+                  .push(AccountSettingsScreen.route(
+                      title: "OAV Account Settings",
+                      source: state.data as AlertSourceData?))
+                  .then((result) {
+                if (result as bool && context.mounted) {
+                  context.read<RootSettingsCubit>().accountUpdated();
+                }
+              });
             case Screens.licensing:
               _navigator
                   .push(LicensingScreen.route(title: "License Information"));

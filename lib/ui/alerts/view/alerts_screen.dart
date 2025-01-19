@@ -4,12 +4,9 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repositories/settings_repo.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../cubit/alerts_cubit.dart';
 import '../cubit/alerts_state.dart';
@@ -91,15 +88,12 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
   _AlertsListState() : refreshKey = GlobalKey<RefreshIndicatorState>();
 
   final GlobalKey<RefreshIndicatorState> refreshKey;
-  late SettingsRepo _settings;
 
   @override
   void initState() {
     super.initState();
-    _settings = context.read<SettingsRepo>();
     WidgetsBinding.instance.addObserver(this);
     context.read<AlertsCubit>().updateLastSeen();
-    _requestPermissions(context);
   }
 
   @override
@@ -107,32 +101,12 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
     if (ModalRoute.of(context)?.isCurrent ?? false) {
       context.read<AlertsCubit>().updateLastSeen();
     }
-    final storedContext = context;
-    if (state == AppLifecycleState.resumed &&
-        await _settings.notificationsEnabledSafe) {
-      if (storedContext.mounted) {
-        await requestAndEnableNotifications(
-            askAgain: false, context: storedContext, callback: () {});
-      }
-    }
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-
-  void _requestPermissions(BuildContext context) async {
-    await Future.delayed(Duration(milliseconds: 500));
-    if (context.mounted) {
-      await requestAndEnableNotifications(
-          askAgain: false, context: context, callback: () {});
-    }
-    await Future.delayed(Duration(milliseconds: 500));
-    if (context.mounted) {
-      await requestBatteryPermission(context: context, askAgain: false);
-    }
   }
 
   @override
