@@ -64,7 +64,9 @@ your path, make a symlink.
 ### Prometheus Alertmanager
 
 When setting up your account in the app, enter the base address of your
-Alertmanager service, not Prometheus.
+Alertmanager service, not Prometheus. Alertmanager may be listening on port
+`9093`, but it needs to be wrapped in HTTPS, so it might be on another port, or
+under a separate base URL.
 
 Prometheus doesn't seem to have a strict standard for categorization of alert
 types, so this app depends on a couple configurations on your server:
