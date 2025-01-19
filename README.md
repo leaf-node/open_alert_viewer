@@ -1,12 +1,9 @@
 # Open Alert Viewer
 
-Open Alert Viewer is a libre, open source app for system administrators that
-displays server and network alerts on Android phones and Linux desktops. It
-requires access to a compatible third-party back end service that monitors your
-network.
-
-Currently this project is in its early stages, with the goal of adding
-support for additional back end alerting services.
+Open Alert Viewer is a libre, open source app for system administrators and
+SREs that displays server and network alerts on Android phones and Linux
+desktops. It requires access to a compatible third-party back end service that
+monitors your network.
 
 ## Back end compatibility
 
@@ -64,7 +61,10 @@ your path, make a symlink.
 
 ## Back end configuration
 
-### Prometheus
+### Prometheus Alertmanager
+
+When setting up your account in the app, enter the base address of your
+Alertmanager service, not Prometheus.
 
 Prometheus doesn't seem to have a strict standard for categorization of alert
 types, so this app depends on a couple configurations on your server:
@@ -79,9 +79,6 @@ types, so this app depends on a couple configurations on your server:
 
 This app parses any labels set by Prometheus in a case-sensitive way.
 
-When setting up your account in the app, enter the base address of your
-Alertmanager service, not Prometheus itself.
-
 ## Debugging
 
 To view debug alerts, create an account with the base URL set to `demo`.
@@ -90,7 +87,8 @@ To view debug alerts, create an account with the base URL set to `demo`.
 
 License: MIT
 
-Other dependencies use a variety of permissive licenses. See `LICENSE.txt`.
+Other dependencies use a variety of permissive licenses. See the licensing tab
+in the app for a list of them.
 
 Aside from Open Alert Viewer itself, neither Open Alert Viewer nor OK Code
 Studio LLC are endorsed by, nor affiliated with, the owners of the software
