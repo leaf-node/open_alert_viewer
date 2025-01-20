@@ -330,7 +330,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
           text: "Discard changes without saving?",
           cancellable: true,
           cancelText: "Discard",
-          okayText: "Stay");
+          okayText: "Stay",
+          popToCancel: true);
     } else {
       return false;
     }

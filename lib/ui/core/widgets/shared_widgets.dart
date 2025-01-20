@@ -36,36 +36,46 @@ Future textDialogBuilder(
     required bool cancellable,
     bool? reverseColors,
     String? okayText,
-    String? cancelText}) async {
+    String? cancelText,
+    bool? popToCancel}) async {
   return await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         var dangerColor = Theme.of(context).colorScheme.error;
         var safeColor = Theme.of(context).colorScheme.secondary;
-        return Dialog(
-            child: SizedBox(
-                width: 300,
-                child: ListView(shrinkWrap: true, children: [
-                  Column(mainAxisSize: MainAxisSize.min, children: [
-                    Padding(
-                        padding: const EdgeInsets.all(15), child: Text(text)),
-                    Row(children: [
-                      if (cancellable == true)
-                        SettingsButton<bool>(
-                            text: cancelText ?? "Cancel",
-                            retVal: false,
-                            color: reverseColors ?? false
-                                ? safeColor
-                                : dangerColor),
-                      SettingsButton<bool>(
-                          text: okayText ?? "Okay",
-                          retVal: true,
-                          color:
-                              reverseColors ?? false ? dangerColor : safeColor),
-                    ]),
-                    const Padding(padding: EdgeInsets.only(bottom: 15))
-                  ])
-                ])));
+        return PopScope(
+            canPop: !(popToCancel ?? false),
+            onPopInvokedWithResult: (bool didPop, dynamic result) async {
+              if (!didPop) {
+                return Navigator.of(context).pop(false);
+              }
+            },
+            child: Dialog(
+                child: SizedBox(
+                    width: 300,
+                    child: ListView(shrinkWrap: true, children: [
+                      Column(mainAxisSize: MainAxisSize.min, children: [
+                        Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Text(text)),
+                        Row(children: [
+                          if (cancellable == true)
+                            SettingsButton<bool>(
+                                text: cancelText ?? "Cancel",
+                                retVal: false,
+                                color: reverseColors ?? false
+                                    ? safeColor
+                                    : dangerColor),
+                          SettingsButton<bool>(
+                              text: okayText ?? "Okay",
+                              retVal: true,
+                              color: reverseColors ?? false
+                                  ? dangerColor
+                                  : safeColor),
+                        ]),
+                        const Padding(padding: EdgeInsets.only(bottom: 15))
+                      ])
+                    ]))));
       });
 }
 
@@ -104,7 +114,7 @@ Future<void> requestAndEnableNotifications(
         context: context,
         text: "Enable notifications? This allows fetching alerts "
             "in the background, but uses more battery power.\n\n"
-            "You can also set it later.",
+            "You can also turn it on or off later.",
         okayText: "Continue",
         cancellable: true);
   } else if (!askAgain && Platform.isAndroid) {
@@ -133,7 +143,7 @@ Future<BatterySetting> requestBatteryPermission(
           context: context,
           text: "Disable battery optimizations? This allows the "
               "app to stay active, but uses more battery power.\n\n"
-              "You can also set it later.",
+              "You can also turn it on later.",
           okayText: "Continue",
           cancellable: true);
     } else {
