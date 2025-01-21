@@ -219,13 +219,13 @@ class PackageRef {
   Package resolve() => allDependencies.firstWhere((d) => d.name == name);
 }
 
-/// _fe_analyzer_shared 78.0.0
+/// _fe_analyzer_shared 79.0.0
 const __fe_analyzer_shared = Package(
     name: '_fe_analyzer_shared',
     description: 'Logic that is shared between the front_end and analyzer packages.',
     repository: 'https://github.com/dart-lang/sdk/tree/main/pkg/_fe_analyzer_shared',
     authors: [],
-    version: '78.0.0',
+    version: '79.0.0',
     license: '''Copyright 2019, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
@@ -258,13 +258,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     dependencies: [PackageRef('meta')]
   );
 
-/// analyzer 7.1.0
+/// analyzer 7.2.0
 const _analyzer = Package(
     name: 'analyzer',
     description: 'This package provides a library that performs static analysis of Dart code.',
     repository: 'https://github.com/dart-lang/sdk/tree/main/pkg/analyzer',
     authors: [],
-    version: '7.1.0',
+    version: '7.2.0',
     license: '''Copyright 2013, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
@@ -1661,13 +1661,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     dependencies: [PackageRef('analyzer'), PackageRef('args'), PackageRef('collection'), PackageRef('package_config'), PackageRef('path'), PackageRef('pub_semver'), PackageRef('source_span'), PackageRef('yaml')]
   );
 
-/// dbus 0.7.10
+/// dbus 0.7.11
 const _dbus = Package(
     name: 'dbus',
     description: 'A native Dart implementation of the D-Bus message bus client. This package allows Dart applications to directly access services on the Linux desktop.',
     homepage: 'https://github.com/canonical/dbus.dart',
     authors: [],
-    version: '0.7.10',
+    version: '0.7.11',
     license: '''Mozilla Public License Version 2.0
 ==================================
 
@@ -2446,14 +2446,14 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.''',
     dependencies: [PackageRef('bloc'), PackageRef('flutter'), PackageRef('provider')]
   );
 
-/// flutter_launcher_icons 0.14.2
+/// flutter_launcher_icons 0.14.3
 const _flutter_launcher_icons = Package(
     name: 'flutter_launcher_icons',
     description: "A package which simplifies the task of updating your Flutter app's launcher icon.",
     homepage: 'https://github.com/fluttercommunity/flutter_launcher_icons',
     repository: 'https://github.com/fluttercommunity/flutter_launcher_icons/',
     authors: [],
-    version: '0.14.2',
+    version: '0.14.3',
     license: '''MIT License
 
 Copyright (c) 2019 Mark O'Sullivan
@@ -2890,13 +2890,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     dependencies: [PackageRef('collection')]
   );
 
-/// http 1.2.2
+/// http 1.3.0
 const _http = Package(
     name: 'http',
     description: 'A composable, multi-platform, Future-based API for HTTP requests.',
     repository: 'https://github.com/dart-lang/http/tree/master/pkgs/http',
     authors: [],
-    version: '1.2.2',
+    version: '1.3.0',
     license: '''Copyright 2014, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
@@ -5027,13 +5027,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     dependencies: []
   );
 
-/// sqlite3 2.6.0
+/// sqlite3 2.7.2
 const _sqlite3 = Package(
     name: 'sqlite3',
     description: 'Provides lightweight yet convenient bindings to SQLite by using dart:ffi',
     homepage: 'https://github.com/simolus3/sqlite3.dart/tree/main/sqlite3',
     authors: [],
-    version: '2.6.0',
+    version: '2.7.2',
     license: '''MIT License
 
 Copyright (c) 2020 Simon Binder
@@ -5060,13 +5060,13 @@ SOFTWARE.''',
     dependencies: [PackageRef('collection'), PackageRef('ffi'), PackageRef('meta'), PackageRef('path'), PackageRef('web'), PackageRef('typed_data')]
   );
 
-/// sqlite3_flutter_libs 0.5.28
+/// sqlite3_flutter_libs 0.5.29
 const _sqlite3_flutter_libs = Package(
     name: 'sqlite3_flutter_libs',
     description: 'Flutter plugin to include native sqlite3 libraries with your app',
     homepage: 'https://github.com/simolus3/sqlite3.dart/tree/main/sqlite3_flutter_libs',
     authors: [],
-    version: '0.5.28',
+    version: '0.5.29',
     license: '''MIT License
 
 Copyright (c) 2020 Simon Binder
