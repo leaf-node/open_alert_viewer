@@ -46,12 +46,12 @@ assignees: ''
 * [ ] App life cycle
     * [ ] The foreground service notification shows up in about 10 seconds when notifications are enabled
     * [ ] The app stays active for at least 6 hours without interacting with it
-    * [ ] The app stays running overnight
+    * [ ] The app produces an error message when the foreground service times out
     * [ ] The foreground service notification is usually up to date, and not more than a few minutes out of date at any time
     * [ ] Is the app launched after restarting the phone when notifications were enabled?
 * [ ] Previous bugs
     * [ ] Turning off notifications in app settings doesn't crash, freeze or blank out the app
-    * [ ] App doesn't flicker when navigating through menus or scrolling
+    * [ ] ~App doesn't flicker when navigating through menus or scrolling~
 * [ ] Test app on tablet, phone and foldable form-factors, test changing rotation and folding
 * [ ] Permissions are requested after the user creates the first account, not when the app opens
 
