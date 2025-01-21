@@ -38,14 +38,16 @@ assignees: ''
     * [ ] Test new and old versions of all third party services
 * [ ] Notifications
     * [ ] Notifications are generated when there are recent alerts
-    * [ ] Sounds are played when enabled
+    * [ ] Sounds are played when enabled in-app
+    * [ ] Sounds are not played when sounds are disabled
 * [ ] Does the app recover from or handle all errors gracefully?
 
 ## Android-specific
 
 * [ ] App life cycle
     * [ ] The foreground service notification shows up in about 10 seconds when notifications are enabled
-    * [ ] The app stays active for at least 6 hours without interacting with it
+    * [ ] When notifications is on, battery optimization off, and the device battery is not depleted, the app is not affected by [doze or app standby](https://developer.android.com/training/monitoring-device-state/doze-standby) events
+    * [ ] The app stays active until it passes the timeout duration ([testable with adb](https://developer.android.com/develop/background-work/services/fgs/timeout))
     * [ ] The app produces an error message when the foreground service times out
     * [ ] The foreground service notification is usually up to date, and not more than a few minutes out of date at any time
     * [ ] Is the app launched after restarting the phone when notifications were enabled?
@@ -53,9 +55,11 @@ assignees: ''
     * [ ] Turning off notifications in app settings doesn't crash, freeze or blank out the app
     * [ ] ~App doesn't flicker when navigating through menus or scrolling~
 * [ ] Test app on tablet, phone and foldable form-factors, test changing rotation and folding
+* [ ] Run basic tests on oldest version of Android supported by the app
 * [ ] Permissions are requested after the user creates the first account, not when the app opens
 
 ## Linux-specific
 
 * [ ] Trying to open a second running version of the app only launches a notification
+* [ ] Enabling and disabling sound works as expected
 
