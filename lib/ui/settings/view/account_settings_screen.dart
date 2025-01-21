@@ -161,7 +161,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
         canPop: false,
         onPopInvokedWithResult: (bool didPop, dynamic result) async {
           if (!didPop) {
-            final stay = await discardDialog(context: context);
+            bool stay = await noDiscardDialog(context: context) ?? true;
             if (context.mounted && !stay) {
               Navigator.of(context).pop(false);
             }
@@ -170,7 +170,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
         child: Scaffold(
             appBar: SettingsHeader(
                 title: widget.title,
-                intercept: () => discardDialog(context: context)),
+                intercept: () async =>
+                    await noDiscardDialog(context: context) ?? true),
             body: Center(
                 child: Form(
                     autovalidateMode: AutovalidateMode.always,
@@ -252,13 +253,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
             child: ElevatedButton(
                 onPressed: () async {
                   if (widget.source != null) {
-                    bool remove = await removeDialog(context: context);
-                    if (context.mounted && remove) {
+                    bool keep = await noRemoveDialog(context: context) ?? true;
+                    if (context.mounted && !keep) {
                       cubit!.removeSource(widget.source!.id!);
                       Navigator.of(context).pop(false);
                     }
                   } else {
-                    bool stay = await discardDialog(context: context);
+                    bool stay = await noDiscardDialog(context: context) ?? true;
                     if (context.mounted && !stay) {
                       Navigator.of(context).pop(false);
                     }
@@ -314,16 +315,16 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
     }
   }
 
-  Future<bool> removeDialog({required BuildContext context}) async {
+  Future<bool?> noRemoveDialog({required BuildContext context}) async {
     return await textDialogBuilder(
         context: context,
         text: "Are you sure you want to remove this account?",
-        okayText: "Remove",
-        cancellable: true,
-        reverseColors: true);
+        okayText: "Cancel",
+        cancelText: "Remove",
+        cancellable: true);
   }
 
-  Future<bool> discardDialog({required BuildContext context}) async {
+  Future<bool?> noDiscardDialog({required BuildContext context}) async {
     if (didDataChange()) {
       return await textDialogBuilder(
           context: context,

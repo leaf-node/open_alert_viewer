@@ -129,7 +129,7 @@ class _OAVappViewState extends State<OAVappView> {
                       title: "OAV Account Settings",
                       source: state.data as AlertSourceData?))
                   .then((result) {
-                if (result as bool && context.mounted) {
+                if ((result as bool? ?? false) && context.mounted) {
                   context.read<RootSettingsCubit>().accountUpdated();
                 }
               });

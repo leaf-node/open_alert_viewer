@@ -30,24 +30,25 @@ class HeaderButton extends StatelessWidget {
   }
 }
 
-Future textDialogBuilder(
+Future<bool?> textDialogBuilder(
     {required BuildContext context,
     required String text,
     required bool cancellable,
     bool? reverseColors,
     String? okayText,
     String? cancelText,
-    bool? popToCancel}) async {
-  return await showDialog<bool>(
+    bool popToCancel = false,
+    bool popValue = false}) async {
+  return await showDialog<bool?>(
       context: context,
       builder: (BuildContext context) {
         var dangerColor = Theme.of(context).colorScheme.error;
         var safeColor = Theme.of(context).colorScheme.secondary;
         return PopScope(
-            canPop: !(popToCancel ?? false),
+            canPop: !popToCancel,
             onPopInvokedWithResult: (bool didPop, dynamic result) async {
               if (!didPop) {
-                return Navigator.of(context).pop(false);
+                return Navigator.of(context).pop(popValue);
               }
             },
             child: Dialog(
@@ -111,12 +112,13 @@ Future<void> requestAndEnableNotifications(
       (!settings.notificationsRequested || askAgain) &&
       context.mounted) {
     result = await textDialogBuilder(
-        context: context,
-        text: "Enable notifications? This allows fetching alerts "
-            "in the background, but uses more battery power.\n\n"
-            "You can also turn it on or off later.",
-        okayText: "Continue",
-        cancellable: true);
+            context: context,
+            text: "Enable notifications? This allows fetching alerts "
+                "in the background, but uses more battery power.\n\n"
+                "You can also turn it on or off later.",
+            okayText: "Continue",
+            cancellable: true) ??
+        false;
   } else if (!askAgain && Platform.isAndroid) {
     result = false;
   } else {
@@ -140,12 +142,13 @@ Future<BatterySetting> requestBatteryPermission(
   if (Platform.isAndroid && !(await BatteryPermissionRepo.getStatus()).active) {
     if (shouldAsk && context.mounted) {
       willAsk = await textDialogBuilder(
-          context: context,
-          text: "Disable battery optimizations? This allows the "
-              "app to stay active, but uses more battery power.\n\n"
-              "You can also turn it on later.",
-          okayText: "Continue",
-          cancellable: true);
+              context: context,
+              text: "Disable battery optimizations? This allows the "
+                  "app to stay active, but uses more battery power.\n\n"
+                  "You can also turn it on later.",
+              okayText: "Continue",
+              cancellable: true) ??
+          false;
     } else {
       willAsk = false;
     }
