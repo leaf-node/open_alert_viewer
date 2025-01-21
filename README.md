@@ -20,6 +20,12 @@ monitors your network.
 * Basic Authentication
 * (More planned)
 
+### Target platforms
+
+* Android 8.0+
+* Linux (x86)
+* (More planned)
+
 ## Build instructions
 
 ### Dependencies
