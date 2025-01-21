@@ -54,3 +54,8 @@ assignees: ''
     * [ ] App doesn't flicker when navigating through menus or scrolling
 * [ ] Test app on tablet, phone and foldable form-factors, test changing rotation and folding
 * [ ] Permissions are requested after the user creates the first account, not when the app opens
+
+## Linux-specific
+
+* [ ] Trying to open a second running version of the app only launches a notification
+
