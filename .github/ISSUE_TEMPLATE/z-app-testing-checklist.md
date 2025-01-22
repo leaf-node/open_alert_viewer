@@ -26,7 +26,7 @@ assignees: ''
 * [ ] All screens load their data
 * [ ] The app opens quickly after a force stop
 * [ ] None of the text or dialogs have spelling errors
-* [ ] Does the app catch and recover from all errors?
+* [ ] ~Does the app catch and recover from all errors?~
 
 ## Background Isolate testing
 
