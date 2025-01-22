@@ -91,6 +91,11 @@ This app parses any labels set by Prometheus in a case-sensitive way.
 
 To view debug alerts, create an account with the base URL set to `demo`.
 
+## Support
+
+* [Issue tracker](https://github.com/okcode-studio/open_alert_viewer/issues)
+* Discuss on [Matrix](https://matrix.to/#/#ok-code-studio-llc:matrix.org)
+
 ## License
 
 License: MIT
