@@ -1,3 +1,6 @@
+
+<img width="100%" src="https://okcode.studio/assets/img/open-alert-viewer-feature-graphic.png">
+
 # Open Alert Viewer
 
 Open Alert Viewer is a libre, open source app for system administrators and
