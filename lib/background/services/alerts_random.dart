@@ -30,8 +30,8 @@ class RandomAlerts extends AlertSource {
           kind: AlertType
               .values[_randomSeed.nextInt(AlertType.values.length - 1)],
           hostname: "example.com",
-          service: "fizz buzz",
-          message: "foo bar baz",
+          service: "Service xyz",
+          message: "Status foo bar baz",
           url: "https://example.com",
           age: Duration(seconds: _randomSeed.nextInt(60 * 10)),
           silenced: false,
