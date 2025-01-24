@@ -40,7 +40,7 @@ monitors your network.
 
 ### Target platforms
 
-* Android 8.0+
+* Android 12.1+
 * Linux (x86)
 * (More planned)
 
