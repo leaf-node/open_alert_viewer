@@ -1,0 +1,4 @@
+## Version 1.1.5 change history
+
+* Add .flutter submodule for F-Droid builds, v3.27.3
+

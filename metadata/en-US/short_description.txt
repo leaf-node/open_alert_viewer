@@ -1,0 +1,1 @@
+Fetch server alerts from compatible back ends
