@@ -41,7 +41,10 @@ monitors your network.
 ### Target platforms
 
 * Android 12.1+
+    * Submitted to F-Droid (status pending)
+    * Submitted Google Play Store (status pending)
 * Linux (x86)
+    * The Flathub submission is next
 * (More planned)
 
 ## Build instructions
