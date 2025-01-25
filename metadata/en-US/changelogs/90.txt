@@ -1,0 +1,12 @@
+* Markdown widget seems to have its own padding
+* Update Flutter dependencies
+* Clarifications in pre-release checklist
+* Update metadata for issue template
+* We want to build release versions of app
+* Don't run build on every commit to main branch
+* Another step for app pre-release
+* GitHub Actions doesn't support regular expressions
+* Testing out Flutter builder in GitHub Actions
+* Updates to pre-release checklist issue template
+* Status of submission to various repos
+* Fix screenshot proportions on narrow screens
