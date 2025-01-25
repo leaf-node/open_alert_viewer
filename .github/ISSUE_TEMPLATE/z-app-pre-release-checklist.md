@@ -1,7 +1,7 @@
 ---
 name: Pre-release checklist
-about: Steps for checking the app prior to publishing a new version
-title: App testing checklist - version X.Y.Z
+about: Steps for checking and updating the app prior to publishing a new release
+title: App pre-release checklist - version X.Y.Z
 labels: testing
 assignees: ''
 
