@@ -11,10 +11,10 @@ assignees: ''
 
 Do these tasks first.
 
+* [ ] Check out the latest release of this project
 * [ ] Update Flutter to the latest stable version on your machine
-* [ ] Update the `.flutter` submodule git commit ID to point to the same tagged version
-* [ ] Update the Flutter version in the GitHub Actions config
-* [ ] Upgrade dependencies of project with `flutter pub upgrade --major-versions`
+* [ ] Update the `.flutter` submodule too: `git submodule update --remote`
+* [ ] Upgrade Flutter dependencies with `flutter pub upgrade --major-versions`
 * [ ] Commit changes to Git
 
 ## General and GUI / front end testing
