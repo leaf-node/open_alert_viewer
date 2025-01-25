@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>studio.okcode.open_alert_viewer</id>
+
+  <name>Open Alert Viewer</name>
+  <summary>Fetch server alerts from compatible back ends</summary>
+
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+
+  <developer id="studio.okcode">
+    <name>OK Code Studio LLC</name>
+  </developer>
+
+  <url type="homepage">https://okcode.studio/apps/open-alert-viewer/</url>
+  <url type="donation">https://okcode.studio/donate/</url>
+  <url type="contact">https://okcode.studio/about/</url>
+  <url type="bugtracker">https://github.com/okcode-studio/open_alert_viewer/issues/</url>
+  <url type="contribute">https://github.com/okcode-studio/open_alert_viewer/</url>
+  <url type="vcs-browser">https://github.com/okcode-studio/open_alert_viewer/</url>
+
+  <recommends>
+    <display_length compare="ge">400</display_length>
+  </recommends>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+
+  <description>
+    <p>
+      Open Alert Viewer is a libre, open source app for system administrators and SREs that displays server and network alerts. It requires that the user has access to a compatible third-party back end, such as a Prometheus, Nagios or Icinga server.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">studio.okcode.open_alert_viewer.desktop</launchable>
+  <!--
+  <screenshots>
+    <screenshot type="default">
+      <image>https://okcode.studio/assets/img/screenshots/oav/desktop-alerts.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://okcode.studio/assets/img/screenshots/oav/desktop-account.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://okcode.studio/assets/img/screenshots/oav/desktop-general-settings.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://okcode.studio/assets/img/screenshots/oav/desktop-alerts-filter.png</image>
+    </screenshot>
+  </screenshots>
+  -->
+</component>
