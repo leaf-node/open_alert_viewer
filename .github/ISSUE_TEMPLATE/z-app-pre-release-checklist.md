@@ -1,11 +1,21 @@
 ---
-name: Pre-release testing checklist
+name: Pre-release checklist
 about: Steps for checking the app prior to publishing a new version
 title: App testing checklist - version X.Y.Z
 labels: testing
 assignees: ''
 
 ---
+
+## Dependencies updates
+
+Do these tasks first.
+
+* [ ] Update Flutter to the latest stable version on your machine
+* [ ] Update the `.flutter` submodule git commit ID to point to the same tagged version
+* [ ] Update the Flutter version in the GitHub Actions config
+* [ ] Upgrade dependencies of project with `flutter pub upgrade --major-versions`
+* [ ] Commit changes to Git
 
 ## General and GUI / front end testing
 
@@ -42,7 +52,7 @@ assignees: ''
     * [ ] Sounds are not played when sounds are disabled
 * [ ] Does the app recover from or handle all errors gracefully?
 
-## Android-specific
+## Android-specific testing
 
 * [ ] App life cycle
     * [ ] The foreground service notification shows up in about 10 seconds when notifications are enabled
@@ -58,8 +68,17 @@ assignees: ''
 * [ ] Run basic tests on oldest version of Android supported by the app
 * [ ] Permissions are requested after the user creates the first account, not when the app opens
 
-## Linux-specific
+## Linux-specific testing
 
 * [ ] Trying to open a second running version of the app only launches a notification
 * [ ] Enabling and disabling sound works as expected
+
+## Creating a new release
+
+Do these tasks last if / when the above is complete and working.
+
+* [ ] Update the version in `pubspec.yaml`, increasing the versionCode after the `+` by 10, so it ends in `0`
+* [ ] Commit with commit message like `Version X.Y.Z`
+* [ ] Tag release with version string, like `vX.Y.Z`
+* [ ] Push commits and tags
 
