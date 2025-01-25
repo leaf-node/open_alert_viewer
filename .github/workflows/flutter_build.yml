@@ -21,10 +21,12 @@ jobs:
       - run: |
           sudo apt-get update -y
           sudo apt-get install -y ninja-build libgtk-3-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
-      - run: .flutter/bin/flutter --disable-analytics
-      - run: .flutter/bin/flutter doctor --verbose
-      - run: .flutter/bin/flutter pub get
-      - run: .flutter/bin/flutter build linux --release
+      - run: echo "$GITHUB_WORKSPACE/.flutter/bin/" >> "$GITHUB_PATH"
+      - run: flutter --disable-analytics
+      - run: flutter channel stable
+      - run: flutter doctor --verbose
+      - run: flutter pub get
+      - run: flutter build linux --release
       - run: mv build/linux/x64/release/bundle ./oav-bundle-linux-x86_64
       - run: tar oav-bundle-linux-x86_64.tar.gz oav-bundle-linux-x86_64
       - name: Release
