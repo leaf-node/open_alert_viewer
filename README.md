@@ -13,13 +13,13 @@ monitors your network.
 <table>
   <tr>
     <td><a href="https://okcode.studio/assets/img/screenshots/oav/phone-alerts.png">
-        <img alt="1" width = 200px height = 444x src="https://okcode.studio/assets/img/screenshots/oav/phone-alerts.png"></a></td>
+        <img alt="1" width="200px" height="auto" src="https://okcode.studio/assets/img/screenshots/oav/phone-alerts.png"></a></td>
     <td><a href="https://okcode.studio/assets/img/screenshots/oav/phone-account.png">
-        <img alt="2" width = 200px height = 444x src="https://okcode.studio/assets/img/screenshots/oav/phone-account.png"></a></td>
+        <img alt="2" width="200px" height="auto" src="https://okcode.studio/assets/img/screenshots/oav/phone-account.png"></a></td>
     <td><a href="https://okcode.studio/assets/img/screenshots/oav/phone-general-settings.png">
-        <img alt="3" width = 200px height = 444x src="https://okcode.studio/assets/img/screenshots/oav/phone-general-settings.png"></a></td>
+        <img alt="3" width="200px" height="auto" src="https://okcode.studio/assets/img/screenshots/oav/phone-general-settings.png"></a></td>
     <td><a href="https://okcode.studio/assets/img/screenshots/oav/phone-alerts-filter.png">
-        <img alt="4" width = 200px height = 444x src="https://okcode.studio/assets/img/screenshots/oav/phone-alerts-filter.png"></a></td>
+        <img alt="4" width="200px" height="auto" src="https://okcode.studio/assets/img/screenshots/oav/phone-alerts-filter.png"></a></td>
   </tr>
 </table>
 
