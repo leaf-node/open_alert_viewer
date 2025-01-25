@@ -60,7 +60,7 @@ class _PrivacyInfoState extends State<PrivacyInfo> {
             _text = _errorMessage;
           }
           return Padding(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(0),
               child: Markdown(
                   data: _text,
                   onTapLink: (_, href, __) async {
