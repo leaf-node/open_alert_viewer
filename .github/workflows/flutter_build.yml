@@ -13,12 +13,16 @@ on:
 jobs:
   main:
     runs-on: ${{ matrix.os }}
-    name: Build artefacts for Flathub on Linux, with arch ${{ matrix.os }}
+    name: Build artefacts on Linux-${{ matrix.bundle-arch }}, for Flatpak
     strategy:
       matrix:
         include:
           - os: ubuntu-24.04
+            arch: x64
+            bundle-arch: x86_64
           - os: ubuntu-24.04-arm
+            arch: arm64
+            bundle-arch: aarch64
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -34,11 +38,12 @@ jobs:
           flutter doctor --verbose
           flutter pub get
           flutter build linux --release
-          mv build/linux/${{ matrix.arch }}/release/bundle ./oav-bundle-linux-${{ matrix.arch }}
-          tar czf oav-bundle-linux-${{ matrix.arch }}.tar.gz oav-bundle-linux-${{ matrix.arch }}
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            oav-bundle-linux-${{ matrix.arch }}.tar.gz
+          mv build/linux/${{ matrix.arch }}/release/bundle ./oav-bundle-linux-${{ matrix.bundle-arch }}
+          tar czf oav-bundle-linux-${{ matrix.bundle-arch }}.tar.gz oav-bundle-linux-${{ matrix.bundle-arch }}
+          ls oav-bundle-linux-${{ matrix.bundle-arch }}.tar.gz
+#      - name: Release
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          files: |
+#            oav-bundle-linux-${{ matrix.bundle-arch }}.tar.gz
 
