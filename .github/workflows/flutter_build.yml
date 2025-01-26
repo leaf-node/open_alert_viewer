@@ -1,4 +1,4 @@
-name: flutter_build
+name: flutter_build_linux
 
 permissions:
   contents: write
@@ -11,7 +11,7 @@ on:
 jobs:
   main:
     runs-on: ${{ matrix.os }}
-    name: Build artefacts on Linux-${{ matrix.bundle-arch }}, for Flatpak
+    name: Linux-${{ matrix.bundle-arch }} artefacts, for Flatpak
     strategy:
       matrix:
         include:
