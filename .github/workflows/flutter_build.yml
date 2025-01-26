@@ -11,9 +11,9 @@ on:
       - main
 
 jobs:
-  linux_flutter:
-    runs-on: {{ matrix.os }}
-    name: Build artefacts for Flathub on Linux, with arch {{ matrix.os }}
+  main:
+    runs-on: ${{ matrix.os }}
+    name: Build artefacts for Flathub on Linux, with arch ${{ matrix.os }}
     strategy:
       matrix:
         include:
@@ -34,11 +34,11 @@ jobs:
           flutter doctor --verbose
           flutter pub get
           flutter build linux --release
-          mv build/linux/{{ matrix.arch }}/release/bundle ./oav-bundle-linux-{{ matrix.arch }}
-          tar czf oav-bundle-linux-{{ matrix.arch }}.tar.gz oav-bundle-linux-{{ matrix.arch }}
+          mv build/linux/${{ matrix.arch }}/release/bundle ./oav-bundle-linux-${{ matrix.arch }}
+          tar czf oav-bundle-linux-${{ matrix.arch }}.tar.gz oav-bundle-linux-${{ matrix.arch }}
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            oav-bundle-linux-{{ matrix.arch }}.tar.gz
+            oav-bundle-linux-${{ matrix.arch }}.tar.gz
 
