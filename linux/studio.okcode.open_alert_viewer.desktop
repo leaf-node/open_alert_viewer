@@ -6,6 +6,6 @@ Name=Open Alert Viewer
 Comment=Fetch server alerts from compatible back ends
 Categories=Network;Monitor;
 
-Icon=open_alert_viewer
+Icon=studio.okcode.open_alert_viewer
 Exec=open_alert_viewer
 Terminal=false

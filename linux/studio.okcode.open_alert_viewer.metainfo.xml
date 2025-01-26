@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SPDX-FileCopyrightText: 2025 Open Alert Viewer authors
+  SPDX-License-Identifier: MIT
+-->
 <component type="desktop-application">
   <id>studio.okcode.open_alert_viewer</id>
 
@@ -34,8 +38,9 @@
     </p>
   </description>
 
+  <content_rating type="oars-1.1" />
+
   <launchable type="desktop-id">studio.okcode.open_alert_viewer.desktop</launchable>
-  <!--
   <screenshots>
     <screenshot type="default">
       <image>https://okcode.studio/assets/img/screenshots/oav/desktop-alerts.png</image>
@@ -50,5 +55,13 @@
       <image>https://okcode.studio/assets/img/screenshots/oav/desktop-alerts-filter.png</image>
     </screenshot>
   </screenshots>
-  -->
+
+  <releases>
+    <release version="1.1.8" date="2025-01-25">
+      <description>
+          <p>Setting up builds of Linux bundles, to be used for making Flatpaks</p>
+      </description>
+    </release>
+  </releases>
+
 </component>
