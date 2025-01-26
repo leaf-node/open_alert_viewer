@@ -46,17 +46,23 @@ class OAVapp extends StatelessWidget {
     return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
+              lazy: false,
               create: (context) => AlertsRepo(bgChannel: bgChannel)),
-          RepositoryProvider(create: (context) => SettingsRepo(db: db)),
-          RepositoryProvider(create: (context) => AccountsRepo(db: db)),
           RepositoryProvider(
+              lazy: false, create: (context) => SettingsRepo(db: db)),
+          RepositoryProvider(
+              lazy: false, create: (context) => AccountsRepo(db: db)),
+          RepositoryProvider(
+              lazy: false,
               create: (context) => StickyNotificationRepo(
                   settings: context.read<SettingsRepo>())),
           RepositoryProvider(
+              lazy: false,
               create: (context) => BatteryPermissionRepo(
                   settings: context.read<SettingsRepo>())),
-          RepositoryProvider(create: (context) => Navigation()),
+          RepositoryProvider(lazy: false, create: (context) => Navigation()),
           RepositoryProvider(
+              lazy: false,
               create: (context) => NotificationsRepo(
                   stickyNotificationRepo:
                       context.read<StickyNotificationRepo>(),
