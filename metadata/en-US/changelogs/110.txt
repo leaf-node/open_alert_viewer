@@ -1,0 +1,10 @@
+* Satisfy linter by adding screenshot captions
+* Adding to pre-release checklist for Linux metadata
+* Rewording a commit log entry
+* Fixes, improvements for Flatpak metadata
+* Rename non-adaptive icons
+* Upgrade existing packages in the container
+* Use 'apt' instead of 'apt-get'
+* No need to prefix everything with 'run'
+* Adding full-sized circular icons, for Linux
+* Adding metainfo.xml and .desktop files for Linux
