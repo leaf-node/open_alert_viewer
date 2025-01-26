@@ -61,6 +61,11 @@
   </screenshots>
 
   <releases>
+    <release version="1.1.11" date="2025-01-26">
+      <description>
+          <p>Changed color of "unknown" alert, fixed issue with notification sound on Linux. Testing out Linux aarch64 builds, and summarizing commit log entries</p>
+      </description>
+    </release>
     <release version="1.1.10" date="2025-01-25">
       <description>
           <p>Correction to tagged release build script</p>

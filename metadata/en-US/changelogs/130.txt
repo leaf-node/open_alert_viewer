@@ -1,0 +1,4 @@
+* Changed color of "unknown" alert
+* Fixed issue with notification sound on Linux
+* Testing out Linux aarch64 builds
+* Summarizing commit log entries
