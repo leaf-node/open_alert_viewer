@@ -44,15 +44,19 @@
   <screenshots>
     <screenshot type="default">
       <image>https://okcode.studio/assets/img/screenshots/oav/desktop-alerts.png</image>
+      <caption>A column of demo network alert statuses, some showing errors or down servers.</caption>
     </screenshot>
     <screenshot>
       <image>https://okcode.studio/assets/img/screenshots/oav/desktop-account.png</image>
+      <caption>A modal showing a list of supported back end software. In the background is an account configuration screen.</caption>
     </screenshot>
     <screenshot>
       <image>https://okcode.studio/assets/img/screenshots/oav/desktop-general-settings.png</image>
+      <caption>A list of options that can be set in the app, including notifications and alert sounds.</caption>
     </screenshot>
     <screenshot>
       <image>https://okcode.studio/assets/img/screenshots/oav/desktop-alerts-filter.png</image>
+      <caption>A settings modal showing a list of alert types visible on the alerts page.</caption>
     </screenshot>
   </screenshots>
 
