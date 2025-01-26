@@ -84,3 +84,7 @@ Do these tasks last if / when the above is complete and working.
 * [ ] Tag release with version string, like `vX.Y.Z`
 * [ ] Push commits and tags
 
+## Post source release
+
+* [ ] Update the external Flatpak manifest file with the new version string
+
