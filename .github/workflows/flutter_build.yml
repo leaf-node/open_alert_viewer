@@ -7,10 +7,18 @@ on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
+    branches:
+      - main
 
 jobs:
-  main:
-    runs-on: ubuntu-latest
+  linux_flutter:
+    runs-on: {{ matrix.os }}
+    name: Build artefacts for Flathub on Linux, with arch {{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-24.04
+          - os: ubuntu-24.04-arm
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -26,10 +34,11 @@ jobs:
           flutter doctor --verbose
           flutter pub get
           flutter build linux --release
-          mv build/linux/x64/release/bundle ./oav-bundle-linux-x86_64
-          tar czf oav-bundle-linux-x86_64.tar.gz oav-bundle-linux-x86_64
+          mv build/linux/{{ matrix.arch }}/release/bundle ./oav-bundle-linux-{{ matrix.arch }}
+          tar czf oav-bundle-linux-{{ matrix.arch }}.tar.gz oav-bundle-linux-{{ matrix.arch }}
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            oav-bundle-linux-x86_64.tar.gz
+            oav-bundle-linux-{{ matrix.arch }}.tar.gz
+
