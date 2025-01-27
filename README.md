@@ -53,7 +53,7 @@ Basic Authentication
     * Submitted to F-Droid (status pending)
     * Submitted Google Play Store (status pending)
 * Linux (x86)
-    * Submitted to Flathub (status pending)
+    * [Flathub](https://flathub.org/apps/studio.okcode.open_alert_viewer)
 * (More planned)
 
 ## Build instructions
