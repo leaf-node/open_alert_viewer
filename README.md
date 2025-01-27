@@ -8,8 +8,8 @@ alerts to system administrators and SREs. It requires access to a server
 running [Prometheus](https://prometheus.io/), [Nagios](https://www.nagios.org/)
 or [Icinga](https://icinga.com/).
 
-Prometheus v0.16.0+, Nagios Core 4.x and Icinga 2.12.0+ are supported, with
-Basic Authentication.
+Prometheus v0.16.0+, Nagios Core 4.x and Icinga 2.12.0+ are supported, along
+with Basic Authentication.
 
 ## Screenshots
 
