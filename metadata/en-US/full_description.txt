@@ -3,5 +3,5 @@ network alerts to system administrators and site reliability engineers. It
 requires an account on a network monitoring server running Prometheus, Nagios
 or Icinga.
 
-Supports Prometheus v0.16.0+, Nagios Core 4.x and Icinga 2.12.0+, via Basic
-Authentication
+This app supports Prometheus v0.16.0+, Nagios Core 4.x and Icinga 2.12.0+, via
+Basic Authentication
