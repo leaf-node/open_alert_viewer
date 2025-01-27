@@ -4,7 +4,7 @@
 # Open Alert Viewer
 
 Open Alert Viewer is a libre / open source app that displays server and network
-alerts to system administrators and SREs. It requires access to a server
+alerts to sysadmins and SREs. It requires access to a server
 running [Prometheus](https://prometheus.io/), [Nagios](https://www.nagios.org/)
 or [Icinga](https://icinga.com/).
 
