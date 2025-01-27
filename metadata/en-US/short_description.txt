@@ -1,1 +1,1 @@
-Fetch server alerts from compatible back ends
+Fetch alerts from Prometheus, Nagios or Icinga servers

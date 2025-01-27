@@ -3,10 +3,12 @@
 
 # Open Alert Viewer
 
-Open Alert Viewer is a libre, open source app for system administrators and
-SREs that displays server and network alerts on Android phones and Linux
-desktops. It requires access to a compatible third-party back end service that
-monitors your network.
+Open Alert Viewer is a libre / open source app that displays server and network
+alerts to system administrators and site reliability engineers. It requires an
+account on a network monitoring server running Prometheus, Nagios or Icinga.
+
+Supported: Prometheus v0.16.0+, Nagios Core 4.x and Icinga 2.12.0+, via Basic
+Authentication
 
 ## Screenshots
 
