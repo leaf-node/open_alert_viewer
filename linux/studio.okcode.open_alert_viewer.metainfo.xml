@@ -64,6 +64,11 @@
   </screenshots>
 
   <releases>
+    <release version="1.1.12" date="2025-01-27">
+      <description>
+          <p>Updated app descriptions, and trademark disclaimer. Also added old changelog summaries</p>
+      </description>
+    </release>
     <release version="1.1.11" date="2025-01-26">
       <description>
           <p>Changed color of "unknown" alert, fixed issue with notification sound on Linux. Testing out Linux aarch64 builds, and summarizing commit log entries</p>
