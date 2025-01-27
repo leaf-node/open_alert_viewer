@@ -136,6 +136,6 @@ in the app for a list of them.
 Aside from Open Alert Viewer itself, neither Open Alert Viewer nor OK Code
 Studio LLC are endorsed by, nor affiliated with, the creators of the software
 referenced in this app, this app's source code, nor its documentation. While
-this app may nominatively reference the names and logos of third party
-software, they are trademarked by their respective owners.
+these may nominatively reference the names and logos of third party software,
+they are trademarked by their respective owners.
 
