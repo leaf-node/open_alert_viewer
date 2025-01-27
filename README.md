@@ -4,12 +4,11 @@
 # Open Alert Viewer
 
 Open Alert Viewer is a libre / open source app that displays server and network
-alerts to system administrators and site reliability engineers. It requires an
-account on a network monitoring server running
-[Prometheus](https://prometheus.io/), [Nagios](https://www.nagios.org/) or
-[Icinga](https://icinga.com/).
+alerts to system administrators and SREs. It requires access to a server
+running [Prometheus](https://prometheus.io/), [Nagios](https://www.nagios.org/)
+or [Icinga](https://icinga.com/).
 
-This app supports Prometheus v0.16.0+, Nagios Core 4.x and Icinga 2.12.0+, via
+Prometheus v0.16.0+, Nagios Core 4.x and Icinga 2.12.0+ are supported, with
 Basic Authentication.
 
 ## Screenshots
