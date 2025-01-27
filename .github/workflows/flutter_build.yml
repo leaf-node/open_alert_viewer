@@ -1,3 +1,4 @@
+---
 name: flutter_build_linux
 
 permissions:
@@ -7,6 +8,8 @@ on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
+    branches:
+      - main
 
 jobs:
   main:
@@ -18,9 +21,15 @@ jobs:
           - os: ubuntu-24.04
             arch: x64
             bundle-arch: x86_64
+            suffix:
           - os: ubuntu-24.04-arm
             arch: arm64
             bundle-arch: aarch64
+            suffix:
+          - os: ubuntu-22.04
+            arch: x64
+            bundle-arch: x86_64
+            suffix: -jammy
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -42,5 +51,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            oav-bundle-linux-${{ matrix.bundle-arch }}.tar.gz
+            oav-bundle-linux-${{ matrix.bundle-arch }}${{ matrix.suffix }}.tar.gz
 
