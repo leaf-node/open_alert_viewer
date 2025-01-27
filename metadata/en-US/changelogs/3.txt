@@ -1,0 +1,2 @@
+* Upgrade Flutter dependencies
+* Set Android min SDK to 32, for sound notifications
