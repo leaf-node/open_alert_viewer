@@ -14,7 +14,7 @@ on:
 jobs:
   main:
     runs-on: ${{ matrix.os }}
-    name: Linux-${{ matrix.bundle-arch }} artefacts, for Flatpak
+    name: Linux-${{ matrix.bundle-arch }}${{ matrix.suffix }} artefacts, for Flatpak
     strategy:
       matrix:
         include:
