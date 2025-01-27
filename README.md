@@ -44,7 +44,7 @@ monitors your network.
     * Submitted to F-Droid (status pending)
     * Submitted Google Play Store (status pending)
 * Linux (x86)
-    * The Flathub submission is next
+    * Submitted to Flathub (status pending)
 * (More planned)
 
 ## Build instructions
