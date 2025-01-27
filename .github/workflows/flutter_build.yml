@@ -39,13 +39,16 @@ jobs:
           sudo apt update -y
           sudo apt upgrade -y
           sudo apt dist-upgrade -y
+      - run: |
           sudo apt install -y ninja-build libgtk-3-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+      - run: |
           git submodule init
           git submodule update
           flutter channel stable --disable-analytics
           flutter doctor --verbose
           flutter pub get
           flutter build linux --release
+      - run: |
           mv build/linux/${{ matrix.arch }}/release/bundle ./oav-bundle-linux-${{ matrix.bundle-arch }}
           tar czf oav-bundle-linux-${{ matrix.bundle-arch }}.tar.gz oav-bundle-linux-${{ matrix.bundle-arch }}
       - name: Release
