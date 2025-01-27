@@ -86,5 +86,6 @@ Do these tasks last if / when the above is complete and working.
 
 ## Post source release
 
-* [ ] Update the external Flatpak manifest file with the new version strings and file checksums
+* [ ] Update and commit the external Flatpak manifest file with the new version strings and file checksums
+* [ ] Create a pull request and merge it in the Flathub [manifest repo](https://github.com/okcode-studio/flathub-studio.okcode.open_alert_viewer)
 
