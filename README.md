@@ -23,6 +23,13 @@ monitors your network.
   </tr>
 </table>
 
+## Install
+
+<center>
+<a href='https://flathub.org/apps/studio.okcode.open_alert_viewer'>
+<img width='240' height='80' style='display: inline-block' alt='Get it on Flathub' src='https://flathub.org/api/badge?svg&locale=en&light'/></a>
+</center>
+
 ## Back end compatibility
 
 ### Compatible third-party alert services
