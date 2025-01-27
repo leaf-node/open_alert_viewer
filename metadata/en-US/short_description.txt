@@ -1,1 +1,1 @@
-Fetch alerts from Prometheus, Nagios or Icinga servers
+Fetch network alerts from your Prometheus, Nagios or Icinga server
