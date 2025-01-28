@@ -33,7 +33,7 @@ fi
 
 export PATH="$PATH:$(pwd)/.flutter/bin/"
 
-export version="$(grep -e "^version: " < pubspec.yaml | sed -e "s/^version: //; s/[+][0-9]*\s*$/-1${os_name}/")"
+export version="$(grep -e "^version: " < pubspec.yaml | sed -e "s/^version: //; s/[+][0-9]*\s*$/-1ubuntu-${os_name}/")"
 
 export bundle_name="oav-bundle-ubuntu-${os_name}-${bundle_arch}"
 export deb_dir=open-alert-viewer_"${version}"
