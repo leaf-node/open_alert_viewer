@@ -66,7 +66,7 @@ jobs:
           mkdir -p "$DEB_DIR"
           cd "$DEB_DIR"
           mkdir -p ./DEBIAN ./usr/local/{bin,lib/open-alert-viewer,share/applications,share/icons/hicolor/scalable/apps}/
-          sed -e "s/VERSION/$VERSION/; s/ARCHITECTURE/${{ matrix.deb-arch }}/; s/DEPENDS/${{ matrix.deb-depends }}" < ../linux/debian/control.template > DEBIAN/control
+          sed -e "s/VERSION/$VERSION/; s/ARCHITECTURE/${{ matrix.deb-arch }}/; s/DEPENDS/${{ matrix.deb-depends }}/" < ../linux/debian/control.template > DEBIAN/control
           cp -R ../"$BUNDLE_NAME"/* usr/local/lib/open-alert-viewer/
           ln -s ../lib/open-alert-viewer/open_alert_viewer usr/local/bin/
           install -Dm644 ../assets/icon/open_alert_viewer_circle_full.svg usr/local/share/icons/hicolor/scalable/apps/studio.okcode.open_alert_viewer.svg
