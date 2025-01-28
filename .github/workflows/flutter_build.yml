@@ -14,27 +14,37 @@ on:
 jobs:
   main:
     runs-on: ${{ matrix.os }}
-    name: Linux-${{ matrix.bundle-arch }}${{ matrix.suffix }} artefacts, for Flatpak
+    name: Ubuntu-${{ matrix.os-name }}-${{ matrix.bundle-arch }} artefacts
     strategy:
       matrix:
         include:
           - os: ubuntu-24.04
-            arch: x64
+            os-name: noble
+            flutter-arch: x64
+            deb-arch: amd64
             bundle-arch: x86_64
-            suffix:
+            dep-depends: libgtk-3-0t64 (>= 3.24.41)
           - os: ubuntu-24.04-arm
-            arch: arm64
+            os-name: noble
+            flutter-arch: arm64
+            deb-arch: arm64
             bundle-arch: aarch64
-            suffix:
+            dep-depends: libgtk-3-0t64 (>= 3.24.41)
           - os: ubuntu-22.04
-            arch: x64
+            os-name: jammy
+            flutter-arch: x64
+            deb-arch: amd64
             bundle-arch: x86_64
-            suffix: -jammy
+            dep-depends: libgtk-3-0 (>= 3.24.33)
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
       - run: |
-          echo "$GITHUB_WORKSPACE/.flutter/bin/" >> "$GITHUB_PATH"
+          echo "$GITHUB_WORKSPACE"/.flutter/bin/ >> "$GITHUB_PATH"
+          echo VERSION="$(echo "${{ matrix.ref_name }}" | sed -e "s/^v//; s/$/-1${{ matrix.os-name }}/")" >> "$GITHUB_ENV"
+      - run: |
+          echo BUNDLE_NAME="oav-bundle-ubuntu-${{ matrix.os-name }}-${{ matrix.bundle-arch }}" >> "$GITHUB_ENV"
+          echo DEB_DIR=open-alert-viewer_"$VERSION" >> "$GITHUB_ENV"
       - run: |
           sudo apt update -y
           sudo apt upgrade -y
@@ -49,11 +59,24 @@ jobs:
           flutter pub get
           flutter build linux --release
       - run: |
-          mv build/linux/${{ matrix.arch }}/release/bundle ./oav-bundle-linux-${{ matrix.bundle-arch }}
-          tar czf oav-bundle-linux-${{ matrix.bundle-arch }}.tar.gz oav-bundle-linux-${{ matrix.bundle-arch }}
+          mv build/linux/${{ matrix.flutter-arch }}/release/bundle "$BUNDLE_NAME"
+          tar czf "$BUNDLE_NAME".tar.gz "$BUNDLE_NAME"
+      - run: |
+          echo "Building .deb package..."
+          mkdir -p "$DEB_DIR"
+          cd "$DEB_DIR"
+          mkdir -p ./DEBIAN ./usr/local/{bin,lib/open-alert-viewer,share/applications,share/icons/hicolor/scalable/apps}/
+          sed -e "s/VERSION/$VERSION/; s/ARCHITECTURE/${{ matrix.deb-arch }}/; s/DEPENDS/${{ matrix.deb-depends }}" < ../linux/debian/control.template > DEBIAN/control
+          cp -R ../"$BUNDLE_NAME"/* usr/local/lib/open-alert-viewer/
+          ln -s ../lib/open-alert-viewer/open_alert_viewer usr/local/bin/
+          install -Dm644 ../assets/icon/open_alert_viewer_circle_full.svg usr/local/share/icons/hicolor/scalable/apps/studio.okcode.open_alert_viewer.svg
+          install -Dm644 ../linux/studio.okcode.open_alert_viewer.desktop usr/local/share/applications/studio.okcode.open_alert_viewer.desktop
+          cd ..
+          dpkg-deb --build "$DEB_DIR"
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            oav-bundle-linux-${{ matrix.bundle-arch }}${{ matrix.suffix }}.tar.gz
+            "$BUNDLE_NAME".tar.gz
+            "$DEB_DIR".deb
 
