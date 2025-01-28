@@ -61,4 +61,5 @@ install -Dm644 ../assets/icon/open_alert_viewer_circle_full.svg usr/local/share/
 install -Dm644 ../linux/oav-custom/studio.okcode.open_alert_viewer.desktop usr/local/share/applications/studio.okcode.open_alert_viewer.desktop
 cd ..
 dpkg-deb --build "${deb_dir}"
+mv "${deb_dir}".deb open-alert-viewer-"${bundle_arch}"_"${version}".deb
 
