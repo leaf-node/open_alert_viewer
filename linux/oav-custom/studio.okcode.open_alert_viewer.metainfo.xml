@@ -7,7 +7,8 @@
   <id>studio.okcode.open_alert_viewer</id>
 
   <name>Open Alert Viewer</name>
-  <summary>Fetch alerts from Prometheus, Nagios or Icinga servers</summary>
+  <!-- 35 characters or less -->
+  <summary>Fetch and display server alerts</summary>
 
   <metadata_license>MIT</metadata_license>
   <project_license>MIT</project_license>
