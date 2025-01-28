@@ -56,7 +56,7 @@ cd "${deb_dir}"
 mkdir -p ./DEBIAN ./usr/local/{bin,lib/open-alert-viewer,share/applications,share/icons/hicolor/scalable/apps}/
 sed -e "s/VERSION/${version}/; s/ARCHITECTURE/${deb_arch}/; s/DEPENDS/${deb_depends}/" < ../linux/oav-custom/debian/control.template > DEBIAN/control
 cp -R ../"${bundle_name}"/* usr/local/lib/open-alert-viewer/
-ln -s ../lib/open-alert-viewer/open_alert_viewer usr/local/bin/
+ln -s ../lib/open-alert-viewer/open_alert_viewer usr/local/bin/open_alert_viewer
 install -Dm644 ../assets/icon/open_alert_viewer_circle_full.svg usr/local/share/icons/hicolor/scalable/apps/studio.okcode.open_alert_viewer.svg
 install -Dm644 ../linux/oav-custom/studio.okcode.open_alert_viewer.desktop usr/local/share/applications/studio.okcode.open_alert_viewer.desktop
 cd ..
