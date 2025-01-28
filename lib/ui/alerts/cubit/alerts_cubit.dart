@@ -190,6 +190,9 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
         status = FetchingStatus.fetching;
       } else if (message.name == MessageName.alertsFetched) {
         status = FetchingStatus.fetched;
+      } else if (message.name == MessageName.alertFiltersChanged) {
+        status = _state!.status;
+        _updateAlertsState();
       } else {
         throw Exception(
             "OAV Invalid 'alert' stream message name: ${message.name}");

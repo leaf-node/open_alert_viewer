@@ -34,6 +34,7 @@ enum MessageName {
   confirmSources,
   confirmSourcesReply,
   backgroundReady,
+  alertFiltersChanged,
 }
 
 enum MessageDestination {

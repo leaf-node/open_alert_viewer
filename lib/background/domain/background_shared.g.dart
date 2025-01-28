@@ -60,6 +60,7 @@ const _$MessageNameEnumMap = {
   MessageName.confirmSources: 'confirmSources',
   MessageName.confirmSourcesReply: 'confirmSourcesReply',
   MessageName.backgroundReady: 'backgroundReady',
+  MessageName.alertFiltersChanged: 'alertFiltersChanged',
 };
 
 const _$MessageDestinationEnumMap = {

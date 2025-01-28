@@ -112,6 +112,10 @@ class BackgroundChannelInternal {
         _notifier.startAnroidStickyNotification();
       } else if (message.name == MessageName.disableNotifications) {
         _notifier.disableNotifications();
+      } else if (message.name == MessageName.alertFiltersChanged) {
+        sendMessageToForeground(IsolateMessage(
+            name: MessageName.alertFiltersChanged,
+            destination: MessageDestination.alerts));
       } else {
         throw Exception("Invalid message name: $message");
       }
