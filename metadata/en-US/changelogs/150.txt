@@ -1,0 +1,2 @@
+* Compile .deb packages for Ubuntu derivatives
+* Update Flatpak metadata to meet more quality guidelines
