@@ -3,7 +3,7 @@ Version=1.0
 Type=Application
 
 Name=Open Alert Viewer
-Comment=Fetch alerts from Prometheus, Nagios or Icinga servers
+Comment=Fetch network alerts from your Prometheus, Nagios or Icinga server
 Categories=Network;Monitor;
 
 Icon=studio.okcode.open_alert_viewer
