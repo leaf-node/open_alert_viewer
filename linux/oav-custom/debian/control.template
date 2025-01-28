@@ -1,4 +1,4 @@
-Package: open_alert_viewer
+Package: open-alert-viewer
 Version: VERSION
 Section: net
 Priority: optional
