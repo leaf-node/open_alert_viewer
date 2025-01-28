@@ -40,43 +40,17 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
       - run: |
-          echo "$GITHUB_WORKSPACE"/.flutter/bin/ >> "$GITHUB_PATH"
-          echo VERSION="$(grep -e "^version: " < pubspec.yaml | sed -e "s/^version: //; s/[+][0-9]*\s*$/-1${{ matrix.os-name }}/")" >> "$GITHUB_ENV"
-      - run: |
-          echo BUNDLE_NAME="oav-bundle-ubuntu-${{ matrix.os-name }}-${{ matrix.bundle-arch }}" >> "$GITHUB_ENV"
-          echo DEB_DIR=open-alert-viewer_"$VERSION" >> "$GITHUB_ENV"
-      - run: |
           sudo apt update -y
           sudo apt upgrade -y
           sudo apt dist-upgrade -y
       - run: |
           sudo apt install -y ninja-build libgtk-3-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libunwind-dev
       - run: |
-          git submodule init
-          git submodule update
-          flutter channel stable --disable-analytics
-          flutter doctor --verbose
-          flutter pub get
-          flutter build linux --release
-      - run: |
-          mv build/linux/${{ matrix.flutter-arch }}/release/bundle "$BUNDLE_NAME"
-          tar czf "$BUNDLE_NAME".tar.gz "$BUNDLE_NAME"
-      - run: |
-          echo "Building .deb package..."
-          mkdir -p "$DEB_DIR"
-          cd "$DEB_DIR"
-          mkdir -p ./DEBIAN ./usr/local/{bin,lib/open-alert-viewer,share/applications,share/icons/hicolor/scalable/apps}/
-          sed -e "s/VERSION/$VERSION/; s/ARCHITECTURE/${{ matrix.deb-arch }}/; s/DEPENDS/${{ matrix.deb-depends }}/" < ../linux/debian/control.template > DEBIAN/control
-          cp -R ../"$BUNDLE_NAME"/* usr/local/lib/open-alert-viewer/
-          ln -s ../lib/open-alert-viewer/open_alert_viewer usr/local/bin/
-          install -Dm644 ../assets/icon/open_alert_viewer_circle_full.svg usr/local/share/icons/hicolor/scalable/apps/studio.okcode.open_alert_viewer.svg
-          install -Dm644 ../linux/studio.okcode.open_alert_viewer.desktop usr/local/share/applications/studio.okcode.open_alert_viewer.desktop
-          cd ..
-          dpkg-deb --build "$DEB_DIR"
+          ./linux/oav-custom/compile ${{ matrix.os-name }} ${{ matrix.flutter-arch }} ${{ matrix.bundle-arch }} ${{ matrix.deb-arch }} ${{ matrix.deb-depends }}
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            "$BUNDLE_NAME".tar.gz
-            "$DEB_DIR".deb
+            *.tar.gz
+            *.deb
 

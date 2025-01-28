@@ -1,0 +1,53 @@
+#! /bin/bash
+
+set -e
+
+if [[ $# -ne 5 ]] ; then
+    echo "Error: Invalid number of parameters"
+    echo "Correct usage: ./linux/oav-custom/$(basename "$0") <os_name> <flutter_arch> <bundle_arch> <deb_arch> <deb_depends>" >&2
+    exit 1
+fi
+
+if [[ ! -e pubspec.yaml ]] ; then
+    echo "Error: The $(basename "$0") script must be run from the root of a Flutter project" >&2
+    exit 1
+fi
+
+set -x
+
+export os_name="$1"
+export flutter_arch="$2"
+export bundle_arch="$3"
+export deb_arch="$4"
+export deb_depends="$5"
+
+export PATH="$PATH:$(pwd)/.flutter/bin/"
+
+export version="$(grep -e "^version: " < pubspec.yaml | sed -e "s/^version: //; s/[+][0-9]*\s*$/-1${os_name}/")"
+
+export bundle_name="oav-bundle-ubuntu-${os_name}-${bundle_arch}"
+export deb_dir=open-alert-viewer_"${version}"
+
+git submodule init
+git submodule update
+flutter channel stable --disable-analytics
+flutter doctor --verbose
+flutter pub get
+flutter build linux --release
+
+mv build/linux/"${flutter_arch}"/release/bundle "${bundle_name}"
+tar czf "${bundle_name}".tar.gz "${bundle_name}"
+
+echo "Building .deb package..."
+
+mkdir -p "${deb_dir}"
+cd "${deb_dir}"
+mkdir -p ./DEBIAN ./usr/local/{bin,lib/open-alert-viewer,share/applications,share/icons/hicolor/scalable/apps}/
+sed -e "s/VERSION/${version}/; s/ARCHITECTURE/${deb_arch}/; s/DEPENDS/${deb_depends}/" < ../linux/oav-custom/debian/control.template > DEBIAN/control
+cp -R ../"${bundle_name}"/* usr/local/lib/open-alert-viewer/
+ln -s ../lib/open-alert-viewer/open_alert_viewer usr/local/bin/
+install -Dm644 ../assets/icon/open_alert_viewer_circle_full.svg usr/local/share/icons/hicolor/scalable/apps/studio.okcode.open_alert_viewer.svg
+install -Dm644 ../linux/oav-custom/studio.okcode.open_alert_viewer.desktop usr/local/share/applications/studio.okcode.open_alert_viewer.desktop
+cd ..
+dpkg-deb --build "${deb_dir}"
+
