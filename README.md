@@ -29,6 +29,8 @@ with Basic Authentication.
 <p align="center">
     <a href='https://flathub.org/apps/studio.okcode.open_alert_viewer'>
         <img width='240' height='80' style='display: inline-block' alt='Get it on Flathub' src='https://flathub.org/api/badge?svg&locale=en&light'/></a>
+    <a href='https://github.com/okcode-studio/open_alert_viewer/releases'>
+        <img width='240' height='80' style='display: inline-block' alt='Get *.tar.gz and *.deb' src='https://okcode.studio/assets/img/generic-badge.svg'/></a>
 </p>
 
 ## Back end compatibility
