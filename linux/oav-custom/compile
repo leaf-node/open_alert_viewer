@@ -4,7 +4,7 @@ set -e
 
 if [[ $# -ne 2 ]] ; then
     echo "Error: Invalid number of parameters"
-    echo "Correct usage: ./linux/oav-custom/$(basename "$0") <flutter_arch> <deb_depends>" >&2
+    echo "Correct usage: ./linux/oav-custom/$(basename "$0") <x64|arm64> <deb_depends>" >&2
     exit 1
 fi
 
