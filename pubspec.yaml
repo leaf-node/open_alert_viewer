@@ -58,6 +58,12 @@ dependencies:
   freezed: ^2.5.7
   freezed_annotation: ^2.4.4
 
+dependency_overrides:
+  sqlite_flutter_libs:
+    git:
+      repo: https://github.com/simolus3/sqlite3.dart
+      ref: 15acbbdcb9752b3271088d9aa7ff184b8b057b01
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
