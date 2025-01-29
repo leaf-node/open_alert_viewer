@@ -17,15 +17,12 @@ jobs:
       matrix:
         include:
           - os: ubuntu-24.04
-            os-name: noble
             flutter-arch: x64
             dep-depends: libgtk-3-0t64 (>= 3.24.41)
           - os: ubuntu-24.04-arm
-            os-name: noble
             flutter-arch: arm64
             dep-depends: libgtk-3-0t64 (>= 3.24.41)
           - os: ubuntu-22.04
-            os-name: jammy
             flutter-arch: x64
             dep-depends: libgtk-3-0 (>= 3.24.33)
     steps:
@@ -38,7 +35,7 @@ jobs:
       - run: |
           sudo apt install -y ninja-build libgtk-3-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libunwind-dev
       - run: |
-          ./linux/oav-custom/compile "${{ matrix.os-name }}" "${{ matrix.flutter-arch }}" "${{ matrix.deb-depends }}"
+          ./linux/oav-custom/compile "${{ matrix.flutter-arch }}" "${{ matrix.deb-depends }}"
       - name: Release
         uses: softprops/action-gh-release@v2
         with:

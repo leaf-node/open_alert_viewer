@@ -2,9 +2,9 @@
 
 set -e
 
-if [[ $# -ne 3 ]] ; then
+if [[ $# -ne 2 ]] ; then
     echo "Error: Invalid number of parameters"
-    echo "Correct usage: ./linux/oav-custom/$(basename "$0") <os_name> <flutter_arch> <deb_depends>" >&2
+    echo "Correct usage: ./linux/oav-custom/$(basename "$0") <flutter_arch> <deb_depends>" >&2
     exit 1
 fi
 
@@ -15,9 +15,8 @@ fi
 
 set -x
 
-export os_name="$1"
-export flutter_arch="$2"
-export deb_depends="$3"
+export flutter_arch="$1"
+export deb_depends="$2"
 
 if [[ $flutter_arch = x64 ]] ; then
     deb_arch=amd64
@@ -30,18 +29,32 @@ else
     exit 1
 fi
 
+if [[ $(which flutter 2> /dev/null) == "" ]] ; then
+    export use_flutter_git=true
+else
+    export use_flutter_git=false
+fi
 
-export PATH="$PATH:$(pwd)/.flutter/bin/"
+[[ $use_flutter_git == true ]] && export PATH="$PATH:$(pwd)/.flutter/bin/"
 
-export version="$(grep -e "^version: " < pubspec.yaml | sed -e "s/^version: //; s/[+][0-9]*\s*$/-1ubuntu-${os_name}/")"
+. /etc/os-release
+export distro_name="$ID"
+export distro_release="-$VERSION_CODENAME"
+[[ "$distro_release" == "-" ]] &&  export distro_release=""
 
-export bundle_name="oav-bundle-ubuntu-${os_name}-${bundle_arch}"
+export version="$(grep -e "^version: " < pubspec.yaml | sed -e "s/^version:\s*//; s/[+][0-9]*\s*$//")"
+export version="${version}-1${distro_name}${distro_release}"
+
+export bundle_name="oav-bundle-${distro_name}${distro_release}-${bundle_arch}"
 export deb_dir=open-alert-viewer_"${version}"
 
 
-git submodule init
-git submodule update
-flutter channel stable --disable-analytics
+if [[ $use_flutter_git == true ]] ; then
+    git submodule init
+    git submodule update
+    flutter channel stable --disable-analytics
+fi
+
 flutter doctor --verbose
 flutter pub get
 flutter build linux --release
