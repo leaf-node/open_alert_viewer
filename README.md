@@ -83,7 +83,8 @@ adb install build/app/outputs/flutter-apk/app-release.apk
 ### Linux
 
 ```
-sudo apt install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+sudo apt install ninja-build libgtk-3-dev \
+                 libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libunwind-dev
 
 cd open_alert_viewer
 flutter build linux
@@ -93,6 +94,13 @@ flutter build linux
 You can move or copy the `bundle` directory anywhere on your file system, but
 internal structure should remain the same. If you want to put the binary in
 your path, make a symlink.
+
+If you want to build a simple .deb file, check your version of `libgtk-3-0...`
+and run the following script with something like:
+
+```
+./linux/oav-custom/compile x64 "libgtk-3-0t64 (>= 3.24.41)"
+```
 
 ## Back end configuration
 
