@@ -27,6 +27,7 @@ with Basic Authentication.
 ## Install
 
 <p align="center">
+    &nbsp;&nbsp;
     <a href='https://flathub.org/apps/studio.okcode.open_alert_viewer'>
         <img width='240' height='80' style='display: inline-block' alt='Get it on Flathub' src='https://flathub.org/api/badge?svg&locale=en&light'/></a>
     &nbsp;&nbsp;
