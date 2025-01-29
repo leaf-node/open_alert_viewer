@@ -83,8 +83,9 @@ adb install build/app/outputs/flutter-apk/app-release.apk
 ### Linux
 
 ```
-sudo apt install ninja-build libgtk-3-dev \
-                 libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libunwind-dev
+sudo apt install curl git unzip xz-utils zip libglu1-mesa \
+    clang cmake git ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev \
+    libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libunwind-dev
 
 cd open_alert_viewer
 flutter build linux
