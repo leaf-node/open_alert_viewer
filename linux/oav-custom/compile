@@ -76,8 +76,12 @@ sed -e "s/VERSION/${version}/; s/ARCHITECTURE/${deb_arch}/; s/DEPENDS/${deb_depe
 cp -R ../"${bundle_name}"/* usr/lib/open-alert-viewer/
 ln -s ../lib/open-alert-viewer/open_alert_viewer usr/bin/open_alert_viewer
 install -Dm644 ../assets/icon/open_alert_viewer_circle_full.svg usr/share/icons/hicolor/scalable/apps/studio.okcode.open_alert_viewer.svg
-install -Dm644 ../assets/icon/open_alert_viewer_circle_full.png usr/share/icons/hicolor/512x512/apps/studio.okcode.open_alert_viewer.png
 install -Dm644 ../linux/oav-custom/studio.okcode.open_alert_viewer.desktop usr/share/applications/studio.okcode.open_alert_viewer.desktop
+for size in 16 22 24 32 64 128 256 ; do
+    rm -f scaled.png
+    convert assets/icon/open_alert_viewer_circle_full.png -resize "${size}x${size}" scaled.png
+    install -Dm644 scaled.png usr/share/icons/hicolor/"${size}x${size}"/studio.okcode.open_alert_viewer.png
+done
 cd ..
 dpkg-deb --build "${deb_dir}"
 mv "${deb_dir}".deb open-alert-viewer-"${bundle_arch}"_"${version}".deb
