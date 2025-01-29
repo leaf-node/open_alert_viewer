@@ -14,7 +14,7 @@ on:
 jobs:
   main:
     runs-on: ${{ matrix.os }}
-    name: Ubuntu-${{ matrix.os-name }}-${{ matrix.flutter-arch }} artefacts
+    name: ${{ matrix.os }}-${{ matrix.flutter-arch }} artefacts
     strategy:
       matrix:
         include:
