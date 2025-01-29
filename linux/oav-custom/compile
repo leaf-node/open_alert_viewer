@@ -49,7 +49,7 @@ export bundle_name="oav-bundle-${distro_name}${distro_release}-${bundle_arch}"
 export deb_dir=open-alert-viewer_"${version}"
 
 if [[ -e ./${bundle_name} ]] ; then
-    echo "Error, build files are already present here." >&2
+    echo "Error, build files for .deb creation are already present here." >&2
     echo "Consider wiping the untracked files with: git clean -fxd" >&2
     exit 1
 fi
