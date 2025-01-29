@@ -20,13 +20,13 @@ jobs:
         include:
           - os: ubuntu-24.04
             flutter-arch: x64
-            dep-depends: libgtk-3-0t64 (>= 3.24.41)
+            deb-depends: libgtk-3-0t64 (>= 3.24.41)
           - os: ubuntu-24.04-arm
             flutter-arch: arm64
-            dep-depends: libgtk-3-0t64 (>= 3.24.41)
+            deb-depends: libgtk-3-0t64 (>= 3.24.41)
           - os: ubuntu-22.04
             flutter-arch: x64
-            dep-depends: libgtk-3-0 (>= 3.24.33)
+            deb-depends: libgtk-3-0 (>= 3.24.33)
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
