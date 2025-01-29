@@ -73,6 +73,10 @@ Do these tasks first.
 * [ ] Trying to open a second running version of the app only launches a notification
 * [ ] Enabling and disabling sound works as expected
 
+## Pre-release
+
+* [ ] Especially if there were any changes to the continuous delivery workflow, test it by temporarily enabling the workflow for the main branch before tagging a release. The workflow should fail on the first upload attempt, and sibling tasks will be cancelled too.
+
 ## Creating a new release
 
 Do these tasks last if / when the above is complete and working.
