@@ -53,7 +53,7 @@ with Basic Authentication.
 ### Target platforms
 
 * Android 12.1+
-    * Accepted by F-Droid (publishing pending)
+    * Accepted by F-Droid (publication pending)
     * Submitted Google Play Store (status pending)
 * Linux (x86)
     * [Flathub](https://flathub.org/apps/studio.okcode.open_alert_viewer)
