@@ -28,6 +28,9 @@ with Basic Authentication.
 
 <p align="center">
     &nbsp;&nbsp;
+    <a href='https://f-droid.org/en/packages/studio.okcode.open_alert_viewer/'>
+        <img width='269' height='80' style='display: inline-block' alt='Get it on F-Droid' src='https://okcode.studio/assets/img/f-droid-badge.png'/></a>
+    &nbsp;&nbsp;
     <a href='https://flathub.org/apps/studio.okcode.open_alert_viewer'>
         <img width='240' height='80' style='display: inline-block' alt='Get it on Flathub' src='https://flathub.org/api/badge?svg&locale=en&light'/></a>
     &nbsp;&nbsp;
@@ -53,7 +56,8 @@ with Basic Authentication.
 ### Target platforms
 
 * Android 12.1+
-    * Accepted by F-Droid (publication pending)
+    * Published to
+      [F-Droid](https://f-droid.org/en/packages/studio.okcode.open_alert_viewer/)
     * Submitted Google Play Store (status pending)
 * Linux (x86)
     * [Flathub](https://flathub.org/apps/studio.okcode.open_alert_viewer)
