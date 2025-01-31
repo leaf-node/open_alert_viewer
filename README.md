@@ -3,6 +3,11 @@
 
 # Open Alert Viewer
 
+<p align="center">
+    <img height="20" src="https://img.shields.io/f-droid/v/studio.okcode.open_alert_viewer.svg?logo=F-Droid">
+    <img height="20" src="https://img.shields.io/github/release/okcode-studio/open_alert_viewer.svg?logo=github">
+</p>
+
 Display server and network alerts from servers running Prometheus, Nagios or
 Icinga.
 
@@ -59,8 +64,9 @@ with Basic Authentication.
     * Published to
       [F-Droid](https://f-droid.org/en/packages/studio.okcode.open_alert_viewer/)
     * Submitted Google Play Store (status pending)
-* Linux (x86)
+* Linux (`x86_64`, `aarch64`)
     * [Flathub](https://flathub.org/apps/studio.okcode.open_alert_viewer)
+    * [.deb and .tar.gz](https://github.com/okcode-studio/open_alert_viewer/releases)
 * (More planned)
 
 ## Build instructions
