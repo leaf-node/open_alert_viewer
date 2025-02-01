@@ -4,9 +4,14 @@
 # Open Alert Viewer
 
 <p align="center">
-    <img height="20" src="https://img.shields.io/github/release/okcode-studio/open_alert_viewer.svg?logo=github">
-    <img height="20" src="https://img.shields.io/f-droid/v/studio.okcode.open_alert_viewer.svg?logo=F-Droid">
-    <img height="20" src="https://img.shields.io/flathub/v/studio.okcode.open_alert_viewer.svg?logo=Flathub">
+    <a href='https://github.com/okcode-studio/open_alert_viewer/releases'>
+        <img height="20" src="https://img.shields.io/github/release/okcode-studio/open_alert_viewer.svg?logo=github"></a>
+    <a href='https://f-droid.org/en/packages/studio.okcode.open_alert_viewer/'>
+        <img height="20" src="https://img.shields.io/f-droid/v/studio.okcode.open_alert_viewer.svg?logo=F-Droid"></a>
+    <a href='https://flathub.org/apps/studio.okcode.open_alert_viewer'>
+        <img height="20" src="https://img.shields.io/flathub/v/studio.okcode.open_alert_viewer.svg?logo=Flathub"></a>
+    <a href="https://matrix.to/#/#ok-code-studio-llc:matrix.org" rel="noopener" target="_blank">
+        <img src="https://matrix.to/img/matrix-badge.svg" alt="Chat on Matrix"></a>
 </p>
 
 Display server and network alerts from servers running Prometheus, Nagios or
@@ -145,7 +150,8 @@ To view debug alerts, create an account with the base URL set to `demo`.
 ## Support
 
 * [Issue tracker](https://github.com/okcode-studio/open_alert_viewer/issues)
-* Discuss on [Matrix](https://matrix.to/#/#ok-code-studio-llc:matrix.org)
+* [![Chat on Matrix](https://matrix.to/img/matrix-badge.svg)](https://matrix.to/#/#ok-code-studio-llc:matrix.org)
+
 
 ## License
 
