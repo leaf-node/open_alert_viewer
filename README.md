@@ -4,8 +4,9 @@
 # Open Alert Viewer
 
 <p align="center">
-    <img height="20" src="https://img.shields.io/f-droid/v/studio.okcode.open_alert_viewer.svg?logo=F-Droid">
     <img height="20" src="https://img.shields.io/github/release/okcode-studio/open_alert_viewer.svg?logo=github">
+    <img height="20" src="https://img.shields.io/f-droid/v/studio.okcode.open_alert_viewer.svg?logo=F-Droid">
+    <img height="20" src="https://img.shields.io/flathub/v/studio.okcode.open_alert_viewer.svg?logo=Flathub">
 </p>
 
 Display server and network alerts from servers running Prometheus, Nagios or
