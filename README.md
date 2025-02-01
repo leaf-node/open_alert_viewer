@@ -41,6 +41,9 @@ with Basic Authentication.
     &nbsp;&nbsp;
     <a href='https://github.com/okcode-studio/open_alert_viewer/releases'>
         <img width='240' height='80' style='display: inline-block' alt='Get *.tar.gz and *.deb' src='https://okcode.studio/assets/img/generic-badge.svg'/></a>
+    &nbsp;&nbsp;
+    <a href='https://play.google.com/store/apps/details?id=studio.okcode.open_alert_viewer'>
+        <img width='270' height='80' style='display: inline-block' alt='Get it on Google Play' src='https://okcode.studio/assets/img/Google-Play-badge.png'/></a>
 </p>
 
 ## Back end compatibility
@@ -61,9 +64,8 @@ with Basic Authentication.
 ### Target platforms
 
 * Android 12.1+
-    * Published to
-      [F-Droid](https://f-droid.org/en/packages/studio.okcode.open_alert_viewer/)
-    * Submitted Google Play Store (status pending)
+    * [F-Droid](https://f-droid.org/en/packages/studio.okcode.open_alert_viewer/)
+    * [Google Play](https://play.google.com/store/apps/details?id=studio.okcode.open_alert_viewer)
 * Linux (`x86_64`, `aarch64`)
     * [Flathub](https://flathub.org/apps/studio.okcode.open_alert_viewer)
     * [.deb and .tar.gz](https://github.com/okcode-studio/open_alert_viewer/releases)
