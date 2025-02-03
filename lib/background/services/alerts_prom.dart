@@ -4,9 +4,13 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../../domain/alerts.dart';
-import '../../utils/utils.dart';
 import 'alerts.dart';
+
+part 'alerts_prom.freezed.dart';
+part 'alerts_prom.g.dart';
 
 class PromAlerts extends AlertSource {
   PromAlerts({required super.sourceData});
@@ -27,10 +31,9 @@ class PromAlerts extends AlertSource {
     }
     List<Alert> newAlerts = [];
     for (Map<String, dynamic> datum in dataSet as List) {
-      PromAlertsData alertDatum =
-          PromAlertsData.fromParsedJSON(Util.mapConvert(datum));
-      var severity = alertDatum.severity;
-      var type = alertDatum.oavType;
+      PromAlertsData alertDatum = PromAlertsData.fromJson(datum);
+      final severity = alertDatum.labels?.severity ?? "unknown";
+      final type = alertDatum.labels?.oav_type ?? "";
       AlertType kind;
       if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
         kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
@@ -44,12 +47,16 @@ class PromAlerts extends AlertSource {
       newAlerts.add(Alert(
           source: sourceData.id!,
           kind: kind,
-          hostname: alertDatum.instance,
-          service: alertDatum.alertName,
-          message: alertDatum.summary,
-          url: alertDatum.generatorURL,
-          age: DateTime.now().difference(DateTime.parse(alertDatum.startsAt)),
-          silenced: alertDatum.silenced,
+          hostname: alertDatum.labels?.instance ?? "Unknown host",
+          service: alertDatum.labels?.alertname ?? "Unknown",
+          message: alertDatum.annotations?.summary ?? "...",
+          url: alertDatum.generatorURL ?? "",
+          age: (alertDatum.startsAt == null)
+              ? Duration.zero
+              : DateTime.now().difference(DateTime.parse(alertDatum.startsAt!)),
+          silenced: (alertDatum.status != null &&
+              alertDatum.status!.silencedBy != null &&
+              alertDatum.status!.silencedBy!.isNotEmpty),
           downtimeScheduled: false,
           active: true));
     }
@@ -57,51 +64,47 @@ class PromAlerts extends AlertSource {
   }
 }
 
-class PromAlertsData {
-  const PromAlertsData({
-    required this.fingerprint,
-    required this.severity,
-    required this.oavType,
-    required this.instance,
-    required this.alertName,
-    required this.summary,
-    required this.startsAt,
-    required this.updatedAt,
-    required this.endsAt,
-    required this.generatorURL,
-    required this.silenced,
-  });
+@freezed
+class PromAlertsData with _$PromAlertsData {
+  const factory PromAlertsData(
+      // ignore: non_constant_identifier_names
+      {String? startsAt,
+      String? updatedAt,
+      String? endsAt,
+      String? generatorURL,
+      AnnotationsData? annotations,
+      LabelsData? labels,
+      StatusData? status}) = _PromAlertsData;
 
-  factory PromAlertsData.fromParsedJSON(Map<String, Object> parsed) {
-    var annotations =
-        Util.mapConvert<String>(parsed["annotations"] as Map<String, dynamic>);
-    var labels =
-        Util.mapConvert<String>(parsed["labels"] as Map<String, dynamic>);
-    var status =
-        Util.mapConvert<Object>(parsed["status"] as Map<String, dynamic>);
-    return PromAlertsData(
-        fingerprint: parsed["fingerprint"] as String,
-        severity: labels["severity"] ?? "",
-        oavType: labels["oav_type"] ?? "",
-        instance: labels["instance"] ?? "",
-        alertName: labels["alertname"] ?? "",
-        summary: annotations["summary"] ?? "",
-        startsAt: parsed["startsAt"] as String,
-        updatedAt: parsed["updatedAt"] as String,
-        endsAt: parsed["endsAt"] as String,
-        generatorURL: parsed["generatorURL"] as String,
-        silenced: (status["silencedBy"] as List).isNotEmpty);
-  }
+  factory PromAlertsData.fromJson(Map<String, dynamic> json) =>
+      _$PromAlertsDataFromJson(json);
+}
 
-  final String fingerprint;
-  final String severity;
-  final String oavType;
-  final String instance;
-  final String alertName;
-  final String summary;
-  final String startsAt;
-  final String updatedAt;
-  final String endsAt;
-  final String generatorURL;
-  final bool silenced;
+@freezed
+class AnnotationsData with _$AnnotationsData {
+  const factory AnnotationsData({String? summary}) = _AnnotationsData;
+
+  factory AnnotationsData.fromJson(Map<String, dynamic> json) =>
+      _$AnnotationsDataFromJson(json);
+}
+
+@freezed
+class StatusData with _$StatusData {
+  const factory StatusData({List<Object>? silencedBy}) = _StatusData;
+
+  factory StatusData.fromJson(Map<String, dynamic> json) =>
+      _$StatusDataFromJson(json);
+}
+
+@freezed
+class LabelsData with _$LabelsData {
+  const factory LabelsData(
+      {String? severity,
+      // ignore: non_constant_identifier_names
+      String? oav_type,
+      String? instance,
+      String? alertname}) = _LabelsData;
+
+  factory LabelsData.fromJson(Map<String, dynamic> json) =>
+      _$LabelsDataFromJson(json);
 }
