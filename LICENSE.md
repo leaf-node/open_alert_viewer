@@ -53,3 +53,15 @@ alarm.ogg
 License: CC0
 
 
+Dependencies
+============
+
+Dependencies of this app include the following licenses:
+
+- Apache-2.0
+- BSD-2-Clause
+- BSD-3-Clause
+- MIT
+- MPL-2.0
+- Zlib
+
