@@ -4,9 +4,14 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../../domain/alerts.dart';
 import '../../utils/utils.dart';
 import 'alerts.dart';
+
+part 'alerts_nag.freezed.dart';
+part 'alerts_nag.g.dart';
 
 enum StatusType { hostStatus, serviceStatus }
 
@@ -86,8 +91,7 @@ class NagAlerts extends AlertSource {
 
   Alert alertHandler(
       Map<String, dynamic> alertsData, bool isService, String host) {
-    NagAlertsData alertDatum =
-        NagAlertsData.fromParsedJSON(Util.mapConvert(alertsData));
+    NagAlertsData alertDatum = NagAlertsData.fromJson(alertsData);
     AlertType kind;
     if (isService) {
       kind = ServiceStatus.values
@@ -108,67 +112,58 @@ class NagAlerts extends AlertSource {
       age = Duration.zero;
       active = true;
     } else {
-      if (alertDatum.stateType == 1) {
-        startsAt = alertDatum.lastHardStateChange;
+      if (alertDatum.state_type == 1) {
+        startsAt = _dateTime(alertDatum.last_hard_state_change ?? 0);
         active = true;
       } else {
-        startsAt = alertDatum.lastStateChange;
+        startsAt = _dateTime(alertDatum.last_state_change ?? 0);
         active = false;
       }
       age = (startsAt.difference(epoch) == Duration.zero)
-          ? DateTime.now().difference(alertDatum.lastCheck)
+          ? (alertDatum.last_check == null)
+              ? Duration.zero
+              : DateTime.now().difference(_dateTime(alertDatum.last_check!))
           : DateTime.now().difference(startsAt);
     }
     return Alert(
         source: sourceData.id!,
         kind: kind,
         hostname: host,
-        service: alertDatum.description,
-        message: alertDatum.pluginOutput,
+        service: alertDatum.description ?? "Unknown",
+        message: alertDatum.plugin_output ?? "...",
         url: generateURL(host, ""),
         age: age,
-        silenced: alertDatum.acknowledged,
-        downtimeScheduled: alertDatum.downtimeDepth,
+        silenced: alertDatum.problem_has_been_acknowledged ?? false,
+        downtimeScheduled:
+            Util.toBool(alertDatum.scheduled_downtime_depth ?? 0),
         active: active);
-  }
-}
-
-class NagAlertsData {
-  const NagAlertsData(
-      {required this.status,
-      required this.acknowledged,
-      required this.downtimeDepth,
-      required this.description,
-      required this.lastStateChange,
-      required this.lastHardStateChange,
-      required this.lastCheck,
-      required this.stateType,
-      required this.pluginOutput});
-
-  final int status;
-  final bool downtimeDepth;
-  final bool acknowledged;
-  final String description;
-  final DateTime lastStateChange;
-  final DateTime lastHardStateChange;
-  final DateTime lastCheck;
-  final int stateType;
-  final String pluginOutput;
-
-  factory NagAlertsData.fromParsedJSON(Map<String, Object> parsed) {
-    return NagAlertsData(
-        status: parsed["status"] as int,
-        downtimeDepth: Util.toBool(parsed["scheduled_downtime_depth"]!),
-        acknowledged: parsed["problem_has_been_acknowledged"] as bool,
-        description: parsed["description"] as String? ?? "Ping",
-        lastStateChange: _dateTime(parsed["last_state_change"] as int),
-        lastHardStateChange: _dateTime(parsed["last_hard_state_change"] as int),
-        lastCheck: _dateTime(parsed["last_check"] as int),
-        stateType: parsed["state_type"] as int,
-        pluginOutput: parsed["plugin_output"] as String);
   }
 
   static DateTime _dateTime(int milliSeconds) {
     return DateTime.fromMillisecondsSinceEpoch(milliSeconds);
   }
+}
+
+@freezed
+class NagAlertsData with _$NagAlertsData {
+  const factory NagAlertsData(
+      {String? description,
+      int? status,
+      // ignore: non_constant_identifier_names
+      int? scheduled_downtime_depth,
+      // ignore: non_constant_identifier_names
+      bool? problem_has_been_acknowledged,
+      // ignore: non_constant_identifier_names
+      int? last_state_change,
+      // ignore: non_constant_identifier_names
+      int? last_hard_state_change,
+      // ignore: non_constant_identifier_names
+      int? last_check,
+      // ignore: non_constant_identifier_names
+      int? state_type,
+      // ignore: non_constant_identifier_names
+      String? plugin_output}) = _NagAlertsData;
+
+  factory NagAlertsData.fromJson(Map<String, dynamic> json) =>
+      _$NagAlertsDataFromJson(json);
 }
