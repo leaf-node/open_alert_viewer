@@ -67,21 +67,20 @@ class NagAlerts extends AlertSource {
           return errors;
         }
       }
-      var data = Util.mapConvert(dataSet);
-      var dataMap = Util.mapConvert(data["data"]);
+      final data = NagAlertsData.fromJson(dataSet).data!;
       if (key == StatusType.hostStatus) {
-        var hostList = Util.mapConvert(dataMap["hostlist"]);
-        for (var host in hostList.keys) {
-          var hostData = Util.mapConvert(hostList[host]);
-          newAlerts.add(alertHandler(hostData, false, host));
+        final hostMap = data.hostlist!;
+        for (final host in hostMap.keys) {
+          final entry = hostMap[host]!;
+          newAlerts.add(alertHandler(entry, false, host));
         }
       } else if (key == StatusType.serviceStatus) {
-        var serviceHostList = Util.mapConvert(dataMap["servicelist"]);
-        for (var host in serviceHostList.keys) {
-          var serviceHostData = Util.mapConvert(serviceHostList[host]);
-          for (var service in serviceHostData.keys) {
-            var serviceData = Util.mapConvert(serviceHostData[service]);
-            newAlerts.add(alertHandler(serviceData, true, host));
+        final hostServiceMap = data.servicelist!;
+        for (final host in hostServiceMap.keys) {
+          final hostServiceData = hostServiceMap[host]!;
+          for (final service in hostServiceData.keys) {
+            final entry = hostServiceData[service]!;
+            newAlerts.add(alertHandler(entry, true, host));
           }
         }
       }
@@ -89,9 +88,7 @@ class NagAlerts extends AlertSource {
     return newAlerts;
   }
 
-  Alert alertHandler(
-      Map<String, dynamic> alertsData, bool isService, String host) {
-    NagAlertsData alertDatum = NagAlertsData.fromJson(alertsData);
+  Alert alertHandler(NagAlertData alertDatum, bool isService, String host) {
     AlertType kind;
     if (isService) {
       kind = ServiceStatus.values
@@ -146,7 +143,25 @@ class NagAlerts extends AlertSource {
 
 @freezed
 class NagAlertsData with _$NagAlertsData {
-  const factory NagAlertsData(
+  const factory NagAlertsData({NagDataSection? data}) = _NagAlertsData;
+
+  factory NagAlertsData.fromJson(Map<String, dynamic> json) =>
+      _$NagAlertsDataFromJson(json);
+}
+
+@freezed
+class NagDataSection with _$NagDataSection {
+  const factory NagDataSection(
+      {Map<String, NagAlertData?>? hostlist,
+      Map<String, Map<String, NagAlertData?>?>? servicelist}) = _NagDataSection;
+
+  factory NagDataSection.fromJson(Map<String, dynamic> json) =>
+      _$NagDataSectionFromJson(json);
+}
+
+@freezed
+class NagAlertData with _$NagAlertData {
+  const factory NagAlertData(
       {String? description,
       int? status,
       // ignore: non_constant_identifier_names
@@ -162,8 +177,8 @@ class NagAlertsData with _$NagAlertsData {
       // ignore: non_constant_identifier_names
       int? state_type,
       // ignore: non_constant_identifier_names
-      String? plugin_output}) = _NagAlertsData;
+      String? plugin_output}) = _NagAlertData;
 
-  factory NagAlertsData.fromJson(Map<String, dynamic> json) =>
-      _$NagAlertsDataFromJson(json);
+  factory NagAlertData.fromJson(Map<String, dynamic> json) =>
+      _$NagAlertDataFromJson(json);
 }

@@ -8,6 +8,47 @@ part of 'alerts_nag.dart';
 
 _$NagAlertsDataImpl _$$NagAlertsDataImplFromJson(Map<String, dynamic> json) =>
     _$NagAlertsDataImpl(
+      data: json['data'] == null
+          ? null
+          : NagDataSection.fromJson(json['data'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$NagAlertsDataImplToJson(_$NagAlertsDataImpl instance) =>
+    <String, dynamic>{
+      'data': instance.data,
+    };
+
+_$NagDataSectionImpl _$$NagDataSectionImplFromJson(Map<String, dynamic> json) =>
+    _$NagDataSectionImpl(
+      hostlist: (json['hostlist'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(
+            k,
+            e == null
+                ? null
+                : NagAlertData.fromJson(e as Map<String, dynamic>)),
+      ),
+      servicelist: (json['servicelist'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(
+            k,
+            (e as Map<String, dynamic>?)?.map(
+              (k, e) => MapEntry(
+                  k,
+                  e == null
+                      ? null
+                      : NagAlertData.fromJson(e as Map<String, dynamic>)),
+            )),
+      ),
+    );
+
+Map<String, dynamic> _$$NagDataSectionImplToJson(
+        _$NagDataSectionImpl instance) =>
+    <String, dynamic>{
+      'hostlist': instance.hostlist,
+      'servicelist': instance.servicelist,
+    };
+
+_$NagAlertDataImpl _$$NagAlertDataImplFromJson(Map<String, dynamic> json) =>
+    _$NagAlertDataImpl(
       description: json['description'] as String?,
       status: (json['status'] as num?)?.toInt(),
       scheduled_downtime_depth:
@@ -21,7 +62,7 @@ _$NagAlertsDataImpl _$$NagAlertsDataImplFromJson(Map<String, dynamic> json) =>
       plugin_output: json['plugin_output'] as String?,
     );
 
-Map<String, dynamic> _$$NagAlertsDataImplToJson(_$NagAlertsDataImpl instance) =>
+Map<String, dynamic> _$$NagAlertDataImplToJson(_$NagAlertDataImpl instance) =>
     <String, dynamic>{
       'description': instance.description,
       'status': instance.status,
