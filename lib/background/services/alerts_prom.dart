@@ -31,36 +31,39 @@ class PromAlerts extends AlertSource {
     }
     List<Alert> newAlerts = [];
     for (Map<String, dynamic> datum in dataSet as List) {
-      PromAlertsData alertDatum = PromAlertsData.fromJson(datum);
-      final severity = alertDatum.labels?.severity ?? "unknown";
-      final type = alertDatum.labels?.oav_type ?? "";
-      AlertType kind;
-      if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
-        kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
-            ? AlertType.down
-            : AlertType.error;
-      } else if (RegExp(r"^(warning)$").hasMatch(severity)) {
-        kind = AlertType.warning;
-      } else {
-        kind = AlertType.unknown;
-      }
-      newAlerts.add(Alert(
-          source: sourceData.id!,
-          kind: kind,
-          hostname: alertDatum.labels?.instance ?? "Unknown Host",
-          service: alertDatum.labels?.alertname ?? "Unknown",
-          message: alertDatum.annotations?.summary ?? "...",
-          url: alertDatum.generatorURL ?? "",
-          age: (alertDatum.startsAt == null)
-              ? Duration.zero
-              : DateTime.now().difference(DateTime.parse(alertDatum.startsAt!)),
-          silenced: (alertDatum.status != null &&
-              alertDatum.status!.silencedBy != null &&
-              alertDatum.status!.silencedBy!.isNotEmpty),
-          downtimeScheduled: false,
-          active: true));
+      newAlerts.add(alertHandler(PromAlertsData.fromJson(datum)));
     }
     return newAlerts;
+  }
+
+  Alert alertHandler(PromAlertsData alertDatum) {
+    final severity = alertDatum.labels?.severity ?? "unknown";
+    final type = alertDatum.labels?.oav_type ?? "";
+    AlertType kind;
+    if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
+      kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
+          ? AlertType.down
+          : AlertType.error;
+    } else if (RegExp(r"^(warning)$").hasMatch(severity)) {
+      kind = AlertType.warning;
+    } else {
+      kind = AlertType.unknown;
+    }
+    return Alert(
+        source: sourceData.id!,
+        kind: kind,
+        hostname: alertDatum.labels?.instance ?? "Unknown Host",
+        service: alertDatum.labels?.alertname ?? "Unknown",
+        message: alertDatum.annotations?.summary ?? "...",
+        url: alertDatum.generatorURL ?? "",
+        age: (alertDatum.startsAt == null)
+            ? Duration.zero
+            : DateTime.now().difference(DateTime.parse(alertDatum.startsAt!)),
+        silenced: (alertDatum.status != null &&
+            alertDatum.status!.silencedBy != null &&
+            alertDatum.status!.silencedBy!.isNotEmpty),
+        downtimeScheduled: false,
+        active: true);
   }
 }
 
