@@ -70,26 +70,21 @@ class IciAlerts extends AlertSource {
           return errors;
         }
       }
-      var data = Util.mapConvert(dataSet);
-      var dataList = (data["results"] as List).cast<Object>();
+      final results = IciAlertsData.fromJson(dataSet).results!;
       if (key == StatusType.hostStatus) {
-        for (var entry in dataList) {
-          var hostData = Util.mapConvert<Object>(entry as Map<String, dynamic>);
-          newAlerts.add(alertHandler(hostData, false));
+        for (IciResultsData entry in results) {
+          newAlerts.add(alertHandler(entry, false));
         }
       } else if (key == StatusType.serviceStatus) {
-        for (var entry in dataList) {
-          var serviceData =
-              Util.mapConvert<Object>(entry as Map<String, dynamic>);
-          newAlerts.add(alertHandler(serviceData, true));
+        for (IciResultsData entry in results) {
+          newAlerts.add(alertHandler(entry, true));
         }
       }
     }
     return newAlerts;
   }
 
-  Alert alertHandler(Map<String, Object> alertsData, bool isService) {
-    IciAlertsData alertDatum = IciAlertsData.fromJson(alertsData);
+  Alert alertHandler(IciResultsData alertDatum, bool isService) {
     AlertType kind;
     String hostname;
     String service;
@@ -150,11 +145,21 @@ class IciAlerts extends AlertSource {
 class IciAlertsData with _$IciAlertsData {
   const factory IciAlertsData(
       // ignore: non_constant_identifier_names
-      {AttrsData? attrs,
-      JoinsData? joins}) = _IciAlertsData;
+      {List<IciResultsData>? results}) = _IciAlertsData;
 
   factory IciAlertsData.fromJson(Map<String, dynamic> json) =>
       _$IciAlertsDataFromJson(json);
+}
+
+@freezed
+class IciResultsData with _$IciResultsData {
+  const factory IciResultsData(
+      // ignore: non_constant_identifier_names
+      {AttrsData? attrs,
+      JoinsData? joins}) = _IciResultsData;
+
+  factory IciResultsData.fromJson(Map<String, dynamic> json) =>
+      _$IciResultsDataFromJson(json);
 }
 
 @freezed

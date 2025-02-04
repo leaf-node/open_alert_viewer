@@ -20,8 +20,7 @@ IciAlertsData _$IciAlertsDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$IciAlertsData {
-  AttrsData? get attrs => throw _privateConstructorUsedError;
-  JoinsData? get joins => throw _privateConstructorUsedError;
+  List<IciResultsData>? get results => throw _privateConstructorUsedError;
 
   /// Serializes this IciAlertsData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,10 +38,7 @@ abstract class $IciAlertsDataCopyWith<$Res> {
           IciAlertsData value, $Res Function(IciAlertsData) then) =
       _$IciAlertsDataCopyWithImpl<$Res, IciAlertsData>;
   @useResult
-  $Res call({AttrsData? attrs, JoinsData? joins});
-
-  $AttrsDataCopyWith<$Res>? get attrs;
-  $JoinsDataCopyWith<$Res>? get joins;
+  $Res call({List<IciResultsData>? results});
 }
 
 /// @nodoc
@@ -56,6 +52,169 @@ class _$IciAlertsDataCopyWithImpl<$Res, $Val extends IciAlertsData>
   final $Res Function($Val) _then;
 
   /// Create a copy of IciAlertsData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? results = freezed,
+  }) {
+    return _then(_value.copyWith(
+      results: freezed == results
+          ? _value.results
+          : results // ignore: cast_nullable_to_non_nullable
+              as List<IciResultsData>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$IciAlertsDataImplCopyWith<$Res>
+    implements $IciAlertsDataCopyWith<$Res> {
+  factory _$$IciAlertsDataImplCopyWith(
+          _$IciAlertsDataImpl value, $Res Function(_$IciAlertsDataImpl) then) =
+      __$$IciAlertsDataImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({List<IciResultsData>? results});
+}
+
+/// @nodoc
+class __$$IciAlertsDataImplCopyWithImpl<$Res>
+    extends _$IciAlertsDataCopyWithImpl<$Res, _$IciAlertsDataImpl>
+    implements _$$IciAlertsDataImplCopyWith<$Res> {
+  __$$IciAlertsDataImplCopyWithImpl(
+      _$IciAlertsDataImpl _value, $Res Function(_$IciAlertsDataImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of IciAlertsData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? results = freezed,
+  }) {
+    return _then(_$IciAlertsDataImpl(
+      results: freezed == results
+          ? _value._results
+          : results // ignore: cast_nullable_to_non_nullable
+              as List<IciResultsData>?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$IciAlertsDataImpl implements _IciAlertsData {
+  const _$IciAlertsDataImpl({final List<IciResultsData>? results})
+      : _results = results;
+
+  factory _$IciAlertsDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$IciAlertsDataImplFromJson(json);
+
+  final List<IciResultsData>? _results;
+  @override
+  List<IciResultsData>? get results {
+    final value = _results;
+    if (value == null) return null;
+    if (_results is EqualUnmodifiableListView) return _results;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  String toString() {
+    return 'IciAlertsData(results: $results)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$IciAlertsDataImpl &&
+            const DeepCollectionEquality().equals(other._results, _results));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_results));
+
+  /// Create a copy of IciAlertsData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$IciAlertsDataImplCopyWith<_$IciAlertsDataImpl> get copyWith =>
+      __$$IciAlertsDataImplCopyWithImpl<_$IciAlertsDataImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$IciAlertsDataImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _IciAlertsData implements IciAlertsData {
+  const factory _IciAlertsData({final List<IciResultsData>? results}) =
+      _$IciAlertsDataImpl;
+
+  factory _IciAlertsData.fromJson(Map<String, dynamic> json) =
+      _$IciAlertsDataImpl.fromJson;
+
+  @override
+  List<IciResultsData>? get results;
+
+  /// Create a copy of IciAlertsData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$IciAlertsDataImplCopyWith<_$IciAlertsDataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+IciResultsData _$IciResultsDataFromJson(Map<String, dynamic> json) {
+  return _IciResultsData.fromJson(json);
+}
+
+/// @nodoc
+mixin _$IciResultsData {
+  AttrsData? get attrs => throw _privateConstructorUsedError;
+  JoinsData? get joins => throw _privateConstructorUsedError;
+
+  /// Serializes this IciResultsData to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of IciResultsData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $IciResultsDataCopyWith<IciResultsData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $IciResultsDataCopyWith<$Res> {
+  factory $IciResultsDataCopyWith(
+          IciResultsData value, $Res Function(IciResultsData) then) =
+      _$IciResultsDataCopyWithImpl<$Res, IciResultsData>;
+  @useResult
+  $Res call({AttrsData? attrs, JoinsData? joins});
+
+  $AttrsDataCopyWith<$Res>? get attrs;
+  $JoinsDataCopyWith<$Res>? get joins;
+}
+
+/// @nodoc
+class _$IciResultsDataCopyWithImpl<$Res, $Val extends IciResultsData>
+    implements $IciResultsDataCopyWith<$Res> {
+  _$IciResultsDataCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of IciResultsData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -75,7 +234,7 @@ class _$IciAlertsDataCopyWithImpl<$Res, $Val extends IciAlertsData>
     ) as $Val);
   }
 
-  /// Create a copy of IciAlertsData
+  /// Create a copy of IciResultsData
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -89,7 +248,7 @@ class _$IciAlertsDataCopyWithImpl<$Res, $Val extends IciAlertsData>
     });
   }
 
-  /// Create a copy of IciAlertsData
+  /// Create a copy of IciResultsData
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -105,11 +264,11 @@ class _$IciAlertsDataCopyWithImpl<$Res, $Val extends IciAlertsData>
 }
 
 /// @nodoc
-abstract class _$$IciAlertsDataImplCopyWith<$Res>
-    implements $IciAlertsDataCopyWith<$Res> {
-  factory _$$IciAlertsDataImplCopyWith(
-          _$IciAlertsDataImpl value, $Res Function(_$IciAlertsDataImpl) then) =
-      __$$IciAlertsDataImplCopyWithImpl<$Res>;
+abstract class _$$IciResultsDataImplCopyWith<$Res>
+    implements $IciResultsDataCopyWith<$Res> {
+  factory _$$IciResultsDataImplCopyWith(_$IciResultsDataImpl value,
+          $Res Function(_$IciResultsDataImpl) then) =
+      __$$IciResultsDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({AttrsData? attrs, JoinsData? joins});
@@ -121,14 +280,14 @@ abstract class _$$IciAlertsDataImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$IciAlertsDataImplCopyWithImpl<$Res>
-    extends _$IciAlertsDataCopyWithImpl<$Res, _$IciAlertsDataImpl>
-    implements _$$IciAlertsDataImplCopyWith<$Res> {
-  __$$IciAlertsDataImplCopyWithImpl(
-      _$IciAlertsDataImpl _value, $Res Function(_$IciAlertsDataImpl) _then)
+class __$$IciResultsDataImplCopyWithImpl<$Res>
+    extends _$IciResultsDataCopyWithImpl<$Res, _$IciResultsDataImpl>
+    implements _$$IciResultsDataImplCopyWith<$Res> {
+  __$$IciResultsDataImplCopyWithImpl(
+      _$IciResultsDataImpl _value, $Res Function(_$IciResultsDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of IciAlertsData
+  /// Create a copy of IciResultsData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -136,7 +295,7 @@ class __$$IciAlertsDataImplCopyWithImpl<$Res>
     Object? attrs = freezed,
     Object? joins = freezed,
   }) {
-    return _then(_$IciAlertsDataImpl(
+    return _then(_$IciResultsDataImpl(
       attrs: freezed == attrs
           ? _value.attrs
           : attrs // ignore: cast_nullable_to_non_nullable
@@ -151,11 +310,11 @@ class __$$IciAlertsDataImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$IciAlertsDataImpl implements _IciAlertsData {
-  const _$IciAlertsDataImpl({this.attrs, this.joins});
+class _$IciResultsDataImpl implements _IciResultsData {
+  const _$IciResultsDataImpl({this.attrs, this.joins});
 
-  factory _$IciAlertsDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$IciAlertsDataImplFromJson(json);
+  factory _$IciResultsDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$IciResultsDataImplFromJson(json);
 
   @override
   final AttrsData? attrs;
@@ -164,14 +323,14 @@ class _$IciAlertsDataImpl implements _IciAlertsData {
 
   @override
   String toString() {
-    return 'IciAlertsData(attrs: $attrs, joins: $joins)';
+    return 'IciResultsData(attrs: $attrs, joins: $joins)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$IciAlertsDataImpl &&
+            other is _$IciResultsDataImpl &&
             (identical(other.attrs, attrs) || other.attrs == attrs) &&
             (identical(other.joins, joins) || other.joins == joins));
   }
@@ -180,39 +339,40 @@ class _$IciAlertsDataImpl implements _IciAlertsData {
   @override
   int get hashCode => Object.hash(runtimeType, attrs, joins);
 
-  /// Create a copy of IciAlertsData
+  /// Create a copy of IciResultsData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$IciAlertsDataImplCopyWith<_$IciAlertsDataImpl> get copyWith =>
-      __$$IciAlertsDataImplCopyWithImpl<_$IciAlertsDataImpl>(this, _$identity);
+  _$$IciResultsDataImplCopyWith<_$IciResultsDataImpl> get copyWith =>
+      __$$IciResultsDataImplCopyWithImpl<_$IciResultsDataImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$IciAlertsDataImplToJson(
+    return _$$IciResultsDataImplToJson(
       this,
     );
   }
 }
 
-abstract class _IciAlertsData implements IciAlertsData {
-  const factory _IciAlertsData(
-      {final AttrsData? attrs, final JoinsData? joins}) = _$IciAlertsDataImpl;
+abstract class _IciResultsData implements IciResultsData {
+  const factory _IciResultsData(
+      {final AttrsData? attrs, final JoinsData? joins}) = _$IciResultsDataImpl;
 
-  factory _IciAlertsData.fromJson(Map<String, dynamic> json) =
-      _$IciAlertsDataImpl.fromJson;
+  factory _IciResultsData.fromJson(Map<String, dynamic> json) =
+      _$IciResultsDataImpl.fromJson;
 
   @override
   AttrsData? get attrs;
   @override
   JoinsData? get joins;
 
-  /// Create a copy of IciAlertsData
+  /// Create a copy of IciResultsData
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$IciAlertsDataImplCopyWith<_$IciAlertsDataImpl> get copyWith =>
+  _$$IciResultsDataImplCopyWith<_$IciResultsDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

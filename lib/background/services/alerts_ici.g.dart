@@ -8,6 +8,18 @@ part of 'alerts_ici.dart';
 
 _$IciAlertsDataImpl _$$IciAlertsDataImplFromJson(Map<String, dynamic> json) =>
     _$IciAlertsDataImpl(
+      results: (json['results'] as List<dynamic>?)
+          ?.map((e) => IciResultsData.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$IciAlertsDataImplToJson(_$IciAlertsDataImpl instance) =>
+    <String, dynamic>{
+      'results': instance.results,
+    };
+
+_$IciResultsDataImpl _$$IciResultsDataImplFromJson(Map<String, dynamic> json) =>
+    _$IciResultsDataImpl(
       attrs: json['attrs'] == null
           ? null
           : AttrsData.fromJson(json['attrs'] as Map<String, dynamic>),
@@ -16,7 +28,8 @@ _$IciAlertsDataImpl _$$IciAlertsDataImplFromJson(Map<String, dynamic> json) =>
           : JoinsData.fromJson(json['joins'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$IciAlertsDataImplToJson(_$IciAlertsDataImpl instance) =>
+Map<String, dynamic> _$$IciResultsDataImplToJson(
+        _$IciResultsDataImpl instance) =>
     <String, dynamic>{
       'attrs': instance.attrs,
       'joins': instance.joins,
