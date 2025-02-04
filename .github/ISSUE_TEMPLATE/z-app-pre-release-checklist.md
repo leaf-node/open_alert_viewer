@@ -85,6 +85,7 @@ Do these tasks last if / when the above is complete and working.
 * [ ] Update the version in `pubspec.yaml`, which including the semantic version, and increasing the versionCode after the `+` by 1
 * [ ] Add Markdown-style log from commit history since prior release to `metadata/en-US/changelogs/` directory
 * [ ] Edit release history with new version in `./linux/studio.okcode.open_alert_viewer.metainfo.xml`
+* [ ] For major new releases, update the major version in the app's user agent string
 * [ ] Commit with commit message like `Version X.Y.Z`
 * [ ] Tag release with version string, like `vX.Y.Z`
 * [ ] Push commits and tags
