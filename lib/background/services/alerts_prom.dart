@@ -47,7 +47,7 @@ class PromAlerts extends AlertSource {
       newAlerts.add(Alert(
           source: sourceData.id!,
           kind: kind,
-          hostname: alertDatum.labels?.instance ?? "Unknown host",
+          hostname: alertDatum.labels?.instance ?? "Unknown Host",
           service: alertDatum.labels?.alertname ?? "Unknown",
           message: alertDatum.annotations?.summary ?? "...",
           url: alertDatum.generatorURL ?? "",
