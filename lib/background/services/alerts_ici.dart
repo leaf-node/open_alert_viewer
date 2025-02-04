@@ -4,9 +4,14 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../../domain/alerts.dart';
 import '../../utils/utils.dart';
 import 'alerts.dart';
+
+part 'alerts_ici.freezed.dart';
+part 'alerts_ici.g.dart';
 
 enum StatusType { hostStatus, serviceStatus }
 
@@ -84,104 +89,118 @@ class IciAlerts extends AlertSource {
   }
 
   Alert alertHandler(Map<String, Object> alertsData, bool isService) {
-    IciAlertsData alertDatum =
-        IciAlertsData.fromParsedJSON(Util.mapConvert(alertsData));
+    IciAlertsData alertDatum = IciAlertsData.fromJson(alertsData);
     AlertType kind;
     String hostname;
     String service;
     if (isService) {
       kind = ServiceStatus.values
-          .singleWhere((v) => v.value == alertDatum.state,
+          .singleWhere((v) => v.value == alertDatum.attrs?.state?.floor(),
               orElse: () => ServiceStatus.unknown)
           .alertType;
-      hostname = alertDatum.hostname;
-      service = alertDatum.name;
+      hostname = alertDatum.joins?.host?.name ?? "Unknown Host";
+      service = alertDatum.attrs?.display_name ?? "Unknown";
     } else {
       kind = HostStatus.values
-          .singleWhere((v) => v.value == alertDatum.state,
+          .singleWhere((v) => v.value == alertDatum.attrs?.state?.floor(),
               orElse: () => HostStatus.unknown)
           .alertType;
-      hostname = alertDatum.name;
+      hostname = alertDatum.attrs?.display_name ?? "Unknown Host";
       service = "PING";
     }
     DateTime startsAt;
     bool active;
-    if (alertDatum.stateType == 1) {
-      startsAt = alertDatum.lastHardStateChange;
+    if (alertDatum.attrs?.state_type?.floor() == 1) {
+      startsAt = _dateTime(alertDatum.attrs?.last_hard_state_change ?? 0);
       active = true;
-    } else {
-      startsAt = alertDatum.lastStateChange;
+    } else if (alertDatum.attrs?.state_type?.floor() == 0) {
+      startsAt = _dateTime(alertDatum.attrs?.last_state_change ?? 0);
       active = false;
+    } else {
+      startsAt = epoch;
+      active = true;
     }
     Duration age;
     age = (startsAt.difference(epoch) == Duration.zero)
-        ? DateTime.now().difference(alertDatum.lastCheck)
+        ? (alertDatum.attrs == null || alertDatum.attrs!.last_check == null)
+            ? Duration.zero
+            : DateTime.now()
+                .difference(_dateTime(alertDatum.attrs!.last_check!))
         : DateTime.now().difference(startsAt);
     return Alert(
         source: sourceData.id!,
         kind: kind,
         hostname: hostname,
         service: service,
-        message: alertDatum.message,
+        message: alertDatum.attrs?.last_check_result?.output ?? "...",
         url: generateURL(hostname, ""),
         age: age,
-        silenced: Util.toBool(alertDatum.acknowledged),
-        downtimeScheduled: (alertDatum.downtimeDepth > 0),
+        silenced: Util.toBool(alertDatum.attrs?.acknowledgement?.floor() ?? 0),
+        downtimeScheduled:
+            ((alertDatum.attrs?.downtime_depth?.floor() ?? 0) > 0),
         active: active);
-  }
-}
-
-class IciAlertsData {
-  const IciAlertsData(
-      {required this.name,
-      required this.hostname,
-      required this.message,
-      required this.state,
-      required this.downtimeDepth,
-      required this.acknowledged,
-      required this.lastStateChange,
-      required this.lastHardStateChange,
-      required this.lastCheck,
-      required this.lastCheckResult,
-      required this.stateType});
-
-  final String name;
-  final String hostname;
-  final String message;
-  final int state;
-  final int downtimeDepth;
-  final int acknowledged;
-  final DateTime lastStateChange;
-  final DateTime lastHardStateChange;
-  final DateTime lastCheck;
-  final Map<String, Object> lastCheckResult;
-  final int stateType;
-
-  factory IciAlertsData.fromParsedJSON(Map<String, Object> parsed) {
-    var attrs =
-        Util.mapConvert<Object>(parsed["attrs"] as Map<String, dynamic>);
-    var joins =
-        Util.mapConvert<Object>(parsed["joins"] as Map<String, dynamic>);
-    var host =
-        Util.mapConvert<Object>(joins["host"] as Map<String, dynamic>? ?? {});
-    var result = Util.mapConvert<Object>(
-        parsed["last_check_result"] as Map<String, dynamic>? ?? {});
-    return IciAlertsData(
-        name: attrs["display_name"] as String,
-        hostname: host["name"] as String? ?? "",
-        message: (attrs["last_check_result"] as Map<String, dynamic>)["output"]
-            as String,
-        state: (attrs["state"] as num).floor(),
-        downtimeDepth: (attrs["downtime_depth"] as num).floor(),
-        acknowledged: (attrs["acknowledgement"] as num).floor(),
-        lastStateChange: _dateTime(attrs["last_state_change"] as num),
-        lastHardStateChange: _dateTime(attrs["last_hard_state_change"] as num),
-        lastCheck: _dateTime(attrs["last_check"] as num),
-        lastCheckResult: Util.mapConvert<Object>(result),
-        stateType: (attrs["state_type"] as num).floor());
   }
 
   static DateTime _dateTime(num seconds) {
     return DateTime.fromMillisecondsSinceEpoch((seconds * 1000).floor());
   }
+}
+
+@freezed
+class IciAlertsData with _$IciAlertsData {
+  const factory IciAlertsData(
+      // ignore: non_constant_identifier_names
+      {AttrsData? attrs,
+      JoinsData? joins}) = _IciAlertsData;
+
+  factory IciAlertsData.fromJson(Map<String, dynamic> json) =>
+      _$IciAlertsDataFromJson(json);
+}
+
+@freezed
+class AttrsData with _$AttrsData {
+  const factory AttrsData(
+      // ignore: non_constant_identifier_names
+      {String? display_name,
+      num? state,
+      // ignore: non_constant_identifier_names
+      num? downtime_depth,
+      num? acknowledgement,
+      // ignore: non_constant_identifier_names
+      num? last_state_change,
+      // ignore: non_constant_identifier_names
+      num? last_hard_state_change,
+      // ignore: non_constant_identifier_names
+      num? last_check,
+      // ignore: non_constant_identifier_names
+      LastCheckResultData? last_check_result,
+      // ignore: non_constant_identifier_names
+      num? state_type}) = _AttrsData;
+
+  factory AttrsData.fromJson(Map<String, dynamic> json) =>
+      _$AttrsDataFromJson(json);
+}
+
+@freezed
+class LastCheckResultData with _$LastCheckResultData {
+  const factory LastCheckResultData({String? output}) = _LastCheckResultData;
+
+  factory LastCheckResultData.fromJson(Map<String, dynamic> json) =>
+      _$LastCheckResultDataFromJson(json);
+}
+
+@freezed
+class JoinsData with _$JoinsData {
+  const factory JoinsData({HostsData? host}) = _JoinsData;
+
+  factory JoinsData.fromJson(Map<String, dynamic> json) =>
+      _$JoinsDataFromJson(json);
+}
+
+@freezed
+class HostsData with _$HostsData {
+  const factory HostsData({String? name}) = _HostsData;
+
+  factory HostsData.fromJson(Map<String, dynamic> json) =>
+      _$HostsDataFromJson(json);
 }
