@@ -11,6 +11,7 @@ assignees: ''
 
 Do these tasks first.
 
+* [ ] Do a git push and pull on the main branch
 * [ ] Check out the latest release of this project
 * [ ] Update Flutter to the latest stable version on your machine
 * [ ] Update the `.flutter` submodule too: `git submodule update --remote`
