@@ -106,6 +106,8 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
         errorMessage: "",
         accessToken: accessTokenController.text,
         isValid: isValid,
+        visible: true,
+        notifications: true,
       );
     } else {
       return AlertSourceData(
@@ -123,6 +125,8 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
         errorMessage: "",
         accessToken: accessTokenController.text,
         isValid: isValid,
+        visible: widget.source!.visible,
+        notifications: widget.source!.notifications,
       );
     }
   }

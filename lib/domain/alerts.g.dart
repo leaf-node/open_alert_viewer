@@ -63,6 +63,8 @@ _$AlertSourceDataImpl _$$AlertSourceDataImplFromJson(
       errorMessage: json['errorMessage'] as String,
       isValid: json['isValid'] as bool?,
       accessToken: json['accessToken'] as String,
+      visible: json['visible'] as bool,
+      notifications: json['notifications'] as bool,
       serial: (json['serial'] as num?)?.toInt(),
     );
 
@@ -83,5 +85,7 @@ Map<String, dynamic> _$$AlertSourceDataImplToJson(
       'errorMessage': instance.errorMessage,
       'isValid': instance.isValid,
       'accessToken': instance.accessToken,
+      'visible': instance.visible,
+      'notifications': instance.notifications,
       'serial': instance.serial,
     };

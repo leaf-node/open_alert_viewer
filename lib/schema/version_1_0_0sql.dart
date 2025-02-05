@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-final version0sql = """
+final version_1_0_0sql = """
 
 CREATE TABLE IF NOT EXISTS sources (
     id INTEGER NOT NULL PRIMARY KEY,

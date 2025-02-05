@@ -61,6 +61,8 @@ class AlertSourceData with _$AlertSourceData {
     required String errorMessage,
     bool? isValid,
     required String accessToken,
+    required bool visible,
+    required bool notifications,
     int? serial,
   }) = _AlertSourceData;
 

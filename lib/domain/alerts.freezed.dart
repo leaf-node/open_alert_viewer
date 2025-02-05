@@ -367,6 +367,8 @@ mixin _$AlertSourceData {
   String get errorMessage => throw _privateConstructorUsedError;
   bool? get isValid => throw _privateConstructorUsedError;
   String get accessToken => throw _privateConstructorUsedError;
+  bool get visible => throw _privateConstructorUsedError;
+  bool get notifications => throw _privateConstructorUsedError;
   int? get serial => throw _privateConstructorUsedError;
 
   /// Serializes this AlertSourceData to a JSON map.
@@ -400,6 +402,8 @@ abstract class $AlertSourceDataCopyWith<$Res> {
       String errorMessage,
       bool? isValid,
       String accessToken,
+      bool visible,
+      bool notifications,
       int? serial});
 }
 
@@ -432,6 +436,8 @@ class _$AlertSourceDataCopyWithImpl<$Res, $Val extends AlertSourceData>
     Object? errorMessage = null,
     Object? isValid = freezed,
     Object? accessToken = null,
+    Object? visible = null,
+    Object? notifications = null,
     Object? serial = freezed,
   }) {
     return _then(_value.copyWith(
@@ -491,6 +497,14 @@ class _$AlertSourceDataCopyWithImpl<$Res, $Val extends AlertSourceData>
           ? _value.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
               as String,
+      visible: null == visible
+          ? _value.visible
+          : visible // ignore: cast_nullable_to_non_nullable
+              as bool,
+      notifications: null == notifications
+          ? _value.notifications
+          : notifications // ignore: cast_nullable_to_non_nullable
+              as bool,
       serial: freezed == serial
           ? _value.serial
           : serial // ignore: cast_nullable_to_non_nullable
@@ -522,6 +536,8 @@ abstract class _$$AlertSourceDataImplCopyWith<$Res>
       String errorMessage,
       bool? isValid,
       String accessToken,
+      bool visible,
+      bool notifications,
       int? serial});
 }
 
@@ -552,6 +568,8 @@ class __$$AlertSourceDataImplCopyWithImpl<$Res>
     Object? errorMessage = null,
     Object? isValid = freezed,
     Object? accessToken = null,
+    Object? visible = null,
+    Object? notifications = null,
     Object? serial = freezed,
   }) {
     return _then(_$AlertSourceDataImpl(
@@ -611,6 +629,14 @@ class __$$AlertSourceDataImplCopyWithImpl<$Res>
           ? _value.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
               as String,
+      visible: null == visible
+          ? _value.visible
+          : visible // ignore: cast_nullable_to_non_nullable
+              as bool,
+      notifications: null == notifications
+          ? _value.notifications
+          : notifications // ignore: cast_nullable_to_non_nullable
+              as bool,
       serial: freezed == serial
           ? _value.serial
           : serial // ignore: cast_nullable_to_non_nullable
@@ -637,6 +663,8 @@ class _$AlertSourceDataImpl implements _AlertSourceData {
       required this.errorMessage,
       this.isValid,
       required this.accessToken,
+      required this.visible,
+      required this.notifications,
       this.serial});
 
   factory _$AlertSourceDataImpl.fromJson(Map<String, dynamic> json) =>
@@ -671,11 +699,15 @@ class _$AlertSourceDataImpl implements _AlertSourceData {
   @override
   final String accessToken;
   @override
+  final bool visible;
+  @override
+  final bool notifications;
+  @override
   final int? serial;
 
   @override
   String toString() {
-    return 'AlertSourceData(id: $id, name: $name, type: $type, authType: $authType, baseURL: $baseURL, username: $username, password: $password, failing: $failing, lastSeen: $lastSeen, priorFetch: $priorFetch, lastFetch: $lastFetch, errorMessage: $errorMessage, isValid: $isValid, accessToken: $accessToken, serial: $serial)';
+    return 'AlertSourceData(id: $id, name: $name, type: $type, authType: $authType, baseURL: $baseURL, username: $username, password: $password, failing: $failing, lastSeen: $lastSeen, priorFetch: $priorFetch, lastFetch: $lastFetch, errorMessage: $errorMessage, isValid: $isValid, accessToken: $accessToken, visible: $visible, notifications: $notifications, serial: $serial)';
   }
 
   @override
@@ -705,6 +737,9 @@ class _$AlertSourceDataImpl implements _AlertSourceData {
             (identical(other.isValid, isValid) || other.isValid == isValid) &&
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
+            (identical(other.visible, visible) || other.visible == visible) &&
+            (identical(other.notifications, notifications) ||
+                other.notifications == notifications) &&
             (identical(other.serial, serial) || other.serial == serial));
   }
 
@@ -726,6 +761,8 @@ class _$AlertSourceDataImpl implements _AlertSourceData {
       errorMessage,
       isValid,
       accessToken,
+      visible,
+      notifications,
       serial);
 
   /// Create a copy of AlertSourceData
@@ -761,6 +798,8 @@ abstract class _AlertSourceData implements AlertSourceData {
       required final String errorMessage,
       final bool? isValid,
       required final String accessToken,
+      required final bool visible,
+      required final bool notifications,
       final int? serial}) = _$AlertSourceDataImpl;
 
   factory _AlertSourceData.fromJson(Map<String, dynamic> json) =
@@ -794,6 +833,10 @@ abstract class _AlertSourceData implements AlertSourceData {
   bool? get isValid;
   @override
   String get accessToken;
+  @override
+  bool get visible;
+  @override
+  bool get notifications;
   @override
   int? get serial;
 

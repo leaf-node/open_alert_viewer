@@ -12,7 +12,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 import '../../domain/alerts.dart';
-import '../../schema/version_0_sql.dart';
+import '../../schema/version_1_0_0sql.dart';
+import '../../schema/version_1_3_0sql.dart';
 import '../../utils/utils.dart';
 
 class LocalDatabase {
@@ -66,11 +67,15 @@ class LocalDatabase {
     _db.execute("BEGIN TRANSACTION;");
     if (!_checkIfTableExists(name: "settings") ||
         getSetting(setting: _migrationSetting) == "") {
-      _db.execute(version0sql);
+      _db.execute(version_1_0_0sql);
       setSetting(setting: _migrationSetting, value: "0.0.0");
     }
     if (getSetting(setting: _migrationSetting) == "0.0.0") {
       setSetting(setting: _migrationSetting, value: "1.0.0");
+    }
+    if (getSetting(setting: _migrationSetting) == "1.0.0") {
+      _db.execute(version_1_3_0sql);
+      setSetting(setting: _migrationSetting, value: "1.3.0");
     }
     _db.execute("COMMIT TRANSACTION;");
   }
@@ -143,7 +148,7 @@ class LocalDatabase {
       SELECT
         id, name, type, auth_type, base_url, username, password, failing,
           last_seen, prior_fetch, last_fetch, error_message, is_valid,
-          access_token
+          access_token, visible, notifications
       FROM sources;
     ''', values: []);
     var sources = <AlertSourceData>[];
@@ -171,6 +176,8 @@ class LocalDatabase {
         errorMessage: values["error_message"] as String,
         isValid: Util.toBool(values["is_valid"]!),
         accessToken: values["access_token"] as String,
+        visible: Util.toBool(values["visible"]!),
+        notifications: Util.toBool(values["notifications"]!),
       ));
     }
     return sources;
@@ -181,8 +188,8 @@ class LocalDatabase {
       INSERT INTO sources
         (name, type, auth_type, base_url, username, password, failing,
           last_seen, prior_fetch, last_fetch, error_message, is_valid,
-          access_token)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+          access_token, visible, notifications)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     ''', values: [
       [
         sourceData.name,
@@ -197,7 +204,9 @@ class LocalDatabase {
         sourceData.lastFetch.millisecondsSinceEpoch,
         sourceData.errorMessage,
         sourceData.isValid ?? "NULL",
-        sourceData.accessToken
+        sourceData.accessToken,
+        sourceData.visible,
+        sourceData.notifications,
       ]
     ]);
   }
@@ -207,8 +216,8 @@ class LocalDatabase {
       UPDATE sources SET
         (name, type, auth_type, base_url, username, password, failing,
           last_seen, prior_fetch, last_fetch, error_message, is_valid,
-          access_token)
-        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
+          access_token, visible, notifications)
+        = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?;
     ''', values: [
       sourceData.name,
       sourceData.type,
@@ -223,6 +232,8 @@ class LocalDatabase {
       sourceData.errorMessage,
       sourceData.isValid ?? "NULL",
       sourceData.accessToken,
+      sourceData.visible,
+      sourceData.notifications,
       sourceData.id!,
     ]);
   }
