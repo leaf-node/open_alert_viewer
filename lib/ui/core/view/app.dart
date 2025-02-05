@@ -122,17 +122,18 @@ class _OAVappViewState extends State<OAVappView> {
               _navigator.pushAndRemoveUntil(
                   AlertsScreen.route(title: 'Open Alert Viewer'), (_) => false);
             case Screens.rootSettings:
-              _navigator.push(SettingsScreen.route(title: "OAV Settings"));
+              _navigator.push(SettingsScreen.route(title: "Settings"));
             case Screens.generalSettings:
               _navigator.push(GeneralSettingsScreen.route(
-                  title: "OAV General Settings",
+                  title: "General Settings",
                   cubit: context.read<GeneralSettingsCubit>()));
             case Screens.about:
-              _navigator.push(AboutScreen.route(title: "About OAV"));
+              _navigator
+                  .push(AboutScreen.route(title: "About Open Alert Viewer"));
             case Screens.accountEditing:
               _navigator
                   .push(AccountEditingScreen.route(
-                      title: "OAV Account Settings",
+                      title: "Edit Account",
                       source: state.data as AlertSourceData?))
                   .then((result) {
                 if ((result as bool? ?? false) && context.mounted) {
