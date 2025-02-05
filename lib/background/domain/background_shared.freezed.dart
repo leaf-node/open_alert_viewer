@@ -24,7 +24,7 @@ mixin _$IsolateMessage {
   MessageDestination? get destination => throw _privateConstructorUsedError;
   int? get id => throw _privateConstructorUsedError;
   List<Alert>? get alerts => throw _privateConstructorUsedError;
-  AlertSourceData? get sourceData => throw _privateConstructorUsedError;
+  AlertSourceDataUpdate? get sourceData => throw _privateConstructorUsedError;
   List<AlertSourceData>? get allSources => throw _privateConstructorUsedError;
   bool? get forceRefreshNow => throw _privateConstructorUsedError;
   bool? get alreadyFetching => throw _privateConstructorUsedError;
@@ -50,12 +50,12 @@ abstract class $IsolateMessageCopyWith<$Res> {
       MessageDestination? destination,
       int? id,
       List<Alert>? alerts,
-      AlertSourceData? sourceData,
+      AlertSourceDataUpdate? sourceData,
       List<AlertSourceData>? allSources,
       bool? forceRefreshNow,
       bool? alreadyFetching});
 
-  $AlertSourceDataCopyWith<$Res>? get sourceData;
+  $AlertSourceDataUpdateCopyWith<$Res>? get sourceData;
 }
 
 /// @nodoc
@@ -102,7 +102,7 @@ class _$IsolateMessageCopyWithImpl<$Res, $Val extends IsolateMessage>
       sourceData: freezed == sourceData
           ? _value.sourceData
           : sourceData // ignore: cast_nullable_to_non_nullable
-              as AlertSourceData?,
+              as AlertSourceDataUpdate?,
       allSources: freezed == allSources
           ? _value.allSources
           : allSources // ignore: cast_nullable_to_non_nullable
@@ -122,12 +122,12 @@ class _$IsolateMessageCopyWithImpl<$Res, $Val extends IsolateMessage>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $AlertSourceDataCopyWith<$Res>? get sourceData {
+  $AlertSourceDataUpdateCopyWith<$Res>? get sourceData {
     if (_value.sourceData == null) {
       return null;
     }
 
-    return $AlertSourceDataCopyWith<$Res>(_value.sourceData!, (value) {
+    return $AlertSourceDataUpdateCopyWith<$Res>(_value.sourceData!, (value) {
       return _then(_value.copyWith(sourceData: value) as $Val);
     });
   }
@@ -146,13 +146,13 @@ abstract class _$$IsolateMessageImplCopyWith<$Res>
       MessageDestination? destination,
       int? id,
       List<Alert>? alerts,
-      AlertSourceData? sourceData,
+      AlertSourceDataUpdate? sourceData,
       List<AlertSourceData>? allSources,
       bool? forceRefreshNow,
       bool? alreadyFetching});
 
   @override
-  $AlertSourceDataCopyWith<$Res>? get sourceData;
+  $AlertSourceDataUpdateCopyWith<$Res>? get sourceData;
 }
 
 /// @nodoc
@@ -197,7 +197,7 @@ class __$$IsolateMessageImplCopyWithImpl<$Res>
       sourceData: freezed == sourceData
           ? _value.sourceData
           : sourceData // ignore: cast_nullable_to_non_nullable
-              as AlertSourceData?,
+              as AlertSourceDataUpdate?,
       allSources: freezed == allSources
           ? _value._allSources
           : allSources // ignore: cast_nullable_to_non_nullable
@@ -249,7 +249,7 @@ class _$IsolateMessageImpl implements _IsolateMessage {
   }
 
   @override
-  final AlertSourceData? sourceData;
+  final AlertSourceDataUpdate? sourceData;
   final List<AlertSourceData>? _allSources;
   @override
   List<AlertSourceData>? get allSources {
@@ -326,7 +326,7 @@ abstract class _IsolateMessage implements IsolateMessage {
       final MessageDestination? destination,
       final int? id,
       final List<Alert>? alerts,
-      final AlertSourceData? sourceData,
+      final AlertSourceDataUpdate? sourceData,
       final List<AlertSourceData>? allSources,
       final bool? forceRefreshNow,
       final bool? alreadyFetching}) = _$IsolateMessageImpl;
@@ -343,7 +343,7 @@ abstract class _IsolateMessage implements IsolateMessage {
   @override
   List<Alert>? get alerts;
   @override
-  AlertSourceData? get sourceData;
+  AlertSourceDataUpdate? get sourceData;
   @override
   List<AlertSourceData>? get allSources;
   @override

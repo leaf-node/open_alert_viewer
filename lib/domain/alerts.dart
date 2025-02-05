@@ -70,6 +70,26 @@ class AlertSourceData with _$AlertSourceData {
       _$AlertSourceDataFromJson(json);
 }
 
+@freezed
+class AlertSourceDataUpdate with _$AlertSourceDataUpdate {
+  const factory AlertSourceDataUpdate({
+    required int? id,
+    required String name,
+    required int type,
+    required int authType,
+    required String baseURL,
+    required String username,
+    required String password,
+    required String errorMessage,
+    bool? isValid,
+    required String accessToken,
+    int? serial,
+  }) = _AlertSourceDataUpdate;
+
+  factory AlertSourceDataUpdate.fromJson(Map<String, Object?> json) =>
+      _$AlertSourceDataUpdateFromJson(json);
+}
+
 enum SilenceTypes {
   downtimeScheduled("Downtime Scheduled", 0),
   acknowledged("Acknowledged", 1),

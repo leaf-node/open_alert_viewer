@@ -53,7 +53,7 @@ class IsolateMessage with _$IsolateMessage {
     MessageDestination? destination,
     int? id,
     List<Alert>? alerts,
-    AlertSourceData? sourceData,
+    AlertSourceDataUpdate? sourceData,
     List<AlertSourceData>? allSources,
     bool? forceRefreshNow,
     bool? alreadyFetching,

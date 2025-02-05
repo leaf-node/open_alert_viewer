@@ -847,3 +847,367 @@ abstract class _AlertSourceData implements AlertSourceData {
   _$$AlertSourceDataImplCopyWith<_$AlertSourceDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+AlertSourceDataUpdate _$AlertSourceDataUpdateFromJson(
+    Map<String, dynamic> json) {
+  return _AlertSourceDataUpdate.fromJson(json);
+}
+
+/// @nodoc
+mixin _$AlertSourceDataUpdate {
+  int? get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  int get type => throw _privateConstructorUsedError;
+  int get authType => throw _privateConstructorUsedError;
+  String get baseURL => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
+  String get password => throw _privateConstructorUsedError;
+  String get errorMessage => throw _privateConstructorUsedError;
+  bool? get isValid => throw _privateConstructorUsedError;
+  String get accessToken => throw _privateConstructorUsedError;
+  int? get serial => throw _privateConstructorUsedError;
+
+  /// Serializes this AlertSourceDataUpdate to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of AlertSourceDataUpdate
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $AlertSourceDataUpdateCopyWith<AlertSourceDataUpdate> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AlertSourceDataUpdateCopyWith<$Res> {
+  factory $AlertSourceDataUpdateCopyWith(AlertSourceDataUpdate value,
+          $Res Function(AlertSourceDataUpdate) then) =
+      _$AlertSourceDataUpdateCopyWithImpl<$Res, AlertSourceDataUpdate>;
+  @useResult
+  $Res call(
+      {int? id,
+      String name,
+      int type,
+      int authType,
+      String baseURL,
+      String username,
+      String password,
+      String errorMessage,
+      bool? isValid,
+      String accessToken,
+      int? serial});
+}
+
+/// @nodoc
+class _$AlertSourceDataUpdateCopyWithImpl<$Res,
+        $Val extends AlertSourceDataUpdate>
+    implements $AlertSourceDataUpdateCopyWith<$Res> {
+  _$AlertSourceDataUpdateCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of AlertSourceDataUpdate
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = null,
+    Object? type = null,
+    Object? authType = null,
+    Object? baseURL = null,
+    Object? username = null,
+    Object? password = null,
+    Object? errorMessage = null,
+    Object? isValid = freezed,
+    Object? accessToken = null,
+    Object? serial = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as int,
+      authType: null == authType
+          ? _value.authType
+          : authType // ignore: cast_nullable_to_non_nullable
+              as int,
+      baseURL: null == baseURL
+          ? _value.baseURL
+          : baseURL // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+      isValid: freezed == isValid
+          ? _value.isValid
+          : isValid // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      accessToken: null == accessToken
+          ? _value.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      serial: freezed == serial
+          ? _value.serial
+          : serial // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$AlertSourceDataUpdateImplCopyWith<$Res>
+    implements $AlertSourceDataUpdateCopyWith<$Res> {
+  factory _$$AlertSourceDataUpdateImplCopyWith(
+          _$AlertSourceDataUpdateImpl value,
+          $Res Function(_$AlertSourceDataUpdateImpl) then) =
+      __$$AlertSourceDataUpdateImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {int? id,
+      String name,
+      int type,
+      int authType,
+      String baseURL,
+      String username,
+      String password,
+      String errorMessage,
+      bool? isValid,
+      String accessToken,
+      int? serial});
+}
+
+/// @nodoc
+class __$$AlertSourceDataUpdateImplCopyWithImpl<$Res>
+    extends _$AlertSourceDataUpdateCopyWithImpl<$Res,
+        _$AlertSourceDataUpdateImpl>
+    implements _$$AlertSourceDataUpdateImplCopyWith<$Res> {
+  __$$AlertSourceDataUpdateImplCopyWithImpl(_$AlertSourceDataUpdateImpl _value,
+      $Res Function(_$AlertSourceDataUpdateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AlertSourceDataUpdate
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = null,
+    Object? type = null,
+    Object? authType = null,
+    Object? baseURL = null,
+    Object? username = null,
+    Object? password = null,
+    Object? errorMessage = null,
+    Object? isValid = freezed,
+    Object? accessToken = null,
+    Object? serial = freezed,
+  }) {
+    return _then(_$AlertSourceDataUpdateImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as int,
+      authType: null == authType
+          ? _value.authType
+          : authType // ignore: cast_nullable_to_non_nullable
+              as int,
+      baseURL: null == baseURL
+          ? _value.baseURL
+          : baseURL // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+      isValid: freezed == isValid
+          ? _value.isValid
+          : isValid // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      accessToken: null == accessToken
+          ? _value.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      serial: freezed == serial
+          ? _value.serial
+          : serial // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AlertSourceDataUpdateImpl implements _AlertSourceDataUpdate {
+  const _$AlertSourceDataUpdateImpl(
+      {required this.id,
+      required this.name,
+      required this.type,
+      required this.authType,
+      required this.baseURL,
+      required this.username,
+      required this.password,
+      required this.errorMessage,
+      this.isValid,
+      required this.accessToken,
+      this.serial});
+
+  factory _$AlertSourceDataUpdateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AlertSourceDataUpdateImplFromJson(json);
+
+  @override
+  final int? id;
+  @override
+  final String name;
+  @override
+  final int type;
+  @override
+  final int authType;
+  @override
+  final String baseURL;
+  @override
+  final String username;
+  @override
+  final String password;
+  @override
+  final String errorMessage;
+  @override
+  final bool? isValid;
+  @override
+  final String accessToken;
+  @override
+  final int? serial;
+
+  @override
+  String toString() {
+    return 'AlertSourceDataUpdate(id: $id, name: $name, type: $type, authType: $authType, baseURL: $baseURL, username: $username, password: $password, errorMessage: $errorMessage, isValid: $isValid, accessToken: $accessToken, serial: $serial)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AlertSourceDataUpdateImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.authType, authType) ||
+                other.authType == authType) &&
+            (identical(other.baseURL, baseURL) || other.baseURL == baseURL) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.password, password) ||
+                other.password == password) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage) &&
+            (identical(other.isValid, isValid) || other.isValid == isValid) &&
+            (identical(other.accessToken, accessToken) ||
+                other.accessToken == accessToken) &&
+            (identical(other.serial, serial) || other.serial == serial));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, type, authType,
+      baseURL, username, password, errorMessage, isValid, accessToken, serial);
+
+  /// Create a copy of AlertSourceDataUpdate
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AlertSourceDataUpdateImplCopyWith<_$AlertSourceDataUpdateImpl>
+      get copyWith => __$$AlertSourceDataUpdateImplCopyWithImpl<
+          _$AlertSourceDataUpdateImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AlertSourceDataUpdateImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _AlertSourceDataUpdate implements AlertSourceDataUpdate {
+  const factory _AlertSourceDataUpdate(
+      {required final int? id,
+      required final String name,
+      required final int type,
+      required final int authType,
+      required final String baseURL,
+      required final String username,
+      required final String password,
+      required final String errorMessage,
+      final bool? isValid,
+      required final String accessToken,
+      final int? serial}) = _$AlertSourceDataUpdateImpl;
+
+  factory _AlertSourceDataUpdate.fromJson(Map<String, dynamic> json) =
+      _$AlertSourceDataUpdateImpl.fromJson;
+
+  @override
+  int? get id;
+  @override
+  String get name;
+  @override
+  int get type;
+  @override
+  int get authType;
+  @override
+  String get baseURL;
+  @override
+  String get username;
+  @override
+  String get password;
+  @override
+  String get errorMessage;
+  @override
+  bool? get isValid;
+  @override
+  String get accessToken;
+  @override
+  int? get serial;
+
+  /// Create a copy of AlertSourceDataUpdate
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AlertSourceDataUpdateImplCopyWith<_$AlertSourceDataUpdateImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}

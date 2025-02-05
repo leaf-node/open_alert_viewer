@@ -89,3 +89,35 @@ Map<String, dynamic> _$$AlertSourceDataImplToJson(
       'notifications': instance.notifications,
       'serial': instance.serial,
     };
+
+_$AlertSourceDataUpdateImpl _$$AlertSourceDataUpdateImplFromJson(
+        Map<String, dynamic> json) =>
+    _$AlertSourceDataUpdateImpl(
+      id: (json['id'] as num?)?.toInt(),
+      name: json['name'] as String,
+      type: (json['type'] as num).toInt(),
+      authType: (json['authType'] as num).toInt(),
+      baseURL: json['baseURL'] as String,
+      username: json['username'] as String,
+      password: json['password'] as String,
+      errorMessage: json['errorMessage'] as String,
+      isValid: json['isValid'] as bool?,
+      accessToken: json['accessToken'] as String,
+      serial: (json['serial'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$$AlertSourceDataUpdateImplToJson(
+        _$AlertSourceDataUpdateImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'type': instance.type,
+      'authType': instance.authType,
+      'baseURL': instance.baseURL,
+      'username': instance.username,
+      'password': instance.password,
+      'errorMessage': instance.errorMessage,
+      'isValid': instance.isValid,
+      'accessToken': instance.accessToken,
+      'serial': instance.serial,
+    };

@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AccountEditingState {
-  AlertSourceData? get sourceData => throw _privateConstructorUsedError;
+  AlertSourceDataUpdate? get sourceData => throw _privateConstructorUsedError;
   CheckStatus get status => throw _privateConstructorUsedError;
   String get statusText => throw _privateConstructorUsedError;
   IconType? get statusIcon => throw _privateConstructorUsedError;
@@ -37,14 +37,14 @@ abstract class $AccountEditingStateCopyWith<$Res> {
       _$AccountEditingStateCopyWithImpl<$Res, AccountEditingState>;
   @useResult
   $Res call(
-      {AlertSourceData? sourceData,
+      {AlertSourceDataUpdate? sourceData,
       CheckStatus status,
       String statusText,
       IconType? statusIcon,
       bool allowClickAccept,
       String acceptButtonText});
 
-  $AlertSourceDataCopyWith<$Res>? get sourceData;
+  $AlertSourceDataUpdateCopyWith<$Res>? get sourceData;
 }
 
 /// @nodoc
@@ -73,7 +73,7 @@ class _$AccountEditingStateCopyWithImpl<$Res, $Val extends AccountEditingState>
       sourceData: freezed == sourceData
           ? _value.sourceData
           : sourceData // ignore: cast_nullable_to_non_nullable
-              as AlertSourceData?,
+              as AlertSourceDataUpdate?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -101,12 +101,12 @@ class _$AccountEditingStateCopyWithImpl<$Res, $Val extends AccountEditingState>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $AlertSourceDataCopyWith<$Res>? get sourceData {
+  $AlertSourceDataUpdateCopyWith<$Res>? get sourceData {
     if (_value.sourceData == null) {
       return null;
     }
 
-    return $AlertSourceDataCopyWith<$Res>(_value.sourceData!, (value) {
+    return $AlertSourceDataUpdateCopyWith<$Res>(_value.sourceData!, (value) {
       return _then(_value.copyWith(sourceData: value) as $Val);
     });
   }
@@ -121,7 +121,7 @@ abstract class _$$AccountEditingStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {AlertSourceData? sourceData,
+      {AlertSourceDataUpdate? sourceData,
       CheckStatus status,
       String statusText,
       IconType? statusIcon,
@@ -129,7 +129,7 @@ abstract class _$$AccountEditingStateImplCopyWith<$Res>
       String acceptButtonText});
 
   @override
-  $AlertSourceDataCopyWith<$Res>? get sourceData;
+  $AlertSourceDataUpdateCopyWith<$Res>? get sourceData;
 }
 
 /// @nodoc
@@ -156,7 +156,7 @@ class __$$AccountEditingStateImplCopyWithImpl<$Res>
       sourceData: freezed == sourceData
           ? _value.sourceData
           : sourceData // ignore: cast_nullable_to_non_nullable
-              as AlertSourceData?,
+              as AlertSourceDataUpdate?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -193,7 +193,7 @@ class _$AccountEditingStateImpl implements _AccountEditingState {
       required this.acceptButtonText});
 
   @override
-  final AlertSourceData? sourceData;
+  final AlertSourceDataUpdate? sourceData;
   @override
   final CheckStatus status;
   @override
@@ -244,7 +244,7 @@ class _$AccountEditingStateImpl implements _AccountEditingState {
 
 abstract class _AccountEditingState implements AccountEditingState {
   const factory _AccountEditingState(
-      {required final AlertSourceData? sourceData,
+      {required final AlertSourceDataUpdate? sourceData,
       required final CheckStatus status,
       required final String statusText,
       required final IconType? statusIcon,
@@ -252,7 +252,7 @@ abstract class _AccountEditingState implements AccountEditingState {
       required final String acceptButtonText}) = _$AccountEditingStateImpl;
 
   @override
-  AlertSourceData? get sourceData;
+  AlertSourceDataUpdate? get sourceData;
   @override
   CheckStatus get status;
   @override

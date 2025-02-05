@@ -17,7 +17,7 @@ enum IconType { checking, invalid, valid }
 @freezed
 class AccountEditingState with _$AccountEditingState {
   const factory AccountEditingState(
-      {required AlertSourceData? sourceData,
+      {required AlertSourceDataUpdate? sourceData,
       required CheckStatus status,
       required String statusText,
       required IconType? statusIcon,

@@ -17,7 +17,7 @@ _$IsolateMessageImpl _$$IsolateMessageImplFromJson(Map<String, dynamic> json) =>
           .toList(),
       sourceData: json['sourceData'] == null
           ? null
-          : AlertSourceData.fromJson(
+          : AlertSourceDataUpdate.fromJson(
               json['sourceData'] as Map<String, dynamic>),
       allSources: (json['allSources'] as List<dynamic>?)
           ?.map((e) => AlertSourceData.fromJson(e as Map<String, dynamic>))

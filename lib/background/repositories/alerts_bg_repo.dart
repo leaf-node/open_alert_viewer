@@ -124,15 +124,16 @@ class AlertsBackgroundRepo {
       incoming.add(sourceFuture);
       incoming.last.then((List<Alert> newAlerts) {
         bool priorValue = source.failing;
+        bool failing;
         if (newAlerts
             .where((v) => v.kind == AlertType.syncFailure)
             .isNotEmpty) {
-          source = source.copyWith(failing: true);
+          failing = true;
         } else {
-          source = source.copyWith(failing: false);
+          failing = false;
         }
-        if (source.failing != priorValue) {
-          _sourcesRepo.updateSource(sourceData: source);
+        if (failing != priorValue) {
+          _sourcesRepo.setFailingStatus(id: source.id!, failing: failing);
         }
         var updatedAlerts = _updateSyncFailureAges(newAlerts, oldSyncFailures);
         _alerts = _alerts.where((alert) => alert.source != source.id).toList();
@@ -155,9 +156,8 @@ class AlertsBackgroundRepo {
     _cacheAlerts();
     for (var source in _alertSources) {
       if (!source.failing) {
-        source = source.copyWith(
-            priorFetch: source.lastFetch, lastFetch: currentFetch);
-        _sourcesRepo.updateSource(sourceData: source);
+        _sourcesRepo.setLastAndPriorFetch(
+            id: source.id!, lastFetch: currentFetch);
       }
     }
     _settings.priorFetch = _settings.lastFetched;

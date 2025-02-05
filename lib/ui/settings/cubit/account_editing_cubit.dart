@@ -34,7 +34,7 @@ class AccountEditingCubit extends Cubit<AccountEditingState> with NetworkFetch {
   bool lastNeedsCheck;
 
   void confirmSource(
-      {required AlertSourceData newSourceData,
+      {required AlertSourceDataUpdate newSourceData,
       bool? needsCheck,
       bool? checkNow}) {
     needsCheck = lastNeedsCheck = needsCheck ?? false;
@@ -52,12 +52,12 @@ class AccountEditingCubit extends Cubit<AccountEditingState> with NetworkFetch {
     }
   }
 
-  void addSource(AlertSourceData sourceData) {
+  void addSource(AlertSourceDataUpdate sourceData) {
     _bgChannel.makeRequest(
         IsolateMessage(name: MessageName.addSource, sourceData: sourceData));
   }
 
-  void updateSource(AlertSourceData sourceData) {
+  void updateSource(AlertSourceDataUpdate sourceData) {
     _bgChannel.makeRequest(
         IsolateMessage(name: MessageName.updateSource, sourceData: sourceData));
   }

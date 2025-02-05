@@ -35,6 +35,7 @@ class SourcesBackgroundRepo with NetworkFetch {
   final LocalDatabase _db;
   final SettingsRepo _settings;
   final StreamController<IsolateMessage> _outboundStream;
+  final DateTime epoch = DateTime.fromMillisecondsSinceEpoch(0);
 
   List<AlertSourceData> get alertSources => _db.listSources();
 
@@ -66,17 +67,59 @@ class SourcesBackgroundRepo with NetworkFetch {
         allSources: alertSources));
   }
 
-  void addSource({required AlertSourceData sourceData}) {
-    var result = _db.addSource(sourceData: sourceData);
+  AlertSourceData? getSource(id) {
+    final matches = _db.listSources().where((e) => e.id == id);
+    if (matches.isEmpty) {
+      return null;
+    } else {
+      return matches.first;
+    }
+  }
+
+  void addSource({required AlertSourceDataUpdate sourceData}) {
+    final newSource = AlertSourceData(
+        id: sourceData.id,
+        name: sourceData.name,
+        type: sourceData.type,
+        authType: sourceData.authType,
+        baseURL: sourceData.baseURL,
+        username: sourceData.username,
+        password: sourceData.password,
+        failing: false,
+        lastSeen: epoch,
+        priorFetch: epoch,
+        lastFetch: epoch,
+        errorMessage: "",
+        accessToken: sourceData.accessToken,
+        visible: true,
+        notifications: true);
+    var result = _db.addSource(sourceData: newSource);
     _sourcesChangeResult(_outboundStream, alertSources, (result >= 0));
   }
 
   void updateSource(
-      {required AlertSourceData sourceData, bool? updateUIandRefresh}) {
-    var result = _db.updateSource(sourceData: sourceData);
-    if (updateUIandRefresh ?? false) {
-      _sourcesChangeResult(_outboundStream, alertSources, result);
+      {required AlertSourceDataUpdate sourceData, bool? updateUIandRefresh}) {
+    final updatedSource = getSource(sourceData.id)?.copyWith(
+      id: sourceData.id,
+      name: sourceData.name,
+      type: sourceData.type,
+      authType: sourceData.authType,
+      baseURL: sourceData.baseURL,
+      username: sourceData.username,
+      password: sourceData.password,
+      accessToken: sourceData.accessToken,
+    );
+    if (updatedSource != null) {
+      final result = _updateSource(sourceData: updatedSource);
+      if (updateUIandRefresh ?? false) {
+        _sourcesChangeResult(_outboundStream, alertSources, result);
+      }
     }
+  }
+
+  // should only be run right after `sourceData = getSource(sourceData.id)`
+  bool _updateSource({required AlertSourceData sourceData}) {
+    return _db.updateSource(sourceData: sourceData);
   }
 
   void removeSource({required int id}) {
@@ -84,26 +127,42 @@ class SourcesBackgroundRepo with NetworkFetch {
     _sourcesChangeResult(_outboundStream, alertSources, true);
   }
 
+  void setFailingStatus({required int id, required bool failing}) {
+    final sourceData = getSource(id)?.copyWith(failing: true);
+    if (sourceData != null) {
+      _updateSource(sourceData: sourceData);
+    }
+  }
+
+  void setLastAndPriorFetch({required int id, required DateTime lastFetch}) {
+    AlertSourceData? sourceData = getSource(id);
+    sourceData = sourceData?.copyWith(
+        priorFetch: sourceData.lastFetch, lastFetch: lastFetch);
+    if (sourceData != null) {
+      _updateSource(sourceData: sourceData);
+    }
+  }
+
   void updateLastSeen() {
     _settings.lastSeen = _settings.lastFetched;
     for (var source in alertSources) {
       if (!source.failing) {
         var sourceData = source.copyWith(lastSeen: _settings.lastFetched);
-        updateSource(sourceData: sourceData);
+        _updateSource(sourceData: sourceData);
       }
     }
   }
 
   Future<void> confirmSource(IsolateMessage message) async {
-    var result = await _getSourceType(sourceData: message.sourceData!);
+    var result = await _getConfirmedType(sourceData: message.sourceData!);
     _outboundStream.add(IsolateMessage(
         name: MessageName.confirmSourcesReply,
         destination: MessageDestination.accountEditing,
         sourceData: result));
   }
 
-  Future<AlertSourceData> _getSourceType(
-      {required AlertSourceData sourceData}) async {
+  Future<AlertSourceDataUpdate> _getConfirmedType(
+      {required AlertSourceDataUpdate sourceData}) async {
     if ((sourceData.type == SourceTypes.demo.value ||
             sourceData.type == SourceTypes.autodetect.value) &&
         sourceData.baseURL == "demo") {
@@ -117,8 +176,8 @@ class SourcesBackgroundRepo with NetworkFetch {
       return sourceData;
     }
     bool success;
-    AlertSourceData newSourceData;
-    AlertSourceData prevNewSourceData;
+    AlertSourceDataUpdate newSourceData;
+    AlertSourceDataUpdate prevNewSourceData;
     sourceData = sourceData.copyWith(
         baseURL: sourceData.baseURL.replaceAll(RegExp(r"[?&].*$"), ""));
     (success, newSourceData) = await checkSource(
@@ -172,9 +231,9 @@ class SourcesBackgroundRepo with NetworkFetch {
     return sourceData;
   }
 
-  Future<(bool, AlertSourceData)> checkSource(
+  Future<(bool, AlertSourceDataUpdate)> checkSource(
       {required SourceTypes sourceType,
-      required AlertSourceData sourceData,
+      required AlertSourceDataUpdate sourceData,
       required String trimRegex,
       required String apiEndpoint,
       int? fallbackPort}) async {

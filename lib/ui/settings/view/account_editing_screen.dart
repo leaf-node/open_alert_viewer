@@ -49,7 +49,6 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
   final TextEditingController userController;
   final TextEditingController passwordController;
   final TextEditingController accessTokenController;
-  final DateTime epoch = DateTime.fromMillisecondsSinceEpoch(0);
   bool systemIsUpdatingValues = false;
   AccountEditingCubit? cubit;
   bool? isValid;
@@ -89,49 +88,28 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
     cubit?.cleanOut();
   }
 
-  AlertSourceData get newSourceData {
+  AlertSourceDataUpdate get newSourceData {
+    int? id;
     if (widget.source == null) {
-      return AlertSourceData(
-        id: null,
-        name: nameController.text,
-        type: int.parse(typeController.text),
-        authType: AuthTypes.basicAuth.value,
-        baseURL: baseURLController.text,
-        username: userController.text,
-        password: passwordController.text,
-        failing: false,
-        lastSeen: epoch,
-        priorFetch: epoch,
-        lastFetch: epoch,
-        errorMessage: "",
-        accessToken: accessTokenController.text,
-        isValid: isValid,
-        visible: true,
-        notifications: true,
-      );
+      id = null;
     } else {
-      return AlertSourceData(
-        id: widget.source!.id,
-        name: nameController.text,
-        type: int.parse(typeController.text),
-        authType: AuthTypes.basicAuth.value,
-        baseURL: baseURLController.text,
-        username: userController.text,
-        password: passwordController.text,
-        failing: widget.source?.failing ?? false,
-        lastSeen: widget.source?.lastSeen ?? epoch,
-        priorFetch: widget.source?.priorFetch ?? epoch,
-        lastFetch: widget.source?.lastFetch ?? epoch,
-        errorMessage: "",
-        accessToken: accessTokenController.text,
-        isValid: isValid,
-        visible: widget.source!.visible,
-        notifications: widget.source!.notifications,
-      );
+      id = widget.source!.id;
     }
+    return AlertSourceDataUpdate(
+      id: id,
+      name: nameController.text,
+      type: int.parse(typeController.text),
+      authType: AuthTypes.basicAuth.value,
+      baseURL: baseURLController.text,
+      username: userController.text,
+      password: passwordController.text,
+      errorMessage: "",
+      accessToken: accessTokenController.text,
+      isValid: isValid,
+    );
   }
 
-  void setNewSourceData({required AlertSourceData sourceData}) {
+  void setNewSourceData({required AlertSourceDataUpdate sourceData}) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       systemIsUpdatingValues = true;
       nameController.text = sourceData.name;
