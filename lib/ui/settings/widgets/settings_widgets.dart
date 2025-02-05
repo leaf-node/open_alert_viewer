@@ -11,12 +11,14 @@ import '../../core/widgets/shared_widgets.dart';
 class MenuItem extends StatelessWidget {
   const MenuItem(
       {super.key,
+      this.leading,
       this.icon,
       required this.title,
       this.subtitle,
       required this.onTap,
       this.enabled = true});
 
+  final Widget? leading;
   final IconData? icon;
   final String title;
   final String? subtitle;
@@ -25,16 +27,17 @@ class MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (subtitle == null) {
-      return ListTile(leading: Icon(icon), title: Text(title), onTap: onTap);
-    } else {
-      return ListTile(
-          leading: (icon != null) ? Icon(icon) : null,
-          title: Text(title),
-          subtitle: Text(subtitle!),
-          onTap: onTap,
-          enabled: enabled);
-    }
+    final textWidget = (subtitle != null) ? Text(subtitle!) : null;
+    return ListTile(
+        leading: (leading != null)
+            ? leading
+            : (icon != null)
+                ? Icon(icon)
+                : null,
+        title: Text(title),
+        subtitle: textWidget,
+        onTap: onTap,
+        enabled: enabled);
   }
 }
 
