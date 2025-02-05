@@ -40,6 +40,7 @@ class AlertsCubitState with _$AlertsCubitState {
       required List<Alert> filteredAlerts,
       required List<AlertSourceData> sources,
       required bool showNotificationStatusWidget,
+      required bool showVisibilityStatusWidget,
       required bool showSoundStatusWidget,
       required bool showFilterStatusWidget,
       required String emptyPaneMessage}) = _AlertsCubitState;
@@ -56,6 +57,7 @@ class AlertsCubitState with _$AlertsCubitState {
         filteredAlerts: [],
         sources: [],
         showNotificationStatusWidget: false,
+        showVisibilityStatusWidget: false,
         showSoundStatusWidget: false,
         showFilterStatusWidget: false,
         emptyPaneMessage: "");

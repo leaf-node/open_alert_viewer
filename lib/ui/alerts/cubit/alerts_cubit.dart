@@ -10,8 +10,9 @@ import 'package:bloc/bloc.dart';
 
 import '../../../background/domain/background_external.dart';
 import '../../../background/domain/background_shared.dart';
-import '../../../data/repositories/settings_repo.dart';
+import '../../../data/repositories/account_repo.dart';
 import '../../../data/repositories/alerts_repo.dart';
+import '../../../data/repositories/settings_repo.dart';
 import '../../../domain/alerts.dart';
 import '../../../domain/navigation.dart';
 import 'alerts_state.dart';
@@ -20,10 +21,12 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
   AlertsCubit(
       {required BackgroundChannel bgChannel,
       required AlertsRepo alertsRepo,
+      required AccountsRepo accounts,
       required Navigation navigation,
       required SettingsRepo settings})
       : _bgChannel = bgChannel,
         _alertsRepo = alertsRepo,
+        _accounts = accounts,
         _navigation = navigation,
         _settings = settings,
         super(AlertsCubitState.init()) {
@@ -37,6 +40,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
   AlertsCubitState? _state;
   final BackgroundChannel _bgChannel;
   final AlertsRepo _alertsRepo;
+  final AccountsRepo _accounts;
   final Navigation _navigation;
   final SettingsRepo _settings;
 
@@ -61,8 +65,13 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
       "sound_enabled": soundEnabled,
       "alert_filter": _settings.alertFilter
     });
+    final anyInvisible =
+        _accounts.listSources().where((e) => !e.visible).isNotEmpty;
+    final anyNotificationsOff =
+        _accounts.listSources().where((e) => !e.notifications).isNotEmpty;
     _state = _state!.copyWith(
-        showNotificationStatusWidget: !notifyEnabled,
+        showVisibilityStatusWidget: anyInvisible,
+        showNotificationStatusWidget: !notifyEnabled || anyNotificationsOff,
         showSoundStatusWidget: !soundEnabled && notifyEnabled,
         showFilterStatusWidget: !areImportantShown);
     _updateAlertsState();
@@ -193,6 +202,8 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
       } else if (message.name == MessageName.alertFiltersChanged) {
         status = _state!.status;
         _updateAlertsState();
+      } else if (message.name == MessageName.sourcesChanged) {
+        status = _state!.status;
       } else {
         throw Exception(
             "OAV Invalid 'alert' stream message name: ${message.name}");

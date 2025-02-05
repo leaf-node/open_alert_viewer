@@ -195,6 +195,7 @@ mixin _$AlertsCubitState {
   List<Alert> get filteredAlerts => throw _privateConstructorUsedError;
   List<AlertSourceData> get sources => throw _privateConstructorUsedError;
   bool get showNotificationStatusWidget => throw _privateConstructorUsedError;
+  bool get showVisibilityStatusWidget => throw _privateConstructorUsedError;
   bool get showSoundStatusWidget => throw _privateConstructorUsedError;
   bool get showFilterStatusWidget => throw _privateConstructorUsedError;
   String get emptyPaneMessage => throw _privateConstructorUsedError;
@@ -220,6 +221,7 @@ abstract class $AlertsCubitStateCopyWith<$Res> {
       List<Alert> filteredAlerts,
       List<AlertSourceData> sources,
       bool showNotificationStatusWidget,
+      bool showVisibilityStatusWidget,
       bool showSoundStatusWidget,
       bool showFilterStatusWidget,
       String emptyPaneMessage});
@@ -249,6 +251,7 @@ class _$AlertsCubitStateCopyWithImpl<$Res, $Val extends AlertsCubitState>
     Object? filteredAlerts = null,
     Object? sources = null,
     Object? showNotificationStatusWidget = null,
+    Object? showVisibilityStatusWidget = null,
     Object? showSoundStatusWidget = null,
     Object? showFilterStatusWidget = null,
     Object? emptyPaneMessage = null,
@@ -281,6 +284,10 @@ class _$AlertsCubitStateCopyWithImpl<$Res, $Val extends AlertsCubitState>
       showNotificationStatusWidget: null == showNotificationStatusWidget
           ? _value.showNotificationStatusWidget
           : showNotificationStatusWidget // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showVisibilityStatusWidget: null == showVisibilityStatusWidget
+          ? _value.showVisibilityStatusWidget
+          : showVisibilityStatusWidget // ignore: cast_nullable_to_non_nullable
               as bool,
       showSoundStatusWidget: null == showSoundStatusWidget
           ? _value.showSoundStatusWidget
@@ -324,6 +331,7 @@ abstract class _$$AlertsCubitStateImplCopyWith<$Res>
       List<Alert> filteredAlerts,
       List<AlertSourceData> sources,
       bool showNotificationStatusWidget,
+      bool showVisibilityStatusWidget,
       bool showSoundStatusWidget,
       bool showFilterStatusWidget,
       String emptyPaneMessage});
@@ -352,6 +360,7 @@ class __$$AlertsCubitStateImplCopyWithImpl<$Res>
     Object? filteredAlerts = null,
     Object? sources = null,
     Object? showNotificationStatusWidget = null,
+    Object? showVisibilityStatusWidget = null,
     Object? showSoundStatusWidget = null,
     Object? showFilterStatusWidget = null,
     Object? emptyPaneMessage = null,
@@ -385,6 +394,10 @@ class __$$AlertsCubitStateImplCopyWithImpl<$Res>
           ? _value.showNotificationStatusWidget
           : showNotificationStatusWidget // ignore: cast_nullable_to_non_nullable
               as bool,
+      showVisibilityStatusWidget: null == showVisibilityStatusWidget
+          ? _value.showVisibilityStatusWidget
+          : showVisibilityStatusWidget // ignore: cast_nullable_to_non_nullable
+              as bool,
       showSoundStatusWidget: null == showSoundStatusWidget
           ? _value.showSoundStatusWidget
           : showSoundStatusWidget // ignore: cast_nullable_to_non_nullable
@@ -412,6 +425,7 @@ class _$AlertsCubitStateImpl implements _AlertsCubitState {
       required final List<Alert> filteredAlerts,
       required final List<AlertSourceData> sources,
       required this.showNotificationStatusWidget,
+      required this.showVisibilityStatusWidget,
       required this.showSoundStatusWidget,
       required this.showFilterStatusWidget,
       required this.emptyPaneMessage})
@@ -459,6 +473,8 @@ class _$AlertsCubitStateImpl implements _AlertsCubitState {
   @override
   final bool showNotificationStatusWidget;
   @override
+  final bool showVisibilityStatusWidget;
+  @override
   final bool showSoundStatusWidget;
   @override
   final bool showFilterStatusWidget;
@@ -467,7 +483,7 @@ class _$AlertsCubitStateImpl implements _AlertsCubitState {
 
   @override
   String toString() {
-    return 'AlertsCubitState(settings: $settings, status: $status, refresh: $refresh, alerts: $alerts, filteredAlerts: $filteredAlerts, sources: $sources, showNotificationStatusWidget: $showNotificationStatusWidget, showSoundStatusWidget: $showSoundStatusWidget, showFilterStatusWidget: $showFilterStatusWidget, emptyPaneMessage: $emptyPaneMessage)';
+    return 'AlertsCubitState(settings: $settings, status: $status, refresh: $refresh, alerts: $alerts, filteredAlerts: $filteredAlerts, sources: $sources, showNotificationStatusWidget: $showNotificationStatusWidget, showVisibilityStatusWidget: $showVisibilityStatusWidget, showSoundStatusWidget: $showSoundStatusWidget, showFilterStatusWidget: $showFilterStatusWidget, emptyPaneMessage: $emptyPaneMessage)';
   }
 
   @override
@@ -486,6 +502,10 @@ class _$AlertsCubitStateImpl implements _AlertsCubitState {
                     showNotificationStatusWidget) ||
                 other.showNotificationStatusWidget ==
                     showNotificationStatusWidget) &&
+            (identical(other.showVisibilityStatusWidget,
+                    showVisibilityStatusWidget) ||
+                other.showVisibilityStatusWidget ==
+                    showVisibilityStatusWidget) &&
             (identical(other.showSoundStatusWidget, showSoundStatusWidget) ||
                 other.showSoundStatusWidget == showSoundStatusWidget) &&
             (identical(other.showFilterStatusWidget, showFilterStatusWidget) ||
@@ -504,6 +524,7 @@ class _$AlertsCubitStateImpl implements _AlertsCubitState {
       const DeepCollectionEquality().hash(_filteredAlerts),
       const DeepCollectionEquality().hash(_sources),
       showNotificationStatusWidget,
+      showVisibilityStatusWidget,
       showSoundStatusWidget,
       showFilterStatusWidget,
       emptyPaneMessage);
@@ -527,6 +548,7 @@ abstract class _AlertsCubitState implements AlertsCubitState {
       required final List<Alert> filteredAlerts,
       required final List<AlertSourceData> sources,
       required final bool showNotificationStatusWidget,
+      required final bool showVisibilityStatusWidget,
       required final bool showSoundStatusWidget,
       required final bool showFilterStatusWidget,
       required final String emptyPaneMessage}) = _$AlertsCubitStateImpl;
@@ -545,6 +567,8 @@ abstract class _AlertsCubitState implements AlertsCubitState {
   List<AlertSourceData> get sources;
   @override
   bool get showNotificationStatusWidget;
+  @override
+  bool get showVisibilityStatusWidget;
   @override
   bool get showSoundStatusWidget;
   @override

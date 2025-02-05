@@ -121,6 +121,9 @@ class BackgroundChannelInternal {
             name: MessageName.sourcesChanged,
             allSources: _sourcesRepo.alertSources,
             destination: MessageDestination.sourceSettings));
+        sendMessageToForeground(IsolateMessage(
+            name: MessageName.sourcesChanged,
+            destination: MessageDestination.alerts));
       } else {
         throw Exception("Invalid message name: $message");
       }

@@ -36,15 +36,19 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = context.read<AlertsCubit>();
+    Widget visibilityStatusWidget;
     Widget notificationsStatusWidget;
     Widget soundStatusWidget;
     Widget filterStatusWidget;
     return BlocBuilder<AlertsCubit, AlertsCubitState>(
         builder: (context, state) {
+      visibilityStatusWidget = state.showNotificationStatusWidget
+          ? HeaderButton(
+              icon: Icons.visibility_off, onPressed: cubit.openRootSettings)
+          : Container();
       notificationsStatusWidget = state.showNotificationStatusWidget
           ? HeaderButton(
-              icon: Icons.notifications_off,
-              onPressed: cubit.openGeneralSettings)
+              icon: Icons.notifications_off, onPressed: cubit.openRootSettings)
           : Container();
       soundStatusWidget = state.showSoundStatusWidget
           ? HeaderButton(
@@ -66,6 +70,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
             filterStatusWidget,
             soundStatusWidget,
             notificationsStatusWidget,
+            visibilityStatusWidget,
             HeaderButton(
                 icon: Icons.refresh,
                 onPressed: () async => await cubit.onTapRefresh())
