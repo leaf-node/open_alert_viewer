@@ -76,7 +76,7 @@ class SettingsList extends StatelessWidget {
               title: account.name,
               onTap: () => context
                   .read<Navigation>()
-                  .goTo(Screens.accountEditing, account)),
+                  .goTo(Screens.accountSettings, account.id)),
         MenuItem(
             icon: Icons.add,
             title: "Add new account",

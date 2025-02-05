@@ -8,6 +8,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_alert_viewer/ui/settings/view/account_settings_screen.dart';
 
 import '../../../background/domain/background_external.dart';
 import '../../../data/repositories/account_repo.dart';
@@ -90,7 +91,7 @@ class OAVapp extends StatelessWidget {
           BlocProvider(
               create: (context) => AccountEditingCubit(
                   bgChannel: bgChannel,
-                  accountsRepo: context.read<AccountsRepo>())),
+                  accountsRepo: context.read<AccountsRepo>()))
         ], child: const OAVappView()));
   }
 }
@@ -140,6 +141,9 @@ class _OAVappViewState extends State<OAVappView> {
                   context.read<RootSettingsCubit>().accountUpdated();
                 }
               });
+            case Screens.accountSettings:
+              _navigator.push(AccountSettingsScreen.route(
+                  title: "Account Settings", sourceId: state.data as int));
             case Screens.licensing:
               _navigator
                   .push(LicensingScreen.route(title: "License Information"));

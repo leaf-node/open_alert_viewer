@@ -12,6 +12,7 @@ enum Screens {
   rootSettings,
   generalSettings,
   accountEditing,
+  accountSettings,
   about,
   licensing,
   licensingDetails,
