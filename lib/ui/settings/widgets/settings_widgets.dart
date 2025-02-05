@@ -14,12 +14,14 @@ class MenuItem extends StatelessWidget {
       this.icon,
       required this.title,
       this.subtitle,
-      required this.onTap});
+      required this.onTap,
+      this.enabled = true});
 
   final IconData? icon;
   final String title;
   final String? subtitle;
-  final void Function() onTap;
+  final void Function()? onTap;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,8 @@ class MenuItem extends StatelessWidget {
           leading: (icon != null) ? Icon(icon) : null,
           title: Text(title),
           subtitle: Text(subtitle!),
-          onTap: onTap);
+          onTap: onTap,
+          enabled: enabled);
     }
   }
 }
