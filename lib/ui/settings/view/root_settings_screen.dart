@@ -72,7 +72,11 @@ class SettingsList extends StatelessWidget {
         const MenuHeaderTile(title: "Accounts"),
         for (AlertSourceData account in state.sources)
           MenuItem(
-              icon: Icons.manage_accounts,
+              leading: Row(mainAxisSize: MainAxisSize.min, children: [
+                Icon(Icons.manage_accounts),
+                if (!account.visible) Icon(Icons.visibility_off),
+                if (!account.notifications) Icon(Icons.notifications_off),
+              ]),
               title: account.name,
               onTap: () => context
                   .read<Navigation>()

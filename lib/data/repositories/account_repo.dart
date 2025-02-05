@@ -4,14 +4,19 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'package:open_alert_viewer/domain/alerts.dart';
-
+import '../../../background/domain/background_external.dart';
+import '../../../background/domain/background_shared.dart';
+import '../../domain/alerts.dart';
 import '../services/database.dart';
 
 class AccountsRepo {
-  AccountsRepo({required LocalDatabase db}) : _db = db;
+  AccountsRepo(
+      {required LocalDatabase db, required BackgroundChannel bgChannel})
+      : _db = db,
+        _bgChannel = bgChannel;
 
   final LocalDatabase _db;
+  final BackgroundChannel _bgChannel;
 
   bool checkUniqueSource({int? id, required String name}) {
     return _db.checkUniqueSource(id: id, name: name);
@@ -41,6 +46,7 @@ class AccountsRepo {
     if (source != null) {
       _updateSource(source);
     }
+    _bgChannel.makeRequest(IsolateMessage(name: MessageName.sourcesChanged));
   }
 
   Future<void> switchNotifications(int id) async {
@@ -49,5 +55,6 @@ class AccountsRepo {
     if (source != null) {
       _updateSource(source);
     }
+    _bgChannel.makeRequest(IsolateMessage(name: MessageName.sourcesChanged));
   }
 }

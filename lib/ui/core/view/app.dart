@@ -52,7 +52,8 @@ class OAVapp extends StatelessWidget {
           RepositoryProvider(
               lazy: false, create: (context) => SettingsRepo(db: db)),
           RepositoryProvider(
-              lazy: false, create: (context) => AccountsRepo(db: db)),
+              lazy: false,
+              create: (context) => AccountsRepo(db: db, bgChannel: bgChannel)),
           RepositoryProvider(
               lazy: false,
               create: (context) => StickyNotificationRepo(
