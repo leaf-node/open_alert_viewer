@@ -22,11 +22,11 @@ import '../../../oss_licenses.dart';
 import '../../alerts/cubit/alerts_cubit.dart';
 import '../../alerts/view/alerts_screen.dart';
 import '../../../data/repositories/notifications_repo.dart';
-import '../../settings/cubit/account_settings_cubit.dart';
+import '../../settings/cubit/account_editing_cubit.dart';
 import '../../settings/cubit/general_settings_cubit.dart';
 import '../../settings/cubit/root_settings_cubit.dart';
 import '../../settings/view/about_screen.dart';
-import '../../settings/view/account_settings_screen.dart';
+import '../../settings/view/account_editing_screen.dart';
 import '../../settings/view/general_settings_screen.dart';
 import '../../settings/view/licensing_details_screen.dart';
 import '../../settings/view/licensing_screen.dart';
@@ -88,7 +88,7 @@ class OAVapp extends StatelessWidget {
                   notificationsRepo: context.read<NotificationsRepo>(),
                   alertsRepo: context.read<AlertsRepo>())),
           BlocProvider(
-              create: (context) => AccountSettingsCubit(
+              create: (context) => AccountEditingCubit(
                   bgChannel: bgChannel,
                   accountsRepo: context.read<AccountsRepo>())),
         ], child: const OAVappView()));
@@ -129,9 +129,9 @@ class _OAVappViewState extends State<OAVappView> {
                   cubit: context.read<GeneralSettingsCubit>()));
             case Screens.about:
               _navigator.push(AboutScreen.route(title: "About OAV"));
-            case Screens.accountSettings:
+            case Screens.accountEditing:
               _navigator
-                  .push(AccountSettingsScreen.route(
+                  .push(AccountEditingScreen.route(
                       title: "OAV Account Settings",
                       source: state.data as AlertSourceData?))
                   .then((result) {

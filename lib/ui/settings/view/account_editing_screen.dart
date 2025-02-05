@@ -8,16 +8,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/ui/settings/cubit/account_settings_state.dart';
+import 'package:open_alert_viewer/ui/settings/cubit/account_editing_state.dart';
 
 import '../../../data/services/network_fetch.dart';
 import '../../../domain/alerts.dart';
 import '../../core/widgets/shared_widgets.dart';
-import '../cubit/account_settings_cubit.dart';
+import '../cubit/account_editing_cubit.dart';
 import '../widgets/settings_widgets.dart';
 
-class AccountSettingsScreen extends StatefulWidget {
-  const AccountSettingsScreen(
+class AccountEditingScreen extends StatefulWidget {
+  const AccountEditingScreen(
       {super.key, required this.title, required this.source});
 
   final String title;
@@ -26,16 +26,16 @@ class AccountSettingsScreen extends StatefulWidget {
   static Route<void> route(
       {required String title, required AlertSourceData? source}) {
     return MaterialPageRoute<void>(
-        builder: (_) => AccountSettingsScreen(title: title, source: source));
+        builder: (_) => AccountEditingScreen(title: title, source: source));
   }
 
   @override
-  State<AccountSettingsScreen> createState() => _AccountSettingsScreenState();
+  State<AccountEditingScreen> createState() => _AccountEditingScreenState();
 }
 
-class _AccountSettingsScreenState extends State<AccountSettingsScreen>
+class _AccountEditingScreenState extends State<AccountEditingScreen>
     with NetworkFetch {
-  _AccountSettingsScreenState()
+  _AccountEditingScreenState()
       : nameController = TextEditingController(),
         typeController = TextEditingController(),
         baseURLController = TextEditingController(),
@@ -51,7 +51,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
   final TextEditingController accessTokenController;
   final DateTime epoch = DateTime.fromMillisecondsSinceEpoch(0);
   bool systemIsUpdatingValues = false;
-  AccountSettingsCubit? cubit;
+  AccountEditingCubit? cubit;
   bool? isValid;
 
   @override
@@ -74,7 +74,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
       accessTokenController.text = widget.source!.accessToken;
       isValid = widget.source!.isValid;
     }
-    cubit = context.read<AccountSettingsCubit>();
+    cubit = context.read<AccountEditingCubit>();
   }
 
   @override
@@ -178,8 +178,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
                     onChanged: setNeedsCheck,
                     child: SizedBox(
                         width: 400,
-                        child: BlocBuilder<AccountSettingsCubit,
-                            AccountSettingsState>(builder: (context, state) {
+                        child: BlocBuilder<AccountEditingCubit,
+                            AccountEditingState>(builder: (context, state) {
                           cubit!.getStatusDetails(() =>
                               setNewSourceData(sourceData: state.sourceData!));
                           return ListView(children: [
@@ -279,7 +279,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen>
 
   Widget acceptButton({required BuildContext context, required bool isValid}) {
     cubit!.setAcceptButtonText(widget.source, isValid);
-    return BlocBuilder<AccountSettingsCubit, AccountSettingsState>(
+    return BlocBuilder<AccountEditingCubit, AccountEditingState>(
         builder: (context, state) {
       return Expanded(
           child: Center(

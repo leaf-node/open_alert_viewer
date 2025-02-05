@@ -69,5 +69,5 @@ const _$MessageDestinationEnumMap = {
   MessageDestination.notifications: 'notifications',
   MessageDestination.refreshIcon: 'refreshIcon',
   MessageDestination.sourceSettings: 'sourceSettings',
-  MessageDestination.accountSettings: 'accountSettings',
+  MessageDestination.accountEditing: 'accountEditing',
 };

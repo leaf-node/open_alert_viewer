@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'account_settings_state.dart';
+part of 'account_editing_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$AccountSettingsState {
+mixin _$AccountEditingState {
   AlertSourceData? get sourceData => throw _privateConstructorUsedError;
   CheckStatus get status => throw _privateConstructorUsedError;
   String get statusText => throw _privateConstructorUsedError;
@@ -23,18 +23,18 @@ mixin _$AccountSettingsState {
   bool get allowClickAccept => throw _privateConstructorUsedError;
   String get acceptButtonText => throw _privateConstructorUsedError;
 
-  /// Create a copy of AccountSettingsState
+  /// Create a copy of AccountEditingState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $AccountSettingsStateCopyWith<AccountSettingsState> get copyWith =>
+  $AccountEditingStateCopyWith<AccountEditingState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AccountSettingsStateCopyWith<$Res> {
-  factory $AccountSettingsStateCopyWith(AccountSettingsState value,
-          $Res Function(AccountSettingsState) then) =
-      _$AccountSettingsStateCopyWithImpl<$Res, AccountSettingsState>;
+abstract class $AccountEditingStateCopyWith<$Res> {
+  factory $AccountEditingStateCopyWith(
+          AccountEditingState value, $Res Function(AccountEditingState) then) =
+      _$AccountEditingStateCopyWithImpl<$Res, AccountEditingState>;
   @useResult
   $Res call(
       {AlertSourceData? sourceData,
@@ -48,17 +48,16 @@ abstract class $AccountSettingsStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$AccountSettingsStateCopyWithImpl<$Res,
-        $Val extends AccountSettingsState>
-    implements $AccountSettingsStateCopyWith<$Res> {
-  _$AccountSettingsStateCopyWithImpl(this._value, this._then);
+class _$AccountEditingStateCopyWithImpl<$Res, $Val extends AccountEditingState>
+    implements $AccountEditingStateCopyWith<$Res> {
+  _$AccountEditingStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of AccountSettingsState
+  /// Create a copy of AccountEditingState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -98,7 +97,7 @@ class _$AccountSettingsStateCopyWithImpl<$Res,
     ) as $Val);
   }
 
-  /// Create a copy of AccountSettingsState
+  /// Create a copy of AccountEditingState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -114,11 +113,11 @@ class _$AccountSettingsStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$AccountSettingsStateImplCopyWith<$Res>
-    implements $AccountSettingsStateCopyWith<$Res> {
-  factory _$$AccountSettingsStateImplCopyWith(_$AccountSettingsStateImpl value,
-          $Res Function(_$AccountSettingsStateImpl) then) =
-      __$$AccountSettingsStateImplCopyWithImpl<$Res>;
+abstract class _$$AccountEditingStateImplCopyWith<$Res>
+    implements $AccountEditingStateCopyWith<$Res> {
+  factory _$$AccountEditingStateImplCopyWith(_$AccountEditingStateImpl value,
+          $Res Function(_$AccountEditingStateImpl) then) =
+      __$$AccountEditingStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -134,14 +133,14 @@ abstract class _$$AccountSettingsStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$AccountSettingsStateImplCopyWithImpl<$Res>
-    extends _$AccountSettingsStateCopyWithImpl<$Res, _$AccountSettingsStateImpl>
-    implements _$$AccountSettingsStateImplCopyWith<$Res> {
-  __$$AccountSettingsStateImplCopyWithImpl(_$AccountSettingsStateImpl _value,
-      $Res Function(_$AccountSettingsStateImpl) _then)
+class __$$AccountEditingStateImplCopyWithImpl<$Res>
+    extends _$AccountEditingStateCopyWithImpl<$Res, _$AccountEditingStateImpl>
+    implements _$$AccountEditingStateImplCopyWith<$Res> {
+  __$$AccountEditingStateImplCopyWithImpl(_$AccountEditingStateImpl _value,
+      $Res Function(_$AccountEditingStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AccountSettingsState
+  /// Create a copy of AccountEditingState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -153,7 +152,7 @@ class __$$AccountSettingsStateImplCopyWithImpl<$Res>
     Object? allowClickAccept = null,
     Object? acceptButtonText = null,
   }) {
-    return _then(_$AccountSettingsStateImpl(
+    return _then(_$AccountEditingStateImpl(
       sourceData: freezed == sourceData
           ? _value.sourceData
           : sourceData // ignore: cast_nullable_to_non_nullable
@@ -184,8 +183,8 @@ class __$$AccountSettingsStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AccountSettingsStateImpl implements _AccountSettingsState {
-  const _$AccountSettingsStateImpl(
+class _$AccountEditingStateImpl implements _AccountEditingState {
+  const _$AccountEditingStateImpl(
       {required this.sourceData,
       required this.status,
       required this.statusText,
@@ -208,14 +207,14 @@ class _$AccountSettingsStateImpl implements _AccountSettingsState {
 
   @override
   String toString() {
-    return 'AccountSettingsState(sourceData: $sourceData, status: $status, statusText: $statusText, statusIcon: $statusIcon, allowClickAccept: $allowClickAccept, acceptButtonText: $acceptButtonText)';
+    return 'AccountEditingState(sourceData: $sourceData, status: $status, statusText: $statusText, statusIcon: $statusIcon, allowClickAccept: $allowClickAccept, acceptButtonText: $acceptButtonText)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AccountSettingsStateImpl &&
+            other is _$AccountEditingStateImpl &&
             (identical(other.sourceData, sourceData) ||
                 other.sourceData == sourceData) &&
             (identical(other.status, status) || other.status == status) &&
@@ -233,25 +232,24 @@ class _$AccountSettingsStateImpl implements _AccountSettingsState {
   int get hashCode => Object.hash(runtimeType, sourceData, status, statusText,
       statusIcon, allowClickAccept, acceptButtonText);
 
-  /// Create a copy of AccountSettingsState
+  /// Create a copy of AccountEditingState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$AccountSettingsStateImplCopyWith<_$AccountSettingsStateImpl>
-      get copyWith =>
-          __$$AccountSettingsStateImplCopyWithImpl<_$AccountSettingsStateImpl>(
-              this, _$identity);
+  _$$AccountEditingStateImplCopyWith<_$AccountEditingStateImpl> get copyWith =>
+      __$$AccountEditingStateImplCopyWithImpl<_$AccountEditingStateImpl>(
+          this, _$identity);
 }
 
-abstract class _AccountSettingsState implements AccountSettingsState {
-  const factory _AccountSettingsState(
+abstract class _AccountEditingState implements AccountEditingState {
+  const factory _AccountEditingState(
       {required final AlertSourceData? sourceData,
       required final CheckStatus status,
       required final String statusText,
       required final IconType? statusIcon,
       required final bool allowClickAccept,
-      required final String acceptButtonText}) = _$AccountSettingsStateImpl;
+      required final String acceptButtonText}) = _$AccountEditingStateImpl;
 
   @override
   AlertSourceData? get sourceData;
@@ -266,10 +264,10 @@ abstract class _AccountSettingsState implements AccountSettingsState {
   @override
   String get acceptButtonText;
 
-  /// Create a copy of AccountSettingsState
+  /// Create a copy of AccountEditingState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AccountSettingsStateImplCopyWith<_$AccountSettingsStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$AccountEditingStateImplCopyWith<_$AccountEditingStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -76,12 +76,12 @@ class SettingsList extends StatelessWidget {
               title: account.name,
               onTap: () => context
                   .read<Navigation>()
-                  .goTo(Screens.accountSettings, account)),
+                  .goTo(Screens.accountEditing, account)),
         MenuItem(
             icon: Icons.add,
             title: "Add new account",
             onTap: () =>
-                context.read<Navigation>().goTo(Screens.accountSettings, null)),
+                context.read<Navigation>().goTo(Screens.accountEditing, null)),
       ]);
     });
   }

@@ -98,7 +98,7 @@ class SourcesBackgroundRepo with NetworkFetch {
     var result = await _getSourceType(sourceData: message.sourceData!);
     _outboundStream.add(IsolateMessage(
         name: MessageName.confirmSourcesReply,
-        destination: MessageDestination.accountSettings,
+        destination: MessageDestination.accountEditing,
         sourceData: result));
   }
 

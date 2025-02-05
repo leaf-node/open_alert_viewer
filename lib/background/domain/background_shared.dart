@@ -43,7 +43,7 @@ enum MessageDestination {
   notifications,
   refreshIcon,
   sourceSettings,
-  accountSettings,
+  accountEditing,
 }
 
 @freezed

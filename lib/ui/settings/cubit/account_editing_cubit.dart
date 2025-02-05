@@ -12,23 +12,22 @@ import '../../../data/repositories/account_repo.dart';
 import '../../../domain/alerts.dart';
 import '../../../background/domain/background_shared.dart';
 import '../../../utils/utils.dart';
-import 'account_settings_state.dart';
+import 'account_editing_state.dart';
 
-class AccountSettingsCubit extends Cubit<AccountSettingsState>
-    with NetworkFetch {
-  AccountSettingsCubit(
+class AccountEditingCubit extends Cubit<AccountEditingState> with NetworkFetch {
+  AccountEditingCubit(
       {required BackgroundChannel bgChannel,
       required AccountsRepo accountsRepo})
       : _bgChannel = bgChannel,
         _accountsRepo = accountsRepo,
         accountCheckSerial = -1,
         lastNeedsCheck = true,
-        super(AccountSettingsState.init()) {
+        super(AccountEditingState.init()) {
     _state = state;
     _listenForConfirmations();
   }
 
-  AccountSettingsState? _state;
+  AccountEditingState? _state;
   final BackgroundChannel _bgChannel;
   final AccountsRepo _accountsRepo;
   int accountCheckSerial;
@@ -100,7 +99,7 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState>
   void cleanOut() {
     accountCheckSerial = Util.genRandom();
     lastNeedsCheck = true;
-    emit(_state = AccountSettingsState.init());
+    emit(_state = AccountEditingState.init());
   }
 
   void getStatusDetails(Function() onResponseCallback) {
@@ -159,7 +158,7 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState>
 
   Future<void> _listenForConfirmations() async {
     await for (final message in _bgChannel
-        .isolateStreams[MessageDestination.accountSettings]!.stream) {
+        .isolateStreams[MessageDestination.accountEditing]!.stream) {
       if (message.name == MessageName.confirmSourcesReply) {
         if (message.sourceData!.serial == accountCheckSerial &&
             !lastNeedsCheck) {
