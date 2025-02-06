@@ -47,6 +47,8 @@ class AccountsRepo {
       _updateSource(source);
     }
     _bgChannel.makeRequest(IsolateMessage(name: MessageName.sourcesChanged));
+    _bgChannel
+        .makeRequest(IsolateMessage(name: MessageName.alertFiltersChanged));
   }
 
   Future<void> switchNotifications(int id) async {
@@ -56,5 +58,7 @@ class AccountsRepo {
       _updateSource(source);
     }
     _bgChannel.makeRequest(IsolateMessage(name: MessageName.sourcesChanged));
+    _bgChannel
+        .makeRequest(IsolateMessage(name: MessageName.alertFiltersChanged));
   }
 }

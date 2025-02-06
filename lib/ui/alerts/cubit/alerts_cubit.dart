@@ -111,6 +111,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
   void _updateAlertsState() {
     List<bool> filter = _settings.alertFilter;
     List<bool> silenceFilter = _settings.silenceFilter;
+    List<AlertSourceData> sources = _state!.sources;
     List<Alert> filteredAlerts = [];
     for (var alert in _state!.alerts) {
       if (filter[alert.kind.index]) {
@@ -118,6 +119,10 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
                 !silenceFilter[SilenceTypes.downtimeScheduled.id]) ||
             (alert.silenced && !silenceFilter[SilenceTypes.acknowledged.id]) ||
             (!alert.active && !silenceFilter[SilenceTypes.inactive.id])) {
+          continue;
+        }
+        if (sources.where((e) => e.id == alert.source).firstOrNull?.visible !=
+            true) {
           continue;
         }
         filteredAlerts.add(alert);
@@ -202,8 +207,6 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
       } else if (message.name == MessageName.alertFiltersChanged) {
         status = _state!.status;
         _updateAlertsState();
-      } else if (message.name == MessageName.sourcesChanged) {
-        status = _state!.status;
       } else {
         throw Exception(
             "OAV Invalid 'alert' stream message name: ${message.name}");
