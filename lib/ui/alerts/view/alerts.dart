@@ -89,31 +89,34 @@ enum AlertTypeView {
   final int numArgs;
 }
 
+extension AlertView on Alert {
+  AlertTypeView get viewKind => switch (kind) {
+        AlertType.okay => AlertTypeView.okay,
+        AlertType.warning => AlertTypeView.warning,
+        AlertType.error => AlertTypeView.error,
+        AlertType.pending => AlertTypeView.pending,
+        AlertType.up => AlertTypeView.up,
+        AlertType.unreachable => AlertTypeView.unreachable,
+        AlertType.down => AlertTypeView.down,
+        AlertType.unknown => AlertTypeView.unknown,
+        AlertType.hostPending => AlertTypeView.hostPending,
+        AlertType.syncFailure => AlertTypeView.syncFailure,
+      };
+}
+
 class AlertWidget extends StatelessWidget {
-  const AlertWidget({super.key, required this.alert});
+  AlertWidget({super.key, required this.alert}) : _viewKind = alert.viewKind;
 
   final Alert alert;
+  final AlertTypeView _viewKind;
 
   @override
   Widget build(BuildContext context) {
-    final viewKind = switch (alert.kind) {
-      AlertType.okay => AlertTypeView.okay,
-      AlertType.warning => AlertTypeView.warning,
-      AlertType.error => AlertTypeView.error,
-      AlertType.pending => AlertTypeView.pending,
-      AlertType.up => AlertTypeView.up,
-      AlertType.unreachable => AlertTypeView.unreachable,
-      AlertType.down => AlertTypeView.down,
-      AlertType.unknown => AlertTypeView.unknown,
-      AlertType.hostPending => AlertTypeView.hostPending,
-      AlertType.syncFailure => AlertTypeView.syncFailure,
-    };
-
     return ListTile(
-      iconColor: viewKind.fgColor,
-      textColor: viewKind.fgColor,
-      tileColor: viewKind.bgColor,
-      title: Text(_printMessage(viewKind.title, viewKind.numArgs)),
+      iconColor: _viewKind.fgColor,
+      textColor: _viewKind.fgColor,
+      tileColor: _viewKind.bgColor,
+      title: Text(_printMessage(_viewKind.title, _viewKind.numArgs)),
       subtitle: Text(Util.prettyPrintDuration(duration: alert.age)),
       leading: Row(mainAxisSize: MainAxisSize.min, spacing: 10, children: [
         IconButton(
@@ -126,7 +129,7 @@ class AlertWidget extends StatelessWidget {
                 log("Error launching URL: ${alert.url}");
               }
             }),
-        Icon(viewKind.icon),
+        Icon(_viewKind.icon),
         if (alert.silenced || alert.downtimeScheduled)
           const Icon(Icons.bedtime_outlined)
         else if (!alert.active)
