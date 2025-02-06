@@ -122,6 +122,13 @@ class NotificationsBackgroundRepo {
       if (alert.silenced || alert.downtimeScheduled || !alert.active) {
         continue;
       }
+      if (allSources
+              .where((e) => e.id == alert.source)
+              .firstOrNull
+              ?.notifications !=
+          true) {
+        continue;
+      }
       brandNewInc = (alert.age.compareTo(sincePriorFetch) <= 0) ? 1 : 0;
       if (alert.kind == AlertType.syncFailure) {
         newSyncFailureCount += 1;
