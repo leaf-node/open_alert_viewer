@@ -72,9 +72,9 @@ class NotificationsRepo {
     return true;
   }
 
-  Future<bool?> requestNotificationPermission(
+  Future<bool> requestNotificationPermission(
       {required bool askAgain, bool? isAppVisible}) async {
-    bool? result;
+    bool result;
     if (Platform.isAndroid) {
       bool systemNotificationsGranted = await areNotificationsAllowed();
       if (!_settings.notificationsRequested ||
@@ -82,7 +82,11 @@ class NotificationsRepo {
           (!systemNotificationsGranted &&
               _settings.notificationsEnabledUnsafe)) {
         result = await Permission.notification.request().isGranted;
+      } else {
+        result = systemNotificationsGranted;
       }
+    } else {
+      result = true;
     }
     return result;
   }
