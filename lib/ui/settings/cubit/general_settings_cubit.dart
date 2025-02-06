@@ -90,11 +90,9 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
 
   Future<void> onTapRefreshIntervalButton(int? result) async {
     if (result == -1) {
-      _settingsRepo.notificationsEnabled = false;
-      await _notificationsRepo.enableOrDisableNotifications();
+      await _notificationsRepo.enableOrDisableNotifications(false);
     } else if (result != null) {
-      _settingsRepo.notificationsEnabled = true;
-      await _notificationsRepo.enableOrDisableNotifications();
+      await _notificationsRepo.enableOrDisableNotifications(true);
     }
     if (result != null) {
       _settingsRepo.refreshInterval = result;
@@ -113,8 +111,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
 
   Future<void> onTapNotificationsEnabled(BuildContext context) async {
     if (await _settingsRepo.notificationsEnabledSafe) {
-      _settingsRepo.notificationsEnabled = false;
-      await _notificationsRepo.enableOrDisableNotifications();
+      await _notificationsRepo.enableOrDisableNotifications(false);
     } else {
       if (context.mounted) {
         requestAndEnableNotifications(
@@ -128,8 +125,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
                 _bgChannel.makeRequest(
                     const IsolateMessage(name: MessageName.refreshTimer));
               }
-              _settingsRepo.notificationsEnabled = true;
-              await _notificationsRepo.enableOrDisableNotifications();
+              await _notificationsRepo.enableOrDisableNotifications(true);
               await refreshStateAsync();
             });
       }

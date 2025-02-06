@@ -45,7 +45,10 @@ class NotificationsRepo {
     }
   }
 
-  Future<void> enableOrDisableNotifications() async {
+  Future<void> enableOrDisableNotifications([bool? newValue]) async {
+    if (newValue != null) {
+      _settings.notificationsEnabled = newValue;
+    }
     bool allDisabled;
     if (_accounts.listSources().where((e) => e.notifications == true).isEmpty) {
       allDisabled = true;
