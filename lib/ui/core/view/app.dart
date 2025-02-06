@@ -68,6 +68,8 @@ class OAVapp extends StatelessWidget {
               create: (context) => NotificationsRepo(
                   stickyNotificationRepo:
                       context.read<StickyNotificationRepo>(),
+                  settings: context.read<SettingsRepo>(),
+                  accounts: context.read<AccountsRepo>(),
                   bgChannel: bgChannel)),
         ],
         child: MultiBlocProvider(providers: [

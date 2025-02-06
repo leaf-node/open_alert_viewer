@@ -8,6 +8,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../data/repositories/account_repo.dart';
+import '../../../data/repositories/notifications_repo.dart';
 import '../../../data/repositories/settings_repo.dart';
 import '../../../domain/alerts.dart';
 
@@ -18,10 +19,12 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState> {
   AccountSettingsCubit(
       {required int id,
       required SettingsRepo settings,
-      required AccountsRepo accountsRepo})
+      required AccountsRepo accountsRepo,
+      required NotificationsRepo notificationRepo})
       : _id = id,
         _settings = settings,
         _accountsRepo = accountsRepo,
+        _notificationsRepo = notificationRepo,
         super(AccountSettingsState.init(
             settings: settings, source: accountsRepo.getSource(id))) {
     _state = state;
@@ -31,6 +34,7 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState> {
   final int _id;
   final SettingsRepo _settings;
   final AccountsRepo _accountsRepo;
+  final NotificationsRepo _notificationsRepo;
   AccountSettingsState? _state;
 
   Future<void> refreshStateAsync() async {
@@ -49,5 +53,6 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState> {
   Future<void> switchNotifications() async {
     _accountsRepo.switchNotifications(_id);
     await refreshStateAsync();
+    _notificationsRepo.enableOrDisableNotifications();
   }
 }

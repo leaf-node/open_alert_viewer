@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/repositories/account_repo.dart';
+import '../../../data/repositories/notifications_repo.dart';
 import '../../../data/repositories/settings_repo.dart';
 import '../../../domain/navigation.dart';
 import '../cubit/account_settings_cubit.dart';
@@ -32,7 +33,8 @@ class AccountSettingsScreen extends StatelessWidget {
         create: (context) => AccountSettingsCubit(
             id: sourceId,
             settings: context.read<SettingsRepo>(),
-            accountsRepo: context.read<AccountsRepo>()),
+            accountsRepo: context.read<AccountsRepo>(),
+            notificationRepo: context.read<NotificationsRepo>()),
         child: BlocBuilder<AccountSettingsCubit, AccountSettingsState>(
             builder: (context, state) {
           final cubit = context.read<AccountSettingsCubit>();

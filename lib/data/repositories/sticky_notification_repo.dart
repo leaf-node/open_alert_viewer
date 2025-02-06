@@ -35,6 +35,7 @@ class StickyNotificationRepo {
           (!systemNotificationsGranted &&
               _settings.notificationsEnabledUnsafe)) {
         result = await Permission.notification.request().isGranted;
+        _settings.notificationsRequested = true;
         _settings.notificationsEnabled = result;
       }
     }

@@ -68,8 +68,8 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
     _state = _state!.copyWith(
         notificationsEnabledSubtitle:
             (await _settingsRepo.notificationsEnabledSafe)
-                ? "Enabled within app"
-                : "Disabled");
+                ? "Enabled globally in app"
+                : "Disabled globally");
     _state = _state!.copyWith(
         soundEnabledSubtitle:
             _settingsRepo.soundEnabled ? "Enabled within app" : "Disabled");
@@ -91,10 +91,10 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   Future<void> onTapRefreshIntervalButton(int? result) async {
     if (result == -1) {
       _settingsRepo.notificationsEnabled = false;
-      await _notificationsRepo.disableNotifications();
+      await _notificationsRepo.enableOrDisableNotifications();
     } else if (result != null) {
       _settingsRepo.notificationsEnabled = true;
-      await _notificationsRepo.enableNotifications();
+      await _notificationsRepo.enableOrDisableNotifications();
     }
     if (result != null) {
       _settingsRepo.refreshInterval = result;
@@ -114,7 +114,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
   Future<void> onTapNotificationsEnabled(BuildContext context) async {
     if (await _settingsRepo.notificationsEnabledSafe) {
       _settingsRepo.notificationsEnabled = false;
-      await _notificationsRepo.disableNotifications();
+      await _notificationsRepo.enableOrDisableNotifications();
     } else {
       if (context.mounted) {
         requestAndEnableNotifications(
