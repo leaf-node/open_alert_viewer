@@ -15,6 +15,7 @@ import '../../../background/domain/background_shared.dart';
 import '../../../data/repositories/battery_repo.dart';
 import '../../../data/repositories/settings_repo.dart';
 import '../../../data/repositories/alerts_repo.dart';
+import '../../../domain/settings.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../../../data/repositories/notifications_repo.dart';
 import 'general_settings_state.dart';
