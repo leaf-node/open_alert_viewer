@@ -26,7 +26,7 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SettingsHeader(title: title), body: const AboutList());
+        appBar: GeneralHeader(title: title), body: const AboutList());
   }
 }
 

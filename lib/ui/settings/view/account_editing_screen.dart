@@ -150,7 +150,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
           }
         },
         child: Scaffold(
-            appBar: SettingsHeader(
+            appBar: GeneralHeader(
                 title: widget.title,
                 intercept: () async =>
                     await noDiscardDialog(context: context) ?? true),

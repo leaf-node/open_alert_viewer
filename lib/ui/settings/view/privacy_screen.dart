@@ -25,7 +25,7 @@ class PrivacyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SettingsHeader(title: title),
+        appBar: GeneralHeader(title: title),
         body: const Center(child: PrivacyInfo()));
   }
 }

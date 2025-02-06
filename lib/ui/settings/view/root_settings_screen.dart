@@ -27,7 +27,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SettingsHeader(title: title),
+        appBar: GeneralHeader(title: title),
         body: BlocListener<RootSettingsCubit, RootSettingsCubitState>(
             listenWhen: (previous, current) =>
                 previous.accountUpdated != current.accountUpdated,

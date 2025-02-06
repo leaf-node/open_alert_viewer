@@ -22,7 +22,7 @@ class LicensingDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SettingsHeader(title: "License of ${dependency.name}"),
+        appBar: GeneralHeader(title: "License of ${dependency.name}"),
         body: ListView(children: [
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,

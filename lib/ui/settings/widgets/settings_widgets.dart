@@ -71,8 +71,8 @@ class MenuHeaderTile extends StatelessWidget {
   }
 }
 
-class SettingsHeader extends StatelessWidget implements PreferredSizeWidget {
-  const SettingsHeader({super.key, required this.title, this.intercept});
+class GeneralHeader extends StatelessWidget implements PreferredSizeWidget {
+  const GeneralHeader({super.key, required this.title, this.intercept});
 
   final String title;
   final Future<bool> Function()? intercept;

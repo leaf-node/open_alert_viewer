@@ -42,7 +42,7 @@ class AccountSettingsScreen extends StatelessWidget {
             Navigator.of(context).pop();
           }
           return Scaffold(
-              appBar: SettingsHeader(title: title),
+              appBar: GeneralHeader(title: title),
               body: ListView(children: [
                 MenuItem(
                     title: "Edit Account Details",
