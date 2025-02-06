@@ -11,6 +11,7 @@ import 'package:audioplayers/audioplayers.dart';
 import '../../../data/repositories/sticky_notification_repo.dart';
 import '../../background/domain/background_external.dart';
 import '../../background/domain/background_shared.dart';
+import '../../domain/settings.dart';
 import '../repositories/account_repo.dart';
 import '../repositories/settings_repo.dart';
 
@@ -36,11 +37,17 @@ class NotificationsRepo {
   final BackgroundChannel _bgChannel;
   late AudioPlayer? player;
 
-  Future<void> requestAndEnableNotifications(
-      {required bool askAgain, required Function() callback}) async {
-    await _stickyNotificationRepo.requestAndEnableNotifications(
-        askAgain: askAgain, callback: callback);
-    await enableOrDisableNotifications();
+  Future<void> requestAndEnableNotifications({required bool askAgain}) async {
+    final result = await _stickyNotificationRepo.requestAndEnableNotifications(
+        askAgain: askAgain);
+    _settings.notificationsRequested = true;
+    if (await _settings.notificationsEnabledSafe &&
+        _settings.refreshInterval == -1) {
+      _settings.refreshInterval = RefreshFrequencies.oneMinute.value;
+      _bgChannel
+          .makeRequest(const IsolateMessage(name: MessageName.refreshTimer));
+    }
+    await enableOrDisableNotifications(result);
   }
 
   Future<void> enableOrDisableNotifications([bool? newValue]) async {

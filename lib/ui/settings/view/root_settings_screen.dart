@@ -42,8 +42,7 @@ class SettingsScreen extends StatelessWidget {
   void _requestPermissions(BuildContext context) async {
     await Future.delayed(Duration(milliseconds: 500));
     if (context.mounted) {
-      await requestAndEnableNotifications(
-          askAgain: false, context: context, callback: () {});
+      await requestAndEnableNotifications(askAgain: false, context: context);
     }
     await Future.delayed(Duration(milliseconds: 500));
     if (context.mounted) {

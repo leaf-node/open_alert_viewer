@@ -115,20 +115,7 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
       await _notificationsRepo.enableOrDisableNotifications(false);
     } else {
       if (context.mounted) {
-        requestAndEnableNotifications(
-            askAgain: true,
-            context: context,
-            callback: () async {
-              if (await _settingsRepo.notificationsEnabledSafe &&
-                  _settingsRepo.refreshInterval == -1) {
-                _settingsRepo.refreshInterval =
-                    RefreshFrequencies.oneMinute.value;
-                _bgChannel.makeRequest(
-                    const IsolateMessage(name: MessageName.refreshTimer));
-              }
-              await _notificationsRepo.enableOrDisableNotifications(true);
-              await refreshStateAsync();
-            });
+        await requestAndEnableNotifications(askAgain: true, context: context);
       }
     }
     await refreshStateAsync();

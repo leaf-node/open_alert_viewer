@@ -102,9 +102,7 @@ class SettingsButton<T> extends StatelessWidget {
 }
 
 Future<void> requestAndEnableNotifications(
-    {required BuildContext context,
-    required bool askAgain,
-    required Function() callback}) async {
+    {required BuildContext context, required bool askAgain}) async {
   final settings = context.read<SettingsRepo>();
   final notificationsRepo = context.read<NotificationsRepo>();
   bool result;
@@ -125,12 +123,8 @@ Future<void> requestAndEnableNotifications(
     result = true;
   }
   if (result == true) {
-    await notificationsRepo.requestAndEnableNotifications(
-        askAgain: askAgain, callback: callback);
-  } else {
-    callback();
+    await notificationsRepo.requestAndEnableNotifications(askAgain: askAgain);
   }
-  settings.notificationsRequested = true;
 }
 
 Future<BatterySetting> requestBatteryPermission(

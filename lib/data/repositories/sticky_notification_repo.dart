@@ -23,23 +23,18 @@ class StickyNotificationRepo {
     return true;
   }
 
-  Future<bool> requestAndEnableNotifications(
-      {required bool askAgain,
-      required void Function() callback,
-      bool? isAppVisible}) async {
+  Future<bool?> requestAndEnableNotifications(
+      {required bool askAgain, bool? isAppVisible}) async {
+    bool? result;
     if (Platform.isAndroid) {
       bool systemNotificationsGranted = await areNotificationsAllowed();
-      bool result;
       if (!_settings.notificationsRequested ||
           askAgain ||
           (!systemNotificationsGranted &&
               _settings.notificationsEnabledUnsafe)) {
         result = await Permission.notification.request().isGranted;
-        _settings.notificationsRequested = true;
-        _settings.notificationsEnabled = result;
       }
     }
-    callback();
-    return await _settings.notificationsEnabledSafe;
+    return result;
   }
 }
