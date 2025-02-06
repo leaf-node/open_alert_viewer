@@ -15,7 +15,6 @@ import '../../../data/repositories/account_repo.dart';
 import '../../../data/repositories/alerts_repo.dart';
 import '../../../data/repositories/battery_repo.dart';
 import '../../../data/services/database.dart';
-import '../../../data/repositories/sticky_notification_repo.dart';
 import '../../../data/repositories/settings_repo.dart';
 import '../../../domain/alerts.dart';
 import '../../../domain/navigation.dart';
@@ -56,18 +55,12 @@ class OAVapp extends StatelessWidget {
               create: (context) => AccountsRepo(db: db, bgChannel: bgChannel)),
           RepositoryProvider(
               lazy: false,
-              create: (context) => StickyNotificationRepo(
-                  settings: context.read<SettingsRepo>())),
-          RepositoryProvider(
-              lazy: false,
               create: (context) => BatteryPermissionRepo(
                   settings: context.read<SettingsRepo>())),
           RepositoryProvider(lazy: false, create: (context) => Navigation()),
           RepositoryProvider(
               lazy: false,
               create: (context) => NotificationsRepo(
-                  stickyNotificationRepo:
-                      context.read<StickyNotificationRepo>(),
                   settings: context.read<SettingsRepo>(),
                   accounts: context.read<AccountsRepo>(),
                   bgChannel: bgChannel)),

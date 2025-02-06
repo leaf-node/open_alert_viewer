@@ -7,8 +7,8 @@
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-import '../../../data/repositories/sticky_notification_repo.dart';
 import '../../background/domain/background_external.dart';
 import '../../background/domain/background_shared.dart';
 import '../../domain/settings.dart';
@@ -17,12 +17,10 @@ import '../repositories/settings_repo.dart';
 
 class NotificationsRepo {
   NotificationsRepo(
-      {required StickyNotificationRepo stickyNotificationRepo,
-      required AccountsRepo accounts,
+      {required AccountsRepo accounts,
       required SettingsRepo settings,
       required BackgroundChannel bgChannel})
-      : _stickyNotificationRepo = stickyNotificationRepo,
-        _accounts = accounts,
+      : _accounts = accounts,
         _settings = settings,
         _bgChannel = bgChannel {
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -31,15 +29,13 @@ class NotificationsRepo {
     _listenForNotificationEvents();
   }
 
-  final StickyNotificationRepo _stickyNotificationRepo;
   final AccountsRepo _accounts;
   final SettingsRepo _settings;
   final BackgroundChannel _bgChannel;
   late AudioPlayer? player;
 
   Future<void> requestAndEnableNotifications({required bool askAgain}) async {
-    final result = await _stickyNotificationRepo.requestAndEnableNotifications(
-        askAgain: askAgain);
+    final result = await requestNotificationPermission(askAgain: askAgain);
     _settings.notificationsRequested = true;
     if (await _settings.notificationsEnabledSafe &&
         _settings.refreshInterval == -1) {
@@ -67,6 +63,28 @@ class NotificationsRepo {
       await _bgChannel.makeRequest(
           const IsolateMessage(name: MessageName.disableNotifications));
     }
+  }
+
+  static Future<bool> areNotificationsAllowed() async {
+    if (Platform.isAndroid) {
+      return await Permission.notification.isGranted;
+    }
+    return true;
+  }
+
+  Future<bool?> requestNotificationPermission(
+      {required bool askAgain, bool? isAppVisible}) async {
+    bool? result;
+    if (Platform.isAndroid) {
+      bool systemNotificationsGranted = await areNotificationsAllowed();
+      if (!_settings.notificationsRequested ||
+          askAgain ||
+          (!systemNotificationsGranted &&
+              _settings.notificationsEnabledUnsafe)) {
+        result = await Permission.notification.request().isGranted;
+      }
+    }
+    return result;
   }
 
   Future<void> _listenForNotificationEvents() async {

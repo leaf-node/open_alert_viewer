@@ -11,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/repositories/battery_repo.dart';
 import '../../../data/repositories/settings_repo.dart';
-import '../../../data/repositories/sticky_notification_repo.dart';
 import '../../../data/repositories/notifications_repo.dart';
 
 class HeaderButton extends StatelessWidget {
@@ -106,7 +105,7 @@ Future<void> requestAndEnableNotifications(
   final settings = context.read<SettingsRepo>();
   final notificationsRepo = context.read<NotificationsRepo>();
   bool result;
-  if (!(await StickyNotificationRepo.areNotificationsAllowed()) &&
+  if (!(await NotificationsRepo.areNotificationsAllowed()) &&
       (!settings.notificationsRequested || askAgain) &&
       context.mounted) {
     result = await textDialogBuilder(

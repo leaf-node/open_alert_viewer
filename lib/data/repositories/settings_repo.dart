@@ -7,8 +7,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:open_alert_viewer/data/repositories/sticky_notification_repo.dart';
-
+import '../../data/repositories/notifications_repo.dart';
 import '../../domain/alerts.dart';
 import '../services/database.dart';
 
@@ -41,7 +40,7 @@ class SettingsRepo {
   bool get notificationsEnabledUnsafe =>
       _getSetting<bool>("notifications_enabled", false);
   Future<bool> get notificationsEnabledSafe async =>
-      await StickyNotificationRepo.areNotificationsAllowed() &&
+      await NotificationsRepo.areNotificationsAllowed() &&
       notificationsEnabledUnsafe;
   set notificationsEnabled(value) =>
       _setSetting<bool>("notifications_enabled", value);
