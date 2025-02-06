@@ -128,6 +128,8 @@ class GeneralSettingsCubit extends Cubit<GeneralSettingsCubitState> {
                 _bgChannel.makeRequest(
                     const IsolateMessage(name: MessageName.refreshTimer));
               }
+              _settingsRepo.notificationsEnabled = true;
+              await _notificationsRepo.enableOrDisableNotifications();
               await refreshStateAsync();
             });
       }
