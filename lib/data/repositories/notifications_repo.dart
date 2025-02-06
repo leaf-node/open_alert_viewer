@@ -38,11 +38,9 @@ class NotificationsRepo {
 
   Future<void> requestAndEnableNotifications(
       {required bool askAgain, required Function() callback}) async {
-    var enabled = await _stickyNotificationRepo.requestAndEnableNotifications(
+    await _stickyNotificationRepo.requestAndEnableNotifications(
         askAgain: askAgain, callback: callback);
-    if (enabled) {
-      await enableOrDisableNotifications();
-    }
+    await enableOrDisableNotifications();
   }
 
   Future<void> enableOrDisableNotifications([bool? newValue]) async {
