@@ -36,7 +36,6 @@ class NotificationsRepo {
 
   Future<void> requestAndEnableNotifications({required bool askAgain}) async {
     final result = await requestNotificationPermission(askAgain: askAgain);
-    _settings.notificationsRequested = true;
     if (await _settings.notificationsEnabledSafe &&
         _settings.refreshInterval == -1) {
       _settings.refreshInterval = RefreshFrequencies.oneMinute.value;
@@ -88,6 +87,7 @@ class NotificationsRepo {
     } else {
       result = true;
     }
+    _settings.notificationsRequested = true;
     return result;
   }
 
