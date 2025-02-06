@@ -42,7 +42,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
     Widget filterStatusWidget;
     return BlocBuilder<AlertsCubit, AlertsCubitState>(
         builder: (context, state) {
-      visibilityStatusWidget = state.showNotificationStatusWidget
+      visibilityStatusWidget = state.showVisibilityStatusWidget
           ? HeaderButton(
               icon: Icons.visibility_off, onPressed: cubit.openRootSettings)
           : Container();
