@@ -2,8 +2,8 @@
 
 ### Contact Info
 
-Open Alert Viewer is made by OK Code Studio LLC and other Open Alert Viewer
-authors. OK Code Studio LLC may be reached at
+Open Alert Viewer is made by OK Code Studio and other Open Alert Viewer
+authors. OK Code Studio may be reached at
 [support@okcode.studio](mailto:support@okcode.studio), or via the "Support"
 menu item in the app.
 
@@ -75,8 +75,8 @@ backed-up versions of the data you entered into the app.
 ### Third Parties
 
 Sites linked to from the app, such as [GitHub](https://github.com) and [Buy Me
-a Coffee](https://buymeacoffee.com), are not controlled by OK Code Studio LLC,
-so the owners of those sites are responsible for their own privacy policies.
+a Coffee](https://buymeacoffee.com), are not controlled by OK Code Studio, so
+the owners of those sites are responsible for their own privacy policies.
 
 The owners of remote servers you configure the app to connect to are
 responsible for their own privacy policies regarding the handling and recording
@@ -87,7 +87,7 @@ be coordinated with those third parties.
 
 ### Changes to this Policy
 
-OK Code Studio LLC may occasionally update this privacy policy for Open Alert
+OK Code Studio may occasionally update this privacy policy for Open Alert
 Viewer. When we do, we'll change the date that it was last edited at the top of
 the page of the website-hosted version at
 [okcode.studio](https://okcode.studio/apps/open-alert-viewer/privacy-policy).

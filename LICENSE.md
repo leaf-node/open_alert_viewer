@@ -12,7 +12,7 @@ than "Open Alert Viewer", and change the logo and application ID.
 Open Alert Viewer License (MIT)
 ===============================
 
-Copyright 2024 OK Code Studio LLC and Open Alert Viewer authors
+Copyright 2024 OK Code Studio and Open Alert Viewer authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the “Software”), to deal in
@@ -36,7 +36,7 @@ Trademarks of third-parties
 ===========================
 
 Aside from Open Alert Viewer itself, neither Open Alert Viewer nor OK Code
-Studio LLC are endorsed by, nor affiliated with, the creators of the software
+Studio are endorsed by, nor affiliated with, the creators of the software
 referenced in this app, this app's source code, nor its documentation. While
 these may nominatively reference the names and logos of third party software,
 they are trademarked by their respective owners.

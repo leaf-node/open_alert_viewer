@@ -4,7 +4,7 @@ Section: net
 Priority: optional
 Architecture: ARCHITECTURE
 Depends: DEPENDS
-Maintainer: OK Code Studio LLC <support@okcode.studio>
+Maintainer: OK Code Studio <support@okcode.studio>
 Description: Open Alert Viewer
  Display server and network alerts from servers running Prometheus, Nagios or
  Icinga.
