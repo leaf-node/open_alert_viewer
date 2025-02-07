@@ -102,7 +102,7 @@ class AlertsBackgroundRepo with NetworkFetch {
               service: "OAV",
               message: "Error fetching alerts. "
                   "Please open an issue using the alert link to "
-                  "report any persistent errors.",
+                  "report this error.",
               serviceUrl:
                   "https://github.com/okcode-studio/open_alert_viewer/issues",
               monitorUrl: generateURL(source.baseURL, ""),
