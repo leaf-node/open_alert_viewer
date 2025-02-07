@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -137,6 +139,7 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
         } else {
           emptyIcon = Icons.check;
         }
+        final bottomGap = (Platform.isAndroid) ? 40 : 0;
         // a scrollable for pull-to-refresh
         child = LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
@@ -144,7 +147,9 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
             Container(
                 constraints: BoxConstraints(
                     minWidth: constraints.maxWidth,
-                    minHeight: constraints.maxHeight),
+                    maxWidth: constraints.maxWidth,
+                    minHeight: constraints.maxHeight - bottomGap,
+                    maxHeight: constraints.maxHeight - bottomGap),
                 child: Center(
                     child: EmptyPane(
                         icon: emptyIcon, text: state.emptyPaneMessage)))
