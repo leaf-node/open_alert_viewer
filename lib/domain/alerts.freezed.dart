@@ -31,7 +31,6 @@ mixin _$Alert {
   bool get downtimeScheduled => throw _privateConstructorUsedError;
   bool get silenced => throw _privateConstructorUsedError;
   bool get active => throw _privateConstructorUsedError;
-  AlertSourceData? get sourceData => throw _privateConstructorUsedError;
 
   /// Serializes this Alert to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -58,10 +57,7 @@ abstract class $AlertCopyWith<$Res> {
       Duration age,
       bool downtimeScheduled,
       bool silenced,
-      bool active,
-      AlertSourceData? sourceData});
-
-  $AlertSourceDataCopyWith<$Res>? get sourceData;
+      bool active});
 }
 
 /// @nodoc
@@ -90,7 +86,6 @@ class _$AlertCopyWithImpl<$Res, $Val extends Alert>
     Object? downtimeScheduled = null,
     Object? silenced = null,
     Object? active = null,
-    Object? sourceData = freezed,
   }) {
     return _then(_value.copyWith(
       source: null == source
@@ -137,25 +132,7 @@ class _$AlertCopyWithImpl<$Res, $Val extends Alert>
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
               as bool,
-      sourceData: freezed == sourceData
-          ? _value.sourceData
-          : sourceData // ignore: cast_nullable_to_non_nullable
-              as AlertSourceData?,
     ) as $Val);
-  }
-
-  /// Create a copy of Alert
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AlertSourceDataCopyWith<$Res>? get sourceData {
-    if (_value.sourceData == null) {
-      return null;
-    }
-
-    return $AlertSourceDataCopyWith<$Res>(_value.sourceData!, (value) {
-      return _then(_value.copyWith(sourceData: value) as $Val);
-    });
   }
 }
 
@@ -177,11 +154,7 @@ abstract class _$$AlertImplCopyWith<$Res> implements $AlertCopyWith<$Res> {
       Duration age,
       bool downtimeScheduled,
       bool silenced,
-      bool active,
-      AlertSourceData? sourceData});
-
-  @override
-  $AlertSourceDataCopyWith<$Res>? get sourceData;
+      bool active});
 }
 
 /// @nodoc
@@ -208,7 +181,6 @@ class __$$AlertImplCopyWithImpl<$Res>
     Object? downtimeScheduled = null,
     Object? silenced = null,
     Object? active = null,
-    Object? sourceData = freezed,
   }) {
     return _then(_$AlertImpl(
       source: null == source
@@ -255,10 +227,6 @@ class __$$AlertImplCopyWithImpl<$Res>
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
               as bool,
-      sourceData: freezed == sourceData
-          ? _value.sourceData
-          : sourceData // ignore: cast_nullable_to_non_nullable
-              as AlertSourceData?,
     ));
   }
 }
@@ -277,8 +245,7 @@ class _$AlertImpl implements _Alert {
       required this.age,
       required this.downtimeScheduled,
       required this.silenced,
-      required this.active,
-      this.sourceData});
+      required this.active});
 
   factory _$AlertImpl.fromJson(Map<String, dynamic> json) =>
       _$$AlertImplFromJson(json);
@@ -305,12 +272,10 @@ class _$AlertImpl implements _Alert {
   final bool silenced;
   @override
   final bool active;
-  @override
-  final AlertSourceData? sourceData;
 
   @override
   String toString() {
-    return 'Alert(source: $source, kind: $kind, hostname: $hostname, service: $service, message: $message, serviceUrl: $serviceUrl, monitorUrl: $monitorUrl, age: $age, downtimeScheduled: $downtimeScheduled, silenced: $silenced, active: $active, sourceData: $sourceData)';
+    return 'Alert(source: $source, kind: $kind, hostname: $hostname, service: $service, message: $message, serviceUrl: $serviceUrl, monitorUrl: $monitorUrl, age: $age, downtimeScheduled: $downtimeScheduled, silenced: $silenced, active: $active)';
   }
 
   @override
@@ -333,9 +298,7 @@ class _$AlertImpl implements _Alert {
                 other.downtimeScheduled == downtimeScheduled) &&
             (identical(other.silenced, silenced) ||
                 other.silenced == silenced) &&
-            (identical(other.active, active) || other.active == active) &&
-            (identical(other.sourceData, sourceData) ||
-                other.sourceData == sourceData));
+            (identical(other.active, active) || other.active == active));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -352,8 +315,7 @@ class _$AlertImpl implements _Alert {
       age,
       downtimeScheduled,
       silenced,
-      active,
-      sourceData);
+      active);
 
   /// Create a copy of Alert
   /// with the given fields replaced by the non-null parameter values.
@@ -383,8 +345,7 @@ abstract class _Alert implements Alert {
       required final Duration age,
       required final bool downtimeScheduled,
       required final bool silenced,
-      required final bool active,
-      final AlertSourceData? sourceData}) = _$AlertImpl;
+      required final bool active}) = _$AlertImpl;
 
   factory _Alert.fromJson(Map<String, dynamic> json) = _$AlertImpl.fromJson;
 
@@ -410,8 +371,6 @@ abstract class _Alert implements Alert {
   bool get silenced;
   @override
   bool get active;
-  @override
-  AlertSourceData? get sourceData;
 
   /// Create a copy of Alert
   /// with the given fields replaced by the non-null parameter values.

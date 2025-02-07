@@ -18,10 +18,6 @@ _$AlertImpl _$$AlertImplFromJson(Map<String, dynamic> json) => _$AlertImpl(
       downtimeScheduled: json['downtimeScheduled'] as bool,
       silenced: json['silenced'] as bool,
       active: json['active'] as bool,
-      sourceData: json['sourceData'] == null
-          ? null
-          : AlertSourceData.fromJson(
-              json['sourceData'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$AlertImplToJson(_$AlertImpl instance) =>
@@ -37,7 +33,6 @@ Map<String, dynamic> _$$AlertImplToJson(_$AlertImpl instance) =>
       'downtimeScheduled': instance.downtimeScheduled,
       'silenced': instance.silenced,
       'active': instance.active,
-      'sourceData': instance.sourceData,
     };
 
 const _$AlertTypeEnumMap = {

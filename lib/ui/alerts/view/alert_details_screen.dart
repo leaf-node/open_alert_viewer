@@ -7,11 +7,15 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:open_alert_viewer/ui/alerts/view/alerts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../data/repositories/account_repo.dart';
 import '../../../domain/alerts.dart';
 import '../../../utils/utils.dart';
 import '../../settings/widgets/settings_widgets.dart';
+import '../cubit/alert_details_cubit.dart';
+import 'alerts.dart';
 
 class AlertDetailsScreen extends StatelessWidget {
   AlertDetailsScreen({super.key, required this.title, required this.alert})
@@ -52,36 +56,44 @@ class AlertDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
-      ListTile(
-          title: Text(alert.kind.name,
-              style: TextStyle(
-                  color: _viewKind.fgColor,
-                  fontSize:
-                      Theme.of(context).textTheme.headlineLarge?.fontSize))),
-      ColorTile(Icons.person_outlined, "Account: ${alert.sourceData?.name}",
-          _viewKind.fgColor),
-      ColorTile(Icons.widgets_outlined, "Service: ${alert.service}",
-          _viewKind.fgColor),
-      ColorTile(
-          Icons.sms_outlined, "Status: ${alert.message}", _viewKind.fgColor),
-      ColorTile(
-          Icons.timer_outlined,
-          "Age: ${Util.prettyPrintDuration(duration: alert.age)}",
-          _viewKind.fgColor),
-      UrlTile(
-          url: alert.serviceUrl,
-          textColor: _viewKind.fgColor,
-          icon: Icons.public_outlined),
-      UrlTile(url: alert.monitorUrl, textColor: _viewKind.fgColor),
-      if (!alert.active)
-        ColorTile(Icons.pending_outlined, "Pending", _viewKind.fgColor),
-      if (alert.silenced)
-        ColorTile(Icons.music_off, "Silenced", _viewKind.fgColor),
-      if (alert.downtimeScheduled)
-        ColorTile(
-            Icons.bedtime_outlined, "Downtime Scheduled", _viewKind.fgColor),
-    ]);
+    return BlocProvider(
+        create: (context) => AlertDetailsCubit(
+            accounts: context.read<AccountsRepo>(), alert: alert),
+        child: BlocBuilder<AlertDetailsCubit, AlertDetailsState>(
+            builder: (context, state) {
+          return ListView(children: [
+            ListTile(
+                title: Text(alert.kind.name,
+                    style: TextStyle(
+                        color: _viewKind.fgColor,
+                        fontSize: Theme.of(context)
+                            .textTheme
+                            .headlineLarge
+                            ?.fontSize))),
+            ColorTile(Icons.person_outlined, "Account: ${state.sourceName}",
+                _viewKind.fgColor),
+            ColorTile(Icons.widgets_outlined, "Service: ${alert.service}",
+                _viewKind.fgColor),
+            ColorTile(Icons.sms_outlined, "Status: ${alert.message}",
+                _viewKind.fgColor),
+            ColorTile(
+                Icons.timer_outlined,
+                "Age: ${Util.prettyPrintDuration(duration: alert.age)}",
+                _viewKind.fgColor),
+            UrlTile(
+                url: alert.serviceUrl,
+                textColor: _viewKind.fgColor,
+                icon: Icons.public_outlined),
+            UrlTile(url: alert.monitorUrl, textColor: _viewKind.fgColor),
+            if (!alert.active)
+              ColorTile(Icons.pending_outlined, "Pending", _viewKind.fgColor),
+            if (alert.silenced)
+              ColorTile(Icons.music_off, "Silenced", _viewKind.fgColor),
+            if (alert.downtimeScheduled)
+              ColorTile(Icons.bedtime_outlined, "Downtime Scheduled",
+                  _viewKind.fgColor),
+          ]);
+        }));
   }
 }
 

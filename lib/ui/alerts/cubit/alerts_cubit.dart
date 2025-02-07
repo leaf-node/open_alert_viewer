@@ -114,18 +114,19 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     List<bool> silenceFilter = _settings.silenceFilter;
     List<Alert> filteredAlerts = [];
     for (var alert in _state!.alerts) {
-      if (filter[alert.kind.index]) {
-        if ((alert.downtimeScheduled &&
-                !silenceFilter[SilenceTypes.downtimeScheduled.id]) ||
-            (alert.silenced && !silenceFilter[SilenceTypes.acknowledged.id]) ||
-            (!alert.active && !silenceFilter[SilenceTypes.inactive.id])) {
-          continue;
-        }
-        if (alert.sourceData?.visible != true) {
-          continue;
-        }
-        filteredAlerts.add(alert);
+      if (!filter[alert.kind.index]) {
+        continue;
       }
+      if ((alert.downtimeScheduled &&
+              !silenceFilter[SilenceTypes.downtimeScheduled.id]) ||
+          (alert.silenced && !silenceFilter[SilenceTypes.acknowledged.id]) ||
+          (!alert.active && !silenceFilter[SilenceTypes.inactive.id])) {
+        continue;
+      }
+      if (_accounts.getSource(alert.source)?.visible != true) {
+        continue;
+      }
+      filteredAlerts.add(alert);
     }
     _state = _state!.copyWith(filteredAlerts: filteredAlerts);
     if (_state!.sources.isEmpty) {
@@ -189,23 +190,12 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     }
   }
 
-  List<Alert> linkAlertsAndSources(List<Alert> alerts) {
-    return alerts.map((a) {
-      if (a.sourceData != null) {
-        return a;
-      }
-      final sourceData =
-          (_state!.sources.where((s) => s.id == a.source).firstOrNull);
-      return a.copyWith(sourceData: sourceData);
-    }).toList();
-  }
-
   Future<void> _listenForAlerts() async {
     List<Alert> alerts = [];
     FetchingStatus status;
     await for (final message
         in _bgChannel.isolateStreams[MessageDestination.alerts]!.stream) {
-      alerts = linkAlertsAndSources(message.alerts ?? alerts);
+      alerts = message.alerts ?? alerts;
       if (message.name == MessageName.alertsInit) {
         status = FetchingStatus.init;
       } else if (message.name == MessageName.alertsFetching) {

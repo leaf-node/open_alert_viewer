@@ -40,7 +40,6 @@ class Alert with _$Alert {
     required bool downtimeScheduled,
     required bool silenced,
     required bool active,
-    AlertSourceData? sourceData,
   }) = _Alert;
 
   factory Alert.fromJson(Map<String, Object?> json) => _$AlertFromJson(json);
