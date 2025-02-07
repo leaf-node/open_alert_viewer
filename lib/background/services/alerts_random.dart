@@ -35,7 +35,7 @@ class RandomAlerts extends AlertSource {
           serviceUrl: "https://example.com",
           monitorUrl: "https://example.org",
           age: Duration(seconds: _randomSeed.nextInt(60 * 10)),
-          silenced: false,
+          silenced: _randomSeed.nextInt(10) > 8 ? true : false,
           downtimeScheduled: frequentlyChosenBool(false),
           active: frequentlyChosenBool(true)));
     }
