@@ -190,6 +190,14 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     }
   }
 
+  List<Alert> linkAlertsAndSources(List<Alert> alerts) {
+    return alerts.map((a) {
+      final sourceData =
+          (_state!.sources.where((s) => s.id == a.source).firstOrNull);
+      return a.copyWith(sourceData: sourceData);
+    }).toList();
+  }
+
   Future<void> _listenForAlerts() async {
     List<Alert> alerts = [];
     List<AlertSourceData> sources = [];
@@ -211,8 +219,10 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
         throw Exception(
             "OAV Invalid 'alert' stream message name: ${message.name}");
       }
-      _state =
-          _state!.copyWith(status: status, alerts: alerts, sources: sources);
+      _state = _state!.copyWith(
+          status: status,
+          alerts: linkAlertsAndSources(alerts),
+          sources: sources);
       await _refreshState();
     }
   }
