@@ -16,7 +16,8 @@ enum Screens {
   about,
   licensing,
   licensingDetails,
-  privacy
+  privacy,
+  alertDetails
 }
 
 class Navigation {

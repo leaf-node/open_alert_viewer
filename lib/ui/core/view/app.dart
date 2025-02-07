@@ -8,6 +8,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_alert_viewer/ui/alerts/view/alert_details_screen.dart';
 import 'package:open_alert_viewer/ui/settings/view/account_settings_screen.dart';
 
 import '../../../background/domain/background_external.dart';
@@ -119,6 +120,9 @@ class _OAVappViewState extends State<OAVappView> {
             case Screens.alerts:
               _navigator.pushAndRemoveUntil(
                   AlertsScreen.route(title: 'Open Alert Viewer'), (_) => false);
+            case Screens.alertDetails:
+              _navigator.push(AlertDetailsScreen.route(
+                  title: "Details", alert: state.data as Alert));
             case Screens.rootSettings:
               _navigator.push(SettingsScreen.route(title: "Settings"));
             case Screens.generalSettings:
