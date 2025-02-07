@@ -52,25 +52,40 @@ class AlertDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(children: [
+      ListTile(
+          title: Text(alert.sourceData?.name ?? "Unknown source",
+              style: TextStyle(
+                  color: _viewKind.fgColor,
+                  fontSize:
+                      Theme.of(context).textTheme.headlineLarge?.fontSize))),
       AlertWidget(alert: alert, linkable: false),
+      UrlTile(
+          url: alert.serviceUrl,
+          textColor: _viewKind.fgColor,
+          icon: Icons.public_outlined),
       UrlTile(url: alert.monitorUrl, textColor: _viewKind.fgColor),
-      UrlTile(url: alert.serviceUrl, textColor: _viewKind.fgColor),
     ]);
   }
 }
 
 class UrlTile extends StatelessWidget {
-  const UrlTile({super.key, required this.url, required this.textColor});
+  const UrlTile(
+      {super.key, required this.url, required this.textColor, this.icon});
 
   final String url;
   final Color textColor;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
+    if (url == "") {
+      return Container();
+    }
     return ListTile(
         title: Text(url),
         textColor: textColor,
-        leading: Icon(Icons.link_outlined, color: textColor),
+        leading:
+            Icon((icon != null) ? icon : Icons.link_outlined, color: textColor),
         onTap: () async {
           try {
             var uri = Uri.parse(url);
