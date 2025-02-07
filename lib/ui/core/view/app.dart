@@ -79,7 +79,9 @@ class OAVapp extends StatelessWidget {
                   settings: context.read<SettingsRepo>(),
                   navigation: context.read<Navigation>())),
           BlocProvider(
-              create: (context) => RootSettingsCubit(bgChannel: bgChannel)),
+              create: (context) => RootSettingsCubit(
+                  bgChannel: bgChannel,
+                  accountsRepo: context.read<AccountsRepo>())),
           BlocProvider(
               create: (context) => GeneralSettingsCubit(
                   settings: context.read<SettingsRepo>(),

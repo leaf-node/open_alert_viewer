@@ -53,8 +53,7 @@ class AlertsBackgroundRepo with NetworkFetch {
     _outboundStream.add(IsolateMessage(
         name: MessageName.alertsFetching,
         destination: MessageDestination.alerts,
-        alerts: _alerts,
-        allSources: _alertSources));
+        alerts: _alerts));
     _outboundStream.add(const IsolateMessage(
         name: MessageName.showRefreshIndicator,
         destination: MessageDestination.refreshIcon,

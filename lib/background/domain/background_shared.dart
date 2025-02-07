@@ -54,7 +54,6 @@ class IsolateMessage with _$IsolateMessage {
     int? id,
     List<Alert>? alerts,
     AlertSourceDataUpdate? sourceData,
-    List<AlertSourceData>? allSources,
     bool? forceRefreshNow,
     bool? alreadyFetching,
   }) = _IsolateMessage;

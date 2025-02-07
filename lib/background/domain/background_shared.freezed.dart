@@ -25,7 +25,6 @@ mixin _$IsolateMessage {
   int? get id => throw _privateConstructorUsedError;
   List<Alert>? get alerts => throw _privateConstructorUsedError;
   AlertSourceDataUpdate? get sourceData => throw _privateConstructorUsedError;
-  List<AlertSourceData>? get allSources => throw _privateConstructorUsedError;
   bool? get forceRefreshNow => throw _privateConstructorUsedError;
   bool? get alreadyFetching => throw _privateConstructorUsedError;
 
@@ -51,7 +50,6 @@ abstract class $IsolateMessageCopyWith<$Res> {
       int? id,
       List<Alert>? alerts,
       AlertSourceDataUpdate? sourceData,
-      List<AlertSourceData>? allSources,
       bool? forceRefreshNow,
       bool? alreadyFetching});
 
@@ -78,7 +76,6 @@ class _$IsolateMessageCopyWithImpl<$Res, $Val extends IsolateMessage>
     Object? id = freezed,
     Object? alerts = freezed,
     Object? sourceData = freezed,
-    Object? allSources = freezed,
     Object? forceRefreshNow = freezed,
     Object? alreadyFetching = freezed,
   }) {
@@ -103,10 +100,6 @@ class _$IsolateMessageCopyWithImpl<$Res, $Val extends IsolateMessage>
           ? _value.sourceData
           : sourceData // ignore: cast_nullable_to_non_nullable
               as AlertSourceDataUpdate?,
-      allSources: freezed == allSources
-          ? _value.allSources
-          : allSources // ignore: cast_nullable_to_non_nullable
-              as List<AlertSourceData>?,
       forceRefreshNow: freezed == forceRefreshNow
           ? _value.forceRefreshNow
           : forceRefreshNow // ignore: cast_nullable_to_non_nullable
@@ -147,7 +140,6 @@ abstract class _$$IsolateMessageImplCopyWith<$Res>
       int? id,
       List<Alert>? alerts,
       AlertSourceDataUpdate? sourceData,
-      List<AlertSourceData>? allSources,
       bool? forceRefreshNow,
       bool? alreadyFetching});
 
@@ -173,7 +165,6 @@ class __$$IsolateMessageImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? alerts = freezed,
     Object? sourceData = freezed,
-    Object? allSources = freezed,
     Object? forceRefreshNow = freezed,
     Object? alreadyFetching = freezed,
   }) {
@@ -198,10 +189,6 @@ class __$$IsolateMessageImplCopyWithImpl<$Res>
           ? _value.sourceData
           : sourceData // ignore: cast_nullable_to_non_nullable
               as AlertSourceDataUpdate?,
-      allSources: freezed == allSources
-          ? _value._allSources
-          : allSources // ignore: cast_nullable_to_non_nullable
-              as List<AlertSourceData>?,
       forceRefreshNow: freezed == forceRefreshNow
           ? _value.forceRefreshNow
           : forceRefreshNow // ignore: cast_nullable_to_non_nullable
@@ -223,11 +210,9 @@ class _$IsolateMessageImpl implements _IsolateMessage {
       this.id,
       final List<Alert>? alerts,
       this.sourceData,
-      final List<AlertSourceData>? allSources,
       this.forceRefreshNow,
       this.alreadyFetching})
-      : _alerts = alerts,
-        _allSources = allSources;
+      : _alerts = alerts;
 
   factory _$IsolateMessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$IsolateMessageImplFromJson(json);
@@ -250,16 +235,6 @@ class _$IsolateMessageImpl implements _IsolateMessage {
 
   @override
   final AlertSourceDataUpdate? sourceData;
-  final List<AlertSourceData>? _allSources;
-  @override
-  List<AlertSourceData>? get allSources {
-    final value = _allSources;
-    if (value == null) return null;
-    if (_allSources is EqualUnmodifiableListView) return _allSources;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
   @override
   final bool? forceRefreshNow;
   @override
@@ -267,7 +242,7 @@ class _$IsolateMessageImpl implements _IsolateMessage {
 
   @override
   String toString() {
-    return 'IsolateMessage(name: $name, destination: $destination, id: $id, alerts: $alerts, sourceData: $sourceData, allSources: $allSources, forceRefreshNow: $forceRefreshNow, alreadyFetching: $alreadyFetching)';
+    return 'IsolateMessage(name: $name, destination: $destination, id: $id, alerts: $alerts, sourceData: $sourceData, forceRefreshNow: $forceRefreshNow, alreadyFetching: $alreadyFetching)';
   }
 
   @override
@@ -282,8 +257,6 @@ class _$IsolateMessageImpl implements _IsolateMessage {
             const DeepCollectionEquality().equals(other._alerts, _alerts) &&
             (identical(other.sourceData, sourceData) ||
                 other.sourceData == sourceData) &&
-            const DeepCollectionEquality()
-                .equals(other._allSources, _allSources) &&
             (identical(other.forceRefreshNow, forceRefreshNow) ||
                 other.forceRefreshNow == forceRefreshNow) &&
             (identical(other.alreadyFetching, alreadyFetching) ||
@@ -299,7 +272,6 @@ class _$IsolateMessageImpl implements _IsolateMessage {
       id,
       const DeepCollectionEquality().hash(_alerts),
       sourceData,
-      const DeepCollectionEquality().hash(_allSources),
       forceRefreshNow,
       alreadyFetching);
 
@@ -327,7 +299,6 @@ abstract class _IsolateMessage implements IsolateMessage {
       final int? id,
       final List<Alert>? alerts,
       final AlertSourceDataUpdate? sourceData,
-      final List<AlertSourceData>? allSources,
       final bool? forceRefreshNow,
       final bool? alreadyFetching}) = _$IsolateMessageImpl;
 
@@ -344,8 +315,6 @@ abstract class _IsolateMessage implements IsolateMessage {
   List<Alert>? get alerts;
   @override
   AlertSourceDataUpdate? get sourceData;
-  @override
-  List<AlertSourceData>? get allSources;
   @override
   bool? get forceRefreshNow;
   @override

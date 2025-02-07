@@ -63,8 +63,7 @@ class SourcesBackgroundRepo with NetworkFetch {
   void initSources() {
     _outboundStream.add(IsolateMessage(
         name: MessageName.initSources,
-        destination: MessageDestination.sourceSettings,
-        allSources: alertSources));
+        destination: MessageDestination.sourceSettings));
   }
 
   AlertSourceData? getSource(id) {
@@ -284,12 +283,10 @@ class SourcesBackgroundRepo with NetworkFetch {
     if (success) {
       stream.add(IsolateMessage(
           name: MessageName.sourcesChanged,
-          allSources: sources,
           destination: MessageDestination.sourceSettings));
     } else {
       stream.add(IsolateMessage(
           name: MessageName.sourcesFailure,
-          allSources: sources,
           destination: MessageDestination.sourceSettings));
     }
   }

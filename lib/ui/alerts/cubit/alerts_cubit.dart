@@ -65,11 +65,12 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
       "sound_enabled": soundEnabled,
       "alert_filter": _settings.alertFilter
     });
-    final anyInvisible =
-        _accounts.listSources().where((e) => !e.visible).isNotEmpty;
+    final sources = _accounts.listSources();
+    final anyInvisible = sources.where((e) => !e.visible).isNotEmpty;
     final anyNotificationsOff =
-        _accounts.listSources().where((e) => !e.notifications).isNotEmpty;
+        sources.where((e) => !e.notifications).isNotEmpty;
     _state = _state!.copyWith(
+        sources: sources,
         showVisibilityStatusWidget: anyInvisible,
         showNotificationStatusWidget: !notifyEnabled || anyNotificationsOff,
         showSoundStatusWidget: !soundEnabled && notifyEnabled,
@@ -201,12 +202,10 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
 
   Future<void> _listenForAlerts() async {
     List<Alert> alerts = [];
-    List<AlertSourceData> sources = [];
     FetchingStatus status;
     await for (final message
         in _bgChannel.isolateStreams[MessageDestination.alerts]!.stream) {
       alerts = linkAlertsAndSources(message.alerts ?? alerts);
-      sources = message.allSources ?? sources;
       if (message.name == MessageName.alertsInit) {
         status = FetchingStatus.init;
       } else if (message.name == MessageName.alertsFetching) {
@@ -215,13 +214,11 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
         status = FetchingStatus.fetched;
       } else if (message.name == MessageName.alertFiltersChanged) {
         status = _state!.status;
-        _updateAlertsState();
       } else {
         throw Exception(
             "OAV Invalid 'alert' stream message name: ${message.name}");
       }
-      _state =
-          _state!.copyWith(status: status, alerts: alerts, sources: sources);
+      _state = _state!.copyWith(status: status, alerts: alerts);
       await _refreshState();
     }
   }

@@ -19,9 +19,6 @@ _$IsolateMessageImpl _$$IsolateMessageImplFromJson(Map<String, dynamic> json) =>
           ? null
           : AlertSourceDataUpdate.fromJson(
               json['sourceData'] as Map<String, dynamic>),
-      allSources: (json['allSources'] as List<dynamic>?)
-          ?.map((e) => AlertSourceData.fromJson(e as Map<String, dynamic>))
-          .toList(),
       forceRefreshNow: json['forceRefreshNow'] as bool?,
       alreadyFetching: json['alreadyFetching'] as bool?,
     );
@@ -34,7 +31,6 @@ Map<String, dynamic> _$$IsolateMessageImplToJson(
       'id': instance.id,
       'alerts': instance.alerts,
       'sourceData': instance.sourceData,
-      'allSources': instance.allSources,
       'forceRefreshNow': instance.forceRefreshNow,
       'alreadyFetching': instance.alreadyFetching,
     };
