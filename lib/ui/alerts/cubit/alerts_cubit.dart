@@ -123,7 +123,11 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
           (!alert.active && !silenceFilter[SilenceTypes.inactive.id])) {
         continue;
       }
-      if (_accounts.getSource(alert.source)?.visible != true) {
+      if (!(_state!.sources
+              .where((e) => e.id == alert.source)
+              .firstOrNull
+              ?.visible ??
+          false)) {
         continue;
       }
       filteredAlerts.add(alert);
