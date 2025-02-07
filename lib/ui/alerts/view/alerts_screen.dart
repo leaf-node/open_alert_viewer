@@ -137,7 +137,19 @@ class _AlertsListState extends State<AlertsList> with WidgetsBindingObserver {
         } else {
           emptyIcon = Icons.check;
         }
-        child = EmptyPane(icon: emptyIcon, text: state.emptyPaneMessage);
+        // a scrollable for pull-to-refresh
+        child = LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+          return ListView(shrinkWrap: true, children: [
+            Container(
+                constraints: BoxConstraints(
+                    minWidth: constraints.maxWidth,
+                    minHeight: constraints.maxHeight),
+                child: Center(
+                    child: EmptyPane(
+                        icon: emptyIcon, text: state.emptyPaneMessage)))
+          ]);
+        });
       }
       return RefreshIndicator(
           onRefresh: cubit.onRefresh,
