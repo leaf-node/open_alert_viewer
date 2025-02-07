@@ -14,6 +14,7 @@ import 'package:sqlite3/sqlite3.dart';
 import '../../domain/alerts.dart';
 import '../../schema/version_1_0_0sql.dart';
 import '../../schema/version_1_3_0sql.dart';
+import '../../schema/version_1_3_1sql.dart';
 import '../../utils/utils.dart';
 
 class LocalDatabase {
@@ -76,6 +77,10 @@ class LocalDatabase {
     if (getSetting(setting: _migrationSetting) == "1.0.0") {
       _db.execute(version_1_3_0sql);
       setSetting(setting: _migrationSetting, value: "1.3.0");
+    }
+    if (getSetting(setting: _migrationSetting) == "1.3.0") {
+      _db.execute(version_1_3_1sql);
+      setSetting(setting: _migrationSetting, value: "1.3.1");
     }
     _db.execute("COMMIT TRANSACTION;");
   }
@@ -257,7 +262,7 @@ class LocalDatabase {
   List<Alert> fetchCachedAlerts() {
     List<Map<String, Object>> alerts = _fetchFromTable(
         query: '''SELECT id, source, kind, hostname, service, message, url, age,
-          silenced, downtime_scheduled, active
+          silenced, downtime_scheduled, active, monitor_url
             FROM alerts_cache;''', values: []);
     return [
       for (var alert in alerts)
@@ -265,13 +270,14 @@ class LocalDatabase {
             source: alert["source"] as int,
             kind: AlertType.values[alert["kind"] as int],
             message: alert["message"] as String,
-            url: alert["url"] as String,
+            serviceUrl: alert["url"] as String,
             hostname: alert["hostname"] as String,
             service: alert["service"] as String,
             age: Duration(seconds: alert["age"] as int),
             silenced: Util.toBool(alert["silenced"]!),
             downtimeScheduled: Util.toBool(alert["downtime_scheduled"]!),
-            active: Util.toBool(alert["active"]!))
+            active: Util.toBool(alert["active"]!),
+            monitorUrl: alert["monitor_url"] as String)
     ];
   }
 
@@ -283,8 +289,8 @@ class LocalDatabase {
     _insertIntoTable(query: '''
         INSERT INTO alerts_cache
           (source, kind, hostname, service, message, url, age, silenced,
-            downtime_scheduled, active)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);''', values: [
+            downtime_scheduled, active, monitor_url)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);''', values: [
       for (var alert in alerts)
         [
           alert.source,
@@ -292,11 +298,12 @@ class LocalDatabase {
           alert.hostname,
           alert.service,
           alert.message,
-          alert.url,
+          alert.serviceUrl,
           alert.age.inSeconds,
           alert.silenced,
           alert.downtimeScheduled,
           alert.active,
+          alert.monitorUrl,
         ]
     ]);
   }

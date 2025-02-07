@@ -55,7 +55,12 @@ class PromAlerts extends AlertSource {
         hostname: alertDatum.labels?.instance ?? "Unknown Host",
         service: alertDatum.labels?.alertname ?? "Unknown",
         message: alertDatum.annotations?.summary ?? "...",
-        url: alertDatum.generatorURL ?? "",
+        serviceUrl: (alertDatum.labels?.instance == null)
+            ? ""
+            : generateURL(alertDatum.labels!.instance!, ""),
+        monitorUrl: (alertDatum.generatorURL == null)
+            ? generateURL(sourceData.baseURL, "")
+            : generateURL(alertDatum.generatorURL!, ""),
         age: (alertDatum.startsAt == null)
             ? Duration.zero
             : DateTime.now().difference(DateTime.parse(alertDatum.startsAt!)),

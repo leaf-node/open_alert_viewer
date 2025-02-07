@@ -25,7 +25,8 @@ mixin _$Alert {
   String get hostname => throw _privateConstructorUsedError;
   String get service => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
-  String get url => throw _privateConstructorUsedError;
+  String get serviceUrl => throw _privateConstructorUsedError;
+  String get monitorUrl => throw _privateConstructorUsedError;
   Duration get age => throw _privateConstructorUsedError;
   bool get downtimeScheduled => throw _privateConstructorUsedError;
   bool get silenced => throw _privateConstructorUsedError;
@@ -51,7 +52,8 @@ abstract class $AlertCopyWith<$Res> {
       String hostname,
       String service,
       String message,
-      String url,
+      String serviceUrl,
+      String monitorUrl,
       Duration age,
       bool downtimeScheduled,
       bool silenced,
@@ -78,7 +80,8 @@ class _$AlertCopyWithImpl<$Res, $Val extends Alert>
     Object? hostname = null,
     Object? service = null,
     Object? message = null,
-    Object? url = null,
+    Object? serviceUrl = null,
+    Object? monitorUrl = null,
     Object? age = null,
     Object? downtimeScheduled = null,
     Object? silenced = null,
@@ -105,9 +108,13 @@ class _$AlertCopyWithImpl<$Res, $Val extends Alert>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
-      url: null == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
+      serviceUrl: null == serviceUrl
+          ? _value.serviceUrl
+          : serviceUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      monitorUrl: null == monitorUrl
+          ? _value.monitorUrl
+          : monitorUrl // ignore: cast_nullable_to_non_nullable
               as String,
       age: null == age
           ? _value.age
@@ -142,7 +149,8 @@ abstract class _$$AlertImplCopyWith<$Res> implements $AlertCopyWith<$Res> {
       String hostname,
       String service,
       String message,
-      String url,
+      String serviceUrl,
+      String monitorUrl,
       Duration age,
       bool downtimeScheduled,
       bool silenced,
@@ -167,7 +175,8 @@ class __$$AlertImplCopyWithImpl<$Res>
     Object? hostname = null,
     Object? service = null,
     Object? message = null,
-    Object? url = null,
+    Object? serviceUrl = null,
+    Object? monitorUrl = null,
     Object? age = null,
     Object? downtimeScheduled = null,
     Object? silenced = null,
@@ -194,9 +203,13 @@ class __$$AlertImplCopyWithImpl<$Res>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
-      url: null == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
+      serviceUrl: null == serviceUrl
+          ? _value.serviceUrl
+          : serviceUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      monitorUrl: null == monitorUrl
+          ? _value.monitorUrl
+          : monitorUrl // ignore: cast_nullable_to_non_nullable
               as String,
       age: null == age
           ? _value.age
@@ -227,7 +240,8 @@ class _$AlertImpl implements _Alert {
       required this.hostname,
       required this.service,
       required this.message,
-      required this.url,
+      required this.serviceUrl,
+      required this.monitorUrl,
       required this.age,
       required this.downtimeScheduled,
       required this.silenced,
@@ -247,7 +261,9 @@ class _$AlertImpl implements _Alert {
   @override
   final String message;
   @override
-  final String url;
+  final String serviceUrl;
+  @override
+  final String monitorUrl;
   @override
   final Duration age;
   @override
@@ -259,7 +275,7 @@ class _$AlertImpl implements _Alert {
 
   @override
   String toString() {
-    return 'Alert(source: $source, kind: $kind, hostname: $hostname, service: $service, message: $message, url: $url, age: $age, downtimeScheduled: $downtimeScheduled, silenced: $silenced, active: $active)';
+    return 'Alert(source: $source, kind: $kind, hostname: $hostname, service: $service, message: $message, serviceUrl: $serviceUrl, monitorUrl: $monitorUrl, age: $age, downtimeScheduled: $downtimeScheduled, silenced: $silenced, active: $active)';
   }
 
   @override
@@ -273,7 +289,10 @@ class _$AlertImpl implements _Alert {
                 other.hostname == hostname) &&
             (identical(other.service, service) || other.service == service) &&
             (identical(other.message, message) || other.message == message) &&
-            (identical(other.url, url) || other.url == url) &&
+            (identical(other.serviceUrl, serviceUrl) ||
+                other.serviceUrl == serviceUrl) &&
+            (identical(other.monitorUrl, monitorUrl) ||
+                other.monitorUrl == monitorUrl) &&
             (identical(other.age, age) || other.age == age) &&
             (identical(other.downtimeScheduled, downtimeScheduled) ||
                 other.downtimeScheduled == downtimeScheduled) &&
@@ -284,8 +303,19 @@ class _$AlertImpl implements _Alert {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, source, kind, hostname, service,
-      message, url, age, downtimeScheduled, silenced, active);
+  int get hashCode => Object.hash(
+      runtimeType,
+      source,
+      kind,
+      hostname,
+      service,
+      message,
+      serviceUrl,
+      monitorUrl,
+      age,
+      downtimeScheduled,
+      silenced,
+      active);
 
   /// Create a copy of Alert
   /// with the given fields replaced by the non-null parameter values.
@@ -310,7 +340,8 @@ abstract class _Alert implements Alert {
       required final String hostname,
       required final String service,
       required final String message,
-      required final String url,
+      required final String serviceUrl,
+      required final String monitorUrl,
       required final Duration age,
       required final bool downtimeScheduled,
       required final bool silenced,
@@ -329,7 +360,9 @@ abstract class _Alert implements Alert {
   @override
   String get message;
   @override
-  String get url;
+  String get serviceUrl;
+  @override
+  String get monitorUrl;
   @override
   Duration get age;
   @override

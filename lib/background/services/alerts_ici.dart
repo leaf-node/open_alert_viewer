@@ -128,7 +128,8 @@ class IciAlerts extends AlertSource {
         hostname: hostname,
         service: service,
         message: alertDatum.attrs?.last_check_result?.output ?? "...",
-        url: generateURL(hostname, ""),
+        serviceUrl: generateURL(hostname, ""),
+        monitorUrl: generateURL(sourceData.baseURL, ""),
         age: age,
         silenced: Util.toBool(alertDatum.attrs?.acknowledgement?.floor() ?? 0),
         downtimeScheduled:

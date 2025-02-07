@@ -80,7 +80,9 @@ class BackgroundChannel {
               "please take a screen shot, and submit it using "
               "the link icon to the left so we can help resolve the "
               "problem. Sorry for the inconvenience.",
-          url: "https://github.com/okcode-studio/open_alert_viewer/issues",
+          serviceUrl:
+              "https://github.com/okcode-studio/open_alert_viewer/issues",
+          monitorUrl: "",
           age: Duration.zero,
           silenced: false,
           downtimeScheduled: false,
@@ -91,7 +93,9 @@ class BackgroundChannel {
           hostname: "Open Alert Viewer version ${SettingsRepo.appVersion}",
           service: "Stack Trace",
           message: errorMessage,
-          url: "https://github.com/okcode-studio/open_alert_viewer/issues",
+          serviceUrl:
+              "https://github.com/okcode-studio/open_alert_viewer/issues",
+          monitorUrl: "",
           age: Duration.zero,
           silenced: false,
           downtimeScheduled: false,

@@ -128,7 +128,8 @@ class NagAlerts extends AlertSource {
         hostname: host,
         service: alertDatum.description ?? "Unknown",
         message: alertDatum.plugin_output ?? "...",
-        url: generateURL(host, ""),
+        serviceUrl: generateURL(host, ""),
+        monitorUrl: generateURL(sourceData.baseURL, ""),
         age: age,
         silenced: alertDatum.problem_has_been_acknowledged ?? false,
         downtimeScheduled:

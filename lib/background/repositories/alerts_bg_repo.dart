@@ -6,6 +6,7 @@
 
 import 'dart:async';
 
+import '../../data/services/network_fetch.dart';
 import '../../domain/alerts.dart';
 import '../../data/services/database.dart';
 import '../../data/repositories/settings_repo.dart';
@@ -13,7 +14,7 @@ import '../domain/background_shared.dart';
 import 'notifications_bg_repo.dart';
 import 'sources_bg_repo.dart';
 
-class AlertsBackgroundRepo {
+class AlertsBackgroundRepo with NetworkFetch {
   AlertsBackgroundRepo(
       {required LocalDatabase db,
       required SettingsRepo settings,
@@ -101,9 +102,11 @@ class AlertsBackgroundRepo {
               hostname: source.name,
               service: "OAV",
               message: "Error fetching alerts. "
-                  "Please open an issue using the link icon to the left to "
+                  "Please open an issue using the alert link to "
                   "report any persistent errors.",
-              url: "https://github.com/okcode-studio/open_alert_viewer/issues",
+              serviceUrl:
+                  "https://github.com/okcode-studio/open_alert_viewer/issues",
+              monitorUrl: generateURL(source.baseURL, ""),
               age: Duration.zero,
               silenced: false,
               downtimeScheduled: false,
@@ -114,7 +117,9 @@ class AlertsBackgroundRepo {
               hostname: source.name,
               service: "OAV",
               message: message,
-              url: "https://github.com/okcode-studio/open_alert_viewer/issues",
+              serviceUrl:
+                  "https://github.com/okcode-studio/open_alert_viewer/issues",
+              monitorUrl: generateURL(source.baseURL, ""),
               age: Duration.zero,
               silenced: false,
               downtimeScheduled: false,
@@ -191,7 +196,8 @@ class AlertsBackgroundRepo {
             hostname: alert.hostname,
             service: alert.service,
             message: alert.message,
-            url: alert.url,
+            serviceUrl: alert.serviceUrl,
+            monitorUrl: alert.monitorUrl,
             age: newAge,
             silenced: false,
             downtimeScheduled: false,
