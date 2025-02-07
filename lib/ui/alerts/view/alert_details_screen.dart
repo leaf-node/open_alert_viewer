@@ -64,7 +64,29 @@ class AlertDetails extends StatelessWidget {
           textColor: _viewKind.fgColor,
           icon: Icons.public_outlined),
       UrlTile(url: alert.monitorUrl, textColor: _viewKind.fgColor),
+      if (!alert.active)
+        ColorTile(Icons.pending_outlined, "Pending", _viewKind.fgColor),
+      if (alert.silenced)
+        ColorTile(Icons.music_off, "Silenced", _viewKind.fgColor),
+      if (alert.downtimeScheduled)
+        ColorTile(
+            Icons.bedtime_outlined, "Downtime Scheduled", _viewKind.fgColor),
     ]);
+  }
+}
+
+class ColorTile extends StatelessWidget {
+  const ColorTile(this.icon, this.text, this.color, {super.key});
+
+  final String text;
+  final Color color;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+        leading: Icon(icon, color: color),
+        title: Text(text, style: TextStyle(color: color)));
   }
 }
 
