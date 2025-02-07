@@ -59,8 +59,8 @@ class AlertDetails extends StatelessWidget {
                   color: _viewKind.fgColor,
                   fontSize:
                       Theme.of(context).textTheme.headlineLarge?.fontSize))),
-      ColorTile(Icons.account_balance_outlined,
-          "Source: ${alert.sourceData?.name}", _viewKind.fgColor),
+      ColorTile(Icons.person_outlined, "Account: ${alert.sourceData?.name}",
+          _viewKind.fgColor),
       ColorTile(Icons.widgets_outlined, "Service: ${alert.service}",
           _viewKind.fgColor),
       ColorTile(
