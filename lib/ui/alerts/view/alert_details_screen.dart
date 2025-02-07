@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:open_alert_viewer/ui/alerts/view/alerts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../domain/alerts.dart';
+import '../../../utils/utils.dart';
 import '../../settings/widgets/settings_widgets.dart';
 
 class AlertDetailsScreen extends StatelessWidget {
@@ -53,12 +54,21 @@ class AlertDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(children: [
       ListTile(
-          title: Text(alert.sourceData?.name ?? "Unknown source",
+          title: Text(alert.kind.name,
               style: TextStyle(
                   color: _viewKind.fgColor,
                   fontSize:
                       Theme.of(context).textTheme.headlineLarge?.fontSize))),
-      AlertWidget(alert: alert, linkable: false),
+      ColorTile(Icons.account_balance_outlined,
+          "Source: ${alert.sourceData?.name}", _viewKind.fgColor),
+      ColorTile(Icons.widgets_outlined, "Service: ${alert.service}",
+          _viewKind.fgColor),
+      ColorTile(
+          Icons.sms_outlined, "Status: ${alert.message}", _viewKind.fgColor),
+      ColorTile(
+          Icons.timer_outlined,
+          "Age: ${Util.prettyPrintDuration(duration: alert.age)}",
+          _viewKind.fgColor),
       UrlTile(
           url: alert.serviceUrl,
           textColor: _viewKind.fgColor,
