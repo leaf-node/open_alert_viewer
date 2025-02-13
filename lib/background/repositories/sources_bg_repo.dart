@@ -22,6 +22,7 @@ import '../services/alerts_nag.dart';
 import '../services/alerts_null.dart';
 import '../services/alerts_prom.dart';
 import '../services/alerts_random.dart';
+import '../services/alerts_zab.dart';
 
 class SourcesBackgroundRepo with NetworkFetch {
   SourcesBackgroundRepo(
@@ -59,7 +60,7 @@ class SourcesBackgroundRepo with NetworkFetch {
       case SourceTypes.ici:
         alertSource = IciAlerts.new;
       case SourceTypes.zab:
-        alertSource = NullAlerts.new;
+        alertSource = ZabAlerts.new;
     }
     return alertSource(sourceData: sourceData);
   }
