@@ -117,7 +117,8 @@ enum SourceTypes {
   autodetect("Autodetect", 0),
   ici("Icinga", 3),
   nag("Nagios Core", 2),
-  prom("Prometheus Alertmanager", 1);
+  prom("Prometheus Alertmanager", 1),
+  zab("Zabbix 7", 4);
 
   const SourceTypes(this.text, this.value);
   final String text;

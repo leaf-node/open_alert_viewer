@@ -5,6 +5,7 @@
  */
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
@@ -13,6 +14,7 @@ import '../../domain/alerts.dart';
 import '../../data/repositories/settings_repo.dart';
 import '../../data/services/database.dart';
 import '../../data/services/network_fetch.dart';
+import '../../utils/utils.dart';
 import '../domain/background_shared.dart';
 import '../services/alerts.dart';
 import '../services/alerts_ici.dart';
@@ -56,6 +58,8 @@ class SourcesBackgroundRepo with NetworkFetch {
         alertSource = NagAlerts.new;
       case SourceTypes.ici:
         alertSource = IciAlerts.new;
+      case SourceTypes.zab:
+        alertSource = NullAlerts.new;
     }
     return alertSource(sourceData: sourceData);
   }
@@ -222,6 +226,14 @@ class SourcesBackgroundRepo with NetworkFetch {
     } else if (sourceData.type == SourceTypes.ici.value) {
       return prevNewSourceData;
     }
+    (success, newSourceData) = await checkSource(
+        sourceType: SourceTypes.zab,
+        sourceData: sourceData,
+        trimRegex: r"(/api_jsonrpc.php/?)$",
+        apiEndpoint: "/api_jsonrpc.php");
+    if (success || sourceData.type == SourceTypes.zab.value) {
+      return newSourceData;
+    }
     sourceData = sourceData.copyWith(isValid: false);
     if (sourceData.type == SourceTypes.autodetect.value) {
       sourceData =
@@ -257,6 +269,36 @@ class SourcesBackgroundRepo with NetworkFetch {
           sourceData = sourceData.copyWith(
               type: sourceType.value, baseURL: trimmedBaseURL, isValid: true);
           return (true, sourceData);
+        } else if (response.statusCode == 412 &&
+            sourceType.value == SourceTypes.zab.value) {
+          final zabLoginQuery = '{"jsonrpc":"2.0","method":"user.login",'
+              '"params":{"username":"${sourceData.username}",'
+              '"password":"${sourceData.password}"},"id":1}';
+          final zabResponse = await networkFetch(sourceData.baseURL,
+              sourceData.username, sourceData.password, apiEndpoint,
+              postBody: zabLoginQuery,
+              authOverride: true,
+              headers: {"Content-Type": "application/json-rpc"});
+          if (zabResponse.statusCode != 200) {
+            sourceData = sourceData.copyWith(
+                errorMessage:
+                    "${zabResponse.statusCode}: ${zabResponse.reasonPhrase ?? ""}",
+                isValid: false);
+            return (false, sourceData);
+          }
+          final replyMap = Util.mapConvert(json.decode(zabResponse.body));
+          if (replyMap.keys.contains("error")) {
+            sourceData = sourceData.copyWith(
+                errorMessage: replyMap["error"]["data"], isValid: false);
+            return (false, sourceData);
+          } else {
+            sourceData = sourceData.copyWith(
+                accessToken: replyMap["result"],
+                type: sourceType.value,
+                baseURL: trimmedBaseURL,
+                isValid: true);
+            return (true, sourceData);
+          }
         } else {
           sourceData = sourceData.copyWith(
               errorMessage:
