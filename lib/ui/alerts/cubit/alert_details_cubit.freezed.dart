@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,147 +10,133 @@ part of 'alert_details_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$AlertDetailsState {
-  String get sourceName => throw _privateConstructorUsedError;
 
-  /// Create a copy of AlertDetailsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $AlertDetailsStateCopyWith<AlertDetailsState> get copyWith =>
-      throw _privateConstructorUsedError;
+ String get sourceName;
+/// Create a copy of AlertDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AlertDetailsStateCopyWith<AlertDetailsState> get copyWith => _$AlertDetailsStateCopyWithImpl<AlertDetailsState>(this as AlertDetailsState, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AlertDetailsState&&(identical(other.sourceName, sourceName) || other.sourceName == sourceName));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,sourceName);
+
+@override
+String toString() {
+  return 'AlertDetailsState(sourceName: $sourceName)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $AlertDetailsStateCopyWith<$Res> {
-  factory $AlertDetailsStateCopyWith(
-    AlertDetailsState value,
-    $Res Function(AlertDetailsState) then,
-  ) = _$AlertDetailsStateCopyWithImpl<$Res, AlertDetailsState>;
-  @useResult
-  $Res call({String sourceName});
-}
+abstract mixin class $AlertDetailsStateCopyWith<$Res>  {
+  factory $AlertDetailsStateCopyWith(AlertDetailsState value, $Res Function(AlertDetailsState) _then) = _$AlertDetailsStateCopyWithImpl;
+@useResult
+$Res call({
+ String sourceName
+});
 
+
+
+
+}
 /// @nodoc
-class _$AlertDetailsStateCopyWithImpl<$Res, $Val extends AlertDetailsState>
+class _$AlertDetailsStateCopyWithImpl<$Res>
     implements $AlertDetailsStateCopyWith<$Res> {
-  _$AlertDetailsStateCopyWithImpl(this._value, this._then);
+  _$AlertDetailsStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final AlertDetailsState _self;
+  final $Res Function(AlertDetailsState) _then;
 
-  /// Create a copy of AlertDetailsState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? sourceName = null}) {
-    return _then(
-      _value.copyWith(
-            sourceName:
-                null == sourceName
-                    ? _value.sourceName
-                    : sourceName // ignore: cast_nullable_to_non_nullable
-                        as String,
-          )
-          as $Val,
-    );
-  }
+/// Create a copy of AlertDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? sourceName = null,}) {
+  return _then(_self.copyWith(
+sourceName: null == sourceName ? _self.sourceName : sourceName // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-/// @nodoc
-abstract class _$$AlertDetailsStateImplCopyWith<$Res>
-    implements $AlertDetailsStateCopyWith<$Res> {
-  factory _$$AlertDetailsStateImplCopyWith(
-    _$AlertDetailsStateImpl value,
-    $Res Function(_$AlertDetailsStateImpl) then,
-  ) = __$$AlertDetailsStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String sourceName});
 }
 
-/// @nodoc
-class __$$AlertDetailsStateImplCopyWithImpl<$Res>
-    extends _$AlertDetailsStateCopyWithImpl<$Res, _$AlertDetailsStateImpl>
-    implements _$$AlertDetailsStateImplCopyWith<$Res> {
-  __$$AlertDetailsStateImplCopyWithImpl(
-    _$AlertDetailsStateImpl _value,
-    $Res Function(_$AlertDetailsStateImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of AlertDetailsState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? sourceName = null}) {
-    return _then(
-      _$AlertDetailsStateImpl(
-        sourceName:
-            null == sourceName
-                ? _value.sourceName
-                : sourceName // ignore: cast_nullable_to_non_nullable
-                    as String,
-      ),
-    );
-  }
-}
 
 /// @nodoc
 
-class _$AlertDetailsStateImpl implements _AlertDetailsState {
-  const _$AlertDetailsStateImpl({required this.sourceName});
 
-  @override
-  final String sourceName;
+class _AlertDetailsState implements AlertDetailsState {
+  const _AlertDetailsState({required this.sourceName});
+  
 
-  @override
-  String toString() {
-    return 'AlertDetailsState(sourceName: $sourceName)';
-  }
+@override final  String sourceName;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AlertDetailsStateImpl &&
-            (identical(other.sourceName, sourceName) ||
-                other.sourceName == sourceName));
-  }
+/// Create a copy of AlertDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AlertDetailsStateCopyWith<_AlertDetailsState> get copyWith => __$AlertDetailsStateCopyWithImpl<_AlertDetailsState>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, sourceName);
 
-  /// Create a copy of AlertDetailsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AlertDetailsStateImplCopyWith<_$AlertDetailsStateImpl> get copyWith =>
-      __$$AlertDetailsStateImplCopyWithImpl<_$AlertDetailsStateImpl>(
-        this,
-        _$identity,
-      );
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AlertDetailsState&&(identical(other.sourceName, sourceName) || other.sourceName == sourceName));
 }
 
-abstract class _AlertDetailsState implements AlertDetailsState {
-  const factory _AlertDetailsState({required final String sourceName}) =
-      _$AlertDetailsStateImpl;
 
-  @override
-  String get sourceName;
+@override
+int get hashCode => Object.hash(runtimeType,sourceName);
 
-  /// Create a copy of AlertDetailsState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AlertDetailsStateImplCopyWith<_$AlertDetailsStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'AlertDetailsState(sourceName: $sourceName)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AlertDetailsStateCopyWith<$Res> implements $AlertDetailsStateCopyWith<$Res> {
+  factory _$AlertDetailsStateCopyWith(_AlertDetailsState value, $Res Function(_AlertDetailsState) _then) = __$AlertDetailsStateCopyWithImpl;
+@override @useResult
+$Res call({
+ String sourceName
+});
+
+
+
+
+}
+/// @nodoc
+class __$AlertDetailsStateCopyWithImpl<$Res>
+    implements _$AlertDetailsStateCopyWith<$Res> {
+  __$AlertDetailsStateCopyWithImpl(this._self, this._then);
+
+  final _AlertDetailsState _self;
+  final $Res Function(_AlertDetailsState) _then;
+
+/// Create a copy of AlertDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? sourceName = null,}) {
+  return _then(_AlertDetailsState(
+sourceName: null == sourceName ? _self.sourceName : sourceName // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+// dart format on

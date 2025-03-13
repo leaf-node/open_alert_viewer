@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,202 +10,160 @@ part of 'account_settings_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$AccountSettingsState {
-  bool get globalNotificationsEnabled => throw _privateConstructorUsedError;
-  AlertSourceData? get source => throw _privateConstructorUsedError;
 
-  /// Create a copy of AccountSettingsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $AccountSettingsStateCopyWith<AccountSettingsState> get copyWith =>
-      throw _privateConstructorUsedError;
+ bool get globalNotificationsEnabled; AlertSourceData? get source;
+/// Create a copy of AccountSettingsState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AccountSettingsStateCopyWith<AccountSettingsState> get copyWith => _$AccountSettingsStateCopyWithImpl<AccountSettingsState>(this as AccountSettingsState, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountSettingsState&&(identical(other.globalNotificationsEnabled, globalNotificationsEnabled) || other.globalNotificationsEnabled == globalNotificationsEnabled)&&(identical(other.source, source) || other.source == source));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,globalNotificationsEnabled,source);
+
+@override
+String toString() {
+  return 'AccountSettingsState(globalNotificationsEnabled: $globalNotificationsEnabled, source: $source)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $AccountSettingsStateCopyWith<$Res> {
-  factory $AccountSettingsStateCopyWith(
-    AccountSettingsState value,
-    $Res Function(AccountSettingsState) then,
-  ) = _$AccountSettingsStateCopyWithImpl<$Res, AccountSettingsState>;
-  @useResult
-  $Res call({bool globalNotificationsEnabled, AlertSourceData? source});
+abstract mixin class $AccountSettingsStateCopyWith<$Res>  {
+  factory $AccountSettingsStateCopyWith(AccountSettingsState value, $Res Function(AccountSettingsState) _then) = _$AccountSettingsStateCopyWithImpl;
+@useResult
+$Res call({
+ bool globalNotificationsEnabled, AlertSourceData? source
+});
 
-  $AlertSourceDataCopyWith<$Res>? get source;
+
+$AlertSourceDataCopyWith<$Res>? get source;
+
 }
-
 /// @nodoc
-class _$AccountSettingsStateCopyWithImpl<
-  $Res,
-  $Val extends AccountSettingsState
->
+class _$AccountSettingsStateCopyWithImpl<$Res>
     implements $AccountSettingsStateCopyWith<$Res> {
-  _$AccountSettingsStateCopyWithImpl(this._value, this._then);
+  _$AccountSettingsStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final AccountSettingsState _self;
+  final $Res Function(AccountSettingsState) _then;
 
-  /// Create a copy of AccountSettingsState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? globalNotificationsEnabled = null,
-    Object? source = freezed,
-  }) {
-    return _then(
-      _value.copyWith(
-            globalNotificationsEnabled:
-                null == globalNotificationsEnabled
-                    ? _value.globalNotificationsEnabled
-                    : globalNotificationsEnabled // ignore: cast_nullable_to_non_nullable
-                        as bool,
-            source:
-                freezed == source
-                    ? _value.source
-                    : source // ignore: cast_nullable_to_non_nullable
-                        as AlertSourceData?,
-          )
-          as $Val,
-    );
+/// Create a copy of AccountSettingsState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? globalNotificationsEnabled = null,Object? source = freezed,}) {
+  return _then(_self.copyWith(
+globalNotificationsEnabled: null == globalNotificationsEnabled ? _self.globalNotificationsEnabled : globalNotificationsEnabled // ignore: cast_nullable_to_non_nullable
+as bool,source: freezed == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as AlertSourceData?,
+  ));
+}
+/// Create a copy of AccountSettingsState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AlertSourceDataCopyWith<$Res>? get source {
+    if (_self.source == null) {
+    return null;
   }
 
-  /// Create a copy of AccountSettingsState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AlertSourceDataCopyWith<$Res>? get source {
-    if (_value.source == null) {
-      return null;
-    }
-
-    return $AlertSourceDataCopyWith<$Res>(_value.source!, (value) {
-      return _then(_value.copyWith(source: value) as $Val);
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$$AccountSettingsStateImplCopyWith<$Res>
-    implements $AccountSettingsStateCopyWith<$Res> {
-  factory _$$AccountSettingsStateImplCopyWith(
-    _$AccountSettingsStateImpl value,
-    $Res Function(_$AccountSettingsStateImpl) then,
-  ) = __$$AccountSettingsStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({bool globalNotificationsEnabled, AlertSourceData? source});
-
-  @override
-  $AlertSourceDataCopyWith<$Res>? get source;
-}
-
-/// @nodoc
-class __$$AccountSettingsStateImplCopyWithImpl<$Res>
-    extends _$AccountSettingsStateCopyWithImpl<$Res, _$AccountSettingsStateImpl>
-    implements _$$AccountSettingsStateImplCopyWith<$Res> {
-  __$$AccountSettingsStateImplCopyWithImpl(
-    _$AccountSettingsStateImpl _value,
-    $Res Function(_$AccountSettingsStateImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of AccountSettingsState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? globalNotificationsEnabled = null,
-    Object? source = freezed,
-  }) {
-    return _then(
-      _$AccountSettingsStateImpl(
-        globalNotificationsEnabled:
-            null == globalNotificationsEnabled
-                ? _value.globalNotificationsEnabled
-                : globalNotificationsEnabled // ignore: cast_nullable_to_non_nullable
-                    as bool,
-        source:
-            freezed == source
-                ? _value.source
-                : source // ignore: cast_nullable_to_non_nullable
-                    as AlertSourceData?,
-      ),
-    );
-  }
-}
-
-/// @nodoc
-
-class _$AccountSettingsStateImpl implements _AccountSettingsState {
-  const _$AccountSettingsStateImpl({
-    required this.globalNotificationsEnabled,
-    required this.source,
+  return $AlertSourceDataCopyWith<$Res>(_self.source!, (value) {
+    return _then(_self.copyWith(source: value));
   });
-
-  @override
-  final bool globalNotificationsEnabled;
-  @override
-  final AlertSourceData? source;
-
-  @override
-  String toString() {
-    return 'AccountSettingsState(globalNotificationsEnabled: $globalNotificationsEnabled, source: $source)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AccountSettingsStateImpl &&
-            (identical(
-                  other.globalNotificationsEnabled,
-                  globalNotificationsEnabled,
-                ) ||
-                other.globalNotificationsEnabled ==
-                    globalNotificationsEnabled) &&
-            (identical(other.source, source) || other.source == source));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, globalNotificationsEnabled, source);
-
-  /// Create a copy of AccountSettingsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AccountSettingsStateImplCopyWith<_$AccountSettingsStateImpl>
-  get copyWith =>
-      __$$AccountSettingsStateImplCopyWithImpl<_$AccountSettingsStateImpl>(
-        this,
-        _$identity,
-      );
+}
 }
 
-abstract class _AccountSettingsState implements AccountSettingsState {
-  const factory _AccountSettingsState({
-    required final bool globalNotificationsEnabled,
-    required final AlertSourceData? source,
-  }) = _$AccountSettingsStateImpl;
 
-  @override
-  bool get globalNotificationsEnabled;
-  @override
-  AlertSourceData? get source;
+/// @nodoc
 
-  /// Create a copy of AccountSettingsState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AccountSettingsStateImplCopyWith<_$AccountSettingsStateImpl>
-  get copyWith => throw _privateConstructorUsedError;
+
+class _AccountSettingsState implements AccountSettingsState {
+  const _AccountSettingsState({required this.globalNotificationsEnabled, required this.source});
+  
+
+@override final  bool globalNotificationsEnabled;
+@override final  AlertSourceData? source;
+
+/// Create a copy of AccountSettingsState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AccountSettingsStateCopyWith<_AccountSettingsState> get copyWith => __$AccountSettingsStateCopyWithImpl<_AccountSettingsState>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AccountSettingsState&&(identical(other.globalNotificationsEnabled, globalNotificationsEnabled) || other.globalNotificationsEnabled == globalNotificationsEnabled)&&(identical(other.source, source) || other.source == source));
 }
+
+
+@override
+int get hashCode => Object.hash(runtimeType,globalNotificationsEnabled,source);
+
+@override
+String toString() {
+  return 'AccountSettingsState(globalNotificationsEnabled: $globalNotificationsEnabled, source: $source)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AccountSettingsStateCopyWith<$Res> implements $AccountSettingsStateCopyWith<$Res> {
+  factory _$AccountSettingsStateCopyWith(_AccountSettingsState value, $Res Function(_AccountSettingsState) _then) = __$AccountSettingsStateCopyWithImpl;
+@override @useResult
+$Res call({
+ bool globalNotificationsEnabled, AlertSourceData? source
+});
+
+
+@override $AlertSourceDataCopyWith<$Res>? get source;
+
+}
+/// @nodoc
+class __$AccountSettingsStateCopyWithImpl<$Res>
+    implements _$AccountSettingsStateCopyWith<$Res> {
+  __$AccountSettingsStateCopyWithImpl(this._self, this._then);
+
+  final _AccountSettingsState _self;
+  final $Res Function(_AccountSettingsState) _then;
+
+/// Create a copy of AccountSettingsState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? globalNotificationsEnabled = null,Object? source = freezed,}) {
+  return _then(_AccountSettingsState(
+globalNotificationsEnabled: null == globalNotificationsEnabled ? _self.globalNotificationsEnabled : globalNotificationsEnabled // ignore: cast_nullable_to_non_nullable
+as bool,source: freezed == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as AlertSourceData?,
+  ));
+}
+
+/// Create a copy of AccountSettingsState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AlertSourceDataCopyWith<$Res>? get source {
+    if (_self.source == null) {
+    return null;
+  }
+
+  return $AlertSourceDataCopyWith<$Res>(_self.source!, (value) {
+    return _then(_self.copyWith(source: value));
+  });
+}
+}
+
+// dart format on

@@ -6,8 +6,8 @@ part of 'background_shared.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$IsolateMessageImpl _$$IsolateMessageImplFromJson(Map<String, dynamic> json) =>
-    _$IsolateMessageImpl(
+_IsolateMessage _$IsolateMessageFromJson(Map<String, dynamic> json) =>
+    _IsolateMessage(
       name: $enumDecode(_$MessageNameEnumMap, json['name']),
       destination: $enumDecodeNullable(
         _$MessageDestinationEnumMap,
@@ -28,17 +28,16 @@ _$IsolateMessageImpl _$$IsolateMessageImplFromJson(Map<String, dynamic> json) =>
       alreadyFetching: json['alreadyFetching'] as bool?,
     );
 
-Map<String, dynamic> _$$IsolateMessageImplToJson(
-  _$IsolateMessageImpl instance,
-) => <String, dynamic>{
-  'name': _$MessageNameEnumMap[instance.name]!,
-  'destination': _$MessageDestinationEnumMap[instance.destination],
-  'id': instance.id,
-  'alerts': instance.alerts,
-  'sourceData': instance.sourceData,
-  'forceRefreshNow': instance.forceRefreshNow,
-  'alreadyFetching': instance.alreadyFetching,
-};
+Map<String, dynamic> _$IsolateMessageToJson(_IsolateMessage instance) =>
+    <String, dynamic>{
+      'name': _$MessageNameEnumMap[instance.name]!,
+      'destination': _$MessageDestinationEnumMap[instance.destination],
+      'id': instance.id,
+      'alerts': instance.alerts,
+      'sourceData': instance.sourceData,
+      'forceRefreshNow': instance.forceRefreshNow,
+      'alreadyFetching': instance.alreadyFetching,
+    };
 
 const _$MessageNameEnumMap = {
   MessageName.alertsInit: 'alertsInit',

@@ -6,8 +6,8 @@ part of 'alerts_prom.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PromAlertsDataImpl _$$PromAlertsDataImplFromJson(Map<String, dynamic> json) =>
-    _$PromAlertsDataImpl(
+_PromAlertsData _$PromAlertsDataFromJson(Map<String, dynamic> json) =>
+    _PromAlertsData(
       startsAt: json['startsAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
       endsAt: json['endsAt'] as String?,
@@ -28,46 +28,39 @@ _$PromAlertsDataImpl _$$PromAlertsDataImplFromJson(Map<String, dynamic> json) =>
               : StatusData.fromJson(json['status'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$PromAlertsDataImplToJson(
-  _$PromAlertsDataImpl instance,
-) => <String, dynamic>{
-  'startsAt': instance.startsAt,
-  'updatedAt': instance.updatedAt,
-  'endsAt': instance.endsAt,
-  'generatorURL': instance.generatorURL,
-  'annotations': instance.annotations,
-  'labels': instance.labels,
-  'status': instance.status,
-};
+Map<String, dynamic> _$PromAlertsDataToJson(_PromAlertsData instance) =>
+    <String, dynamic>{
+      'startsAt': instance.startsAt,
+      'updatedAt': instance.updatedAt,
+      'endsAt': instance.endsAt,
+      'generatorURL': instance.generatorURL,
+      'annotations': instance.annotations,
+      'labels': instance.labels,
+      'status': instance.status,
+    };
 
-_$AnnotationsDataImpl _$$AnnotationsDataImplFromJson(
-  Map<String, dynamic> json,
-) => _$AnnotationsDataImpl(summary: json['summary'] as String?);
+_AnnotationsData _$AnnotationsDataFromJson(Map<String, dynamic> json) =>
+    _AnnotationsData(summary: json['summary'] as String?);
 
-Map<String, dynamic> _$$AnnotationsDataImplToJson(
-  _$AnnotationsDataImpl instance,
-) => <String, dynamic>{'summary': instance.summary};
+Map<String, dynamic> _$AnnotationsDataToJson(_AnnotationsData instance) =>
+    <String, dynamic>{'summary': instance.summary};
 
-_$StatusDataImpl _$$StatusDataImplFromJson(Map<String, dynamic> json) =>
-    _$StatusDataImpl(
-      silencedBy:
-          (json['silencedBy'] as List<dynamic>?)
-              ?.map((e) => e as Object)
-              .toList(),
-    );
+_StatusData _$StatusDataFromJson(Map<String, dynamic> json) => _StatusData(
+  silencedBy:
+      (json['silencedBy'] as List<dynamic>?)?.map((e) => e as Object).toList(),
+);
 
-Map<String, dynamic> _$$StatusDataImplToJson(_$StatusDataImpl instance) =>
+Map<String, dynamic> _$StatusDataToJson(_StatusData instance) =>
     <String, dynamic>{'silencedBy': instance.silencedBy};
 
-_$LabelsDataImpl _$$LabelsDataImplFromJson(Map<String, dynamic> json) =>
-    _$LabelsDataImpl(
-      severity: json['severity'] as String?,
-      oav_type: json['oav_type'] as String?,
-      instance: json['instance'] as String?,
-      alertname: json['alertname'] as String?,
-    );
+_LabelsData _$LabelsDataFromJson(Map<String, dynamic> json) => _LabelsData(
+  severity: json['severity'] as String?,
+  oav_type: json['oav_type'] as String?,
+  instance: json['instance'] as String?,
+  alertname: json['alertname'] as String?,
+);
 
-Map<String, dynamic> _$$LabelsDataImplToJson(_$LabelsDataImpl instance) =>
+Map<String, dynamic> _$LabelsDataToJson(_LabelsData instance) =>
     <String, dynamic>{
       'severity': instance.severity,
       'oav_type': instance.oav_type,

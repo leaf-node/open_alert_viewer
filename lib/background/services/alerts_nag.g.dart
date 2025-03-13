@@ -6,19 +6,19 @@ part of 'alerts_nag.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$NagAlertsDataImpl _$$NagAlertsDataImplFromJson(Map<String, dynamic> json) =>
-    _$NagAlertsDataImpl(
+_NagAlertsData _$NagAlertsDataFromJson(Map<String, dynamic> json) =>
+    _NagAlertsData(
       data:
           json['data'] == null
               ? null
               : NagDataSection.fromJson(json['data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$NagAlertsDataImplToJson(_$NagAlertsDataImpl instance) =>
+Map<String, dynamic> _$NagAlertsDataToJson(_NagAlertsData instance) =>
     <String, dynamic>{'data': instance.data};
 
-_$NagDataSectionImpl _$$NagDataSectionImplFromJson(Map<String, dynamic> json) =>
-    _$NagDataSectionImpl(
+_NagDataSection _$NagDataSectionFromJson(Map<String, dynamic> json) =>
+    _NagDataSection(
       hostlist: (json['hostlist'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(
           k,
@@ -40,16 +40,15 @@ _$NagDataSectionImpl _$$NagDataSectionImplFromJson(Map<String, dynamic> json) =>
       ),
     );
 
-Map<String, dynamic> _$$NagDataSectionImplToJson(
-  _$NagDataSectionImpl instance,
-) => <String, dynamic>{
-  'hostlist': instance.hostlist,
-  'servicelist': instance.servicelist,
-};
+Map<String, dynamic> _$NagDataSectionToJson(_NagDataSection instance) =>
+    <String, dynamic>{
+      'hostlist': instance.hostlist,
+      'servicelist': instance.servicelist,
+    };
 
-_$NagAlertDataImpl _$$NagAlertDataImplFromJson(
+_NagAlertData _$NagAlertDataFromJson(
   Map<String, dynamic> json,
-) => _$NagAlertDataImpl(
+) => _NagAlertData(
   description: json['description'] as String?,
   status: (json['status'] as num?)?.toInt(),
   scheduled_downtime_depth: (json['scheduled_downtime_depth'] as num?)?.toInt(),
@@ -61,7 +60,7 @@ _$NagAlertDataImpl _$$NagAlertDataImplFromJson(
   plugin_output: json['plugin_output'] as String?,
 );
 
-Map<String, dynamic> _$$NagAlertDataImplToJson(_$NagAlertDataImpl instance) =>
+Map<String, dynamic> _$NagAlertDataToJson(_NagAlertData instance) =>
     <String, dynamic>{
       'description': instance.description,
       'status': instance.status,
