@@ -2704,14 +2704,14 @@ SOFTWARE.''',
     dependencies: [PackageRef('path'), PackageRef('meta'), PackageRef('yaml'), PackageRef('dart_pubspec_licenses'), PackageRef('args')]
   );
 
-/// freezed 2.5.8
+/// freezed 3.0.3
 const _freezed = Package(
     name: 'freezed',
     description: '''Code generation for immutable classes that has a simple syntax/API without compromising on the features.
 ''',
     repository: 'https://github.com/rrousselGit/freezed',
     authors: [],
-    version: '2.5.8',
+    version: '3.0.3',
     license: '''MIT License
 
 Copyright (c) 2020 Remi Rousselet
@@ -2735,17 +2735,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
     isMarkdown: false,
     isSdk: false,
-    dependencies: [PackageRef('analyzer'), PackageRef('build'), PackageRef('build_config'), PackageRef('collection'), PackageRef('meta'), PackageRef('source_gen'), PackageRef('freezed_annotation'), PackageRef('json_annotation'), PackageRef('dart_style')]
+    dependencies: [PackageRef('analyzer'), PackageRef('build'), PackageRef('build_config'), PackageRef('collection'), PackageRef('meta'), PackageRef('source_gen'), PackageRef('freezed_annotation'), PackageRef('json_annotation')]
   );
 
-/// freezed_annotation 2.4.4
+/// freezed_annotation 3.0.0
 const _freezed_annotation = Package(
     name: 'freezed_annotation',
     description: '''Annotations for the freezed code-generator. This package does nothing without freezed too.
 ''',
     repository: 'https://github.com/rrousselGit/freezed',
     authors: [],
-    version: '2.4.4',
+    version: '3.0.0',
     license: '''MIT License
 
 Copyright (c) 2020 Remi Rousselet
