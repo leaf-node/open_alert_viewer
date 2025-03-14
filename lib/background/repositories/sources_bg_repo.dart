@@ -25,13 +25,13 @@ import '../services/alerts_random.dart';
 import '../services/alerts_zab.dart';
 
 class SourcesBackgroundRepo with NetworkFetch {
-  SourcesBackgroundRepo(
-      {required LocalDatabase db,
-      required SettingsRepo settings,
-      required StreamController<IsolateMessage> outboundStream})
-      : _db = db,
-        _settings = settings,
-        _outboundStream = outboundStream {
+  SourcesBackgroundRepo({
+    required LocalDatabase db,
+    required SettingsRepo settings,
+    required StreamController<IsolateMessage> outboundStream,
+  }) : _db = db,
+       _settings = settings,
+       _outboundStream = outboundStream {
     initSources();
   }
 
@@ -44,8 +44,9 @@ class SourcesBackgroundRepo with NetworkFetch {
 
   AlertSource getClassedSource(AlertSourceData sourceData) {
     AlertSource Function({required AlertSourceData sourceData}) alertSource;
-    var enumType =
-        SourceTypes.values.singleWhere((e) => e.value == sourceData.type);
+    var enumType = SourceTypes.values.singleWhere(
+      (e) => e.value == sourceData.type,
+    );
     switch (enumType) {
       case SourceTypes.nullType:
         alertSource = NullAlerts.new;
@@ -66,9 +67,12 @@ class SourcesBackgroundRepo with NetworkFetch {
   }
 
   void initSources() {
-    _outboundStream.add(IsolateMessage(
+    _outboundStream.add(
+      IsolateMessage(
         name: MessageName.initSources,
-        destination: MessageDestination.sourceSettings));
+        destination: MessageDestination.sourceSettings,
+      ),
+    );
   }
 
   AlertSourceData? getSource(id) {
@@ -82,27 +86,30 @@ class SourcesBackgroundRepo with NetworkFetch {
 
   void addSource({required AlertSourceDataUpdate sourceData}) {
     final newSource = AlertSourceData(
-        id: sourceData.id,
-        name: sourceData.name,
-        type: sourceData.type,
-        authType: sourceData.authType,
-        baseURL: sourceData.baseURL,
-        username: sourceData.username,
-        password: sourceData.password,
-        failing: false,
-        lastSeen: epoch,
-        priorFetch: epoch,
-        lastFetch: epoch,
-        errorMessage: "",
-        accessToken: sourceData.accessToken,
-        visible: true,
-        notifications: true);
+      id: sourceData.id,
+      name: sourceData.name,
+      type: sourceData.type,
+      authType: sourceData.authType,
+      baseURL: sourceData.baseURL,
+      username: sourceData.username,
+      password: sourceData.password,
+      failing: false,
+      lastSeen: epoch,
+      priorFetch: epoch,
+      lastFetch: epoch,
+      errorMessage: "",
+      accessToken: sourceData.accessToken,
+      visible: true,
+      notifications: true,
+    );
     var result = _db.addSource(sourceData: newSource);
     _sourcesChangeResult(_outboundStream, alertSources, (result >= 0));
   }
 
-  void updateSource(
-      {required AlertSourceDataUpdate sourceData, bool? updateUIandRefresh}) {
+  void updateSource({
+    required AlertSourceDataUpdate sourceData,
+    bool? updateUIandRefresh,
+  }) {
     final updatedSource = getSource(sourceData.id)?.copyWith(
       id: sourceData.id,
       name: sourceData.name,
@@ -141,7 +148,9 @@ class SourcesBackgroundRepo with NetworkFetch {
   void setLastAndPriorFetch({required int id, required DateTime lastFetch}) {
     AlertSourceData? sourceData = getSource(id);
     sourceData = sourceData?.copyWith(
-        priorFetch: sourceData.lastFetch, lastFetch: lastFetch);
+      priorFetch: sourceData.lastFetch,
+      lastFetch: lastFetch,
+    );
     if (sourceData != null) {
       _updateSource(sourceData: sourceData);
     }
@@ -159,151 +168,192 @@ class SourcesBackgroundRepo with NetworkFetch {
 
   Future<void> confirmSource(IsolateMessage message) async {
     var result = await _getConfirmedType(sourceData: message.sourceData!);
-    _outboundStream.add(IsolateMessage(
+    _outboundStream.add(
+      IsolateMessage(
         name: MessageName.confirmSourcesReply,
         destination: MessageDestination.accountEditing,
-        sourceData: result));
+        sourceData: result,
+      ),
+    );
   }
 
-  Future<AlertSourceDataUpdate> _getConfirmedType(
-      {required AlertSourceDataUpdate sourceData}) async {
+  Future<AlertSourceDataUpdate> _getConfirmedType({
+    required AlertSourceDataUpdate sourceData,
+  }) async {
     if ((sourceData.type == SourceTypes.demo.value ||
             sourceData.type == SourceTypes.autodetect.value) &&
         sourceData.baseURL == "demo") {
-      sourceData =
-          sourceData.copyWith(type: SourceTypes.demo.value, isValid: true);
+      sourceData = sourceData.copyWith(
+        type: SourceTypes.demo.value,
+        isValid: true,
+      );
       return sourceData;
     } else if (sourceData.type == SourceTypes.demo.value &&
         sourceData.baseURL != "demo") {
       sourceData = sourceData.copyWith(
-          isValid: false, errorMessage: "Invalid demo configuration");
+        isValid: false,
+        errorMessage: "Invalid demo configuration",
+      );
       return sourceData;
     }
     bool success;
     AlertSourceDataUpdate newSourceData;
     AlertSourceDataUpdate prevNewSourceData;
     sourceData = sourceData.copyWith(
-        baseURL: sourceData.baseURL.replaceAll(RegExp(r"[?&].*$"), ""));
+      baseURL: sourceData.baseURL.replaceAll(RegExp(r"[?&].*$"), ""),
+    );
     (success, newSourceData) = await checkSource(
-        sourceType: SourceTypes.prom,
-        sourceData: sourceData,
-        trimRegex: r"(/#/alerts/?|/api/v2/alerts/?)$",
-        apiEndpoint: "/api/v2/alerts");
+      sourceType: SourceTypes.prom,
+      sourceData: sourceData,
+      trimRegex: r"(/#/alerts/?|/api/v2/alerts/?)$",
+      apiEndpoint: "/api/v2/alerts",
+    );
     if (!success && sourceData.type == SourceTypes.prom.value) {
       newSourceData = newSourceData.copyWith(
-          errorMessage: "${newSourceData.errorMessage}\n\n"
-              "FYI: Alertmanager may be on another port or "
-              "base URL than Prometheus.");
+        errorMessage:
+            "${newSourceData.errorMessage}\n\n"
+            "FYI: Alertmanager may be on another port or "
+            "base URL than Prometheus.",
+      );
     }
     if (success || sourceData.type == SourceTypes.prom.value) {
       return newSourceData;
     }
     (success, newSourceData) = await checkSource(
-        sourceType: SourceTypes.nag,
-        sourceData: sourceData,
-        trimRegex: r"(/cgi-bin/statusjson.cgi/?)$",
-        apiEndpoint: "/cgi-bin/statusjson.cgi");
+      sourceType: SourceTypes.nag,
+      sourceData: sourceData,
+      trimRegex: r"(/cgi-bin/statusjson.cgi/?)$",
+      apiEndpoint: "/cgi-bin/statusjson.cgi",
+    );
     if (success || sourceData.type == SourceTypes.nag.value) {
       return newSourceData;
     }
     (success, newSourceData) = await checkSource(
-        sourceType: SourceTypes.ici,
-        sourceData: sourceData,
-        trimRegex: r"(/+(v1/objects/services/?)?)$",
-        apiEndpoint: "/v1/objects/services");
+      sourceType: SourceTypes.ici,
+      sourceData: sourceData,
+      trimRegex: r"(/+(v1/objects/services/?)?)$",
+      apiEndpoint: "/v1/objects/services",
+    );
     if (success) {
       return newSourceData;
     } else {
       prevNewSourceData = newSourceData;
     }
     (success, newSourceData) = await checkSource(
-        sourceType: SourceTypes.ici,
-        sourceData: sourceData,
-        trimRegex: r"(/+(v1/objects/services/?)?)$",
-        apiEndpoint: "/v1/objects/services",
-        fallbackPort: 5665);
+      sourceType: SourceTypes.ici,
+      sourceData: sourceData,
+      trimRegex: r"(/+(v1/objects/services/?)?)$",
+      apiEndpoint: "/v1/objects/services",
+      fallbackPort: 5665,
+    );
     if (success) {
       return newSourceData;
     } else if (sourceData.type == SourceTypes.ici.value) {
       return prevNewSourceData;
     }
     (success, newSourceData) = await checkSource(
-        sourceType: SourceTypes.zab,
-        sourceData: sourceData,
-        trimRegex: r"(/api_jsonrpc.php/?)$",
-        apiEndpoint: "/api_jsonrpc.php");
+      sourceType: SourceTypes.zab,
+      sourceData: sourceData,
+      trimRegex: r"(/api_jsonrpc.php/?)$",
+      apiEndpoint: "/api_jsonrpc.php",
+    );
     if (success || sourceData.type == SourceTypes.zab.value) {
       return newSourceData;
     }
     sourceData = sourceData.copyWith(isValid: false);
     if (sourceData.type == SourceTypes.autodetect.value) {
-      sourceData =
-          sourceData.copyWith(errorMessage: "Choose account type for details");
+      sourceData = sourceData.copyWith(
+        errorMessage: "Choose account type for details",
+      );
     }
     return sourceData;
   }
 
-  Future<(bool, AlertSourceDataUpdate)> checkSource(
-      {required SourceTypes sourceType,
-      required AlertSourceDataUpdate sourceData,
-      required String trimRegex,
-      required String apiEndpoint,
-      int? fallbackPort}) async {
+  Future<(bool, AlertSourceDataUpdate)> checkSource({
+    required SourceTypes sourceType,
+    required AlertSourceDataUpdate sourceData,
+    required String trimRegex,
+    required String apiEndpoint,
+    int? fallbackPort,
+  }) async {
     if (sourceData.type == sourceType.value ||
         sourceData.type == SourceTypes.autodetect.value) {
       try {
         if (fallbackPort != null &&
-            !sourceData.baseURL
-                .contains(RegExp("^(https?://)?[^:/]+:[0-9]+(/.*)?"))) {
+            !sourceData.baseURL.contains(
+              RegExp("^(https?://)?[^:/]+:[0-9]+(/.*)?"),
+            )) {
           sourceData = sourceData.copyWith(
-              baseURL: sourceData.baseURL.replaceAllMapped(
-                  RegExp(r"^((https?://)?[^:/]+)(/.*)?"), (match) {
-            return "${match.group(1)}:$fallbackPort${match.group(3) ?? ""}";
-          }));
+            baseURL: sourceData.baseURL.replaceAllMapped(
+              RegExp(r"^((https?://)?[^:/]+)(/.*)?"),
+              (match) {
+                return "${match.group(1)}:$fallbackPort${match.group(3) ?? ""}";
+              },
+            ),
+          );
         }
-        var trimmedBaseURL =
-            sourceData.baseURL.replaceFirst(RegExp(trimRegex), "");
-        var response = await networkFetch(trimmedBaseURL, sourceData.username,
-            sourceData.password, apiEndpoint,
-            maxTimeout: 5);
+        var trimmedBaseURL = sourceData.baseURL.replaceFirst(
+          RegExp(trimRegex),
+          "",
+        );
+        var response = await networkFetch(
+          trimmedBaseURL,
+          sourceData.username,
+          sourceData.password,
+          apiEndpoint,
+          maxTimeout: 5,
+        );
         if (response.statusCode == 200) {
           sourceData = sourceData.copyWith(
-              type: sourceType.value, baseURL: trimmedBaseURL, isValid: true);
+            type: sourceType.value,
+            baseURL: trimmedBaseURL,
+            isValid: true,
+          );
           return (true, sourceData);
         } else if (response.statusCode == 412 &&
             sourceType.value == SourceTypes.zab.value) {
-          final zabLoginQuery = '{"jsonrpc":"2.0","method":"user.login",'
+          final zabLoginQuery =
+              '{"jsonrpc":"2.0","method":"user.login",'
               '"params":{"username":"${sourceData.username}",'
               '"password":"${sourceData.password}"},"id":1}';
-          final zabResponse = await networkFetch(sourceData.baseURL,
-              sourceData.username, sourceData.password, apiEndpoint,
-              postBody: zabLoginQuery,
-              authOverride: true,
-              headers: {"Content-Type": "application/json-rpc"});
+          final zabResponse = await networkFetch(
+            sourceData.baseURL,
+            sourceData.username,
+            sourceData.password,
+            apiEndpoint,
+            postBody: zabLoginQuery,
+            authOverride: true,
+            headers: {"Content-Type": "application/json-rpc"},
+          );
           if (zabResponse.statusCode != 200) {
             sourceData = sourceData.copyWith(
-                errorMessage:
-                    "${zabResponse.statusCode}: ${zabResponse.reasonPhrase ?? ""}",
-                isValid: false);
+              errorMessage:
+                  "${zabResponse.statusCode}: ${zabResponse.reasonPhrase ?? ""}",
+              isValid: false,
+            );
             return (false, sourceData);
           }
           final replyMap = Util.mapConvert(json.decode(zabResponse.body));
           if (replyMap.keys.contains("error")) {
             sourceData = sourceData.copyWith(
-                errorMessage: replyMap["error"]["data"], isValid: false);
+              errorMessage: replyMap["error"]["data"],
+              isValid: false,
+            );
             return (false, sourceData);
           } else {
             sourceData = sourceData.copyWith(
-                accessToken: replyMap["result"],
-                type: sourceType.value,
-                baseURL: trimmedBaseURL,
-                isValid: true);
+              accessToken: replyMap["result"],
+              type: sourceType.value,
+              baseURL: trimmedBaseURL,
+              isValid: true,
+            );
             return (true, sourceData);
           }
         } else {
           sourceData = sourceData.copyWith(
-              errorMessage:
-                  "${response.statusCode}: ${response.reasonPhrase ?? ""}");
+            errorMessage:
+                "${response.statusCode}: ${response.reasonPhrase ?? ""}",
+          );
         }
       } on SocketException catch (e) {
         sourceData = sourceData.copyWith(errorMessage: e.message);
@@ -321,16 +371,25 @@ class SourcesBackgroundRepo with NetworkFetch {
     return (false, sourceData);
   }
 
-  static void _sourcesChangeResult(StreamController<IsolateMessage> stream,
-      List<AlertSourceData> sources, bool success) {
+  static void _sourcesChangeResult(
+    StreamController<IsolateMessage> stream,
+    List<AlertSourceData> sources,
+    bool success,
+  ) {
     if (success) {
-      stream.add(IsolateMessage(
+      stream.add(
+        IsolateMessage(
           name: MessageName.sourcesChanged,
-          destination: MessageDestination.sourceSettings));
+          destination: MessageDestination.sourceSettings,
+        ),
+      );
     } else {
-      stream.add(IsolateMessage(
+      stream.add(
+        IsolateMessage(
           name: MessageName.sourcesFailure,
-          destination: MessageDestination.sourceSettings));
+          destination: MessageDestination.sourceSettings,
+        ),
+      );
     }
   }
 }

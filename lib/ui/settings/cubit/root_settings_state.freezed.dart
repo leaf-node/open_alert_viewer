@@ -12,7 +12,8 @@ part of 'root_settings_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$RootSettingsCubitState {
@@ -28,16 +29,19 @@ mixin _$RootSettingsCubitState {
 
 /// @nodoc
 abstract class $RootSettingsCubitStateCopyWith<$Res> {
-  factory $RootSettingsCubitStateCopyWith(RootSettingsCubitState value,
-          $Res Function(RootSettingsCubitState) then) =
-      _$RootSettingsCubitStateCopyWithImpl<$Res, RootSettingsCubitState>;
+  factory $RootSettingsCubitStateCopyWith(
+    RootSettingsCubitState value,
+    $Res Function(RootSettingsCubitState) then,
+  ) = _$RootSettingsCubitStateCopyWithImpl<$Res, RootSettingsCubitState>;
   @useResult
   $Res call({List<AlertSourceData> sources, bool? accountUpdated});
 }
 
 /// @nodoc
-class _$RootSettingsCubitStateCopyWithImpl<$Res,
-        $Val extends RootSettingsCubitState>
+class _$RootSettingsCubitStateCopyWithImpl<
+  $Res,
+  $Val extends RootSettingsCubitState
+>
     implements $RootSettingsCubitStateCopyWith<$Res> {
   _$RootSettingsCubitStateCopyWithImpl(this._value, this._then);
 
@@ -50,29 +54,32 @@ class _$RootSettingsCubitStateCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? sources = null,
-    Object? accountUpdated = freezed,
-  }) {
-    return _then(_value.copyWith(
-      sources: null == sources
-          ? _value.sources
-          : sources // ignore: cast_nullable_to_non_nullable
-              as List<AlertSourceData>,
-      accountUpdated: freezed == accountUpdated
-          ? _value.accountUpdated
-          : accountUpdated // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ) as $Val);
+  $Res call({Object? sources = null, Object? accountUpdated = freezed}) {
+    return _then(
+      _value.copyWith(
+            sources:
+                null == sources
+                    ? _value.sources
+                    : sources // ignore: cast_nullable_to_non_nullable
+                        as List<AlertSourceData>,
+            accountUpdated:
+                freezed == accountUpdated
+                    ? _value.accountUpdated
+                    : accountUpdated // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$RootSettingsStateImplCopyWith<$Res>
     implements $RootSettingsCubitStateCopyWith<$Res> {
-  factory _$$RootSettingsStateImplCopyWith(_$RootSettingsStateImpl value,
-          $Res Function(_$RootSettingsStateImpl) then) =
-      __$$RootSettingsStateImplCopyWithImpl<$Res>;
+  factory _$$RootSettingsStateImplCopyWith(
+    _$RootSettingsStateImpl value,
+    $Res Function(_$RootSettingsStateImpl) then,
+  ) = __$$RootSettingsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<AlertSourceData> sources, bool? accountUpdated});
@@ -82,38 +89,40 @@ abstract class _$$RootSettingsStateImplCopyWith<$Res>
 class __$$RootSettingsStateImplCopyWithImpl<$Res>
     extends _$RootSettingsCubitStateCopyWithImpl<$Res, _$RootSettingsStateImpl>
     implements _$$RootSettingsStateImplCopyWith<$Res> {
-  __$$RootSettingsStateImplCopyWithImpl(_$RootSettingsStateImpl _value,
-      $Res Function(_$RootSettingsStateImpl) _then)
-      : super(_value, _then);
+  __$$RootSettingsStateImplCopyWithImpl(
+    _$RootSettingsStateImpl _value,
+    $Res Function(_$RootSettingsStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of RootSettingsCubitState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? sources = null,
-    Object? accountUpdated = freezed,
-  }) {
-    return _then(_$RootSettingsStateImpl(
-      sources: null == sources
-          ? _value._sources
-          : sources // ignore: cast_nullable_to_non_nullable
-              as List<AlertSourceData>,
-      accountUpdated: freezed == accountUpdated
-          ? _value.accountUpdated
-          : accountUpdated // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ));
+  $Res call({Object? sources = null, Object? accountUpdated = freezed}) {
+    return _then(
+      _$RootSettingsStateImpl(
+        sources:
+            null == sources
+                ? _value._sources
+                : sources // ignore: cast_nullable_to_non_nullable
+                    as List<AlertSourceData>,
+        accountUpdated:
+            freezed == accountUpdated
+                ? _value.accountUpdated
+                : accountUpdated // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$RootSettingsStateImpl implements _RootSettingsState {
-  const _$RootSettingsStateImpl(
-      {required final List<AlertSourceData> sources,
-      required this.accountUpdated})
-      : _sources = sources;
+  const _$RootSettingsStateImpl({
+    required final List<AlertSourceData> sources,
+    required this.accountUpdated,
+  }) : _sources = sources;
 
   final List<AlertSourceData> _sources;
   @override
@@ -142,8 +151,11 @@ class _$RootSettingsStateImpl implements _RootSettingsState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_sources), accountUpdated);
+  int get hashCode => Object.hash(
+    runtimeType,
+    const DeepCollectionEquality().hash(_sources),
+    accountUpdated,
+  );
 
   /// Create a copy of RootSettingsCubitState
   /// with the given fields replaced by the non-null parameter values.
@@ -152,13 +164,16 @@ class _$RootSettingsStateImpl implements _RootSettingsState {
   @pragma('vm:prefer-inline')
   _$$RootSettingsStateImplCopyWith<_$RootSettingsStateImpl> get copyWith =>
       __$$RootSettingsStateImplCopyWithImpl<_$RootSettingsStateImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 }
 
 abstract class _RootSettingsState implements RootSettingsCubitState {
-  const factory _RootSettingsState(
-      {required final List<AlertSourceData> sources,
-      required final bool? accountUpdated}) = _$RootSettingsStateImpl;
+  const factory _RootSettingsState({
+    required final List<AlertSourceData> sources,
+    required final bool? accountUpdated,
+  }) = _$RootSettingsStateImpl;
 
   @override
   List<AlertSourceData> get sources;

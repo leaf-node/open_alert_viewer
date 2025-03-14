@@ -41,11 +41,11 @@ enum ServiceStatus {
 
 class NagAlerts extends AlertSource {
   NagAlerts({required super.sourceData})
-      : epoch = DateTime.fromMillisecondsSinceEpoch(0),
-        apiPath = "/cgi-bin/statusjson.cgi" {
+    : epoch = DateTime.fromMillisecondsSinceEpoch(0),
+      apiPath = "/cgi-bin/statusjson.cgi" {
     endpoints = {
       StatusType.hostStatus: "$apiPath?query=hostlist&details=true",
-      StatusType.serviceStatus: "$apiPath?query=servicelist&details=true"
+      StatusType.serviceStatus: "$apiPath?query=servicelist&details=true",
     };
   }
 
@@ -91,15 +91,21 @@ class NagAlerts extends AlertSource {
   Alert alertHandler(NagAlertData alertDatum, bool isService, String host) {
     AlertType kind;
     if (isService) {
-      kind = ServiceStatus.values
-          .singleWhere((v) => v.value == alertDatum.status,
-              orElse: () => ServiceStatus.unknown)
-          .alertType;
+      kind =
+          ServiceStatus.values
+              .singleWhere(
+                (v) => v.value == alertDatum.status,
+                orElse: () => ServiceStatus.unknown,
+              )
+              .alertType;
     } else {
-      kind = HostStatus.values
-          .singleWhere((v) => v.value == alertDatum.status,
-              orElse: () => HostStatus.unknown)
-          .alertType;
+      kind =
+          HostStatus.values
+              .singleWhere(
+                (v) => v.value == alertDatum.status,
+                orElse: () => HostStatus.unknown,
+              )
+              .alertType;
     }
     Duration age;
     bool active;
@@ -116,25 +122,26 @@ class NagAlerts extends AlertSource {
         startsAt = _dateTime(alertDatum.last_state_change ?? 0);
         active = false;
       }
-      age = (startsAt.difference(epoch) == Duration.zero)
-          ? (alertDatum.last_check == null)
-              ? Duration.zero
-              : DateTime.now().difference(_dateTime(alertDatum.last_check!))
-          : DateTime.now().difference(startsAt);
+      age =
+          (startsAt.difference(epoch) == Duration.zero)
+              ? (alertDatum.last_check == null)
+                  ? Duration.zero
+                  : DateTime.now().difference(_dateTime(alertDatum.last_check!))
+              : DateTime.now().difference(startsAt);
     }
     return Alert(
-        source: sourceData.id!,
-        kind: kind,
-        hostname: host,
-        service: alertDatum.description ?? "Unknown",
-        message: alertDatum.plugin_output ?? "...",
-        serviceUrl: generateURL(host, ""),
-        monitorUrl: generateURL(sourceData.baseURL, ""),
-        age: age,
-        silenced: alertDatum.problem_has_been_acknowledged ?? false,
-        downtimeScheduled:
-            Util.toBool(alertDatum.scheduled_downtime_depth ?? 0),
-        active: active);
+      source: sourceData.id!,
+      kind: kind,
+      hostname: host,
+      service: alertDatum.description ?? "Unknown",
+      message: alertDatum.plugin_output ?? "...",
+      serviceUrl: generateURL(host, ""),
+      monitorUrl: generateURL(sourceData.baseURL, ""),
+      age: age,
+      silenced: alertDatum.problem_has_been_acknowledged ?? false,
+      downtimeScheduled: Util.toBool(alertDatum.scheduled_downtime_depth ?? 0),
+      active: active,
+    );
   }
 
   static DateTime _dateTime(int milliSeconds) {
@@ -152,9 +159,10 @@ class NagAlertsData with _$NagAlertsData {
 
 @freezed
 class NagDataSection with _$NagDataSection {
-  const factory NagDataSection(
-      {Map<String, NagAlertData?>? hostlist,
-      Map<String, Map<String, NagAlertData?>?>? servicelist}) = _NagDataSection;
+  const factory NagDataSection({
+    Map<String, NagAlertData?>? hostlist,
+    Map<String, Map<String, NagAlertData?>?>? servicelist,
+  }) = _NagDataSection;
 
   factory NagDataSection.fromJson(Map<String, dynamic> json) =>
       _$NagDataSectionFromJson(json);
@@ -162,23 +170,24 @@ class NagDataSection with _$NagDataSection {
 
 @freezed
 class NagAlertData with _$NagAlertData {
-  const factory NagAlertData(
-      {String? description,
-      int? status,
-      // ignore: non_constant_identifier_names
-      int? scheduled_downtime_depth,
-      // ignore: non_constant_identifier_names
-      bool? problem_has_been_acknowledged,
-      // ignore: non_constant_identifier_names
-      int? last_state_change,
-      // ignore: non_constant_identifier_names
-      int? last_hard_state_change,
-      // ignore: non_constant_identifier_names
-      int? last_check,
-      // ignore: non_constant_identifier_names
-      int? state_type,
-      // ignore: non_constant_identifier_names
-      String? plugin_output}) = _NagAlertData;
+  const factory NagAlertData({
+    String? description,
+    int? status,
+    // ignore: non_constant_identifier_names
+    int? scheduled_downtime_depth,
+    // ignore: non_constant_identifier_names
+    bool? problem_has_been_acknowledged,
+    // ignore: non_constant_identifier_names
+    int? last_state_change,
+    // ignore: non_constant_identifier_names
+    int? last_hard_state_change,
+    // ignore: non_constant_identifier_names
+    int? last_check,
+    // ignore: non_constant_identifier_names
+    int? state_type,
+    // ignore: non_constant_identifier_names
+    String? plugin_output,
+  }) = _NagAlertData;
 
   factory NagAlertData.fromJson(Map<String, dynamic> json) =>
       _$NagAlertDataFromJson(json);

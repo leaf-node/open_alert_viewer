@@ -45,54 +45,82 @@ class OAVapp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          lazy: false,
+          create: (context) => AlertsRepo(bgChannel: bgChannel),
+        ),
+        RepositoryProvider(
+          lazy: false,
+          create: (context) => SettingsRepo(db: db),
+        ),
+        RepositoryProvider(
+          lazy: false,
+          create: (context) => AccountsRepo(db: db, bgChannel: bgChannel),
+        ),
+        RepositoryProvider(
+          lazy: false,
+          create:
+              (context) =>
+                  BatteryPermissionRepo(settings: context.read<SettingsRepo>()),
+        ),
+        RepositoryProvider(lazy: false, create: (context) => Navigation()),
+        RepositoryProvider(
+          lazy: false,
+          create:
+              (context) => NotificationsRepo(
+                settings: context.read<SettingsRepo>(),
+                accounts: context.read<AccountsRepo>(),
+                bgChannel: bgChannel,
+              ),
+        ),
+      ],
+      child: MultiBlocProvider(
         providers: [
-          RepositoryProvider(
-              lazy: false,
-              create: (context) => AlertsRepo(bgChannel: bgChannel)),
-          RepositoryProvider(
-              lazy: false, create: (context) => SettingsRepo(db: db)),
-          RepositoryProvider(
-              lazy: false,
-              create: (context) => AccountsRepo(db: db, bgChannel: bgChannel)),
-          RepositoryProvider(
-              lazy: false,
-              create: (context) => BatteryPermissionRepo(
-                  settings: context.read<SettingsRepo>())),
-          RepositoryProvider(lazy: false, create: (context) => Navigation()),
-          RepositoryProvider(
-              lazy: false,
-              create: (context) => NotificationsRepo(
-                  settings: context.read<SettingsRepo>(),
-                  accounts: context.read<AccountsRepo>(),
-                  bgChannel: bgChannel)),
-        ],
-        child: MultiBlocProvider(providers: [
           BlocProvider(
-              create: (context) => AppCubit(
+            create:
+                (context) => AppCubit(
                   navigation: context.read<Navigation>(),
-                  settings: context.read<SettingsRepo>())),
+                  settings: context.read<SettingsRepo>(),
+                ),
+          ),
           BlocProvider(
-              create: (context) => AlertsCubit(
+            create:
+                (context) => AlertsCubit(
                   bgChannel: bgChannel,
                   alertsRepo: context.read<AlertsRepo>(),
                   accounts: context.read<AccountsRepo>(),
                   settings: context.read<SettingsRepo>(),
-                  navigation: context.read<Navigation>())),
+                  navigation: context.read<Navigation>(),
+                ),
+          ),
           BlocProvider(
-              create: (context) => RootSettingsCubit(
+            create:
+                (context) => RootSettingsCubit(
                   bgChannel: bgChannel,
-                  accountsRepo: context.read<AccountsRepo>())),
+                  accountsRepo: context.read<AccountsRepo>(),
+                ),
+          ),
           BlocProvider(
-              create: (context) => GeneralSettingsCubit(
+            create:
+                (context) => GeneralSettingsCubit(
                   settings: context.read<SettingsRepo>(),
                   bgChannel: bgChannel,
                   notificationsRepo: context.read<NotificationsRepo>(),
-                  alertsRepo: context.read<AlertsRepo>())),
+                  alertsRepo: context.read<AlertsRepo>(),
+                ),
+          ),
           BlocProvider(
-              create: (context) => AccountEditingCubit(
+            create:
+                (context) => AccountEditingCubit(
                   bgChannel: bgChannel,
-                  accountsRepo: context.read<AccountsRepo>()))
-        ], child: const OAVappView()));
+                  accountsRepo: context.read<AccountsRepo>(),
+                ),
+          ),
+        ],
+        child: const OAVappView(),
+      ),
+    );
   }
 }
 
@@ -112,59 +140,80 @@ class _OAVappViewState extends State<OAVappView> {
   Widget build(BuildContext context) {
     final cubit = context.read<AppCubit>();
     return BlocListener<AppCubit, AppState>(
-        listenWhen: (previous, current) {
-          return current.screenPushed;
-        },
-        listener: (context, state) {
-          switch (state.screen) {
-            case Screens.none:
-              ;
-            case Screens.alerts:
-              _navigator.pushAndRemoveUntil(
-                  AlertsScreen.route(title: 'Open Alert Viewer'), (_) => false);
-            case Screens.alertDetails:
-              _navigator.push(AlertDetailsScreen.route(
-                  title: "Details", alert: state.data as Alert));
-            case Screens.rootSettings:
-              _navigator.push(SettingsScreen.route(title: "Settings"));
-            case Screens.generalSettings:
-              _navigator.push(GeneralSettingsScreen.route(
-                  title: "General Settings",
-                  cubit: context.read<GeneralSettingsCubit>()));
-            case Screens.about:
-              _navigator
-                  .push(AboutScreen.route(title: "About Open Alert Viewer"));
-            case Screens.accountEditing:
-              _navigator
-                  .push(AccountEditingScreen.route(
-                      title: "Edit Account",
-                      source: state.data as AlertSourceData?))
-                  .then((result) {
-                if ((result as bool? ?? false) && context.mounted) {
-                  context.read<RootSettingsCubit>().accountUpdated();
-                }
-              });
-            case Screens.accountSettings:
-              _navigator.push(AccountSettingsScreen.route(
-                  title: "Account Settings", sourceId: state.data as int));
-            case Screens.licensing:
-              _navigator
-                  .push(LicensingScreen.route(title: "License Information"));
-            case Screens.licensingDetails:
-              _navigator.push(LicensingDetailsScreen.route(
-                  dependency: state.data as Package));
-            case Screens.privacy:
-              _navigator.push(PrivacyScreen.route(title: "Privacy Policy"));
-          }
-        },
-        child: BlocBuilder<AppCubit, AppState>(buildWhen: (previous, current) {
+      listenWhen: (previous, current) {
+        return current.screenPushed;
+      },
+      listener: (context, state) {
+        switch (state.screen) {
+          case Screens.none:
+            ;
+          case Screens.alerts:
+            _navigator.pushAndRemoveUntil(
+              AlertsScreen.route(title: 'Open Alert Viewer'),
+              (_) => false,
+            );
+          case Screens.alertDetails:
+            _navigator.push(
+              AlertDetailsScreen.route(
+                title: "Details",
+                alert: state.data as Alert,
+              ),
+            );
+          case Screens.rootSettings:
+            _navigator.push(SettingsScreen.route(title: "Settings"));
+          case Screens.generalSettings:
+            _navigator.push(
+              GeneralSettingsScreen.route(
+                title: "General Settings",
+                cubit: context.read<GeneralSettingsCubit>(),
+              ),
+            );
+          case Screens.about:
+            _navigator.push(
+              AboutScreen.route(title: "About Open Alert Viewer"),
+            );
+          case Screens.accountEditing:
+            _navigator
+                .push(
+                  AccountEditingScreen.route(
+                    title: "Edit Account",
+                    source: state.data as AlertSourceData?,
+                  ),
+                )
+                .then((result) {
+                  if ((result as bool? ?? false) && context.mounted) {
+                    context.read<RootSettingsCubit>().accountUpdated();
+                  }
+                });
+          case Screens.accountSettings:
+            _navigator.push(
+              AccountSettingsScreen.route(
+                title: "Account Settings",
+                sourceId: state.data as int,
+              ),
+            );
+          case Screens.licensing:
+            _navigator.push(
+              LicensingScreen.route(title: "License Information"),
+            );
+          case Screens.licensingDetails:
+            _navigator.push(
+              LicensingDetailsScreen.route(dependency: state.data as Package),
+            );
+          case Screens.privacy:
+            _navigator.push(PrivacyScreen.route(title: "Privacy Policy"));
+        }
+      },
+      child: BlocBuilder<AppCubit, AppState>(
+        buildWhen: (previous, current) {
           return previous.darkMode != current.darkMode;
-        }, builder: (context, state) {
+        },
+        builder: (context, state) {
           return MaterialApp(
             title: 'Open Alert Viewer',
             navigatorKey: _navigatorKey,
-            onGenerateRoute: (_) =>
-                AlertsScreen.route(title: 'Open Alert Viewer'),
+            onGenerateRoute:
+                (_) => AlertsScreen.route(title: 'Open Alert Viewer'),
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
                 seedColor: Colors.lightBlue,
@@ -175,10 +224,11 @@ class _OAVappViewState extends State<OAVappView> {
             ),
             darkTheme: ThemeData(
               colorScheme: const ColorScheme.dark(
-                  primary: Color(0xFF224488),
-                  onPrimary: Colors.white,
-                  secondary: Color(0xFF66AAFF),
-                  onSurface: Color(0xFFBBBBBB)),
+                primary: Color(0xFF224488),
+                onPrimary: Colors.white,
+                secondary: Color(0xFF66AAFF),
+                onSurface: Color(0xFFBBBBBB),
+              ),
               brightness: Brightness.dark,
               useMaterial3: true,
             ),
@@ -189,15 +239,17 @@ class _OAVappViewState extends State<OAVappView> {
             debugShowCheckedModeBanner: false,
             scrollBehavior: CustomScrollBehavior(),
           );
-        }));
+        },
+      ),
+    );
   }
 }
 
 class CustomScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.trackpad,
-      };
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.trackpad,
+  };
 }

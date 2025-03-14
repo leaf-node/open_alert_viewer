@@ -17,8 +17,11 @@ class Util {
     return {for (var MapEntry(:key, :value) in data.entries) key: value as T};
   }
 
-  static String prettyPrintDuration(
-      {required Duration duration, bool? longForm, bool? stripLeadingOne}) {
+  static String prettyPrintDuration({
+    required Duration duration,
+    bool? longForm,
+    bool? stripLeadingOne,
+  }) {
     String durationStr;
     List<String> durationArray = [];
     int seconds = duration.inSeconds.floor() % 60;
@@ -66,12 +69,19 @@ class Util {
 
   static bool toBool(Object value) {
     if (value.runtimeType == String) {
-      return switch (value) { "0" => false, "1" || _ => true };
+      return switch (value) {
+        "0" => false,
+        "1" || _ => true,
+      };
     } else if (value.runtimeType == int) {
-      return switch (value) { 0 => false, 1 || _ => true };
+      return switch (value) {
+        0 => false,
+        1 || _ => true,
+      };
     } else {
       throw Exception(
-          "Invalid format to convert to bool: ${value.runtimeType}");
+        "Invalid format to convert to bool: ${value.runtimeType}",
+      );
     }
   }
 

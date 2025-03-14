@@ -12,7 +12,8 @@ part of 'alert_details_cubit.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$AlertDetailsState {
@@ -28,8 +29,9 @@ mixin _$AlertDetailsState {
 /// @nodoc
 abstract class $AlertDetailsStateCopyWith<$Res> {
   factory $AlertDetailsStateCopyWith(
-          AlertDetailsState value, $Res Function(AlertDetailsState) then) =
-      _$AlertDetailsStateCopyWithImpl<$Res, AlertDetailsState>;
+    AlertDetailsState value,
+    $Res Function(AlertDetailsState) then,
+  ) = _$AlertDetailsStateCopyWithImpl<$Res, AlertDetailsState>;
   @useResult
   $Res call({String sourceName});
 }
@@ -48,24 +50,27 @@ class _$AlertDetailsStateCopyWithImpl<$Res, $Val extends AlertDetailsState>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? sourceName = null,
-  }) {
-    return _then(_value.copyWith(
-      sourceName: null == sourceName
-          ? _value.sourceName
-          : sourceName // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  $Res call({Object? sourceName = null}) {
+    return _then(
+      _value.copyWith(
+            sourceName:
+                null == sourceName
+                    ? _value.sourceName
+                    : sourceName // ignore: cast_nullable_to_non_nullable
+                        as String,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$AlertDetailsStateImplCopyWith<$Res>
     implements $AlertDetailsStateCopyWith<$Res> {
-  factory _$$AlertDetailsStateImplCopyWith(_$AlertDetailsStateImpl value,
-          $Res Function(_$AlertDetailsStateImpl) then) =
-      __$$AlertDetailsStateImplCopyWithImpl<$Res>;
+  factory _$$AlertDetailsStateImplCopyWith(
+    _$AlertDetailsStateImpl value,
+    $Res Function(_$AlertDetailsStateImpl) then,
+  ) = __$$AlertDetailsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String sourceName});
@@ -75,23 +80,25 @@ abstract class _$$AlertDetailsStateImplCopyWith<$Res>
 class __$$AlertDetailsStateImplCopyWithImpl<$Res>
     extends _$AlertDetailsStateCopyWithImpl<$Res, _$AlertDetailsStateImpl>
     implements _$$AlertDetailsStateImplCopyWith<$Res> {
-  __$$AlertDetailsStateImplCopyWithImpl(_$AlertDetailsStateImpl _value,
-      $Res Function(_$AlertDetailsStateImpl) _then)
-      : super(_value, _then);
+  __$$AlertDetailsStateImplCopyWithImpl(
+    _$AlertDetailsStateImpl _value,
+    $Res Function(_$AlertDetailsStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of AlertDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? sourceName = null,
-  }) {
-    return _then(_$AlertDetailsStateImpl(
-      sourceName: null == sourceName
-          ? _value.sourceName
-          : sourceName // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+  $Res call({Object? sourceName = null}) {
+    return _then(
+      _$AlertDetailsStateImpl(
+        sourceName:
+            null == sourceName
+                ? _value.sourceName
+                : sourceName // ignore: cast_nullable_to_non_nullable
+                    as String,
+      ),
+    );
   }
 }
 
@@ -127,7 +134,9 @@ class _$AlertDetailsStateImpl implements _AlertDetailsState {
   @pragma('vm:prefer-inline')
   _$$AlertDetailsStateImplCopyWith<_$AlertDetailsStateImpl> get copyWith =>
       __$$AlertDetailsStateImplCopyWithImpl<_$AlertDetailsStateImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 }
 
 abstract class _AlertDetailsState implements AlertDetailsState {

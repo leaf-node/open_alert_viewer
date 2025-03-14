@@ -8,32 +8,30 @@ part of 'alerts_ici.dart';
 
 _$IciAlertsDataImpl _$$IciAlertsDataImplFromJson(Map<String, dynamic> json) =>
     _$IciAlertsDataImpl(
-      results: (json['results'] as List<dynamic>?)
-          ?.map((e) => IciResultsData.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      results:
+          (json['results'] as List<dynamic>?)
+              ?.map((e) => IciResultsData.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
 
 Map<String, dynamic> _$$IciAlertsDataImplToJson(_$IciAlertsDataImpl instance) =>
-    <String, dynamic>{
-      'results': instance.results,
-    };
+    <String, dynamic>{'results': instance.results};
 
 _$IciResultsDataImpl _$$IciResultsDataImplFromJson(Map<String, dynamic> json) =>
     _$IciResultsDataImpl(
-      attrs: json['attrs'] == null
-          ? null
-          : AttrsData.fromJson(json['attrs'] as Map<String, dynamic>),
-      joins: json['joins'] == null
-          ? null
-          : JoinsData.fromJson(json['joins'] as Map<String, dynamic>),
+      attrs:
+          json['attrs'] == null
+              ? null
+              : AttrsData.fromJson(json['attrs'] as Map<String, dynamic>),
+      joins:
+          json['joins'] == null
+              ? null
+              : JoinsData.fromJson(json['joins'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$IciResultsDataImplToJson(
-        _$IciResultsDataImpl instance) =>
-    <String, dynamic>{
-      'attrs': instance.attrs,
-      'joins': instance.joins,
-    };
+  _$IciResultsDataImpl instance,
+) => <String, dynamic>{'attrs': instance.attrs, 'joins': instance.joins};
 
 _$AttrsDataImpl _$$AttrsDataImplFromJson(Map<String, dynamic> json) =>
     _$AttrsDataImpl(
@@ -44,10 +42,12 @@ _$AttrsDataImpl _$$AttrsDataImplFromJson(Map<String, dynamic> json) =>
       last_state_change: json['last_state_change'] as num?,
       last_hard_state_change: json['last_hard_state_change'] as num?,
       last_check: json['last_check'] as num?,
-      last_check_result: json['last_check_result'] == null
-          ? null
-          : LastCheckResultData.fromJson(
-              json['last_check_result'] as Map<String, dynamic>),
+      last_check_result:
+          json['last_check_result'] == null
+              ? null
+              : LastCheckResultData.fromJson(
+                json['last_check_result'] as Map<String, dynamic>,
+              ),
       state_type: json['state_type'] as num?,
     );
 
@@ -65,35 +65,26 @@ Map<String, dynamic> _$$AttrsDataImplToJson(_$AttrsDataImpl instance) =>
     };
 
 _$LastCheckResultDataImpl _$$LastCheckResultDataImplFromJson(
-        Map<String, dynamic> json) =>
-    _$LastCheckResultDataImpl(
-      output: json['output'] as String?,
-    );
+  Map<String, dynamic> json,
+) => _$LastCheckResultDataImpl(output: json['output'] as String?);
 
 Map<String, dynamic> _$$LastCheckResultDataImplToJson(
-        _$LastCheckResultDataImpl instance) =>
-    <String, dynamic>{
-      'output': instance.output,
-    };
+  _$LastCheckResultDataImpl instance,
+) => <String, dynamic>{'output': instance.output};
 
 _$JoinsDataImpl _$$JoinsDataImplFromJson(Map<String, dynamic> json) =>
     _$JoinsDataImpl(
-      host: json['host'] == null
-          ? null
-          : HostsData.fromJson(json['host'] as Map<String, dynamic>),
+      host:
+          json['host'] == null
+              ? null
+              : HostsData.fromJson(json['host'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$JoinsDataImplToJson(_$JoinsDataImpl instance) =>
-    <String, dynamic>{
-      'host': instance.host,
-    };
+    <String, dynamic>{'host': instance.host};
 
 _$HostsDataImpl _$$HostsDataImplFromJson(Map<String, dynamic> json) =>
-    _$HostsDataImpl(
-      name: json['name'] as String?,
-    );
+    _$HostsDataImpl(name: json['name'] as String?);
 
 Map<String, dynamic> _$$HostsDataImplToJson(_$HostsDataImpl instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-    };
+    <String, dynamic>{'name': instance.name};

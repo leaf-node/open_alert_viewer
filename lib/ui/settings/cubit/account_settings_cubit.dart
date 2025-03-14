@@ -16,17 +16,21 @@ part 'account_settings_state.dart';
 part 'account_settings_cubit.freezed.dart';
 
 class AccountSettingsCubit extends Cubit<AccountSettingsState> {
-  AccountSettingsCubit(
-      {required int id,
-      required SettingsRepo settings,
-      required AccountsRepo accountsRepo,
-      required NotificationsRepo notificationRepo})
-      : _id = id,
-        _settings = settings,
-        _accountsRepo = accountsRepo,
-        _notificationsRepo = notificationRepo,
-        super(AccountSettingsState.init(
-            settings: settings, source: accountsRepo.getSource(id))) {
+  AccountSettingsCubit({
+    required int id,
+    required SettingsRepo settings,
+    required AccountsRepo accountsRepo,
+    required NotificationsRepo notificationRepo,
+  }) : _id = id,
+       _settings = settings,
+       _accountsRepo = accountsRepo,
+       _notificationsRepo = notificationRepo,
+       super(
+         AccountSettingsState.init(
+           settings: settings,
+           source: accountsRepo.getSource(id),
+         ),
+       ) {
     _state = state;
     refreshStateAsync();
   }
@@ -40,8 +44,9 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState> {
   Future<void> refreshStateAsync() async {
     final globalNotificationsEnabled = await _settings.notificationsEnabledSafe;
     _state = _state!.copyWith(
-        globalNotificationsEnabled: globalNotificationsEnabled,
-        source: _accountsRepo.getSource(_id));
+      globalNotificationsEnabled: globalNotificationsEnabled,
+      source: _accountsRepo.getSource(_id),
+    );
     emit(_state!);
   }
 

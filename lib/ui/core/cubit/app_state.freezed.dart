@@ -12,7 +12,8 @@ part of 'app_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$AppState {
@@ -34,12 +35,13 @@ abstract class $AppStateCopyWith<$Res> {
   factory $AppStateCopyWith(AppState value, $Res Function(AppState) then) =
       _$AppStateCopyWithImpl<$Res, AppState>;
   @useResult
-  $Res call(
-      {Screens screen,
-      bool screenPushed,
-      int timestamp,
-      Object? data,
-      bool? darkMode});
+  $Res call({
+    Screens screen,
+    bool screenPushed,
+    int timestamp,
+    Object? data,
+    bool? darkMode,
+  });
 }
 
 /// @nodoc
@@ -63,25 +65,32 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
     Object? data = freezed,
     Object? darkMode = freezed,
   }) {
-    return _then(_value.copyWith(
-      screen: null == screen
-          ? _value.screen
-          : screen // ignore: cast_nullable_to_non_nullable
-              as Screens,
-      screenPushed: null == screenPushed
-          ? _value.screenPushed
-          : screenPushed // ignore: cast_nullable_to_non_nullable
-              as bool,
-      timestamp: null == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as int,
-      data: freezed == data ? _value.data : data,
-      darkMode: freezed == darkMode
-          ? _value.darkMode
-          : darkMode // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            screen:
+                null == screen
+                    ? _value.screen
+                    : screen // ignore: cast_nullable_to_non_nullable
+                        as Screens,
+            screenPushed:
+                null == screenPushed
+                    ? _value.screenPushed
+                    : screenPushed // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            timestamp:
+                null == timestamp
+                    ? _value.timestamp
+                    : timestamp // ignore: cast_nullable_to_non_nullable
+                        as int,
+            data: freezed == data ? _value.data : data,
+            darkMode:
+                freezed == darkMode
+                    ? _value.darkMode
+                    : darkMode // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -89,16 +98,18 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
 abstract class _$$AppStateImplCopyWith<$Res>
     implements $AppStateCopyWith<$Res> {
   factory _$$AppStateImplCopyWith(
-          _$AppStateImpl value, $Res Function(_$AppStateImpl) then) =
-      __$$AppStateImplCopyWithImpl<$Res>;
+    _$AppStateImpl value,
+    $Res Function(_$AppStateImpl) then,
+  ) = __$$AppStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {Screens screen,
-      bool screenPushed,
-      int timestamp,
-      Object? data,
-      bool? darkMode});
+  $Res call({
+    Screens screen,
+    bool screenPushed,
+    int timestamp,
+    Object? data,
+    bool? darkMode,
+  });
 }
 
 /// @nodoc
@@ -106,8 +117,9 @@ class __$$AppStateImplCopyWithImpl<$Res>
     extends _$AppStateCopyWithImpl<$Res, _$AppStateImpl>
     implements _$$AppStateImplCopyWith<$Res> {
   __$$AppStateImplCopyWithImpl(
-      _$AppStateImpl _value, $Res Function(_$AppStateImpl) _then)
-      : super(_value, _then);
+    _$AppStateImpl _value,
+    $Res Function(_$AppStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of AppState
   /// with the given fields replaced by the non-null parameter values.
@@ -120,37 +132,44 @@ class __$$AppStateImplCopyWithImpl<$Res>
     Object? data = freezed,
     Object? darkMode = freezed,
   }) {
-    return _then(_$AppStateImpl(
-      screen: null == screen
-          ? _value.screen
-          : screen // ignore: cast_nullable_to_non_nullable
-              as Screens,
-      screenPushed: null == screenPushed
-          ? _value.screenPushed
-          : screenPushed // ignore: cast_nullable_to_non_nullable
-              as bool,
-      timestamp: null == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as int,
-      data: freezed == data ? _value.data : data,
-      darkMode: freezed == darkMode
-          ? _value.darkMode
-          : darkMode // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ));
+    return _then(
+      _$AppStateImpl(
+        screen:
+            null == screen
+                ? _value.screen
+                : screen // ignore: cast_nullable_to_non_nullable
+                    as Screens,
+        screenPushed:
+            null == screenPushed
+                ? _value.screenPushed
+                : screenPushed // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        timestamp:
+            null == timestamp
+                ? _value.timestamp
+                : timestamp // ignore: cast_nullable_to_non_nullable
+                    as int,
+        data: freezed == data ? _value.data : data,
+        darkMode:
+            freezed == darkMode
+                ? _value.darkMode
+                : darkMode // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$AppStateImpl implements _AppState {
-  const _$AppStateImpl(
-      {required this.screen,
-      required this.screenPushed,
-      required this.timestamp,
-      this.data,
-      this.darkMode});
+  const _$AppStateImpl({
+    required this.screen,
+    required this.screenPushed,
+    required this.timestamp,
+    this.data,
+    this.darkMode,
+  });
 
   @override
   final Screens screen;
@@ -184,8 +203,14 @@ class _$AppStateImpl implements _AppState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, screen, screenPushed, timestamp,
-      const DeepCollectionEquality().hash(data), darkMode);
+  int get hashCode => Object.hash(
+    runtimeType,
+    screen,
+    screenPushed,
+    timestamp,
+    const DeepCollectionEquality().hash(data),
+    darkMode,
+  );
 
   /// Create a copy of AppState
   /// with the given fields replaced by the non-null parameter values.
@@ -197,12 +222,13 @@ class _$AppStateImpl implements _AppState {
 }
 
 abstract class _AppState implements AppState {
-  const factory _AppState(
-      {required final Screens screen,
-      required final bool screenPushed,
-      required final int timestamp,
-      final Object? data,
-      final bool? darkMode}) = _$AppStateImpl;
+  const factory _AppState({
+    required final Screens screen,
+    required final bool screenPushed,
+    required final int timestamp,
+    final Object? data,
+    final bool? darkMode,
+  }) = _$AppStateImpl;
 
   @override
   Screens get screen;

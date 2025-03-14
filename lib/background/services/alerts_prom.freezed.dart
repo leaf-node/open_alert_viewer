@@ -12,7 +12,8 @@ part of 'alerts_prom.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 PromAlertsData _$PromAlertsDataFromJson(Map<String, dynamic> json) {
   return _PromAlertsData.fromJson(json);
@@ -41,17 +42,19 @@ mixin _$PromAlertsData {
 /// @nodoc
 abstract class $PromAlertsDataCopyWith<$Res> {
   factory $PromAlertsDataCopyWith(
-          PromAlertsData value, $Res Function(PromAlertsData) then) =
-      _$PromAlertsDataCopyWithImpl<$Res, PromAlertsData>;
+    PromAlertsData value,
+    $Res Function(PromAlertsData) then,
+  ) = _$PromAlertsDataCopyWithImpl<$Res, PromAlertsData>;
   @useResult
-  $Res call(
-      {String? startsAt,
-      String? updatedAt,
-      String? endsAt,
-      String? generatorURL,
-      AnnotationsData? annotations,
-      LabelsData? labels,
-      StatusData? status});
+  $Res call({
+    String? startsAt,
+    String? updatedAt,
+    String? endsAt,
+    String? generatorURL,
+    AnnotationsData? annotations,
+    LabelsData? labels,
+    StatusData? status,
+  });
 
   $AnnotationsDataCopyWith<$Res>? get annotations;
   $LabelsDataCopyWith<$Res>? get labels;
@@ -81,36 +84,46 @@ class _$PromAlertsDataCopyWithImpl<$Res, $Val extends PromAlertsData>
     Object? labels = freezed,
     Object? status = freezed,
   }) {
-    return _then(_value.copyWith(
-      startsAt: freezed == startsAt
-          ? _value.startsAt
-          : startsAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      endsAt: freezed == endsAt
-          ? _value.endsAt
-          : endsAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      generatorURL: freezed == generatorURL
-          ? _value.generatorURL
-          : generatorURL // ignore: cast_nullable_to_non_nullable
-              as String?,
-      annotations: freezed == annotations
-          ? _value.annotations
-          : annotations // ignore: cast_nullable_to_non_nullable
-              as AnnotationsData?,
-      labels: freezed == labels
-          ? _value.labels
-          : labels // ignore: cast_nullable_to_non_nullable
-              as LabelsData?,
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as StatusData?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            startsAt:
+                freezed == startsAt
+                    ? _value.startsAt
+                    : startsAt // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            updatedAt:
+                freezed == updatedAt
+                    ? _value.updatedAt
+                    : updatedAt // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            endsAt:
+                freezed == endsAt
+                    ? _value.endsAt
+                    : endsAt // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            generatorURL:
+                freezed == generatorURL
+                    ? _value.generatorURL
+                    : generatorURL // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            annotations:
+                freezed == annotations
+                    ? _value.annotations
+                    : annotations // ignore: cast_nullable_to_non_nullable
+                        as AnnotationsData?,
+            labels:
+                freezed == labels
+                    ? _value.labels
+                    : labels // ignore: cast_nullable_to_non_nullable
+                        as LabelsData?,
+            status:
+                freezed == status
+                    ? _value.status
+                    : status // ignore: cast_nullable_to_non_nullable
+                        as StatusData?,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of PromAlertsData
@@ -159,19 +172,21 @@ class _$PromAlertsDataCopyWithImpl<$Res, $Val extends PromAlertsData>
 /// @nodoc
 abstract class _$$PromAlertsDataImplCopyWith<$Res>
     implements $PromAlertsDataCopyWith<$Res> {
-  factory _$$PromAlertsDataImplCopyWith(_$PromAlertsDataImpl value,
-          $Res Function(_$PromAlertsDataImpl) then) =
-      __$$PromAlertsDataImplCopyWithImpl<$Res>;
+  factory _$$PromAlertsDataImplCopyWith(
+    _$PromAlertsDataImpl value,
+    $Res Function(_$PromAlertsDataImpl) then,
+  ) = __$$PromAlertsDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? startsAt,
-      String? updatedAt,
-      String? endsAt,
-      String? generatorURL,
-      AnnotationsData? annotations,
-      LabelsData? labels,
-      StatusData? status});
+  $Res call({
+    String? startsAt,
+    String? updatedAt,
+    String? endsAt,
+    String? generatorURL,
+    AnnotationsData? annotations,
+    LabelsData? labels,
+    StatusData? status,
+  });
 
   @override
   $AnnotationsDataCopyWith<$Res>? get annotations;
@@ -186,8 +201,9 @@ class __$$PromAlertsDataImplCopyWithImpl<$Res>
     extends _$PromAlertsDataCopyWithImpl<$Res, _$PromAlertsDataImpl>
     implements _$$PromAlertsDataImplCopyWith<$Res> {
   __$$PromAlertsDataImplCopyWithImpl(
-      _$PromAlertsDataImpl _value, $Res Function(_$PromAlertsDataImpl) _then)
-      : super(_value, _then);
+    _$PromAlertsDataImpl _value,
+    $Res Function(_$PromAlertsDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of PromAlertsData
   /// with the given fields replaced by the non-null parameter values.
@@ -202,50 +218,60 @@ class __$$PromAlertsDataImplCopyWithImpl<$Res>
     Object? labels = freezed,
     Object? status = freezed,
   }) {
-    return _then(_$PromAlertsDataImpl(
-      startsAt: freezed == startsAt
-          ? _value.startsAt
-          : startsAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      endsAt: freezed == endsAt
-          ? _value.endsAt
-          : endsAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      generatorURL: freezed == generatorURL
-          ? _value.generatorURL
-          : generatorURL // ignore: cast_nullable_to_non_nullable
-              as String?,
-      annotations: freezed == annotations
-          ? _value.annotations
-          : annotations // ignore: cast_nullable_to_non_nullable
-              as AnnotationsData?,
-      labels: freezed == labels
-          ? _value.labels
-          : labels // ignore: cast_nullable_to_non_nullable
-              as LabelsData?,
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as StatusData?,
-    ));
+    return _then(
+      _$PromAlertsDataImpl(
+        startsAt:
+            freezed == startsAt
+                ? _value.startsAt
+                : startsAt // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        updatedAt:
+            freezed == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        endsAt:
+            freezed == endsAt
+                ? _value.endsAt
+                : endsAt // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        generatorURL:
+            freezed == generatorURL
+                ? _value.generatorURL
+                : generatorURL // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        annotations:
+            freezed == annotations
+                ? _value.annotations
+                : annotations // ignore: cast_nullable_to_non_nullable
+                    as AnnotationsData?,
+        labels:
+            freezed == labels
+                ? _value.labels
+                : labels // ignore: cast_nullable_to_non_nullable
+                    as LabelsData?,
+        status:
+            freezed == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                    as StatusData?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$PromAlertsDataImpl implements _PromAlertsData {
-  const _$PromAlertsDataImpl(
-      {this.startsAt,
-      this.updatedAt,
-      this.endsAt,
-      this.generatorURL,
-      this.annotations,
-      this.labels,
-      this.status});
+  const _$PromAlertsDataImpl({
+    this.startsAt,
+    this.updatedAt,
+    this.endsAt,
+    this.generatorURL,
+    this.annotations,
+    this.labels,
+    this.status,
+  });
 
   factory _$PromAlertsDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$PromAlertsDataImplFromJson(json);
@@ -290,8 +316,16 @@ class _$PromAlertsDataImpl implements _PromAlertsData {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, startsAt, updatedAt, endsAt,
-      generatorURL, annotations, labels, status);
+  int get hashCode => Object.hash(
+    runtimeType,
+    startsAt,
+    updatedAt,
+    endsAt,
+    generatorURL,
+    annotations,
+    labels,
+    status,
+  );
 
   /// Create a copy of PromAlertsData
   /// with the given fields replaced by the non-null parameter values.
@@ -300,25 +334,26 @@ class _$PromAlertsDataImpl implements _PromAlertsData {
   @pragma('vm:prefer-inline')
   _$$PromAlertsDataImplCopyWith<_$PromAlertsDataImpl> get copyWith =>
       __$$PromAlertsDataImplCopyWithImpl<_$PromAlertsDataImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$PromAlertsDataImplToJson(
-      this,
-    );
+    return _$$PromAlertsDataImplToJson(this);
   }
 }
 
 abstract class _PromAlertsData implements PromAlertsData {
-  const factory _PromAlertsData(
-      {final String? startsAt,
-      final String? updatedAt,
-      final String? endsAt,
-      final String? generatorURL,
-      final AnnotationsData? annotations,
-      final LabelsData? labels,
-      final StatusData? status}) = _$PromAlertsDataImpl;
+  const factory _PromAlertsData({
+    final String? startsAt,
+    final String? updatedAt,
+    final String? endsAt,
+    final String? generatorURL,
+    final AnnotationsData? annotations,
+    final LabelsData? labels,
+    final StatusData? status,
+  }) = _$PromAlertsDataImpl;
 
   factory _PromAlertsData.fromJson(Map<String, dynamic> json) =
       _$PromAlertsDataImpl.fromJson;
@@ -367,8 +402,9 @@ mixin _$AnnotationsData {
 /// @nodoc
 abstract class $AnnotationsDataCopyWith<$Res> {
   factory $AnnotationsDataCopyWith(
-          AnnotationsData value, $Res Function(AnnotationsData) then) =
-      _$AnnotationsDataCopyWithImpl<$Res, AnnotationsData>;
+    AnnotationsData value,
+    $Res Function(AnnotationsData) then,
+  ) = _$AnnotationsDataCopyWithImpl<$Res, AnnotationsData>;
   @useResult
   $Res call({String? summary});
 }
@@ -387,24 +423,27 @@ class _$AnnotationsDataCopyWithImpl<$Res, $Val extends AnnotationsData>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? summary = freezed,
-  }) {
-    return _then(_value.copyWith(
-      summary: freezed == summary
-          ? _value.summary
-          : summary // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  $Res call({Object? summary = freezed}) {
+    return _then(
+      _value.copyWith(
+            summary:
+                freezed == summary
+                    ? _value.summary
+                    : summary // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$AnnotationsDataImplCopyWith<$Res>
     implements $AnnotationsDataCopyWith<$Res> {
-  factory _$$AnnotationsDataImplCopyWith(_$AnnotationsDataImpl value,
-          $Res Function(_$AnnotationsDataImpl) then) =
-      __$$AnnotationsDataImplCopyWithImpl<$Res>;
+  factory _$$AnnotationsDataImplCopyWith(
+    _$AnnotationsDataImpl value,
+    $Res Function(_$AnnotationsDataImpl) then,
+  ) = __$$AnnotationsDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? summary});
@@ -415,22 +454,24 @@ class __$$AnnotationsDataImplCopyWithImpl<$Res>
     extends _$AnnotationsDataCopyWithImpl<$Res, _$AnnotationsDataImpl>
     implements _$$AnnotationsDataImplCopyWith<$Res> {
   __$$AnnotationsDataImplCopyWithImpl(
-      _$AnnotationsDataImpl _value, $Res Function(_$AnnotationsDataImpl) _then)
-      : super(_value, _then);
+    _$AnnotationsDataImpl _value,
+    $Res Function(_$AnnotationsDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of AnnotationsData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? summary = freezed,
-  }) {
-    return _then(_$AnnotationsDataImpl(
-      summary: freezed == summary
-          ? _value.summary
-          : summary // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+  $Res call({Object? summary = freezed}) {
+    return _then(
+      _$AnnotationsDataImpl(
+        summary:
+            freezed == summary
+                ? _value.summary
+                : summary // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
@@ -469,13 +510,13 @@ class _$AnnotationsDataImpl implements _AnnotationsData {
   @pragma('vm:prefer-inline')
   _$$AnnotationsDataImplCopyWith<_$AnnotationsDataImpl> get copyWith =>
       __$$AnnotationsDataImplCopyWithImpl<_$AnnotationsDataImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AnnotationsDataImplToJson(
-      this,
-    );
+    return _$$AnnotationsDataImplToJson(this);
   }
 }
 
@@ -518,8 +559,9 @@ mixin _$StatusData {
 /// @nodoc
 abstract class $StatusDataCopyWith<$Res> {
   factory $StatusDataCopyWith(
-          StatusData value, $Res Function(StatusData) then) =
-      _$StatusDataCopyWithImpl<$Res, StatusData>;
+    StatusData value,
+    $Res Function(StatusData) then,
+  ) = _$StatusDataCopyWithImpl<$Res, StatusData>;
   @useResult
   $Res call({List<Object>? silencedBy});
 }
@@ -538,15 +580,17 @@ class _$StatusDataCopyWithImpl<$Res, $Val extends StatusData>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? silencedBy = freezed,
-  }) {
-    return _then(_value.copyWith(
-      silencedBy: freezed == silencedBy
-          ? _value.silencedBy
-          : silencedBy // ignore: cast_nullable_to_non_nullable
-              as List<Object>?,
-    ) as $Val);
+  $Res call({Object? silencedBy = freezed}) {
+    return _then(
+      _value.copyWith(
+            silencedBy:
+                freezed == silencedBy
+                    ? _value.silencedBy
+                    : silencedBy // ignore: cast_nullable_to_non_nullable
+                        as List<Object>?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -554,8 +598,9 @@ class _$StatusDataCopyWithImpl<$Res, $Val extends StatusData>
 abstract class _$$StatusDataImplCopyWith<$Res>
     implements $StatusDataCopyWith<$Res> {
   factory _$$StatusDataImplCopyWith(
-          _$StatusDataImpl value, $Res Function(_$StatusDataImpl) then) =
-      __$$StatusDataImplCopyWithImpl<$Res>;
+    _$StatusDataImpl value,
+    $Res Function(_$StatusDataImpl) then,
+  ) = __$$StatusDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<Object>? silencedBy});
@@ -566,22 +611,24 @@ class __$$StatusDataImplCopyWithImpl<$Res>
     extends _$StatusDataCopyWithImpl<$Res, _$StatusDataImpl>
     implements _$$StatusDataImplCopyWith<$Res> {
   __$$StatusDataImplCopyWithImpl(
-      _$StatusDataImpl _value, $Res Function(_$StatusDataImpl) _then)
-      : super(_value, _then);
+    _$StatusDataImpl _value,
+    $Res Function(_$StatusDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of StatusData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? silencedBy = freezed,
-  }) {
-    return _then(_$StatusDataImpl(
-      silencedBy: freezed == silencedBy
-          ? _value._silencedBy
-          : silencedBy // ignore: cast_nullable_to_non_nullable
-              as List<Object>?,
-    ));
+  $Res call({Object? silencedBy = freezed}) {
+    return _then(
+      _$StatusDataImpl(
+        silencedBy:
+            freezed == silencedBy
+                ? _value._silencedBy
+                : silencedBy // ignore: cast_nullable_to_non_nullable
+                    as List<Object>?,
+      ),
+    );
   }
 }
 
@@ -589,7 +636,7 @@ class __$$StatusDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$StatusDataImpl implements _StatusData {
   const _$StatusDataImpl({final List<Object>? silencedBy})
-      : _silencedBy = silencedBy;
+    : _silencedBy = silencedBy;
 
   factory _$StatusDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$StatusDataImplFromJson(json);
@@ -614,14 +661,18 @@ class _$StatusDataImpl implements _StatusData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$StatusDataImpl &&
-            const DeepCollectionEquality()
-                .equals(other._silencedBy, _silencedBy));
+            const DeepCollectionEquality().equals(
+              other._silencedBy,
+              _silencedBy,
+            ));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_silencedBy));
+    runtimeType,
+    const DeepCollectionEquality().hash(_silencedBy),
+  );
 
   /// Create a copy of StatusData
   /// with the given fields replaced by the non-null parameter values.
@@ -633,9 +684,7 @@ class _$StatusDataImpl implements _StatusData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$StatusDataImplToJson(
-      this,
-    );
+    return _$$StatusDataImplToJson(this);
   }
 }
 
@@ -682,14 +731,16 @@ mixin _$LabelsData {
 /// @nodoc
 abstract class $LabelsDataCopyWith<$Res> {
   factory $LabelsDataCopyWith(
-          LabelsData value, $Res Function(LabelsData) then) =
-      _$LabelsDataCopyWithImpl<$Res, LabelsData>;
+    LabelsData value,
+    $Res Function(LabelsData) then,
+  ) = _$LabelsDataCopyWithImpl<$Res, LabelsData>;
   @useResult
-  $Res call(
-      {String? severity,
-      String? oav_type,
-      String? instance,
-      String? alertname});
+  $Res call({
+    String? severity,
+    String? oav_type,
+    String? instance,
+    String? alertname,
+  });
 }
 
 /// @nodoc
@@ -712,24 +763,31 @@ class _$LabelsDataCopyWithImpl<$Res, $Val extends LabelsData>
     Object? instance = freezed,
     Object? alertname = freezed,
   }) {
-    return _then(_value.copyWith(
-      severity: freezed == severity
-          ? _value.severity
-          : severity // ignore: cast_nullable_to_non_nullable
-              as String?,
-      oav_type: freezed == oav_type
-          ? _value.oav_type
-          : oav_type // ignore: cast_nullable_to_non_nullable
-              as String?,
-      instance: freezed == instance
-          ? _value.instance
-          : instance // ignore: cast_nullable_to_non_nullable
-              as String?,
-      alertname: freezed == alertname
-          ? _value.alertname
-          : alertname // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            severity:
+                freezed == severity
+                    ? _value.severity
+                    : severity // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            oav_type:
+                freezed == oav_type
+                    ? _value.oav_type
+                    : oav_type // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            instance:
+                freezed == instance
+                    ? _value.instance
+                    : instance // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            alertname:
+                freezed == alertname
+                    ? _value.alertname
+                    : alertname // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -737,15 +795,17 @@ class _$LabelsDataCopyWithImpl<$Res, $Val extends LabelsData>
 abstract class _$$LabelsDataImplCopyWith<$Res>
     implements $LabelsDataCopyWith<$Res> {
   factory _$$LabelsDataImplCopyWith(
-          _$LabelsDataImpl value, $Res Function(_$LabelsDataImpl) then) =
-      __$$LabelsDataImplCopyWithImpl<$Res>;
+    _$LabelsDataImpl value,
+    $Res Function(_$LabelsDataImpl) then,
+  ) = __$$LabelsDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? severity,
-      String? oav_type,
-      String? instance,
-      String? alertname});
+  $Res call({
+    String? severity,
+    String? oav_type,
+    String? instance,
+    String? alertname,
+  });
 }
 
 /// @nodoc
@@ -753,8 +813,9 @@ class __$$LabelsDataImplCopyWithImpl<$Res>
     extends _$LabelsDataCopyWithImpl<$Res, _$LabelsDataImpl>
     implements _$$LabelsDataImplCopyWith<$Res> {
   __$$LabelsDataImplCopyWithImpl(
-      _$LabelsDataImpl _value, $Res Function(_$LabelsDataImpl) _then)
-      : super(_value, _then);
+    _$LabelsDataImpl _value,
+    $Res Function(_$LabelsDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of LabelsData
   /// with the given fields replaced by the non-null parameter values.
@@ -766,39 +827,49 @@ class __$$LabelsDataImplCopyWithImpl<$Res>
     Object? instance = freezed,
     Object? alertname = freezed,
   }) {
-    return _then(_$LabelsDataImpl(
-      severity: freezed == severity
-          ? _value.severity
-          : severity // ignore: cast_nullable_to_non_nullable
-              as String?,
-      oav_type: freezed == oav_type
-          ? _value.oav_type
-          : oav_type // ignore: cast_nullable_to_non_nullable
-              as String?,
-      instance: freezed == instance
-          ? _value.instance
-          : instance // ignore: cast_nullable_to_non_nullable
-              as String?,
-      alertname: freezed == alertname
-          ? _value.alertname
-          : alertname // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$LabelsDataImpl(
+        severity:
+            freezed == severity
+                ? _value.severity
+                : severity // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        oav_type:
+            freezed == oav_type
+                ? _value.oav_type
+                : oav_type // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        instance:
+            freezed == instance
+                ? _value.instance
+                : instance // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        alertname:
+            freezed == alertname
+                ? _value.alertname
+                : alertname // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$LabelsDataImpl implements _LabelsData {
-  const _$LabelsDataImpl(
-      {this.severity, this.oav_type, this.instance, this.alertname});
+  const _$LabelsDataImpl({
+    this.severity,
+    this.oav_type,
+    this.instance,
+    this.alertname,
+  });
 
   factory _$LabelsDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$LabelsDataImplFromJson(json);
 
   @override
   final String? severity;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final String? oav_type;
   @override
@@ -841,18 +912,17 @@ class _$LabelsDataImpl implements _LabelsData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$LabelsDataImplToJson(
-      this,
-    );
+    return _$$LabelsDataImplToJson(this);
   }
 }
 
 abstract class _LabelsData implements LabelsData {
-  const factory _LabelsData(
-      {final String? severity,
-      final String? oav_type,
-      final String? instance,
-      final String? alertname}) = _$LabelsDataImpl;
+  const factory _LabelsData({
+    final String? severity,
+    final String? oav_type,
+    final String? instance,
+    final String? alertname,
+  }) = _$LabelsDataImpl;
 
   factory _LabelsData.fromJson(Map<String, dynamic> json) =
       _$LabelsDataImpl.fromJson;

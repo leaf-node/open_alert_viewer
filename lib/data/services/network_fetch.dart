@@ -15,11 +15,15 @@ String useragent = "open_alert_viewer/1";
 
 mixin NetworkFetch {
   Future<http.Response> networkFetch(
-      String baseURL, String username, String password, String restOfURL,
-      {String? postBody,
-      bool? authOverride,
-      Map<String, String>? headers,
-      int? maxTimeout}) async {
+    String baseURL,
+    String username,
+    String password,
+    String restOfURL, {
+    String? postBody,
+    bool? authOverride,
+    Map<String, String>? headers,
+    int? maxTimeout,
+  }) async {
     Map<String, String> collectedHeaders = {"User-Agent": useragent};
     collectedHeaders.addAll(headers ?? {});
     if ((username != "" || password != "") && !(authOverride ?? false)) {
@@ -30,8 +34,11 @@ mixin NetworkFetch {
     String url = generateURL(baseURL, restOfURL);
     if (RegExp(r"^http://").hasMatch(url) &&
         !RegExp(r"^http://localhost(:[0-9]+)?(/.*)?$").hasMatch(url)) {
-      return http.Response("426 HTTPS required", 426,
-          reasonPhrase: "HTTPS Required");
+      return http.Response(
+        "426 HTTPS required",
+        426,
+        reasonPhrase: "HTTPS Required",
+      );
     }
     Uri? parsedURI;
     Future<Response> query;
@@ -52,11 +59,16 @@ mixin NetworkFetch {
     if (maxTimeout != null) {
       timeout = (timeout > maxTimeout) ? maxTimeout : timeout;
     }
-    var response =
-        await query.timeout(Duration(seconds: timeout), onTimeout: () {
-      return http.Response("408 Client Timeout", 408,
-          reasonPhrase: "Client Timeout");
-    });
+    var response = await query.timeout(
+      Duration(seconds: timeout),
+      onTimeout: () {
+        return http.Response(
+          "408 Client Timeout",
+          408,
+          reasonPhrase: "Client Timeout",
+        );
+      },
+    );
     return response;
   }
 

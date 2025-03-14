@@ -12,9 +12,10 @@ part 'root_settings_state.freezed.dart';
 
 @freezed
 class RootSettingsCubitState with _$RootSettingsCubitState {
-  const factory RootSettingsCubitState(
-      {required List<AlertSourceData> sources,
-      required bool? accountUpdated}) = _RootSettingsState;
+  const factory RootSettingsCubitState({
+    required List<AlertSourceData> sources,
+    required bool? accountUpdated,
+  }) = _RootSettingsState;
 
   factory RootSettingsCubitState.init() {
     return RootSettingsCubitState(sources: [], accountUpdated: null);

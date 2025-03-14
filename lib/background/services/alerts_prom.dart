@@ -41,48 +41,56 @@ class PromAlerts extends AlertSource {
     final type = alertDatum.labels?.oav_type ?? "";
     AlertType kind;
     if (RegExp(r"^(error|page|critical)$").hasMatch(severity)) {
-      kind = RegExp(r"^(ping|icmp)$").hasMatch(type)
-          ? AlertType.down
-          : AlertType.error;
+      kind =
+          RegExp(r"^(ping|icmp)$").hasMatch(type)
+              ? AlertType.down
+              : AlertType.error;
     } else if (RegExp(r"^(warning)$").hasMatch(severity)) {
       kind = AlertType.warning;
     } else {
       kind = AlertType.unknown;
     }
     return Alert(
-        source: sourceData.id!,
-        kind: kind,
-        hostname: alertDatum.labels?.instance ?? "Unknown Host",
-        service: alertDatum.labels?.alertname ?? "Unknown",
-        message: alertDatum.annotations?.summary ?? "...",
-        serviceUrl: (alertDatum.labels?.instance == null)
-            ? ""
-            : generateURL(alertDatum.labels!.instance!, ""),
-        monitorUrl: (alertDatum.generatorURL == null)
-            ? generateURL(sourceData.baseURL, "")
-            : generateURL(alertDatum.generatorURL!, ""),
-        age: (alertDatum.startsAt == null)
-            ? Duration.zero
-            : DateTime.now().difference(DateTime.parse(alertDatum.startsAt!)),
-        silenced: (alertDatum.status != null &&
-            alertDatum.status!.silencedBy != null &&
-            alertDatum.status!.silencedBy!.isNotEmpty),
-        downtimeScheduled: false,
-        active: true);
+      source: sourceData.id!,
+      kind: kind,
+      hostname: alertDatum.labels?.instance ?? "Unknown Host",
+      service: alertDatum.labels?.alertname ?? "Unknown",
+      message: alertDatum.annotations?.summary ?? "...",
+      serviceUrl:
+          (alertDatum.labels?.instance == null)
+              ? ""
+              : generateURL(alertDatum.labels!.instance!, ""),
+      monitorUrl:
+          (alertDatum.generatorURL == null)
+              ? generateURL(sourceData.baseURL, "")
+              : generateURL(alertDatum.generatorURL!, ""),
+      age:
+          (alertDatum.startsAt == null)
+              ? Duration.zero
+              : DateTime.now().difference(DateTime.parse(alertDatum.startsAt!)),
+      silenced:
+          (alertDatum.status != null &&
+              alertDatum.status!.silencedBy != null &&
+              alertDatum.status!.silencedBy!.isNotEmpty),
+      downtimeScheduled: false,
+      active: true,
+    );
   }
 }
 
 @freezed
 class PromAlertsData with _$PromAlertsData {
   const factory PromAlertsData(
-      // ignore: non_constant_identifier_names
-      {String? startsAt,
-      String? updatedAt,
-      String? endsAt,
-      String? generatorURL,
-      AnnotationsData? annotations,
-      LabelsData? labels,
-      StatusData? status}) = _PromAlertsData;
+  // ignore: non_constant_identifier_names
+  {
+    String? startsAt,
+    String? updatedAt,
+    String? endsAt,
+    String? generatorURL,
+    AnnotationsData? annotations,
+    LabelsData? labels,
+    StatusData? status,
+  }) = _PromAlertsData;
 
   factory PromAlertsData.fromJson(Map<String, dynamic> json) =>
       _$PromAlertsDataFromJson(json);
@@ -106,12 +114,13 @@ class StatusData with _$StatusData {
 
 @freezed
 class LabelsData with _$LabelsData {
-  const factory LabelsData(
-      {String? severity,
-      // ignore: non_constant_identifier_names
-      String? oav_type,
-      String? instance,
-      String? alertname}) = _LabelsData;
+  const factory LabelsData({
+    String? severity,
+    // ignore: non_constant_identifier_names
+    String? oav_type,
+    String? instance,
+    String? alertname,
+  }) = _LabelsData;
 
   factory LabelsData.fromJson(Map<String, dynamic> json) =>
       _$LabelsDataFromJson(json);

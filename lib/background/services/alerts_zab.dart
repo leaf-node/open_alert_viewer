@@ -47,8 +47,8 @@ int historyCutoffDays = 30;
 
 class ZabAlerts extends AlertSource {
   ZabAlerts({required super.sourceData})
-      : epoch = DateTime.fromMillisecondsSinceEpoch(0),
-        endpoint = "/api_jsonrpc.php";
+    : epoch = DateTime.fromMillisecondsSinceEpoch(0),
+      endpoint = "/api_jsonrpc.php";
 
   final DateTime epoch;
   final String endpoint;
@@ -56,11 +56,12 @@ class ZabAlerts extends AlertSource {
   @override
   Future<List<Alert>> fetchAlerts() async {
     final now = (DateTime.now().millisecondsSinceEpoch / 1000).floor();
-    final old = (DateTime.now()
-                .subtract(Duration(days: historyCutoffDays))
-                .millisecondsSinceEpoch /
-            1000)
-        .floor();
+    final old =
+        (DateTime.now()
+                    .subtract(Duration(days: historyCutoffDays))
+                    .millisecondsSinceEpoch /
+                1000)
+            .floor();
     final queries = {
       StatusType.serviceStatus: '''{
           "jsonrpc": "2.0",
@@ -105,7 +106,7 @@ class ZabAlerts extends AlertSource {
               "output": "extend"
           },
           "id": 6
-        }'''
+        }''',
     };
     List<Alert> newAlerts = [];
     List<(num, List<(num, num)>)> serviceAlarms = [];
@@ -114,13 +115,14 @@ class ZabAlerts extends AlertSource {
       dynamic dataSet;
       List<Alert> errors;
       (dataSet, errors) = await fetchAndDecodeJSON(
-          endpoint: endpoint,
-          postBody: queries[key],
-          authOverride: true,
-          headers: {
-            "Content-Type": "application/json-rpc",
-            "Authorization": "Bearer ${sourceData.accessToken}"
-          });
+        endpoint: endpoint,
+        postBody: queries[key],
+        authOverride: true,
+        headers: {
+          "Content-Type": "application/json-rpc",
+          "Authorization": "Bearer ${sourceData.accessToken}",
+        },
+      );
       if (dataSet == null) {
         if (errors.isEmpty) {
           throw Exception("Missing alert message after Zabbix error");
@@ -133,9 +135,10 @@ class ZabAlerts extends AlertSource {
         String error1 = data["error"]["data"];
         String error2 = data["error"]["message"];
         return errorFetchingAlerts(
-            sourceData: sourceData,
-            error: (error1.isNotEmpty) ? error1 : error2,
-            endpoint: endpoint);
+          sourceData: sourceData,
+          error: (error1.isNotEmpty) ? error1 : error2,
+          endpoint: endpoint,
+        );
       }
       var dataList = (data["result"] as List).cast<Object>();
       log("$key: $dataList");
@@ -147,8 +150,9 @@ class ZabAlerts extends AlertSource {
           serviceAlarms.add((serviceId, alarms));
         } else if (key == StatusType.serviceStatus) {
           final serviceId = int.parse(data["serviceid"] as String);
-          final extraInfo =
-              serviceAlarms.where((element) => element.$1 == serviceId);
+          final extraInfo = serviceAlarms.where(
+            (element) => element.$1 == serviceId,
+          );
           newAlerts.add(alertHandler(data, true, extraInfo.toList()));
         } else if (key == StatusType.hostStatus) {
           final hostId = int.parse(data["hostid"] as String);
@@ -166,7 +170,10 @@ class ZabAlerts extends AlertSource {
   }
 
   Alert alertHandler(
-      Map<String, Object> alertsData, bool isService, List<Object> extraInfo) {
+    Map<String, Object> alertsData,
+    bool isService,
+    List<Object> extraInfo,
+  ) {
     final datum = Util.mapConvert(alertsData);
     AlertType kind;
     String hostName;
@@ -174,9 +181,10 @@ class ZabAlerts extends AlertSource {
     String description;
     DateTime startsAt;
     if (isService) {
-      kind = ServiceStatus.values
-          .firstWhere((v) => v.value == int.parse(datum["status"]))
-          .alertType;
+      kind =
+          ServiceStatus.values
+              .firstWhere((v) => v.value == int.parse(datum["status"]))
+              .alertType;
       hostName = "";
       service = datum["name"];
       description = datum["description"];
@@ -185,7 +193,7 @@ class ZabAlerts extends AlertSource {
       num monitorStatus;
       (_, hostName, monitorStatus) =
           extraInfo.lastOrNull as (num, String, num)? ??
-              (-1, "(Unknown Host Name)", 1);
+          (-1, "(Unknown Host Name)", 1);
       if (monitorStatus == HostMonitored.unMonitored.value) {
         kind = AlertType.unknown;
         description = "Unmonitored";
@@ -198,21 +206,23 @@ class ZabAlerts extends AlertSource {
       service = "PING";
     }
     Duration age;
-    age = (startsAt.difference(epoch) == Duration.zero)
-        ? Duration(seconds: 0)
-        : DateTime.now().difference(startsAt);
+    age =
+        (startsAt.difference(epoch) == Duration.zero)
+            ? Duration(seconds: 0)
+            : DateTime.now().difference(startsAt);
     return Alert(
-        source: sourceData.id!,
-        kind: kind,
-        hostname: hostName,
-        service: service,
-        message: description,
-        serviceUrl: generateURL(hostName, ""),
-        monitorUrl: generateURL(sourceData.baseURL, ""),
-        age: age,
-        silenced: false,
-        downtimeScheduled: false, // < ^ v FIXME
-        active: true);
+      source: sourceData.id!,
+      kind: kind,
+      hostname: hostName,
+      service: service,
+      message: description,
+      serviceUrl: generateURL(hostName, ""),
+      monitorUrl: generateURL(sourceData.baseURL, ""),
+      age: age,
+      silenced: false,
+      downtimeScheduled: false, // < ^ v FIXME
+      active: true,
+    );
   }
 
   static DateTime _dateTime(num seconds) {

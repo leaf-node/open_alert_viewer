@@ -24,12 +24,12 @@ const alertsNotificationChannelDescription = "Alert Notifications";
 const notificationIcon = "@drawable/notification_icon";
 
 class NotificationsBackgroundRepo {
-  NotificationsBackgroundRepo(
-      {required SettingsRepo settings,
-      required PlatformChannel platformChannel})
-      : _settings = settings,
-        _platformChannel = platformChannel,
-        _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin() {
+  NotificationsBackgroundRepo({
+    required SettingsRepo settings,
+    required PlatformChannel platformChannel,
+  }) : _settings = settings,
+       _platformChannel = platformChannel,
+       _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin() {
     updateAlertDetails(important: true);
   }
 
@@ -40,20 +40,25 @@ class NotificationsBackgroundRepo {
 
   Future<void> initializeAlertNotifications() async {
     if (Platform.isLinux) {
-      var initializationSettingsLinux =
-          const LinuxInitializationSettings(defaultActionName: "Launch app");
-      var initializationSettings =
-          InitializationSettings(linux: initializationSettingsLinux);
+      var initializationSettingsLinux = const LinuxInitializationSettings(
+        defaultActionName: "Launch app",
+      );
+      var initializationSettings = InitializationSettings(
+        linux: initializationSettingsLinux,
+      );
       await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
     } else if (Platform.isAndroid) {
       const AndroidNotificationChannel alertChannel =
           AndroidNotificationChannel(
-              alertsNotificationChannelId, alertsNotificationChannelName,
-              description: alertsNotificationChannelDescription,
-              importance: Importance.max);
+            alertsNotificationChannelId,
+            alertsNotificationChannelName,
+            description: alertsNotificationChannelDescription,
+            importance: Importance.max,
+          );
       await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin
+          >()
           ?.createNotificationChannel(alertChannel);
     } else {
       throw Exception("Unsupported platform for notifications.");
@@ -64,8 +69,12 @@ class NotificationsBackgroundRepo {
     if (!await _settings.notificationsEnabledSafe) {
       return;
     }
-    await _flutterLocalNotificationsPlugin.show(alertsNotificationId,
-        alertsNotificationTitle, message, _notificationDetails);
+    await _flutterLocalNotificationsPlugin.show(
+      alertsNotificationId,
+      alertsNotificationTitle,
+      message,
+      _notificationDetails,
+    );
   }
 
   Future<void> _removeAlertNotification() async {
@@ -73,36 +82,45 @@ class NotificationsBackgroundRepo {
   }
 
   Future<void> _playDesktopSound(
-      StreamController<IsolateMessage>? alertStream, bool important) async {
+    StreamController<IsolateMessage>? alertStream,
+    bool important,
+  ) async {
     if (await _settings.notificationsEnabledSafe &&
         important &&
         _settings.soundEnabled &&
         !Platform.isAndroid &&
         !Platform.isIOS) {
-      alertStream?.add(const IsolateMessage(
+      alertStream?.add(
+        const IsolateMessage(
           name: MessageName.playDesktopSound,
-          destination: MessageDestination.notifications));
+          destination: MessageDestination.notifications,
+        ),
+      );
     }
   }
 
-  Future<void> showFilteredNotifications(
-      {required List<Alert> alerts,
-      required List<AlertSourceData> allSources,
-      StreamController<IsolateMessage>? alertStream}) async {
+  Future<void> showFilteredNotifications({
+    required List<Alert> alerts,
+    required List<AlertSourceData> allSources,
+    StreamController<IsolateMessage>? alertStream,
+  }) async {
     Map<int, Duration> sinceLookedPerSource = {};
     for (var sourceData in allSources) {
-      sinceLookedPerSource[sourceData.id!] =
-          sourceData.lastFetch.difference(sourceData.lastSeen);
+      sinceLookedPerSource[sourceData.id!] = sourceData.lastFetch.difference(
+        sourceData.lastSeen,
+      );
     }
     Map<int, Duration> sincePriorFetchPerSource = {};
     for (var sourceData in allSources) {
-      sincePriorFetchPerSource[sourceData.id!] =
-          sourceData.lastFetch.difference(sourceData.priorFetch);
+      sincePriorFetchPerSource[sourceData.id!] = sourceData.lastFetch
+          .difference(sourceData.priorFetch);
     }
-    Duration globalSinceLooked =
-        _settings.lastFetched.difference(_settings.lastSeen);
-    Duration globalSincePriorFetch =
-        _settings.lastFetched.difference(_settings.priorFetch);
+    Duration globalSinceLooked = _settings.lastFetched.difference(
+      _settings.lastSeen,
+    );
+    Duration globalSincePriorFetch = _settings.lastFetched.difference(
+      _settings.priorFetch,
+    );
     Duration sinceLooked;
     Duration sincePriorFetch;
     int newSyncFailureCount = 0, newDownCount = 0, newErrorCount = 0;
@@ -144,7 +162,8 @@ class NotificationsBackgroundRepo {
     }
     if (newSyncFailureCount > 0) {
       messages.add(
-          "$newSyncFailureCount New Sync Failure${newSyncFailureCount == 1 ? "" : "s"}");
+        "$newSyncFailureCount New Sync Failure${newSyncFailureCount == 1 ? "" : "s"}",
+      );
     }
     if (newDownCount > 0) {
       messages.add("$newDownCount Recently Down");
@@ -191,10 +210,12 @@ class NotificationsBackgroundRepo {
       return;
     }
     var duration = Util.prettyPrintDuration(
-        duration: Duration(seconds: _settings.refreshInterval),
-        longForm: true,
-        stripLeadingOne: true);
-    final text = "Sync every $duration "
+      duration: Duration(seconds: _settings.refreshInterval),
+      longForm: true,
+      stripLeadingOne: true,
+    );
+    final text =
+        "Sync every $duration "
         "- last: ${Util.getTimeString(_settings.lastFetched)}";
     _platformChannel.updateNotification(text);
   }
@@ -209,15 +230,20 @@ class NotificationsBackgroundRepo {
   Future<void> updateAlertDetails({required bool important}) async {
     final linuxUrgency = important ? null : LinuxNotificationUrgency.low;
     final androidImportance = important ? Importance.max : Importance.low;
-    final linuxNotificationDetails =
-        LinuxNotificationDetails(urgency: linuxUrgency);
+    final linuxNotificationDetails = LinuxNotificationDetails(
+      urgency: linuxUrgency,
+    );
     var androidNotificationDetails = AndroidNotificationDetails(
-        alertsNotificationChannelId, alertsNotificationChannelName,
-        icon: notificationIcon,
-        channelDescription: alertsNotificationChannelDescription,
-        importance: androidImportance,
-        silent: !(important && _settings.soundEnabled));
+      alertsNotificationChannelId,
+      alertsNotificationChannelName,
+      icon: notificationIcon,
+      channelDescription: alertsNotificationChannelDescription,
+      importance: androidImportance,
+      silent: !(important && _settings.soundEnabled),
+    );
     _notificationDetails = NotificationDetails(
-        linux: linuxNotificationDetails, android: androidNotificationDetails);
+      linux: linuxNotificationDetails,
+      android: androidNotificationDetails,
+    );
   }
 }

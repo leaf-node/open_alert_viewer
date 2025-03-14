@@ -16,22 +16,28 @@ class LicensingDetailsScreen extends StatelessWidget {
 
   static Route<void> route({required Package dependency}) {
     return MaterialPageRoute<void>(
-        builder: (_) => LicensingDetailsScreen(dependency: dependency));
+      builder: (_) => LicensingDetailsScreen(dependency: dependency),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: GeneralHeader(title: "License of ${dependency.name}"),
-        body: ListView(children: [
+      appBar: GeneralHeader(title: "License of ${dependency.name}"),
+      body: ListView(
+        children: [
           SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.all(32),
-              child: Text(
-                  "Package name: ${dependency.name}\n\n"
-                  "Version: ${dependency.version}\n\n"
-                  "${dependency.license}",
-                  style: TextStyle(fontFamily: "monospace")))
-        ]));
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.all(32),
+            child: Text(
+              "Package name: ${dependency.name}\n\n"
+              "Version: ${dependency.version}\n\n"
+              "${dependency.license}",
+              style: TextStyle(fontFamily: "monospace"),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

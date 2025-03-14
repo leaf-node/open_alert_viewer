@@ -55,22 +55,29 @@ class BackgroundChannelInternal {
     _platformChannel = PlatformChannel();
     BackgroundChannel.settings = _settings;
     _notifier = NotificationsBackgroundRepo(
-        settings: _settings, platformChannel: _platformChannel);
+      settings: _settings,
+      platformChannel: _platformChannel,
+    );
     await _notifier.startOrStopStickyNotification();
     await _notifier.initializeAlertNotifications();
     _outboundStream = StreamController<IsolateMessage>();
     _sourcesRepo = SourcesBackgroundRepo(
-        db: _db, outboundStream: _outboundStream, settings: _settings);
+      db: _db,
+      outboundStream: _outboundStream,
+      settings: _settings,
+    );
     _alertsRepo = AlertsBackgroundRepo(
-        db: _db,
-        settings: _settings,
-        sourcesRepo: _sourcesRepo,
-        notifier: _notifier);
+      db: _db,
+      settings: _settings,
+      sourcesRepo: _sourcesRepo,
+      notifier: _notifier,
+    );
     _alertsRepo.init(_outboundStream);
     _outboundStream.stream.listen((event) {
       if (event.destination == null) {
         throw Exception(
-            "Background worker sending message without destination");
+          "Background worker sending message without destination",
+        );
       }
       sendMessageToForeground(event);
     });
@@ -81,9 +88,14 @@ class BackgroundChannelInternal {
   }
 
   void sendBackgroundReady() {
-    portToForeground.send(BackgroundTranslator.serialize(IsolateMessage(
-        name: MessageName.backgroundReady,
-        destination: MessageDestination.drop)));
+    portToForeground.send(
+      BackgroundTranslator.serialize(
+        IsolateMessage(
+          name: MessageName.backgroundReady,
+          destination: MessageDestination.drop,
+        ),
+      ),
+    );
   }
 
   void handleRequestsToBackground(dynamic rawMessage) async {
@@ -91,7 +103,8 @@ class BackgroundChannelInternal {
       final message = BackgroundTranslator.deserialize(rawMessage);
       if (message.name == MessageName.fetchAlerts) {
         _alertsRepo.fetchAlerts(
-            forceRefreshNow: message.forceRefreshNow ?? false);
+          forceRefreshNow: message.forceRefreshNow ?? false,
+        );
       } else if (message.name == MessageName.refreshTimer) {
         _alertsRepo.refreshTimer();
       } else if (message.name == MessageName.confirmSources) {
@@ -101,7 +114,9 @@ class BackgroundChannelInternal {
         _alertsRepo.fetchAlerts(forceRefreshNow: true);
       } else if (message.name == MessageName.updateSource) {
         _sourcesRepo.updateSource(
-            sourceData: message.sourceData!, updateUIandRefresh: true);
+          sourceData: message.sourceData!,
+          updateUIandRefresh: true,
+        );
         _alertsRepo.fetchAlerts(forceRefreshNow: true);
       } else if (message.name == MessageName.removeSource) {
         _sourcesRepo.removeSource(id: message.id!);
@@ -113,13 +128,19 @@ class BackgroundChannelInternal {
       } else if (message.name == MessageName.disableNotifications) {
         _notifier.disableNotifications();
       } else if (message.name == MessageName.alertFiltersChanged) {
-        sendMessageToForeground(IsolateMessage(
+        sendMessageToForeground(
+          IsolateMessage(
             name: MessageName.alertFiltersChanged,
-            destination: MessageDestination.alerts));
+            destination: MessageDestination.alerts,
+          ),
+        );
       } else if (message.name == MessageName.sourcesChanged) {
-        sendMessageToForeground(IsolateMessage(
+        sendMessageToForeground(
+          IsolateMessage(
             name: MessageName.sourcesChanged,
-            destination: MessageDestination.sourceSettings));
+            destination: MessageDestination.sourceSettings,
+          ),
+        );
       } else {
         throw Exception("Invalid message name: $message");
       }

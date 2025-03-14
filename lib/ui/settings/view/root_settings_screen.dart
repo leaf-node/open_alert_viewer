@@ -21,22 +21,26 @@ class SettingsScreen extends StatelessWidget {
 
   static Route<void> route({required title}) {
     return MaterialPageRoute<void>(
-        builder: (_) => SettingsScreen(title: title));
+      builder: (_) => SettingsScreen(title: title),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: GeneralHeader(title: title),
-        body: BlocListener<RootSettingsCubit, RootSettingsCubitState>(
-            listenWhen: (previous, current) =>
+      appBar: GeneralHeader(title: title),
+      body: BlocListener<RootSettingsCubit, RootSettingsCubitState>(
+        listenWhen:
+            (previous, current) =>
                 previous.accountUpdated != current.accountUpdated,
-            listener: (context, state) {
-              if (state.accountUpdated ?? false) {
-                _requestPermissions(context);
-              }
-            },
-            child: const SettingsList()));
+        listener: (context, state) {
+          if (state.accountUpdated ?? false) {
+            _requestPermissions(context);
+          }
+        },
+        child: const SettingsList(),
+      ),
+    );
   }
 
   void _requestPermissions(BuildContext context) async {
@@ -57,36 +61,52 @@ class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RootSettingsCubit, RootSettingsCubitState>(
-        builder: (context, state) {
-      return ListView(children: [
-        MenuItem(
-            icon: Icons.settings,
-            title: "General Settings",
-            onTap: () =>
-                context.read<Navigation>().goTo(Screens.generalSettings)),
-        MenuItem(
-            icon: Icons.info_outline,
-            title: "About App",
-            onTap: () => context.read<Navigation>().goTo(Screens.about)),
-        const MenuHeaderTile(title: "Accounts"),
-        for (AlertSourceData account in state.sources)
-          MenuItem(
-              leading:
-                  Row(mainAxisSize: MainAxisSize.min, spacing: 10, children: [
-                Icon(Icons.manage_accounts),
-                if (!account.visible) Icon(Icons.visibility_off),
-                if (!account.notifications) Icon(Icons.notifications_off),
-              ]),
-              title: account.name,
-              onTap: () => context
-                  .read<Navigation>()
-                  .goTo(Screens.accountSettings, account.id)),
-        MenuItem(
-            icon: Icons.add,
-            title: "Add new account",
-            onTap: () =>
-                context.read<Navigation>().goTo(Screens.accountEditing, null)),
-      ]);
-    });
+      builder: (context, state) {
+        return ListView(
+          children: [
+            MenuItem(
+              icon: Icons.settings,
+              title: "General Settings",
+              onTap:
+                  () =>
+                      context.read<Navigation>().goTo(Screens.generalSettings),
+            ),
+            MenuItem(
+              icon: Icons.info_outline,
+              title: "About App",
+              onTap: () => context.read<Navigation>().goTo(Screens.about),
+            ),
+            const MenuHeaderTile(title: "Accounts"),
+            for (AlertSourceData account in state.sources)
+              MenuItem(
+                leading: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 10,
+                  children: [
+                    Icon(Icons.manage_accounts),
+                    if (!account.visible) Icon(Icons.visibility_off),
+                    if (!account.notifications) Icon(Icons.notifications_off),
+                  ],
+                ),
+                title: account.name,
+                onTap:
+                    () => context.read<Navigation>().goTo(
+                      Screens.accountSettings,
+                      account.id,
+                    ),
+              ),
+            MenuItem(
+              icon: Icons.add,
+              title: "Add new account",
+              onTap:
+                  () => context.read<Navigation>().goTo(
+                    Screens.accountEditing,
+                    null,
+                  ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

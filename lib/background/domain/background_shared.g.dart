@@ -9,31 +9,36 @@ part of 'background_shared.dart';
 _$IsolateMessageImpl _$$IsolateMessageImplFromJson(Map<String, dynamic> json) =>
     _$IsolateMessageImpl(
       name: $enumDecode(_$MessageNameEnumMap, json['name']),
-      destination:
-          $enumDecodeNullable(_$MessageDestinationEnumMap, json['destination']),
+      destination: $enumDecodeNullable(
+        _$MessageDestinationEnumMap,
+        json['destination'],
+      ),
       id: (json['id'] as num?)?.toInt(),
-      alerts: (json['alerts'] as List<dynamic>?)
-          ?.map((e) => Alert.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      sourceData: json['sourceData'] == null
-          ? null
-          : AlertSourceDataUpdate.fromJson(
-              json['sourceData'] as Map<String, dynamic>),
+      alerts:
+          (json['alerts'] as List<dynamic>?)
+              ?.map((e) => Alert.fromJson(e as Map<String, dynamic>))
+              .toList(),
+      sourceData:
+          json['sourceData'] == null
+              ? null
+              : AlertSourceDataUpdate.fromJson(
+                json['sourceData'] as Map<String, dynamic>,
+              ),
       forceRefreshNow: json['forceRefreshNow'] as bool?,
       alreadyFetching: json['alreadyFetching'] as bool?,
     );
 
 Map<String, dynamic> _$$IsolateMessageImplToJson(
-        _$IsolateMessageImpl instance) =>
-    <String, dynamic>{
-      'name': _$MessageNameEnumMap[instance.name]!,
-      'destination': _$MessageDestinationEnumMap[instance.destination],
-      'id': instance.id,
-      'alerts': instance.alerts,
-      'sourceData': instance.sourceData,
-      'forceRefreshNow': instance.forceRefreshNow,
-      'alreadyFetching': instance.alreadyFetching,
-    };
+  _$IsolateMessageImpl instance,
+) => <String, dynamic>{
+  'name': _$MessageNameEnumMap[instance.name]!,
+  'destination': _$MessageDestinationEnumMap[instance.destination],
+  'id': instance.id,
+  'alerts': instance.alerts,
+  'sourceData': instance.sourceData,
+  'forceRefreshNow': instance.forceRefreshNow,
+  'alreadyFetching': instance.alreadyFetching,
+};
 
 const _$MessageNameEnumMap = {
   MessageName.alertsInit: 'alertsInit',

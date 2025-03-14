@@ -12,7 +12,8 @@ part of 'alerts.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Alert _$AlertFromJson(Map<String, dynamic> json) {
   return _Alert.fromJson(json);
@@ -46,18 +47,19 @@ abstract class $AlertCopyWith<$Res> {
   factory $AlertCopyWith(Alert value, $Res Function(Alert) then) =
       _$AlertCopyWithImpl<$Res, Alert>;
   @useResult
-  $Res call(
-      {int source,
-      AlertType kind,
-      String hostname,
-      String service,
-      String message,
-      String serviceUrl,
-      String monitorUrl,
-      Duration age,
-      bool downtimeScheduled,
-      bool silenced,
-      bool active});
+  $Res call({
+    int source,
+    AlertType kind,
+    String hostname,
+    String service,
+    String message,
+    String serviceUrl,
+    String monitorUrl,
+    Duration age,
+    bool downtimeScheduled,
+    bool silenced,
+    bool active,
+  });
 }
 
 /// @nodoc
@@ -87,74 +89,90 @@ class _$AlertCopyWithImpl<$Res, $Val extends Alert>
     Object? silenced = null,
     Object? active = null,
   }) {
-    return _then(_value.copyWith(
-      source: null == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as int,
-      kind: null == kind
-          ? _value.kind
-          : kind // ignore: cast_nullable_to_non_nullable
-              as AlertType,
-      hostname: null == hostname
-          ? _value.hostname
-          : hostname // ignore: cast_nullable_to_non_nullable
-              as String,
-      service: null == service
-          ? _value.service
-          : service // ignore: cast_nullable_to_non_nullable
-              as String,
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-      serviceUrl: null == serviceUrl
-          ? _value.serviceUrl
-          : serviceUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      monitorUrl: null == monitorUrl
-          ? _value.monitorUrl
-          : monitorUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      age: null == age
-          ? _value.age
-          : age // ignore: cast_nullable_to_non_nullable
-              as Duration,
-      downtimeScheduled: null == downtimeScheduled
-          ? _value.downtimeScheduled
-          : downtimeScheduled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      silenced: null == silenced
-          ? _value.silenced
-          : silenced // ignore: cast_nullable_to_non_nullable
-              as bool,
-      active: null == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            source:
+                null == source
+                    ? _value.source
+                    : source // ignore: cast_nullable_to_non_nullable
+                        as int,
+            kind:
+                null == kind
+                    ? _value.kind
+                    : kind // ignore: cast_nullable_to_non_nullable
+                        as AlertType,
+            hostname:
+                null == hostname
+                    ? _value.hostname
+                    : hostname // ignore: cast_nullable_to_non_nullable
+                        as String,
+            service:
+                null == service
+                    ? _value.service
+                    : service // ignore: cast_nullable_to_non_nullable
+                        as String,
+            message:
+                null == message
+                    ? _value.message
+                    : message // ignore: cast_nullable_to_non_nullable
+                        as String,
+            serviceUrl:
+                null == serviceUrl
+                    ? _value.serviceUrl
+                    : serviceUrl // ignore: cast_nullable_to_non_nullable
+                        as String,
+            monitorUrl:
+                null == monitorUrl
+                    ? _value.monitorUrl
+                    : monitorUrl // ignore: cast_nullable_to_non_nullable
+                        as String,
+            age:
+                null == age
+                    ? _value.age
+                    : age // ignore: cast_nullable_to_non_nullable
+                        as Duration,
+            downtimeScheduled:
+                null == downtimeScheduled
+                    ? _value.downtimeScheduled
+                    : downtimeScheduled // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            silenced:
+                null == silenced
+                    ? _value.silenced
+                    : silenced // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            active:
+                null == active
+                    ? _value.active
+                    : active // ignore: cast_nullable_to_non_nullable
+                        as bool,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$AlertImplCopyWith<$Res> implements $AlertCopyWith<$Res> {
   factory _$$AlertImplCopyWith(
-          _$AlertImpl value, $Res Function(_$AlertImpl) then) =
-      __$$AlertImplCopyWithImpl<$Res>;
+    _$AlertImpl value,
+    $Res Function(_$AlertImpl) then,
+  ) = __$$AlertImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int source,
-      AlertType kind,
-      String hostname,
-      String service,
-      String message,
-      String serviceUrl,
-      String monitorUrl,
-      Duration age,
-      bool downtimeScheduled,
-      bool silenced,
-      bool active});
+  $Res call({
+    int source,
+    AlertType kind,
+    String hostname,
+    String service,
+    String message,
+    String serviceUrl,
+    String monitorUrl,
+    Duration age,
+    bool downtimeScheduled,
+    bool silenced,
+    bool active,
+  });
 }
 
 /// @nodoc
@@ -162,8 +180,9 @@ class __$$AlertImplCopyWithImpl<$Res>
     extends _$AlertCopyWithImpl<$Res, _$AlertImpl>
     implements _$$AlertImplCopyWith<$Res> {
   __$$AlertImplCopyWithImpl(
-      _$AlertImpl _value, $Res Function(_$AlertImpl) _then)
-      : super(_value, _then);
+    _$AlertImpl _value,
+    $Res Function(_$AlertImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Alert
   /// with the given fields replaced by the non-null parameter values.
@@ -182,70 +201,84 @@ class __$$AlertImplCopyWithImpl<$Res>
     Object? silenced = null,
     Object? active = null,
   }) {
-    return _then(_$AlertImpl(
-      source: null == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as int,
-      kind: null == kind
-          ? _value.kind
-          : kind // ignore: cast_nullable_to_non_nullable
-              as AlertType,
-      hostname: null == hostname
-          ? _value.hostname
-          : hostname // ignore: cast_nullable_to_non_nullable
-              as String,
-      service: null == service
-          ? _value.service
-          : service // ignore: cast_nullable_to_non_nullable
-              as String,
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-      serviceUrl: null == serviceUrl
-          ? _value.serviceUrl
-          : serviceUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      monitorUrl: null == monitorUrl
-          ? _value.monitorUrl
-          : monitorUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      age: null == age
-          ? _value.age
-          : age // ignore: cast_nullable_to_non_nullable
-              as Duration,
-      downtimeScheduled: null == downtimeScheduled
-          ? _value.downtimeScheduled
-          : downtimeScheduled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      silenced: null == silenced
-          ? _value.silenced
-          : silenced // ignore: cast_nullable_to_non_nullable
-              as bool,
-      active: null == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
+    return _then(
+      _$AlertImpl(
+        source:
+            null == source
+                ? _value.source
+                : source // ignore: cast_nullable_to_non_nullable
+                    as int,
+        kind:
+            null == kind
+                ? _value.kind
+                : kind // ignore: cast_nullable_to_non_nullable
+                    as AlertType,
+        hostname:
+            null == hostname
+                ? _value.hostname
+                : hostname // ignore: cast_nullable_to_non_nullable
+                    as String,
+        service:
+            null == service
+                ? _value.service
+                : service // ignore: cast_nullable_to_non_nullable
+                    as String,
+        message:
+            null == message
+                ? _value.message
+                : message // ignore: cast_nullable_to_non_nullable
+                    as String,
+        serviceUrl:
+            null == serviceUrl
+                ? _value.serviceUrl
+                : serviceUrl // ignore: cast_nullable_to_non_nullable
+                    as String,
+        monitorUrl:
+            null == monitorUrl
+                ? _value.monitorUrl
+                : monitorUrl // ignore: cast_nullable_to_non_nullable
+                    as String,
+        age:
+            null == age
+                ? _value.age
+                : age // ignore: cast_nullable_to_non_nullable
+                    as Duration,
+        downtimeScheduled:
+            null == downtimeScheduled
+                ? _value.downtimeScheduled
+                : downtimeScheduled // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        silenced:
+            null == silenced
+                ? _value.silenced
+                : silenced // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        active:
+            null == active
+                ? _value.active
+                : active // ignore: cast_nullable_to_non_nullable
+                    as bool,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AlertImpl implements _Alert {
-  const _$AlertImpl(
-      {required this.source,
-      required this.kind,
-      required this.hostname,
-      required this.service,
-      required this.message,
-      required this.serviceUrl,
-      required this.monitorUrl,
-      required this.age,
-      required this.downtimeScheduled,
-      required this.silenced,
-      required this.active});
+  const _$AlertImpl({
+    required this.source,
+    required this.kind,
+    required this.hostname,
+    required this.service,
+    required this.message,
+    required this.serviceUrl,
+    required this.monitorUrl,
+    required this.age,
+    required this.downtimeScheduled,
+    required this.silenced,
+    required this.active,
+  });
 
   factory _$AlertImpl.fromJson(Map<String, dynamic> json) =>
       _$$AlertImplFromJson(json);
@@ -304,18 +337,19 @@ class _$AlertImpl implements _Alert {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      source,
-      kind,
-      hostname,
-      service,
-      message,
-      serviceUrl,
-      monitorUrl,
-      age,
-      downtimeScheduled,
-      silenced,
-      active);
+    runtimeType,
+    source,
+    kind,
+    hostname,
+    service,
+    message,
+    serviceUrl,
+    monitorUrl,
+    age,
+    downtimeScheduled,
+    silenced,
+    active,
+  );
 
   /// Create a copy of Alert
   /// with the given fields replaced by the non-null parameter values.
@@ -327,25 +361,24 @@ class _$AlertImpl implements _Alert {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AlertImplToJson(
-      this,
-    );
+    return _$$AlertImplToJson(this);
   }
 }
 
 abstract class _Alert implements Alert {
-  const factory _Alert(
-      {required final int source,
-      required final AlertType kind,
-      required final String hostname,
-      required final String service,
-      required final String message,
-      required final String serviceUrl,
-      required final String monitorUrl,
-      required final Duration age,
-      required final bool downtimeScheduled,
-      required final bool silenced,
-      required final bool active}) = _$AlertImpl;
+  const factory _Alert({
+    required final int source,
+    required final AlertType kind,
+    required final String hostname,
+    required final String service,
+    required final String message,
+    required final String serviceUrl,
+    required final String monitorUrl,
+    required final Duration age,
+    required final bool downtimeScheduled,
+    required final bool silenced,
+    required final bool active,
+  }) = _$AlertImpl;
 
   factory _Alert.fromJson(Map<String, dynamic> json) = _$AlertImpl.fromJson;
 
@@ -417,27 +450,29 @@ mixin _$AlertSourceData {
 /// @nodoc
 abstract class $AlertSourceDataCopyWith<$Res> {
   factory $AlertSourceDataCopyWith(
-          AlertSourceData value, $Res Function(AlertSourceData) then) =
-      _$AlertSourceDataCopyWithImpl<$Res, AlertSourceData>;
+    AlertSourceData value,
+    $Res Function(AlertSourceData) then,
+  ) = _$AlertSourceDataCopyWithImpl<$Res, AlertSourceData>;
   @useResult
-  $Res call(
-      {int? id,
-      String name,
-      int type,
-      int authType,
-      String baseURL,
-      String username,
-      String password,
-      bool failing,
-      DateTime lastSeen,
-      DateTime priorFetch,
-      DateTime lastFetch,
-      String errorMessage,
-      bool? isValid,
-      String accessToken,
-      bool visible,
-      bool notifications,
-      int? serial});
+  $Res call({
+    int? id,
+    String name,
+    int type,
+    int authType,
+    String baseURL,
+    String username,
+    String password,
+    bool failing,
+    DateTime lastSeen,
+    DateTime priorFetch,
+    DateTime lastFetch,
+    String errorMessage,
+    bool? isValid,
+    String accessToken,
+    bool visible,
+    bool notifications,
+    int? serial,
+  });
 }
 
 /// @nodoc
@@ -473,105 +508,127 @@ class _$AlertSourceDataCopyWithImpl<$Res, $Val extends AlertSourceData>
     Object? notifications = null,
     Object? serial = freezed,
   }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as int,
-      authType: null == authType
-          ? _value.authType
-          : authType // ignore: cast_nullable_to_non_nullable
-              as int,
-      baseURL: null == baseURL
-          ? _value.baseURL
-          : baseURL // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
-      failing: null == failing
-          ? _value.failing
-          : failing // ignore: cast_nullable_to_non_nullable
-              as bool,
-      lastSeen: null == lastSeen
-          ? _value.lastSeen
-          : lastSeen // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      priorFetch: null == priorFetch
-          ? _value.priorFetch
-          : priorFetch // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      lastFetch: null == lastFetch
-          ? _value.lastFetch
-          : lastFetch // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      errorMessage: null == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String,
-      isValid: freezed == isValid
-          ? _value.isValid
-          : isValid // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      accessToken: null == accessToken
-          ? _value.accessToken
-          : accessToken // ignore: cast_nullable_to_non_nullable
-              as String,
-      visible: null == visible
-          ? _value.visible
-          : visible // ignore: cast_nullable_to_non_nullable
-              as bool,
-      notifications: null == notifications
-          ? _value.notifications
-          : notifications // ignore: cast_nullable_to_non_nullable
-              as bool,
-      serial: freezed == serial
-          ? _value.serial
-          : serial // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                freezed == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String,
+            type:
+                null == type
+                    ? _value.type
+                    : type // ignore: cast_nullable_to_non_nullable
+                        as int,
+            authType:
+                null == authType
+                    ? _value.authType
+                    : authType // ignore: cast_nullable_to_non_nullable
+                        as int,
+            baseURL:
+                null == baseURL
+                    ? _value.baseURL
+                    : baseURL // ignore: cast_nullable_to_non_nullable
+                        as String,
+            username:
+                null == username
+                    ? _value.username
+                    : username // ignore: cast_nullable_to_non_nullable
+                        as String,
+            password:
+                null == password
+                    ? _value.password
+                    : password // ignore: cast_nullable_to_non_nullable
+                        as String,
+            failing:
+                null == failing
+                    ? _value.failing
+                    : failing // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            lastSeen:
+                null == lastSeen
+                    ? _value.lastSeen
+                    : lastSeen // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            priorFetch:
+                null == priorFetch
+                    ? _value.priorFetch
+                    : priorFetch // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            lastFetch:
+                null == lastFetch
+                    ? _value.lastFetch
+                    : lastFetch // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            errorMessage:
+                null == errorMessage
+                    ? _value.errorMessage
+                    : errorMessage // ignore: cast_nullable_to_non_nullable
+                        as String,
+            isValid:
+                freezed == isValid
+                    ? _value.isValid
+                    : isValid // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+            accessToken:
+                null == accessToken
+                    ? _value.accessToken
+                    : accessToken // ignore: cast_nullable_to_non_nullable
+                        as String,
+            visible:
+                null == visible
+                    ? _value.visible
+                    : visible // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            notifications:
+                null == notifications
+                    ? _value.notifications
+                    : notifications // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            serial:
+                freezed == serial
+                    ? _value.serial
+                    : serial // ignore: cast_nullable_to_non_nullable
+                        as int?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$AlertSourceDataImplCopyWith<$Res>
     implements $AlertSourceDataCopyWith<$Res> {
-  factory _$$AlertSourceDataImplCopyWith(_$AlertSourceDataImpl value,
-          $Res Function(_$AlertSourceDataImpl) then) =
-      __$$AlertSourceDataImplCopyWithImpl<$Res>;
+  factory _$$AlertSourceDataImplCopyWith(
+    _$AlertSourceDataImpl value,
+    $Res Function(_$AlertSourceDataImpl) then,
+  ) = __$$AlertSourceDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int? id,
-      String name,
-      int type,
-      int authType,
-      String baseURL,
-      String username,
-      String password,
-      bool failing,
-      DateTime lastSeen,
-      DateTime priorFetch,
-      DateTime lastFetch,
-      String errorMessage,
-      bool? isValid,
-      String accessToken,
-      bool visible,
-      bool notifications,
-      int? serial});
+  $Res call({
+    int? id,
+    String name,
+    int type,
+    int authType,
+    String baseURL,
+    String username,
+    String password,
+    bool failing,
+    DateTime lastSeen,
+    DateTime priorFetch,
+    DateTime lastFetch,
+    String errorMessage,
+    bool? isValid,
+    String accessToken,
+    bool visible,
+    bool notifications,
+    int? serial,
+  });
 }
 
 /// @nodoc
@@ -579,8 +636,9 @@ class __$$AlertSourceDataImplCopyWithImpl<$Res>
     extends _$AlertSourceDataCopyWithImpl<$Res, _$AlertSourceDataImpl>
     implements _$$AlertSourceDataImplCopyWith<$Res> {
   __$$AlertSourceDataImplCopyWithImpl(
-      _$AlertSourceDataImpl _value, $Res Function(_$AlertSourceDataImpl) _then)
-      : super(_value, _then);
+    _$AlertSourceDataImpl _value,
+    $Res Function(_$AlertSourceDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of AlertSourceData
   /// with the given fields replaced by the non-null parameter values.
@@ -605,100 +663,120 @@ class __$$AlertSourceDataImplCopyWithImpl<$Res>
     Object? notifications = null,
     Object? serial = freezed,
   }) {
-    return _then(_$AlertSourceDataImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as int,
-      authType: null == authType
-          ? _value.authType
-          : authType // ignore: cast_nullable_to_non_nullable
-              as int,
-      baseURL: null == baseURL
-          ? _value.baseURL
-          : baseURL // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
-      failing: null == failing
-          ? _value.failing
-          : failing // ignore: cast_nullable_to_non_nullable
-              as bool,
-      lastSeen: null == lastSeen
-          ? _value.lastSeen
-          : lastSeen // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      priorFetch: null == priorFetch
-          ? _value.priorFetch
-          : priorFetch // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      lastFetch: null == lastFetch
-          ? _value.lastFetch
-          : lastFetch // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      errorMessage: null == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String,
-      isValid: freezed == isValid
-          ? _value.isValid
-          : isValid // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      accessToken: null == accessToken
-          ? _value.accessToken
-          : accessToken // ignore: cast_nullable_to_non_nullable
-              as String,
-      visible: null == visible
-          ? _value.visible
-          : visible // ignore: cast_nullable_to_non_nullable
-              as bool,
-      notifications: null == notifications
-          ? _value.notifications
-          : notifications // ignore: cast_nullable_to_non_nullable
-              as bool,
-      serial: freezed == serial
-          ? _value.serial
-          : serial // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ));
+    return _then(
+      _$AlertSourceDataImpl(
+        id:
+            freezed == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String,
+        type:
+            null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                    as int,
+        authType:
+            null == authType
+                ? _value.authType
+                : authType // ignore: cast_nullable_to_non_nullable
+                    as int,
+        baseURL:
+            null == baseURL
+                ? _value.baseURL
+                : baseURL // ignore: cast_nullable_to_non_nullable
+                    as String,
+        username:
+            null == username
+                ? _value.username
+                : username // ignore: cast_nullable_to_non_nullable
+                    as String,
+        password:
+            null == password
+                ? _value.password
+                : password // ignore: cast_nullable_to_non_nullable
+                    as String,
+        failing:
+            null == failing
+                ? _value.failing
+                : failing // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        lastSeen:
+            null == lastSeen
+                ? _value.lastSeen
+                : lastSeen // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        priorFetch:
+            null == priorFetch
+                ? _value.priorFetch
+                : priorFetch // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        lastFetch:
+            null == lastFetch
+                ? _value.lastFetch
+                : lastFetch // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        errorMessage:
+            null == errorMessage
+                ? _value.errorMessage
+                : errorMessage // ignore: cast_nullable_to_non_nullable
+                    as String,
+        isValid:
+            freezed == isValid
+                ? _value.isValid
+                : isValid // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+        accessToken:
+            null == accessToken
+                ? _value.accessToken
+                : accessToken // ignore: cast_nullable_to_non_nullable
+                    as String,
+        visible:
+            null == visible
+                ? _value.visible
+                : visible // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        notifications:
+            null == notifications
+                ? _value.notifications
+                : notifications // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        serial:
+            freezed == serial
+                ? _value.serial
+                : serial // ignore: cast_nullable_to_non_nullable
+                    as int?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AlertSourceDataImpl implements _AlertSourceData {
-  const _$AlertSourceDataImpl(
-      {required this.id,
-      required this.name,
-      required this.type,
-      required this.authType,
-      required this.baseURL,
-      required this.username,
-      required this.password,
-      required this.failing,
-      required this.lastSeen,
-      required this.priorFetch,
-      required this.lastFetch,
-      required this.errorMessage,
-      this.isValid,
-      required this.accessToken,
-      required this.visible,
-      required this.notifications,
-      this.serial});
+  const _$AlertSourceDataImpl({
+    required this.id,
+    required this.name,
+    required this.type,
+    required this.authType,
+    required this.baseURL,
+    required this.username,
+    required this.password,
+    required this.failing,
+    required this.lastSeen,
+    required this.priorFetch,
+    required this.lastFetch,
+    required this.errorMessage,
+    this.isValid,
+    required this.accessToken,
+    required this.visible,
+    required this.notifications,
+    this.serial,
+  });
 
   factory _$AlertSourceDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$AlertSourceDataImplFromJson(json);
@@ -779,24 +857,25 @@ class _$AlertSourceDataImpl implements _AlertSourceData {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      name,
-      type,
-      authType,
-      baseURL,
-      username,
-      password,
-      failing,
-      lastSeen,
-      priorFetch,
-      lastFetch,
-      errorMessage,
-      isValid,
-      accessToken,
-      visible,
-      notifications,
-      serial);
+    runtimeType,
+    id,
+    name,
+    type,
+    authType,
+    baseURL,
+    username,
+    password,
+    failing,
+    lastSeen,
+    priorFetch,
+    lastFetch,
+    errorMessage,
+    isValid,
+    accessToken,
+    visible,
+    notifications,
+    serial,
+  );
 
   /// Create a copy of AlertSourceData
   /// with the given fields replaced by the non-null parameter values.
@@ -805,35 +884,36 @@ class _$AlertSourceDataImpl implements _AlertSourceData {
   @pragma('vm:prefer-inline')
   _$$AlertSourceDataImplCopyWith<_$AlertSourceDataImpl> get copyWith =>
       __$$AlertSourceDataImplCopyWithImpl<_$AlertSourceDataImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AlertSourceDataImplToJson(
-      this,
-    );
+    return _$$AlertSourceDataImplToJson(this);
   }
 }
 
 abstract class _AlertSourceData implements AlertSourceData {
-  const factory _AlertSourceData(
-      {required final int? id,
-      required final String name,
-      required final int type,
-      required final int authType,
-      required final String baseURL,
-      required final String username,
-      required final String password,
-      required final bool failing,
-      required final DateTime lastSeen,
-      required final DateTime priorFetch,
-      required final DateTime lastFetch,
-      required final String errorMessage,
-      final bool? isValid,
-      required final String accessToken,
-      required final bool visible,
-      required final bool notifications,
-      final int? serial}) = _$AlertSourceDataImpl;
+  const factory _AlertSourceData({
+    required final int? id,
+    required final String name,
+    required final int type,
+    required final int authType,
+    required final String baseURL,
+    required final String username,
+    required final String password,
+    required final bool failing,
+    required final DateTime lastSeen,
+    required final DateTime priorFetch,
+    required final DateTime lastFetch,
+    required final String errorMessage,
+    final bool? isValid,
+    required final String accessToken,
+    required final bool visible,
+    required final bool notifications,
+    final int? serial,
+  }) = _$AlertSourceDataImpl;
 
   factory _AlertSourceData.fromJson(Map<String, dynamic> json) =
       _$AlertSourceDataImpl.fromJson;
@@ -882,7 +962,8 @@ abstract class _AlertSourceData implements AlertSourceData {
 }
 
 AlertSourceDataUpdate _$AlertSourceDataUpdateFromJson(
-    Map<String, dynamic> json) {
+  Map<String, dynamic> json,
+) {
   return _AlertSourceDataUpdate.fromJson(json);
 }
 
@@ -912,27 +993,31 @@ mixin _$AlertSourceDataUpdate {
 
 /// @nodoc
 abstract class $AlertSourceDataUpdateCopyWith<$Res> {
-  factory $AlertSourceDataUpdateCopyWith(AlertSourceDataUpdate value,
-          $Res Function(AlertSourceDataUpdate) then) =
-      _$AlertSourceDataUpdateCopyWithImpl<$Res, AlertSourceDataUpdate>;
+  factory $AlertSourceDataUpdateCopyWith(
+    AlertSourceDataUpdate value,
+    $Res Function(AlertSourceDataUpdate) then,
+  ) = _$AlertSourceDataUpdateCopyWithImpl<$Res, AlertSourceDataUpdate>;
   @useResult
-  $Res call(
-      {int? id,
-      String name,
-      int type,
-      int authType,
-      String baseURL,
-      String username,
-      String password,
-      String errorMessage,
-      bool? isValid,
-      String accessToken,
-      int? serial});
+  $Res call({
+    int? id,
+    String name,
+    int type,
+    int authType,
+    String baseURL,
+    String username,
+    String password,
+    String errorMessage,
+    bool? isValid,
+    String accessToken,
+    int? serial,
+  });
 }
 
 /// @nodoc
-class _$AlertSourceDataUpdateCopyWithImpl<$Res,
-        $Val extends AlertSourceDataUpdate>
+class _$AlertSourceDataUpdateCopyWithImpl<
+  $Res,
+  $Val extends AlertSourceDataUpdate
+>
     implements $AlertSourceDataUpdateCopyWith<$Res> {
   _$AlertSourceDataUpdateCopyWithImpl(this._value, this._then);
 
@@ -958,52 +1043,66 @@ class _$AlertSourceDataUpdateCopyWithImpl<$Res,
     Object? accessToken = null,
     Object? serial = freezed,
   }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as int,
-      authType: null == authType
-          ? _value.authType
-          : authType // ignore: cast_nullable_to_non_nullable
-              as int,
-      baseURL: null == baseURL
-          ? _value.baseURL
-          : baseURL // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
-      errorMessage: null == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String,
-      isValid: freezed == isValid
-          ? _value.isValid
-          : isValid // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      accessToken: null == accessToken
-          ? _value.accessToken
-          : accessToken // ignore: cast_nullable_to_non_nullable
-              as String,
-      serial: freezed == serial
-          ? _value.serial
-          : serial // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                freezed == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String,
+            type:
+                null == type
+                    ? _value.type
+                    : type // ignore: cast_nullable_to_non_nullable
+                        as int,
+            authType:
+                null == authType
+                    ? _value.authType
+                    : authType // ignore: cast_nullable_to_non_nullable
+                        as int,
+            baseURL:
+                null == baseURL
+                    ? _value.baseURL
+                    : baseURL // ignore: cast_nullable_to_non_nullable
+                        as String,
+            username:
+                null == username
+                    ? _value.username
+                    : username // ignore: cast_nullable_to_non_nullable
+                        as String,
+            password:
+                null == password
+                    ? _value.password
+                    : password // ignore: cast_nullable_to_non_nullable
+                        as String,
+            errorMessage:
+                null == errorMessage
+                    ? _value.errorMessage
+                    : errorMessage // ignore: cast_nullable_to_non_nullable
+                        as String,
+            isValid:
+                freezed == isValid
+                    ? _value.isValid
+                    : isValid // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+            accessToken:
+                null == accessToken
+                    ? _value.accessToken
+                    : accessToken // ignore: cast_nullable_to_non_nullable
+                        as String,
+            serial:
+                freezed == serial
+                    ? _value.serial
+                    : serial // ignore: cast_nullable_to_non_nullable
+                        as int?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -1011,33 +1110,35 @@ class _$AlertSourceDataUpdateCopyWithImpl<$Res,
 abstract class _$$AlertSourceDataUpdateImplCopyWith<$Res>
     implements $AlertSourceDataUpdateCopyWith<$Res> {
   factory _$$AlertSourceDataUpdateImplCopyWith(
-          _$AlertSourceDataUpdateImpl value,
-          $Res Function(_$AlertSourceDataUpdateImpl) then) =
-      __$$AlertSourceDataUpdateImplCopyWithImpl<$Res>;
+    _$AlertSourceDataUpdateImpl value,
+    $Res Function(_$AlertSourceDataUpdateImpl) then,
+  ) = __$$AlertSourceDataUpdateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int? id,
-      String name,
-      int type,
-      int authType,
-      String baseURL,
-      String username,
-      String password,
-      String errorMessage,
-      bool? isValid,
-      String accessToken,
-      int? serial});
+  $Res call({
+    int? id,
+    String name,
+    int type,
+    int authType,
+    String baseURL,
+    String username,
+    String password,
+    String errorMessage,
+    bool? isValid,
+    String accessToken,
+    int? serial,
+  });
 }
 
 /// @nodoc
 class __$$AlertSourceDataUpdateImplCopyWithImpl<$Res>
-    extends _$AlertSourceDataUpdateCopyWithImpl<$Res,
-        _$AlertSourceDataUpdateImpl>
+    extends
+        _$AlertSourceDataUpdateCopyWithImpl<$Res, _$AlertSourceDataUpdateImpl>
     implements _$$AlertSourceDataUpdateImplCopyWith<$Res> {
-  __$$AlertSourceDataUpdateImplCopyWithImpl(_$AlertSourceDataUpdateImpl _value,
-      $Res Function(_$AlertSourceDataUpdateImpl) _then)
-      : super(_value, _then);
+  __$$AlertSourceDataUpdateImplCopyWithImpl(
+    _$AlertSourceDataUpdateImpl _value,
+    $Res Function(_$AlertSourceDataUpdateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of AlertSourceDataUpdate
   /// with the given fields replaced by the non-null parameter values.
@@ -1056,70 +1157,84 @@ class __$$AlertSourceDataUpdateImplCopyWithImpl<$Res>
     Object? accessToken = null,
     Object? serial = freezed,
   }) {
-    return _then(_$AlertSourceDataUpdateImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as int,
-      authType: null == authType
-          ? _value.authType
-          : authType // ignore: cast_nullable_to_non_nullable
-              as int,
-      baseURL: null == baseURL
-          ? _value.baseURL
-          : baseURL // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
-      errorMessage: null == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String,
-      isValid: freezed == isValid
-          ? _value.isValid
-          : isValid // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      accessToken: null == accessToken
-          ? _value.accessToken
-          : accessToken // ignore: cast_nullable_to_non_nullable
-              as String,
-      serial: freezed == serial
-          ? _value.serial
-          : serial // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ));
+    return _then(
+      _$AlertSourceDataUpdateImpl(
+        id:
+            freezed == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String,
+        type:
+            null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                    as int,
+        authType:
+            null == authType
+                ? _value.authType
+                : authType // ignore: cast_nullable_to_non_nullable
+                    as int,
+        baseURL:
+            null == baseURL
+                ? _value.baseURL
+                : baseURL // ignore: cast_nullable_to_non_nullable
+                    as String,
+        username:
+            null == username
+                ? _value.username
+                : username // ignore: cast_nullable_to_non_nullable
+                    as String,
+        password:
+            null == password
+                ? _value.password
+                : password // ignore: cast_nullable_to_non_nullable
+                    as String,
+        errorMessage:
+            null == errorMessage
+                ? _value.errorMessage
+                : errorMessage // ignore: cast_nullable_to_non_nullable
+                    as String,
+        isValid:
+            freezed == isValid
+                ? _value.isValid
+                : isValid // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+        accessToken:
+            null == accessToken
+                ? _value.accessToken
+                : accessToken // ignore: cast_nullable_to_non_nullable
+                    as String,
+        serial:
+            freezed == serial
+                ? _value.serial
+                : serial // ignore: cast_nullable_to_non_nullable
+                    as int?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AlertSourceDataUpdateImpl implements _AlertSourceDataUpdate {
-  const _$AlertSourceDataUpdateImpl(
-      {required this.id,
-      required this.name,
-      required this.type,
-      required this.authType,
-      required this.baseURL,
-      required this.username,
-      required this.password,
-      required this.errorMessage,
-      this.isValid,
-      required this.accessToken,
-      this.serial});
+  const _$AlertSourceDataUpdateImpl({
+    required this.id,
+    required this.name,
+    required this.type,
+    required this.authType,
+    required this.baseURL,
+    required this.username,
+    required this.password,
+    required this.errorMessage,
+    this.isValid,
+    required this.accessToken,
+    this.serial,
+  });
 
   factory _$AlertSourceDataUpdateImpl.fromJson(Map<String, dynamic> json) =>
       _$$AlertSourceDataUpdateImplFromJson(json);
@@ -1177,8 +1292,20 @@ class _$AlertSourceDataUpdateImpl implements _AlertSourceDataUpdate {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, type, authType,
-      baseURL, username, password, errorMessage, isValid, accessToken, serial);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    name,
+    type,
+    authType,
+    baseURL,
+    username,
+    password,
+    errorMessage,
+    isValid,
+    accessToken,
+    serial,
+  );
 
   /// Create a copy of AlertSourceDataUpdate
   /// with the given fields replaced by the non-null parameter values.
@@ -1186,30 +1313,32 @@ class _$AlertSourceDataUpdateImpl implements _AlertSourceDataUpdate {
   @override
   @pragma('vm:prefer-inline')
   _$$AlertSourceDataUpdateImplCopyWith<_$AlertSourceDataUpdateImpl>
-      get copyWith => __$$AlertSourceDataUpdateImplCopyWithImpl<
-          _$AlertSourceDataUpdateImpl>(this, _$identity);
+  get copyWith =>
+      __$$AlertSourceDataUpdateImplCopyWithImpl<_$AlertSourceDataUpdateImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AlertSourceDataUpdateImplToJson(
-      this,
-    );
+    return _$$AlertSourceDataUpdateImplToJson(this);
   }
 }
 
 abstract class _AlertSourceDataUpdate implements AlertSourceDataUpdate {
-  const factory _AlertSourceDataUpdate(
-      {required final int? id,
-      required final String name,
-      required final int type,
-      required final int authType,
-      required final String baseURL,
-      required final String username,
-      required final String password,
-      required final String errorMessage,
-      final bool? isValid,
-      required final String accessToken,
-      final int? serial}) = _$AlertSourceDataUpdateImpl;
+  const factory _AlertSourceDataUpdate({
+    required final int? id,
+    required final String name,
+    required final int type,
+    required final int authType,
+    required final String baseURL,
+    required final String username,
+    required final String password,
+    required final String errorMessage,
+    final bool? isValid,
+    required final String accessToken,
+    final int? serial,
+  }) = _$AlertSourceDataUpdateImpl;
 
   factory _AlertSourceDataUpdate.fromJson(Map<String, dynamic> json) =
       _$AlertSourceDataUpdateImpl.fromJson;
@@ -1242,5 +1371,5 @@ abstract class _AlertSourceDataUpdate implements AlertSourceDataUpdate {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AlertSourceDataUpdateImplCopyWith<_$AlertSourceDataUpdateImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }

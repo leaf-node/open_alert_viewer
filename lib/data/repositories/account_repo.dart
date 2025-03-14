@@ -10,10 +10,11 @@ import '../../domain/alerts.dart';
 import '../services/database.dart';
 
 class AccountsRepo {
-  AccountsRepo(
-      {required LocalDatabase db, required BackgroundChannel bgChannel})
-      : _db = db,
-        _bgChannel = bgChannel;
+  AccountsRepo({
+    required LocalDatabase db,
+    required BackgroundChannel bgChannel,
+  }) : _db = db,
+       _bgChannel = bgChannel;
 
   final LocalDatabase _db;
   final BackgroundChannel _bgChannel;
@@ -47,8 +48,9 @@ class AccountsRepo {
       _updateSource(source);
     }
     _bgChannel.makeRequest(IsolateMessage(name: MessageName.sourcesChanged));
-    _bgChannel
-        .makeRequest(IsolateMessage(name: MessageName.alertFiltersChanged));
+    _bgChannel.makeRequest(
+      IsolateMessage(name: MessageName.alertFiltersChanged),
+    );
   }
 
   Future<void> switchNotifications(int id) async {
@@ -58,7 +60,8 @@ class AccountsRepo {
       _updateSource(source);
     }
     _bgChannel.makeRequest(IsolateMessage(name: MessageName.sourcesChanged));
-    _bgChannel
-        .makeRequest(IsolateMessage(name: MessageName.alertFiltersChanged));
+    _bgChannel.makeRequest(
+      IsolateMessage(name: MessageName.alertFiltersChanged),
+    );
   }
 }

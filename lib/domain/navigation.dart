@@ -17,13 +17,11 @@ enum Screens {
   licensing,
   licensingDetails,
   privacy,
-  alertDetails
+  alertDetails,
 }
 
 class Navigation {
-  Navigation()
-      : _streamController = StreamController(),
-        ready = Completer() {
+  Navigation() : _streamController = StreamController(), ready = Completer() {
     stream = _streamController.stream;
     ready.complete();
   }

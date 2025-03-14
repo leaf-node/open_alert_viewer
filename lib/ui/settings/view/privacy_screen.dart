@@ -25,8 +25,9 @@ class PrivacyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: GeneralHeader(title: title),
-        body: const Center(child: PrivacyInfo()));
+      appBar: GeneralHeader(title: title),
+      body: const Center(child: PrivacyInfo()),
+    );
   }
 }
 
@@ -40,7 +41,8 @@ class PrivacyInfo extends StatefulWidget {
 class _PrivacyInfoState extends State<PrivacyInfo> {
   late String _text;
   late Future<String> _licenseString;
-  final String _errorMessage = "Error loading privacy policy. "
+  final String _errorMessage =
+      "Error loading privacy policy. "
       "Please check the project source code or website.";
 
   @override
@@ -52,25 +54,28 @@ class _PrivacyInfoState extends State<PrivacyInfo> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _licenseString,
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.hasData) {
-            _text = snapshot.data ?? _errorMessage;
-          } else {
-            _text = _errorMessage;
-          }
-          return Padding(
-              padding: const EdgeInsets.all(0),
-              child: Markdown(
-                  data: _text,
-                  onTapLink: (_, href, __) async {
-                    try {
-                      var uri = Uri.parse(href ?? "");
-                      await launchUrl(uri);
-                    } catch (e) {
-                      log("Error launching URL: $href");
-                    }
-                  }));
-        });
+      future: _licenseString,
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.hasData) {
+          _text = snapshot.data ?? _errorMessage;
+        } else {
+          _text = _errorMessage;
+        }
+        return Padding(
+          padding: const EdgeInsets.all(0),
+          child: Markdown(
+            data: _text,
+            onTapLink: (_, href, __) async {
+              try {
+                var uri = Uri.parse(href ?? "");
+                await launchUrl(uri);
+              } catch (e) {
+                log("Error launching URL: $href");
+              }
+            },
+          ),
+        );
+      },
+    );
   }
 }

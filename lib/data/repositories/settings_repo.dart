@@ -13,9 +13,9 @@ import '../services/database.dart';
 
 class SettingsRepo {
   SettingsRepo({required LocalDatabase db})
-      : _db = db,
-        streamController = StreamController(),
-        ready = Completer() {
+    : _db = db,
+      streamController = StreamController(),
+      ready = Completer() {
     stream = streamController.stream.asBroadcastStream();
     ready.complete();
   }
@@ -27,7 +27,9 @@ class SettingsRepo {
   final LocalDatabase _db;
 
   DateTime get lastFetched => _getSetting<DateTime>(
-      "last_fetch_time", DateTime.fromMillisecondsSinceEpoch(0));
+    "last_fetch_time",
+    DateTime.fromMillisecondsSinceEpoch(0),
+  );
   set lastFetched(value) => _setSetting<DateTime>("last_fetch_time", value);
   int get refreshInterval => _getSetting<int>("refresh_interval", 60);
   set refreshInterval(value) => _setSetting<int>("refresh_interval", value);
@@ -45,13 +47,18 @@ class SettingsRepo {
   set notificationsEnabled(value) =>
       _setSetting<bool>("notifications_enabled", value);
   DateTime get lastSeen => _getSetting<DateTime>(
-      "last_seen", DateTime.fromMillisecondsSinceEpoch(0));
+    "last_seen",
+    DateTime.fromMillisecondsSinceEpoch(0),
+  );
   set lastSeen(value) => _setSetting<DateTime>("last_seen", value);
   DateTime get priorFetch => _getSetting<DateTime>(
-      "prior_fetch_time", DateTime.fromMillisecondsSinceEpoch(0));
+    "prior_fetch_time",
+    DateTime.fromMillisecondsSinceEpoch(0),
+  );
   set priorFetch(value) => _setSetting<DateTime>("prior_fetch_time", value);
-  List<bool> get alertFilter => _getSetting<List<bool>>("alert_filter", [true],
-      opt: AlertType.values.length);
+  List<bool> get alertFilter => _getSetting<List<bool>>("alert_filter", [
+    true,
+  ], opt: AlertType.values.length);
   set alertFilter(value) => _setSetting<List<bool>>("alert_filter", value);
   void setAlertFilterAt(bool value, int index) =>
       _setListAt<bool>("alert_filter", value, [true], index);
@@ -61,9 +68,9 @@ class SettingsRepo {
   set latestModalShown(value) => _setSetting<int>("latest_modal_shown", value);
   bool get soundEnabled => _getSetting<bool>("sound_enabled", true);
   set soundEnabled(value) => _setSetting<bool>("sound_enabled", value);
-  List<bool> get silenceFilter =>
-      _getSetting<List<bool>>("silence_filter", [true],
-          opt: SilenceTypes.values.length);
+  List<bool> get silenceFilter => _getSetting<List<bool>>("silence_filter", [
+    true,
+  ], opt: SilenceTypes.values.length);
   set silenceFilter(value) => _setSetting<List<bool>>("silence_filter", value);
   void setSilenceFilterAt(bool value, int index) =>
       _setListAt<bool>("silence_filter", value, [true], index);
@@ -92,8 +99,9 @@ class SettingsRepo {
       }
     } catch (e) {
       if (name == "alert_filter") {
-        value = [false, true, true, false, true, false, true, true, false, true]
-            as T;
+        value =
+            [false, true, true, false, true, false, true, true, false, true]
+                as T;
       } else if (name == "silence_filter") {
         value = [true, true, true] as T;
       } else {
@@ -128,8 +136,11 @@ class SettingsRepo {
   }
 
   void _setListAt<T>(String name, T newValue, List<T> defaultValue, int index) {
-    List<T> currentSetting =
-        _getSetting<List<T>>(name, defaultValue, opt: index + 1);
+    List<T> currentSetting = _getSetting<List<T>>(
+      name,
+      defaultValue,
+      opt: index + 1,
+    );
     currentSetting[index] = newValue;
     _setSetting<List<T>>(name, currentSetting);
   }

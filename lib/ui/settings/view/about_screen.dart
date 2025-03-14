@@ -26,7 +26,9 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: GeneralHeader(title: title), body: const AboutList());
+      appBar: GeneralHeader(title: title),
+      body: const AboutList(),
+    );
   }
 }
 
@@ -35,20 +37,23 @@ class AboutList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
-      MenuItem(
+    return ListView(
+      children: [
+        MenuItem(
           icon: Icons.article_outlined,
           title: "App and License Info",
           onTap: () async {
             context.read<Navigation>().goTo(Screens.licensing);
-          }),
-      MenuItem(
+          },
+        ),
+        MenuItem(
           icon: Icons.person_search_outlined,
           title: "Privacy Policy",
           onTap: () async {
             context.read<Navigation>().goTo(Screens.privacy);
-          }),
-      MenuItem(
+          },
+        ),
+        MenuItem(
           icon: Icons.support_outlined,
           title: "Online Support",
           onTap: () async {
@@ -59,8 +64,9 @@ class AboutList extends StatelessWidget {
             } catch (e) {
               log("Error launching URL: $link");
             }
-          }),
-      MenuItem(
+          },
+        ),
+        MenuItem(
           icon: Icons.volunteer_activism_outlined,
           title: "Donate",
           onTap: () async {
@@ -71,13 +77,15 @@ class AboutList extends StatelessWidget {
             } catch (e) {
               log("Error launching URL: $link");
             }
-          }),
-      MenuItem(
-        icon: Icons.info_outline,
-        title: "Open Alert Viewer version",
-        subtitle: SettingsRepo.appVersion,
-        onTap: () {},
-      )
-    ]);
+          },
+        ),
+        MenuItem(
+          icon: Icons.info_outline,
+          title: "Open Alert Viewer version",
+          subtitle: SettingsRepo.appVersion,
+          onTap: () {},
+        ),
+      ],
+    );
   }
 }

@@ -16,13 +16,13 @@ import '../repositories/account_repo.dart';
 import '../repositories/settings_repo.dart';
 
 class NotificationsRepo {
-  NotificationsRepo(
-      {required AccountsRepo accounts,
-      required SettingsRepo settings,
-      required BackgroundChannel bgChannel})
-      : _accounts = accounts,
-        _settings = settings,
-        _bgChannel = bgChannel {
+  NotificationsRepo({
+    required AccountsRepo accounts,
+    required SettingsRepo settings,
+    required BackgroundChannel bgChannel,
+  }) : _accounts = accounts,
+       _settings = settings,
+       _bgChannel = bgChannel {
     if (!Platform.isAndroid && !Platform.isIOS) {
       player = AudioPlayer();
     }
@@ -39,8 +39,9 @@ class NotificationsRepo {
     if (await _settings.notificationsEnabledSafe &&
         _settings.refreshInterval == -1) {
       _settings.refreshInterval = RefreshFrequencies.oneMinute.value;
-      _bgChannel
-          .makeRequest(const IsolateMessage(name: MessageName.refreshTimer));
+      _bgChannel.makeRequest(
+        const IsolateMessage(name: MessageName.refreshTimer),
+      );
     }
     await enableOrDisableNotifications(result);
   }
@@ -57,10 +58,12 @@ class NotificationsRepo {
     }
     if (await _settings.notificationsEnabledSafe && !allDisabled) {
       await _bgChannel.makeRequest(
-          const IsolateMessage(name: MessageName.enableNotifications));
+        const IsolateMessage(name: MessageName.enableNotifications),
+      );
     } else {
       await _bgChannel.makeRequest(
-          const IsolateMessage(name: MessageName.disableNotifications));
+        const IsolateMessage(name: MessageName.disableNotifications),
+      );
     }
   }
 
@@ -71,8 +74,10 @@ class NotificationsRepo {
     return true;
   }
 
-  Future<bool> requestNotificationPermission(
-      {required bool askAgain, bool? isAppVisible}) async {
+  Future<bool> requestNotificationPermission({
+    required bool askAgain,
+    bool? isAppVisible,
+  }) async {
     bool result;
     if (Platform.isAndroid) {
       bool systemNotificationsGranted = await areNotificationsAllowed();
@@ -92,15 +97,18 @@ class NotificationsRepo {
   }
 
   Future<void> _listenForNotificationEvents() async {
-    await for (final message in _bgChannel
-        .isolateStreams[MessageDestination.notifications]!.stream) {
+    await for (final message
+        in _bgChannel
+            .isolateStreams[MessageDestination.notifications]!
+            .stream) {
       if (message.name == MessageName.playDesktopSound) {
         if (!Platform.isAndroid && !Platform.isIOS) {
           player?.play(AssetSource("sound/alarm.ogg"));
         }
       } else {
         throw Exception(
-            "OAV Invalid 'notifications' stream message name: ${message.name}");
+          "OAV Invalid 'notifications' stream message name: ${message.name}",
+        );
       }
     }
   }

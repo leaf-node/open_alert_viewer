@@ -11,8 +11,8 @@ import 'alerts.dart';
 
 class RandomAlerts extends AlertSource {
   RandomAlerts({required super.sourceData})
-      : _randomSeed = Random(DateTime.now().microsecondsSinceEpoch),
-        _alerts = [];
+    : _randomSeed = Random(DateTime.now().microsecondsSinceEpoch),
+      _alerts = [];
 
   final Random _randomSeed;
   List<Alert> _alerts;
@@ -25,10 +25,13 @@ class RandomAlerts extends AlertSource {
     List<Alert> nextAlerts = [];
     int count = 20 + _randomSeed.nextInt(20);
     for (int i = 0; i < count; i++) {
-      nextAlerts.add(Alert(
+      nextAlerts.add(
+        Alert(
           source: sourceData.id!,
-          kind: AlertType
-              .values[_randomSeed.nextInt(AlertType.values.length - 1)],
+          kind:
+              AlertType.values[_randomSeed.nextInt(
+                AlertType.values.length - 1,
+              )],
           hostname: "example.com",
           service: "Service xyz",
           message: "Status foo bar baz",
@@ -37,7 +40,9 @@ class RandomAlerts extends AlertSource {
           age: Duration(seconds: _randomSeed.nextInt(60 * 10)),
           silenced: _randomSeed.nextInt(10) > 8 ? true : false,
           downtimeScheduled: frequentlyChosenBool(false),
-          active: frequentlyChosenBool(true)));
+          active: frequentlyChosenBool(true),
+        ),
+      );
     }
     // simulate network timeout
     await Future.delayed(Duration(milliseconds: _randomSeed.nextInt(4000)));

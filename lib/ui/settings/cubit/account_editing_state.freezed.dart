@@ -12,7 +12,8 @@ part of 'account_editing_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$AccountEditingState {
@@ -33,16 +34,18 @@ mixin _$AccountEditingState {
 /// @nodoc
 abstract class $AccountEditingStateCopyWith<$Res> {
   factory $AccountEditingStateCopyWith(
-          AccountEditingState value, $Res Function(AccountEditingState) then) =
-      _$AccountEditingStateCopyWithImpl<$Res, AccountEditingState>;
+    AccountEditingState value,
+    $Res Function(AccountEditingState) then,
+  ) = _$AccountEditingStateCopyWithImpl<$Res, AccountEditingState>;
   @useResult
-  $Res call(
-      {AlertSourceDataUpdate? sourceData,
-      CheckStatus status,
-      String statusText,
-      IconType? statusIcon,
-      bool allowClickAccept,
-      String acceptButtonText});
+  $Res call({
+    AlertSourceDataUpdate? sourceData,
+    CheckStatus status,
+    String statusText,
+    IconType? statusIcon,
+    bool allowClickAccept,
+    String acceptButtonText,
+  });
 
   $AlertSourceDataUpdateCopyWith<$Res>? get sourceData;
 }
@@ -69,32 +72,41 @@ class _$AccountEditingStateCopyWithImpl<$Res, $Val extends AccountEditingState>
     Object? allowClickAccept = null,
     Object? acceptButtonText = null,
   }) {
-    return _then(_value.copyWith(
-      sourceData: freezed == sourceData
-          ? _value.sourceData
-          : sourceData // ignore: cast_nullable_to_non_nullable
-              as AlertSourceDataUpdate?,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as CheckStatus,
-      statusText: null == statusText
-          ? _value.statusText
-          : statusText // ignore: cast_nullable_to_non_nullable
-              as String,
-      statusIcon: freezed == statusIcon
-          ? _value.statusIcon
-          : statusIcon // ignore: cast_nullable_to_non_nullable
-              as IconType?,
-      allowClickAccept: null == allowClickAccept
-          ? _value.allowClickAccept
-          : allowClickAccept // ignore: cast_nullable_to_non_nullable
-              as bool,
-      acceptButtonText: null == acceptButtonText
-          ? _value.acceptButtonText
-          : acceptButtonText // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            sourceData:
+                freezed == sourceData
+                    ? _value.sourceData
+                    : sourceData // ignore: cast_nullable_to_non_nullable
+                        as AlertSourceDataUpdate?,
+            status:
+                null == status
+                    ? _value.status
+                    : status // ignore: cast_nullable_to_non_nullable
+                        as CheckStatus,
+            statusText:
+                null == statusText
+                    ? _value.statusText
+                    : statusText // ignore: cast_nullable_to_non_nullable
+                        as String,
+            statusIcon:
+                freezed == statusIcon
+                    ? _value.statusIcon
+                    : statusIcon // ignore: cast_nullable_to_non_nullable
+                        as IconType?,
+            allowClickAccept:
+                null == allowClickAccept
+                    ? _value.allowClickAccept
+                    : allowClickAccept // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            acceptButtonText:
+                null == acceptButtonText
+                    ? _value.acceptButtonText
+                    : acceptButtonText // ignore: cast_nullable_to_non_nullable
+                        as String,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of AccountEditingState
@@ -115,18 +127,20 @@ class _$AccountEditingStateCopyWithImpl<$Res, $Val extends AccountEditingState>
 /// @nodoc
 abstract class _$$AccountEditingStateImplCopyWith<$Res>
     implements $AccountEditingStateCopyWith<$Res> {
-  factory _$$AccountEditingStateImplCopyWith(_$AccountEditingStateImpl value,
-          $Res Function(_$AccountEditingStateImpl) then) =
-      __$$AccountEditingStateImplCopyWithImpl<$Res>;
+  factory _$$AccountEditingStateImplCopyWith(
+    _$AccountEditingStateImpl value,
+    $Res Function(_$AccountEditingStateImpl) then,
+  ) = __$$AccountEditingStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {AlertSourceDataUpdate? sourceData,
-      CheckStatus status,
-      String statusText,
-      IconType? statusIcon,
-      bool allowClickAccept,
-      String acceptButtonText});
+  $Res call({
+    AlertSourceDataUpdate? sourceData,
+    CheckStatus status,
+    String statusText,
+    IconType? statusIcon,
+    bool allowClickAccept,
+    String acceptButtonText,
+  });
 
   @override
   $AlertSourceDataUpdateCopyWith<$Res>? get sourceData;
@@ -136,9 +150,10 @@ abstract class _$$AccountEditingStateImplCopyWith<$Res>
 class __$$AccountEditingStateImplCopyWithImpl<$Res>
     extends _$AccountEditingStateCopyWithImpl<$Res, _$AccountEditingStateImpl>
     implements _$$AccountEditingStateImplCopyWith<$Res> {
-  __$$AccountEditingStateImplCopyWithImpl(_$AccountEditingStateImpl _value,
-      $Res Function(_$AccountEditingStateImpl) _then)
-      : super(_value, _then);
+  __$$AccountEditingStateImplCopyWithImpl(
+    _$AccountEditingStateImpl _value,
+    $Res Function(_$AccountEditingStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of AccountEditingState
   /// with the given fields replaced by the non-null parameter values.
@@ -152,45 +167,54 @@ class __$$AccountEditingStateImplCopyWithImpl<$Res>
     Object? allowClickAccept = null,
     Object? acceptButtonText = null,
   }) {
-    return _then(_$AccountEditingStateImpl(
-      sourceData: freezed == sourceData
-          ? _value.sourceData
-          : sourceData // ignore: cast_nullable_to_non_nullable
-              as AlertSourceDataUpdate?,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as CheckStatus,
-      statusText: null == statusText
-          ? _value.statusText
-          : statusText // ignore: cast_nullable_to_non_nullable
-              as String,
-      statusIcon: freezed == statusIcon
-          ? _value.statusIcon
-          : statusIcon // ignore: cast_nullable_to_non_nullable
-              as IconType?,
-      allowClickAccept: null == allowClickAccept
-          ? _value.allowClickAccept
-          : allowClickAccept // ignore: cast_nullable_to_non_nullable
-              as bool,
-      acceptButtonText: null == acceptButtonText
-          ? _value.acceptButtonText
-          : acceptButtonText // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+    return _then(
+      _$AccountEditingStateImpl(
+        sourceData:
+            freezed == sourceData
+                ? _value.sourceData
+                : sourceData // ignore: cast_nullable_to_non_nullable
+                    as AlertSourceDataUpdate?,
+        status:
+            null == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                    as CheckStatus,
+        statusText:
+            null == statusText
+                ? _value.statusText
+                : statusText // ignore: cast_nullable_to_non_nullable
+                    as String,
+        statusIcon:
+            freezed == statusIcon
+                ? _value.statusIcon
+                : statusIcon // ignore: cast_nullable_to_non_nullable
+                    as IconType?,
+        allowClickAccept:
+            null == allowClickAccept
+                ? _value.allowClickAccept
+                : allowClickAccept // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        acceptButtonText:
+            null == acceptButtonText
+                ? _value.acceptButtonText
+                : acceptButtonText // ignore: cast_nullable_to_non_nullable
+                    as String,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$AccountEditingStateImpl implements _AccountEditingState {
-  const _$AccountEditingStateImpl(
-      {required this.sourceData,
-      required this.status,
-      required this.statusText,
-      required this.statusIcon,
-      required this.allowClickAccept,
-      required this.acceptButtonText});
+  const _$AccountEditingStateImpl({
+    required this.sourceData,
+    required this.status,
+    required this.statusText,
+    required this.statusIcon,
+    required this.allowClickAccept,
+    required this.acceptButtonText,
+  });
 
   @override
   final AlertSourceDataUpdate? sourceData;
@@ -229,8 +253,15 @@ class _$AccountEditingStateImpl implements _AccountEditingState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, sourceData, status, statusText,
-      statusIcon, allowClickAccept, acceptButtonText);
+  int get hashCode => Object.hash(
+    runtimeType,
+    sourceData,
+    status,
+    statusText,
+    statusIcon,
+    allowClickAccept,
+    acceptButtonText,
+  );
 
   /// Create a copy of AccountEditingState
   /// with the given fields replaced by the non-null parameter values.
@@ -239,17 +270,20 @@ class _$AccountEditingStateImpl implements _AccountEditingState {
   @pragma('vm:prefer-inline')
   _$$AccountEditingStateImplCopyWith<_$AccountEditingStateImpl> get copyWith =>
       __$$AccountEditingStateImplCopyWithImpl<_$AccountEditingStateImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 }
 
 abstract class _AccountEditingState implements AccountEditingState {
-  const factory _AccountEditingState(
-      {required final AlertSourceDataUpdate? sourceData,
-      required final CheckStatus status,
-      required final String statusText,
-      required final IconType? statusIcon,
-      required final bool allowClickAccept,
-      required final String acceptButtonText}) = _$AccountEditingStateImpl;
+  const factory _AccountEditingState({
+    required final AlertSourceDataUpdate? sourceData,
+    required final CheckStatus status,
+    required final String statusText,
+    required final IconType? statusIcon,
+    required final bool allowClickAccept,
+    required final String acceptButtonText,
+  }) = _$AccountEditingStateImpl;
 
   @override
   AlertSourceDataUpdate? get sourceData;

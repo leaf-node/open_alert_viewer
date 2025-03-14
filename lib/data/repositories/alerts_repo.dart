@@ -13,17 +13,23 @@ class AlertsRepo {
   final BackgroundChannel _bgChannel;
 
   void fetchAlerts({bool? forceRefreshNow}) {
-    _bgChannel.makeRequest(IsolateMessage(
-        name: MessageName.fetchAlerts, forceRefreshNow: forceRefreshNow));
+    _bgChannel.makeRequest(
+      IsolateMessage(
+        name: MessageName.fetchAlerts,
+        forceRefreshNow: forceRefreshNow,
+      ),
+    );
   }
 
   void updateLastSeen() {
-    _bgChannel
-        .makeRequest(const IsolateMessage(name: MessageName.updateLastSeen));
+    _bgChannel.makeRequest(
+      const IsolateMessage(name: MessageName.updateLastSeen),
+    );
   }
 
   void refreshTimer() {
-    _bgChannel
-        .makeRequest(const IsolateMessage(name: MessageName.refreshTimer));
+    _bgChannel.makeRequest(
+      const IsolateMessage(name: MessageName.refreshTimer),
+    );
   }
 }

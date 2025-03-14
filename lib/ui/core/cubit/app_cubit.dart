@@ -16,8 +16,8 @@ import 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit({required this.navigation, required this.settings})
-      : ready = Completer(),
-        super(AppState.init()) {
+    : ready = Completer(),
+      super(AppState.init()) {
     _state = state;
     ready.complete();
     _setDarkMode();
@@ -39,7 +39,9 @@ class AppCubit extends Cubit<AppState> {
       (screen, data) = tuple;
       _state = _state!.copyWith(screen: screen, data: data);
       _state = _state!.copyWith(
-          screenPushed: true, timestamp: DateTime.now().millisecondsSinceEpoch);
+        screenPushed: true,
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+      );
       emit(_state!);
     }
   }
@@ -54,11 +56,16 @@ class AppCubit extends Cubit<AppState> {
   }
 
   void _setDarkMode() {
-    bool? darkMode =
-        switch (settings.darkMode) { 0 => false, 1 => true, _ => null };
+    bool? darkMode = switch (settings.darkMode) {
+      0 => false,
+      1 => true,
+      _ => null,
+    };
     _state = _state!.copyWith(darkMode: darkMode);
     _state = _state!.copyWith(
-        screenPushed: false, timestamp: DateTime.now().millisecondsSinceEpoch);
+      screenPushed: false,
+      timestamp: DateTime.now().millisecondsSinceEpoch,
+    );
     emit(_state!);
   }
 

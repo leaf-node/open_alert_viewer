@@ -15,14 +15,14 @@ import '../../../utils/utils.dart';
 import 'account_editing_state.dart';
 
 class AccountEditingCubit extends Cubit<AccountEditingState> with NetworkFetch {
-  AccountEditingCubit(
-      {required BackgroundChannel bgChannel,
-      required AccountsRepo accountsRepo})
-      : _bgChannel = bgChannel,
-        _accountsRepo = accountsRepo,
-        accountCheckSerial = -1,
-        lastNeedsCheck = true,
-        super(AccountEditingState.init()) {
+  AccountEditingCubit({
+    required BackgroundChannel bgChannel,
+    required AccountsRepo accountsRepo,
+  }) : _bgChannel = bgChannel,
+       _accountsRepo = accountsRepo,
+       accountCheckSerial = -1,
+       lastNeedsCheck = true,
+       super(AccountEditingState.init()) {
     _state = state;
     _listenForConfirmations();
   }
@@ -33,38 +33,55 @@ class AccountEditingCubit extends Cubit<AccountEditingState> with NetworkFetch {
   int accountCheckSerial;
   bool lastNeedsCheck;
 
-  void confirmSource(
-      {required AlertSourceDataUpdate newSourceData,
-      bool? needsCheck,
-      bool? checkNow}) {
+  void confirmSource({
+    required AlertSourceDataUpdate newSourceData,
+    bool? needsCheck,
+    bool? checkNow,
+  }) {
     needsCheck = lastNeedsCheck = needsCheck ?? false;
     checkNow = checkNow ?? false;
     if (needsCheck) {
-      emit(_state = _state!
-          .copyWith(sourceData: newSourceData, status: CheckStatus.needsCheck));
+      emit(
+        _state = _state!.copyWith(
+          sourceData: newSourceData,
+          status: CheckStatus.needsCheck,
+        ),
+      );
     } else if (checkNow) {
-      emit(_state = _state!.copyWith(
-          sourceData: newSourceData, status: CheckStatus.checkingNow));
-      newSourceData =
-          newSourceData.copyWith(serial: accountCheckSerial = Util.genRandom());
-      _bgChannel.makeRequest(IsolateMessage(
-          name: MessageName.confirmSources, sourceData: newSourceData));
+      emit(
+        _state = _state!.copyWith(
+          sourceData: newSourceData,
+          status: CheckStatus.checkingNow,
+        ),
+      );
+      newSourceData = newSourceData.copyWith(
+        serial: accountCheckSerial = Util.genRandom(),
+      );
+      _bgChannel.makeRequest(
+        IsolateMessage(
+          name: MessageName.confirmSources,
+          sourceData: newSourceData,
+        ),
+      );
     }
   }
 
   void addSource(AlertSourceDataUpdate sourceData) {
     _bgChannel.makeRequest(
-        IsolateMessage(name: MessageName.addSource, sourceData: sourceData));
+      IsolateMessage(name: MessageName.addSource, sourceData: sourceData),
+    );
   }
 
   void updateSource(AlertSourceDataUpdate sourceData) {
     _bgChannel.makeRequest(
-        IsolateMessage(name: MessageName.updateSource, sourceData: sourceData));
+      IsolateMessage(name: MessageName.updateSource, sourceData: sourceData),
+    );
   }
 
   void removeSource(int id) {
-    _bgChannel
-        .makeRequest(IsolateMessage(name: MessageName.removeSource, id: id));
+    _bgChannel.makeRequest(
+      IsolateMessage(name: MessageName.removeSource, id: id),
+    );
   }
 
   bool _checkUniqueSource({int? id, required String name}) {
@@ -152,22 +169,33 @@ class AccountEditingCubit extends Cubit<AccountEditingState> with NetworkFetch {
     } else {
       title = "Checking...";
     }
-    emit(_state = _state!
-        .copyWith(allowClickAccept: allowClick, acceptButtonText: title));
+    emit(
+      _state = _state!.copyWith(
+        allowClickAccept: allowClick,
+        acceptButtonText: title,
+      ),
+    );
   }
 
   Future<void> _listenForConfirmations() async {
-    await for (final message in _bgChannel
-        .isolateStreams[MessageDestination.accountEditing]!.stream) {
+    await for (final message
+        in _bgChannel
+            .isolateStreams[MessageDestination.accountEditing]!
+            .stream) {
       if (message.name == MessageName.confirmSourcesReply) {
         if (message.sourceData!.serial == accountCheckSerial &&
             !lastNeedsCheck) {
-          emit(_state = _state!.copyWith(
-              sourceData: message.sourceData, status: CheckStatus.responded));
+          emit(
+            _state = _state!.copyWith(
+              sourceData: message.sourceData,
+              status: CheckStatus.responded,
+            ),
+          );
         }
       } else {
         throw Exception(
-            "OAV Invalid 'accounts' stream message name: ${message.name}");
+          "OAV Invalid 'accounts' stream message name: ${message.name}",
+        );
       }
     }
   }

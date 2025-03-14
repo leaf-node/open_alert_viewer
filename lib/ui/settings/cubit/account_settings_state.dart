@@ -8,14 +8,18 @@ part of 'account_settings_cubit.dart';
 
 @freezed
 class AccountSettingsState with _$AccountSettingsState {
-  const factory AccountSettingsState(
-      {required bool globalNotificationsEnabled,
-      required AlertSourceData? source}) = _AccountSettingsState;
+  const factory AccountSettingsState({
+    required bool globalNotificationsEnabled,
+    required AlertSourceData? source,
+  }) = _AccountSettingsState;
 
-  factory AccountSettingsState.init(
-      {required SettingsRepo settings, required AlertSourceData? source}) {
+  factory AccountSettingsState.init({
+    required SettingsRepo settings,
+    required AlertSourceData? source,
+  }) {
     return AccountSettingsState(
-        globalNotificationsEnabled: settings.notificationsEnabledUnsafe,
-        source: source);
+      globalNotificationsEnabled: settings.notificationsEnabledUnsafe,
+      source: source,
+    );
   }
 }

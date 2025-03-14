@@ -28,7 +28,7 @@ enum BatterySetting {
 
 class BatteryPermissionRepo {
   BatteryPermissionRepo({required SettingsRepo settings})
-      : _settings = settings;
+    : _settings = settings;
 
   final SettingsRepo _settings;
 
@@ -68,7 +68,8 @@ class BatteryPermissionRepo {
       final currentStatus = await getStatus();
       if (!currentStatus.active) {
         return _matchStatus(
-            await Permission.ignoreBatteryOptimizations.request());
+          await Permission.ignoreBatteryOptimizations.request(),
+        );
       } else {
         return currentStatus;
       }

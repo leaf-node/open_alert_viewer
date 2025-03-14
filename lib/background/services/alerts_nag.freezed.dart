@@ -12,7 +12,8 @@ part of 'alerts_nag.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 NagAlertsData _$NagAlertsDataFromJson(Map<String, dynamic> json) {
   return _NagAlertsData.fromJson(json);
@@ -35,8 +36,9 @@ mixin _$NagAlertsData {
 /// @nodoc
 abstract class $NagAlertsDataCopyWith<$Res> {
   factory $NagAlertsDataCopyWith(
-          NagAlertsData value, $Res Function(NagAlertsData) then) =
-      _$NagAlertsDataCopyWithImpl<$Res, NagAlertsData>;
+    NagAlertsData value,
+    $Res Function(NagAlertsData) then,
+  ) = _$NagAlertsDataCopyWithImpl<$Res, NagAlertsData>;
   @useResult
   $Res call({NagDataSection? data});
 
@@ -57,15 +59,17 @@ class _$NagAlertsDataCopyWithImpl<$Res, $Val extends NagAlertsData>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? data = freezed,
-  }) {
-    return _then(_value.copyWith(
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as NagDataSection?,
-    ) as $Val);
+  $Res call({Object? data = freezed}) {
+    return _then(
+      _value.copyWith(
+            data:
+                freezed == data
+                    ? _value.data
+                    : data // ignore: cast_nullable_to_non_nullable
+                        as NagDataSection?,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of NagAlertsData
@@ -87,8 +91,9 @@ class _$NagAlertsDataCopyWithImpl<$Res, $Val extends NagAlertsData>
 abstract class _$$NagAlertsDataImplCopyWith<$Res>
     implements $NagAlertsDataCopyWith<$Res> {
   factory _$$NagAlertsDataImplCopyWith(
-          _$NagAlertsDataImpl value, $Res Function(_$NagAlertsDataImpl) then) =
-      __$$NagAlertsDataImplCopyWithImpl<$Res>;
+    _$NagAlertsDataImpl value,
+    $Res Function(_$NagAlertsDataImpl) then,
+  ) = __$$NagAlertsDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({NagDataSection? data});
@@ -102,22 +107,24 @@ class __$$NagAlertsDataImplCopyWithImpl<$Res>
     extends _$NagAlertsDataCopyWithImpl<$Res, _$NagAlertsDataImpl>
     implements _$$NagAlertsDataImplCopyWith<$Res> {
   __$$NagAlertsDataImplCopyWithImpl(
-      _$NagAlertsDataImpl _value, $Res Function(_$NagAlertsDataImpl) _then)
-      : super(_value, _then);
+    _$NagAlertsDataImpl _value,
+    $Res Function(_$NagAlertsDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of NagAlertsData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? data = freezed,
-  }) {
-    return _then(_$NagAlertsDataImpl(
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as NagDataSection?,
-    ));
+  $Res call({Object? data = freezed}) {
+    return _then(
+      _$NagAlertsDataImpl(
+        data:
+            freezed == data
+                ? _value.data
+                : data // ignore: cast_nullable_to_non_nullable
+                    as NagDataSection?,
+      ),
+    );
   }
 }
 
@@ -159,9 +166,7 @@ class _$NagAlertsDataImpl implements _NagAlertsData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$NagAlertsDataImplToJson(
-      this,
-    );
+    return _$$NagAlertsDataImplToJson(this);
   }
 }
 
@@ -207,12 +212,14 @@ mixin _$NagDataSection {
 /// @nodoc
 abstract class $NagDataSectionCopyWith<$Res> {
   factory $NagDataSectionCopyWith(
-          NagDataSection value, $Res Function(NagDataSection) then) =
-      _$NagDataSectionCopyWithImpl<$Res, NagDataSection>;
+    NagDataSection value,
+    $Res Function(NagDataSection) then,
+  ) = _$NagDataSectionCopyWithImpl<$Res, NagDataSection>;
   @useResult
-  $Res call(
-      {Map<String, NagAlertData?>? hostlist,
-      Map<String, Map<String, NagAlertData?>?>? servicelist});
+  $Res call({
+    Map<String, NagAlertData?>? hostlist,
+    Map<String, Map<String, NagAlertData?>?>? servicelist,
+  });
 }
 
 /// @nodoc
@@ -229,34 +236,38 @@ class _$NagDataSectionCopyWithImpl<$Res, $Val extends NagDataSection>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? hostlist = freezed,
-    Object? servicelist = freezed,
-  }) {
-    return _then(_value.copyWith(
-      hostlist: freezed == hostlist
-          ? _value.hostlist
-          : hostlist // ignore: cast_nullable_to_non_nullable
-              as Map<String, NagAlertData?>?,
-      servicelist: freezed == servicelist
-          ? _value.servicelist
-          : servicelist // ignore: cast_nullable_to_non_nullable
-              as Map<String, Map<String, NagAlertData?>?>?,
-    ) as $Val);
+  $Res call({Object? hostlist = freezed, Object? servicelist = freezed}) {
+    return _then(
+      _value.copyWith(
+            hostlist:
+                freezed == hostlist
+                    ? _value.hostlist
+                    : hostlist // ignore: cast_nullable_to_non_nullable
+                        as Map<String, NagAlertData?>?,
+            servicelist:
+                freezed == servicelist
+                    ? _value.servicelist
+                    : servicelist // ignore: cast_nullable_to_non_nullable
+                        as Map<String, Map<String, NagAlertData?>?>?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$NagDataSectionImplCopyWith<$Res>
     implements $NagDataSectionCopyWith<$Res> {
-  factory _$$NagDataSectionImplCopyWith(_$NagDataSectionImpl value,
-          $Res Function(_$NagDataSectionImpl) then) =
-      __$$NagDataSectionImplCopyWithImpl<$Res>;
+  factory _$$NagDataSectionImplCopyWith(
+    _$NagDataSectionImpl value,
+    $Res Function(_$NagDataSectionImpl) then,
+  ) = __$$NagDataSectionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {Map<String, NagAlertData?>? hostlist,
-      Map<String, Map<String, NagAlertData?>?>? servicelist});
+  $Res call({
+    Map<String, NagAlertData?>? hostlist,
+    Map<String, Map<String, NagAlertData?>?>? servicelist,
+  });
 }
 
 /// @nodoc
@@ -264,38 +275,40 @@ class __$$NagDataSectionImplCopyWithImpl<$Res>
     extends _$NagDataSectionCopyWithImpl<$Res, _$NagDataSectionImpl>
     implements _$$NagDataSectionImplCopyWith<$Res> {
   __$$NagDataSectionImplCopyWithImpl(
-      _$NagDataSectionImpl _value, $Res Function(_$NagDataSectionImpl) _then)
-      : super(_value, _then);
+    _$NagDataSectionImpl _value,
+    $Res Function(_$NagDataSectionImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of NagDataSection
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? hostlist = freezed,
-    Object? servicelist = freezed,
-  }) {
-    return _then(_$NagDataSectionImpl(
-      hostlist: freezed == hostlist
-          ? _value._hostlist
-          : hostlist // ignore: cast_nullable_to_non_nullable
-              as Map<String, NagAlertData?>?,
-      servicelist: freezed == servicelist
-          ? _value._servicelist
-          : servicelist // ignore: cast_nullable_to_non_nullable
-              as Map<String, Map<String, NagAlertData?>?>?,
-    ));
+  $Res call({Object? hostlist = freezed, Object? servicelist = freezed}) {
+    return _then(
+      _$NagDataSectionImpl(
+        hostlist:
+            freezed == hostlist
+                ? _value._hostlist
+                : hostlist // ignore: cast_nullable_to_non_nullable
+                    as Map<String, NagAlertData?>?,
+        servicelist:
+            freezed == servicelist
+                ? _value._servicelist
+                : servicelist // ignore: cast_nullable_to_non_nullable
+                    as Map<String, Map<String, NagAlertData?>?>?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$NagDataSectionImpl implements _NagDataSection {
-  const _$NagDataSectionImpl(
-      {final Map<String, NagAlertData?>? hostlist,
-      final Map<String, Map<String, NagAlertData?>?>? servicelist})
-      : _hostlist = hostlist,
-        _servicelist = servicelist;
+  const _$NagDataSectionImpl({
+    final Map<String, NagAlertData?>? hostlist,
+    final Map<String, Map<String, NagAlertData?>?>? servicelist,
+  }) : _hostlist = hostlist,
+       _servicelist = servicelist;
 
   factory _$NagDataSectionImpl.fromJson(Map<String, dynamic> json) =>
       _$$NagDataSectionImplFromJson(json);
@@ -331,16 +344,19 @@ class _$NagDataSectionImpl implements _NagDataSection {
         (other.runtimeType == runtimeType &&
             other is _$NagDataSectionImpl &&
             const DeepCollectionEquality().equals(other._hostlist, _hostlist) &&
-            const DeepCollectionEquality()
-                .equals(other._servicelist, _servicelist));
+            const DeepCollectionEquality().equals(
+              other._servicelist,
+              _servicelist,
+            ));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_hostlist),
-      const DeepCollectionEquality().hash(_servicelist));
+    runtimeType,
+    const DeepCollectionEquality().hash(_hostlist),
+    const DeepCollectionEquality().hash(_servicelist),
+  );
 
   /// Create a copy of NagDataSection
   /// with the given fields replaced by the non-null parameter values.
@@ -349,21 +365,21 @@ class _$NagDataSectionImpl implements _NagDataSection {
   @pragma('vm:prefer-inline')
   _$$NagDataSectionImplCopyWith<_$NagDataSectionImpl> get copyWith =>
       __$$NagDataSectionImplCopyWithImpl<_$NagDataSectionImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$NagDataSectionImplToJson(
-      this,
-    );
+    return _$$NagDataSectionImplToJson(this);
   }
 }
 
 abstract class _NagDataSection implements NagDataSection {
-  const factory _NagDataSection(
-          {final Map<String, NagAlertData?>? hostlist,
-          final Map<String, Map<String, NagAlertData?>?>? servicelist}) =
-      _$NagDataSectionImpl;
+  const factory _NagDataSection({
+    final Map<String, NagAlertData?>? hostlist,
+    final Map<String, Map<String, NagAlertData?>?>? servicelist,
+  }) = _$NagDataSectionImpl;
 
   factory _NagDataSection.fromJson(Map<String, dynamic> json) =
       _$NagDataSectionImpl.fromJson;
@@ -417,19 +433,21 @@ mixin _$NagAlertData {
 /// @nodoc
 abstract class $NagAlertDataCopyWith<$Res> {
   factory $NagAlertDataCopyWith(
-          NagAlertData value, $Res Function(NagAlertData) then) =
-      _$NagAlertDataCopyWithImpl<$Res, NagAlertData>;
+    NagAlertData value,
+    $Res Function(NagAlertData) then,
+  ) = _$NagAlertDataCopyWithImpl<$Res, NagAlertData>;
   @useResult
-  $Res call(
-      {String? description,
-      int? status,
-      int? scheduled_downtime_depth,
-      bool? problem_has_been_acknowledged,
-      int? last_state_change,
-      int? last_hard_state_change,
-      int? last_check,
-      int? state_type,
-      String? plugin_output});
+  $Res call({
+    String? description,
+    int? status,
+    int? scheduled_downtime_depth,
+    bool? problem_has_been_acknowledged,
+    int? last_state_change,
+    int? last_hard_state_change,
+    int? last_check,
+    int? state_type,
+    String? plugin_output,
+  });
 }
 
 /// @nodoc
@@ -457,44 +475,56 @@ class _$NagAlertDataCopyWithImpl<$Res, $Val extends NagAlertData>
     Object? state_type = freezed,
     Object? plugin_output = freezed,
   }) {
-    return _then(_value.copyWith(
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as int?,
-      scheduled_downtime_depth: freezed == scheduled_downtime_depth
-          ? _value.scheduled_downtime_depth
-          : scheduled_downtime_depth // ignore: cast_nullable_to_non_nullable
-              as int?,
-      problem_has_been_acknowledged: freezed == problem_has_been_acknowledged
-          ? _value.problem_has_been_acknowledged
-          : problem_has_been_acknowledged // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      last_state_change: freezed == last_state_change
-          ? _value.last_state_change
-          : last_state_change // ignore: cast_nullable_to_non_nullable
-              as int?,
-      last_hard_state_change: freezed == last_hard_state_change
-          ? _value.last_hard_state_change
-          : last_hard_state_change // ignore: cast_nullable_to_non_nullable
-              as int?,
-      last_check: freezed == last_check
-          ? _value.last_check
-          : last_check // ignore: cast_nullable_to_non_nullable
-              as int?,
-      state_type: freezed == state_type
-          ? _value.state_type
-          : state_type // ignore: cast_nullable_to_non_nullable
-              as int?,
-      plugin_output: freezed == plugin_output
-          ? _value.plugin_output
-          : plugin_output // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            description:
+                freezed == description
+                    ? _value.description
+                    : description // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            status:
+                freezed == status
+                    ? _value.status
+                    : status // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            scheduled_downtime_depth:
+                freezed == scheduled_downtime_depth
+                    ? _value.scheduled_downtime_depth
+                    : scheduled_downtime_depth // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            problem_has_been_acknowledged:
+                freezed == problem_has_been_acknowledged
+                    ? _value.problem_has_been_acknowledged
+                    : problem_has_been_acknowledged // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+            last_state_change:
+                freezed == last_state_change
+                    ? _value.last_state_change
+                    : last_state_change // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            last_hard_state_change:
+                freezed == last_hard_state_change
+                    ? _value.last_hard_state_change
+                    : last_hard_state_change // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            last_check:
+                freezed == last_check
+                    ? _value.last_check
+                    : last_check // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            state_type:
+                freezed == state_type
+                    ? _value.state_type
+                    : state_type // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            plugin_output:
+                freezed == plugin_output
+                    ? _value.plugin_output
+                    : plugin_output // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -502,20 +532,22 @@ class _$NagAlertDataCopyWithImpl<$Res, $Val extends NagAlertData>
 abstract class _$$NagAlertDataImplCopyWith<$Res>
     implements $NagAlertDataCopyWith<$Res> {
   factory _$$NagAlertDataImplCopyWith(
-          _$NagAlertDataImpl value, $Res Function(_$NagAlertDataImpl) then) =
-      __$$NagAlertDataImplCopyWithImpl<$Res>;
+    _$NagAlertDataImpl value,
+    $Res Function(_$NagAlertDataImpl) then,
+  ) = __$$NagAlertDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? description,
-      int? status,
-      int? scheduled_downtime_depth,
-      bool? problem_has_been_acknowledged,
-      int? last_state_change,
-      int? last_hard_state_change,
-      int? last_check,
-      int? state_type,
-      String? plugin_output});
+  $Res call({
+    String? description,
+    int? status,
+    int? scheduled_downtime_depth,
+    bool? problem_has_been_acknowledged,
+    int? last_state_change,
+    int? last_hard_state_change,
+    int? last_check,
+    int? state_type,
+    String? plugin_output,
+  });
 }
 
 /// @nodoc
@@ -523,8 +555,9 @@ class __$$NagAlertDataImplCopyWithImpl<$Res>
     extends _$NagAlertDataCopyWithImpl<$Res, _$NagAlertDataImpl>
     implements _$$NagAlertDataImplCopyWith<$Res> {
   __$$NagAlertDataImplCopyWithImpl(
-      _$NagAlertDataImpl _value, $Res Function(_$NagAlertDataImpl) _then)
-      : super(_value, _then);
+    _$NagAlertDataImpl _value,
+    $Res Function(_$NagAlertDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of NagAlertData
   /// with the given fields replaced by the non-null parameter values.
@@ -541,60 +574,72 @@ class __$$NagAlertDataImplCopyWithImpl<$Res>
     Object? state_type = freezed,
     Object? plugin_output = freezed,
   }) {
-    return _then(_$NagAlertDataImpl(
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as int?,
-      scheduled_downtime_depth: freezed == scheduled_downtime_depth
-          ? _value.scheduled_downtime_depth
-          : scheduled_downtime_depth // ignore: cast_nullable_to_non_nullable
-              as int?,
-      problem_has_been_acknowledged: freezed == problem_has_been_acknowledged
-          ? _value.problem_has_been_acknowledged
-          : problem_has_been_acknowledged // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      last_state_change: freezed == last_state_change
-          ? _value.last_state_change
-          : last_state_change // ignore: cast_nullable_to_non_nullable
-              as int?,
-      last_hard_state_change: freezed == last_hard_state_change
-          ? _value.last_hard_state_change
-          : last_hard_state_change // ignore: cast_nullable_to_non_nullable
-              as int?,
-      last_check: freezed == last_check
-          ? _value.last_check
-          : last_check // ignore: cast_nullable_to_non_nullable
-              as int?,
-      state_type: freezed == state_type
-          ? _value.state_type
-          : state_type // ignore: cast_nullable_to_non_nullable
-              as int?,
-      plugin_output: freezed == plugin_output
-          ? _value.plugin_output
-          : plugin_output // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$NagAlertDataImpl(
+        description:
+            freezed == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        status:
+            freezed == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        scheduled_downtime_depth:
+            freezed == scheduled_downtime_depth
+                ? _value.scheduled_downtime_depth
+                : scheduled_downtime_depth // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        problem_has_been_acknowledged:
+            freezed == problem_has_been_acknowledged
+                ? _value.problem_has_been_acknowledged
+                : problem_has_been_acknowledged // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+        last_state_change:
+            freezed == last_state_change
+                ? _value.last_state_change
+                : last_state_change // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        last_hard_state_change:
+            freezed == last_hard_state_change
+                ? _value.last_hard_state_change
+                : last_hard_state_change // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        last_check:
+            freezed == last_check
+                ? _value.last_check
+                : last_check // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        state_type:
+            freezed == state_type
+                ? _value.state_type
+                : state_type // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        plugin_output:
+            freezed == plugin_output
+                ? _value.plugin_output
+                : plugin_output // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$NagAlertDataImpl implements _NagAlertData {
-  const _$NagAlertDataImpl(
-      {this.description,
-      this.status,
-      this.scheduled_downtime_depth,
-      this.problem_has_been_acknowledged,
-      this.last_state_change,
-      this.last_hard_state_change,
-      this.last_check,
-      this.state_type,
-      this.plugin_output});
+  const _$NagAlertDataImpl({
+    this.description,
+    this.status,
+    this.scheduled_downtime_depth,
+    this.problem_has_been_acknowledged,
+    this.last_state_change,
+    this.last_hard_state_change,
+    this.last_check,
+    this.state_type,
+    this.plugin_output,
+  });
 
   factory _$NagAlertDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$NagAlertDataImplFromJson(json);
@@ -603,25 +648,25 @@ class _$NagAlertDataImpl implements _NagAlertData {
   final String? description;
   @override
   final int? status;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final int? scheduled_downtime_depth;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final bool? problem_has_been_acknowledged;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final int? last_state_change;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final int? last_hard_state_change;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final int? last_check;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final int? state_type;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final String? plugin_output;
 
@@ -639,10 +684,14 @@ class _$NagAlertDataImpl implements _NagAlertData {
                 other.description == description) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(
-                    other.scheduled_downtime_depth, scheduled_downtime_depth) ||
+                  other.scheduled_downtime_depth,
+                  scheduled_downtime_depth,
+                ) ||
                 other.scheduled_downtime_depth == scheduled_downtime_depth) &&
-            (identical(other.problem_has_been_acknowledged,
-                    problem_has_been_acknowledged) ||
+            (identical(
+                  other.problem_has_been_acknowledged,
+                  problem_has_been_acknowledged,
+                ) ||
                 other.problem_has_been_acknowledged ==
                     problem_has_been_acknowledged) &&
             (identical(other.last_state_change, last_state_change) ||
@@ -660,16 +709,17 @@ class _$NagAlertDataImpl implements _NagAlertData {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      description,
-      status,
-      scheduled_downtime_depth,
-      problem_has_been_acknowledged,
-      last_state_change,
-      last_hard_state_change,
-      last_check,
-      state_type,
-      plugin_output);
+    runtimeType,
+    description,
+    status,
+    scheduled_downtime_depth,
+    problem_has_been_acknowledged,
+    last_state_change,
+    last_hard_state_change,
+    last_check,
+    state_type,
+    plugin_output,
+  );
 
   /// Create a copy of NagAlertData
   /// with the given fields replaced by the non-null parameter values.
@@ -681,23 +731,22 @@ class _$NagAlertDataImpl implements _NagAlertData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$NagAlertDataImplToJson(
-      this,
-    );
+    return _$$NagAlertDataImplToJson(this);
   }
 }
 
 abstract class _NagAlertData implements NagAlertData {
-  const factory _NagAlertData(
-      {final String? description,
-      final int? status,
-      final int? scheduled_downtime_depth,
-      final bool? problem_has_been_acknowledged,
-      final int? last_state_change,
-      final int? last_hard_state_change,
-      final int? last_check,
-      final int? state_type,
-      final String? plugin_output}) = _$NagAlertDataImpl;
+  const factory _NagAlertData({
+    final String? description,
+    final int? status,
+    final int? scheduled_downtime_depth,
+    final bool? problem_has_been_acknowledged,
+    final int? last_state_change,
+    final int? last_hard_state_change,
+    final int? last_check,
+    final int? state_type,
+    final String? plugin_output,
+  }) = _$NagAlertDataImpl;
 
   factory _NagAlertData.fromJson(Map<String, dynamic> json) =
       _$NagAlertDataImpl.fromJson;
@@ -709,8 +758,7 @@ abstract class _NagAlertData implements NagAlertData {
   @override
   int? get scheduled_downtime_depth; // ignore: non_constant_identifier_names
   @override
-  bool?
-      get problem_has_been_acknowledged; // ignore: non_constant_identifier_names
+  bool? get problem_has_been_acknowledged; // ignore: non_constant_identifier_names
   @override
   int? get last_state_change; // ignore: non_constant_identifier_names
   @override

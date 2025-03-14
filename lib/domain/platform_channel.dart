@@ -10,8 +10,8 @@ import 'package:flutter/services.dart';
 
 class PlatformChannel {
   PlatformChannel()
-      : _platformMain = MethodChannel(_channelMain),
-        _platformForeground = MethodChannel(_channelForeground);
+    : _platformMain = MethodChannel(_channelMain),
+      _platformForeground = MethodChannel(_channelForeground);
 
   static const _channelMain = "studio.okcode.open_alert_viewer/main";
   static const _channelForeground = "studio.okcode.open_alert_viewer/service";

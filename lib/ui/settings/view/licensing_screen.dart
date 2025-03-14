@@ -23,14 +23,16 @@ class LicensingScreen extends StatelessWidget {
 
   static Route<void> route({required String title}) {
     return MaterialPageRoute<void>(
-        builder: (_) => LicensingScreen(title: title));
+      builder: (_) => LicensingScreen(title: title),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: GeneralHeader(title: title),
-        body: const Center(child: LicensingInfo()));
+      appBar: GeneralHeader(title: title),
+      body: const Center(child: LicensingInfo()),
+    );
   }
 }
 
@@ -56,73 +58,76 @@ class _LicensingInfoState extends State<LicensingInfo> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _licenseString,
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.hasData) {
-            _text = snapshot.data ?? _errorMessage;
-          } else {
-            _text = _errorMessage;
-          }
-          return Padding(
-              padding: const EdgeInsets.all(15),
-              child: ListView(children: [
-                MarkdownBody(
-                    data: _text,
-                    onTapLink: (_, href, __) async {
-                      try {
-                        var uri = Uri.parse(href ?? "");
-                        await launchUrl(uri);
-                      } catch (e) {
-                        log("Error launching URL: $href");
-                      }
-                    }),
-                SectionHeader(title: "Direct Dependencies"),
-                for (Package dependency in dependencies)
+      future: _licenseString,
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.hasData) {
+          _text = snapshot.data ?? _errorMessage;
+        } else {
+          _text = _errorMessage;
+        }
+        return Padding(
+          padding: const EdgeInsets.all(15),
+          child: ListView(
+            children: [
+              MarkdownBody(
+                data: _text,
+                onTapLink: (_, href, __) async {
+                  try {
+                    var uri = Uri.parse(href ?? "");
+                    await launchUrl(uri);
+                  } catch (e) {
+                    log("Error launching URL: $href");
+                  }
+                },
+              ),
+              SectionHeader(title: "Direct Dependencies"),
+              for (Package dependency in dependencies)
+                LicenseTitle(dependency: dependency),
+              SectionHeader(title: "Dev Dependencies"),
+              for (Package dependency in devDependencies)
+                LicenseTitle(dependency: dependency),
+              SectionHeader(title: "Recursive Dependencies"),
+              for (Package dependency in allDependencies)
+                if (!dependencies.contains(dependency) &&
+                    !devDependencies.contains(dependency))
                   LicenseTitle(dependency: dependency),
-                SectionHeader(title: "Dev Dependencies"),
-                for (Package dependency in devDependencies)
-                  LicenseTitle(dependency: dependency),
-                SectionHeader(title: "Recursive Dependencies"),
-                for (Package dependency in allDependencies)
-                  if (!dependencies.contains(dependency) &&
-                      !devDependencies.contains(dependency))
-                    LicenseTitle(dependency: dependency)
-              ]));
-        });
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 
 class SectionHeader extends StatelessWidget {
-  const SectionHeader({
-    super.key,
-    required this.title,
-  });
+  const SectionHeader({super.key, required this.title});
 
   final String title;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.fromLTRB(0, 32, 0, 8),
-        child: Text(title, style: Theme.of(context).textTheme.headlineSmall));
+      padding: EdgeInsets.fromLTRB(0, 32, 0, 8),
+      child: Text(title, style: Theme.of(context).textTheme.headlineSmall),
+    );
   }
 }
 
 class LicenseTitle extends StatelessWidget {
-  const LicenseTitle({
-    super.key,
-    required this.dependency,
-  });
+  const LicenseTitle({super.key, required this.dependency});
 
   final Package dependency;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        leading: Icon(Icons.link_outlined),
-        title: Text(dependency.name),
-        onTap: () => context
-            .read<Navigation>()
-            .goTo(Screens.licensingDetails, dependency));
+      leading: Icon(Icons.link_outlined),
+      title: Text(dependency.name),
+      onTap:
+          () => context.read<Navigation>().goTo(
+            Screens.licensingDetails,
+            dependency,
+          ),
+    );
   }
 }

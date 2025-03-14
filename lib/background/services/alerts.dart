@@ -22,38 +22,43 @@ abstract class AlertSource with NetworkFetch {
   List<Alert> alertForInvalidSource() {
     final error = sourceData.errorMessage;
     return errorFetchingAlerts(
-        sourceData: sourceData,
-        error: "Error connecting to your account. "
-            "(${(error == "") ? "Unknown reason" : error}). "
-            "Try editing your account details. ",
-        endpoint: "");
+      sourceData: sourceData,
+      error:
+          "Error connecting to your account. "
+          "(${(error == "") ? "Unknown reason" : error}). "
+          "Try editing your account details. ",
+      endpoint: "",
+    );
   }
 
-  List<Alert> errorFetchingAlerts(
-      {required AlertSourceData sourceData,
-      required String error,
-      required String endpoint}) {
+  List<Alert> errorFetchingAlerts({
+    required AlertSourceData sourceData,
+    required String error,
+    required String endpoint,
+  }) {
     return [
       Alert(
-          source: sourceData.id!,
-          kind: AlertType.syncFailure,
-          hostname: sourceData.name,
-          service: "OAV",
-          message: error,
-          monitorUrl: generateURL(sourceData.baseURL, endpoint),
-          serviceUrl: "",
-          age: Duration.zero,
-          silenced: false,
-          downtimeScheduled: false,
-          active: true)
+        source: sourceData.id!,
+        kind: AlertType.syncFailure,
+        hostname: sourceData.name,
+        service: "OAV",
+        message: error,
+        monitorUrl: generateURL(sourceData.baseURL, endpoint),
+        serviceUrl: "",
+        age: Duration.zero,
+        silenced: false,
+        downtimeScheduled: false,
+        active: true,
+      ),
     ];
   }
 
-  Future<(dynamic, List<Alert>)> fetchAndDecodeJSON(
-      {required String endpoint,
-      String? postBody,
-      bool? authOverride,
-      Map<String, String>? headers}) async {
+  Future<(dynamic, List<Alert>)> fetchAndDecodeJSON({
+    required String endpoint,
+    String? postBody,
+    bool? authOverride,
+    Map<String, String>? headers,
+  }) async {
     if (!(sourceData.isValid ?? false)) {
       return (null, alertForInvalidSource());
     }
@@ -61,9 +66,15 @@ abstract class AlertSource with NetworkFetch {
     Response? response;
     String errorMessage = "";
     try {
-      response = await networkFetch(sourceData.baseURL, sourceData.username,
-          sourceData.password, endpoint,
-          postBody: postBody, authOverride: authOverride, headers: headers);
+      response = await networkFetch(
+        sourceData.baseURL,
+        sourceData.username,
+        sourceData.password,
+        endpoint,
+        postBody: postBody,
+        authOverride: authOverride,
+        headers: headers,
+      );
     } on SocketException catch (e) {
       errorMessage = e.message;
     } on HandshakeException catch (e) {
@@ -75,19 +86,22 @@ abstract class AlertSource with NetworkFetch {
       return (
         null,
         errorFetchingAlerts(
-            sourceData: sourceData,
-            error: "Error fetching alerts: $errorMessage",
-            endpoint: endpoint)
+          sourceData: sourceData,
+          error: "Error fetching alerts: $errorMessage",
+          endpoint: endpoint,
+        ),
       );
     }
     if (response.statusCode != 200) {
       return (
         null,
         errorFetchingAlerts(
-            sourceData: sourceData,
-            error: "Error fetching alerts: HTTP status code "
-                "${response.statusCode}: ${response.reasonPhrase}",
-            endpoint: endpoint)
+          sourceData: sourceData,
+          error:
+              "Error fetching alerts: HTTP status code "
+              "${response.statusCode}: ${response.reasonPhrase}",
+          endpoint: endpoint,
+        ),
       );
     } else {
       try {
@@ -96,9 +110,10 @@ abstract class AlertSource with NetworkFetch {
         return (
           null,
           errorFetchingAlerts(
-              sourceData: sourceData,
-              error: "Error parsing reply: invalid JSON",
-              endpoint: endpoint)
+            sourceData: sourceData,
+            error: "Error parsing reply: invalid JSON",
+            endpoint: endpoint,
+          ),
         );
       }
     }

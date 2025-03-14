@@ -15,10 +15,11 @@ part 'alert_details_cubit.freezed.dart';
 
 class AlertDetailsCubit extends Cubit<AlertDetailsState> {
   AlertDetailsCubit({required AccountsRepo accounts, required this.alert})
-      : _accounts = accounts,
-        super(AlertDetailsState.initial()) {
+    : _accounts = accounts,
+      super(AlertDetailsState.initial()) {
     final newState = AlertDetailsState(
-        sourceName: _accounts.getSource(alert.source)?.name ?? "Unknown");
+      sourceName: _accounts.getSource(alert.source)?.name ?? "Unknown",
+    );
     emit(newState);
   }
 

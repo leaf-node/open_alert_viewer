@@ -39,17 +39,19 @@ enum ServiceStatus {
 
 class IciAlerts extends AlertSource {
   IciAlerts({required super.sourceData})
-      : epoch = DateTime.fromMillisecondsSinceEpoch(0) {
+    : epoch = DateTime.fromMillisecondsSinceEpoch(0) {
     endpoints = {
-      StatusType.hostStatus: "/v1/objects/hosts/?attrs=display_name"
+      StatusType.hostStatus:
+          "/v1/objects/hosts/?attrs=display_name"
           "&attrs=state&attrs=downtime_depth&attrs=acknowledgement"
           "&attrs=last_hard_state_change&attrs=last_state_change"
           "&attrs=last_check&attrs=last_check_result&attrs=state_type",
-      StatusType.serviceStatus: "/v1/objects/services/?attrs=display_name"
+      StatusType.serviceStatus:
+          "/v1/objects/services/?attrs=display_name"
           "&attrs=state&attrs=downtime_depth&attrs=acknowledgement"
           "&attrs=last_hard_state_change&attrs=last_state_change"
           "&attrs=last_check&attrs=last_check_result&attrs=state_type"
-          "&joins=host.name&joins=host.address"
+          "&joins=host.name&joins=host.address",
     };
   }
 
@@ -89,17 +91,23 @@ class IciAlerts extends AlertSource {
     String hostname;
     String service;
     if (isService) {
-      kind = ServiceStatus.values
-          .singleWhere((v) => v.value == alertDatum.attrs?.state?.floor(),
-              orElse: () => ServiceStatus.unknown)
-          .alertType;
+      kind =
+          ServiceStatus.values
+              .singleWhere(
+                (v) => v.value == alertDatum.attrs?.state?.floor(),
+                orElse: () => ServiceStatus.unknown,
+              )
+              .alertType;
       hostname = alertDatum.joins?.host?.name ?? "Unknown Host";
       service = alertDatum.attrs?.display_name ?? "Unknown";
     } else {
-      kind = HostStatus.values
-          .singleWhere((v) => v.value == alertDatum.attrs?.state?.floor(),
-              orElse: () => HostStatus.unknown)
-          .alertType;
+      kind =
+          HostStatus.values
+              .singleWhere(
+                (v) => v.value == alertDatum.attrs?.state?.floor(),
+                orElse: () => HostStatus.unknown,
+              )
+              .alertType;
       hostname = alertDatum.attrs?.display_name ?? "Unknown Host";
       service = "PING";
     }
@@ -116,25 +124,27 @@ class IciAlerts extends AlertSource {
       active = true;
     }
     Duration age;
-    age = (startsAt.difference(epoch) == Duration.zero)
-        ? (alertDatum.attrs == null || alertDatum.attrs!.last_check == null)
-            ? Duration.zero
-            : DateTime.now()
-                .difference(_dateTime(alertDatum.attrs!.last_check!))
-        : DateTime.now().difference(startsAt);
+    age =
+        (startsAt.difference(epoch) == Duration.zero)
+            ? (alertDatum.attrs == null || alertDatum.attrs!.last_check == null)
+                ? Duration.zero
+                : DateTime.now().difference(
+                  _dateTime(alertDatum.attrs!.last_check!),
+                )
+            : DateTime.now().difference(startsAt);
     return Alert(
-        source: sourceData.id!,
-        kind: kind,
-        hostname: hostname,
-        service: service,
-        message: alertDatum.attrs?.last_check_result?.output ?? "...",
-        serviceUrl: generateURL(hostname, ""),
-        monitorUrl: generateURL(sourceData.baseURL, ""),
-        age: age,
-        silenced: Util.toBool(alertDatum.attrs?.acknowledgement?.floor() ?? 0),
-        downtimeScheduled:
-            ((alertDatum.attrs?.downtime_depth?.floor() ?? 0) > 0),
-        active: active);
+      source: sourceData.id!,
+      kind: kind,
+      hostname: hostname,
+      service: service,
+      message: alertDatum.attrs?.last_check_result?.output ?? "...",
+      serviceUrl: generateURL(hostname, ""),
+      monitorUrl: generateURL(sourceData.baseURL, ""),
+      age: age,
+      silenced: Util.toBool(alertDatum.attrs?.acknowledgement?.floor() ?? 0),
+      downtimeScheduled: ((alertDatum.attrs?.downtime_depth?.floor() ?? 0) > 0),
+      active: active,
+    );
   }
 
   static DateTime _dateTime(num seconds) {
@@ -145,8 +155,8 @@ class IciAlerts extends AlertSource {
 @freezed
 class IciAlertsData with _$IciAlertsData {
   const factory IciAlertsData(
-      // ignore: non_constant_identifier_names
-      {List<IciResultsData>? results}) = _IciAlertsData;
+  // ignore: non_constant_identifier_names
+  {List<IciResultsData>? results}) = _IciAlertsData;
 
   factory IciAlertsData.fromJson(Map<String, dynamic> json) =>
       _$IciAlertsDataFromJson(json);
@@ -155,9 +165,8 @@ class IciAlertsData with _$IciAlertsData {
 @freezed
 class IciResultsData with _$IciResultsData {
   const factory IciResultsData(
-      // ignore: non_constant_identifier_names
-      {AttrsData? attrs,
-      JoinsData? joins}) = _IciResultsData;
+  // ignore: non_constant_identifier_names
+  {AttrsData? attrs, JoinsData? joins}) = _IciResultsData;
 
   factory IciResultsData.fromJson(Map<String, dynamic> json) =>
       _$IciResultsDataFromJson(json);
@@ -166,22 +175,24 @@ class IciResultsData with _$IciResultsData {
 @freezed
 class AttrsData with _$AttrsData {
   const factory AttrsData(
-      // ignore: non_constant_identifier_names
-      {String? display_name,
-      num? state,
-      // ignore: non_constant_identifier_names
-      num? downtime_depth,
-      num? acknowledgement,
-      // ignore: non_constant_identifier_names
-      num? last_state_change,
-      // ignore: non_constant_identifier_names
-      num? last_hard_state_change,
-      // ignore: non_constant_identifier_names
-      num? last_check,
-      // ignore: non_constant_identifier_names
-      LastCheckResultData? last_check_result,
-      // ignore: non_constant_identifier_names
-      num? state_type}) = _AttrsData;
+  // ignore: non_constant_identifier_names
+  {
+    String? display_name,
+    num? state,
+    // ignore: non_constant_identifier_names
+    num? downtime_depth,
+    num? acknowledgement,
+    // ignore: non_constant_identifier_names
+    num? last_state_change,
+    // ignore: non_constant_identifier_names
+    num? last_hard_state_change,
+    // ignore: non_constant_identifier_names
+    num? last_check,
+    // ignore: non_constant_identifier_names
+    LastCheckResultData? last_check_result,
+    // ignore: non_constant_identifier_names
+    num? state_type,
+  }) = _AttrsData;
 
   factory AttrsData.fromJson(Map<String, dynamic> json) =>
       _$AttrsDataFromJson(json);

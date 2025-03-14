@@ -22,7 +22,7 @@ class BackgroundChannel {
     }
   }
   final Map<MessageDestination, StreamController<IsolateMessage>>
-      isolateStreams = {};
+  isolateStreams = {};
   SendPort? portToBackground;
   final Completer<void> backgroundReady = Completer();
   SendPort? _portToBackground;
@@ -38,8 +38,11 @@ class BackgroundChannel {
       }
     });
     String appVersion = await Util.getVersion();
-    var isolate = await Isolate.spawn(BackgroundChannelInternal().spawned,
-        (portFromBackground.sendPort, RootIsolateToken.instance, appVersion));
+    var isolate = await Isolate.spawn(BackgroundChannelInternal().spawned, (
+      portFromBackground.sendPort,
+      RootIsolateToken.instance,
+      appVersion,
+    ));
     isolate.addErrorListener(portFromBackground.sendPort);
   }
 
@@ -67,39 +70,46 @@ class BackgroundChannel {
   }
 
   void internalErrorsToAlerts(String errorMessage) {
-    isolateStreams[MessageDestination.alerts]!
-        .add(IsolateMessage(name: MessageName.alertsFetched, alerts: [
-      const Alert(
-          source: 0,
-          kind: AlertType.syncFailure,
-          hostname: "Open Alert Viewer",
-          service: "Background Isolate",
-          message: "Oh no! The background isolate crashed. "
-              "Please check whether an app upgrade is available and "
-              "resolves this issue. If that does not help, "
-              "please take a screen shot, and submit it using "
-              "the link icon to the left so we can help resolve the "
-              "problem. Sorry for the inconvenience.",
-          serviceUrl:
-              "https://github.com/okcode-studio/open_alert_viewer/issues",
-          monitorUrl: "",
-          age: Duration.zero,
-          silenced: false,
-          downtimeScheduled: false,
-          active: true),
-      Alert(
-          source: 0,
-          kind: AlertType.syncFailure,
-          hostname: "Open Alert Viewer version ${SettingsRepo.appVersion}",
-          service: "Stack Trace",
-          message: errorMessage,
-          serviceUrl:
-              "https://github.com/okcode-studio/open_alert_viewer/issues",
-          monitorUrl: "",
-          age: Duration.zero,
-          silenced: false,
-          downtimeScheduled: false,
-          active: true),
-    ]));
+    isolateStreams[MessageDestination.alerts]!.add(
+      IsolateMessage(
+        name: MessageName.alertsFetched,
+        alerts: [
+          const Alert(
+            source: 0,
+            kind: AlertType.syncFailure,
+            hostname: "Open Alert Viewer",
+            service: "Background Isolate",
+            message:
+                "Oh no! The background isolate crashed. "
+                "Please check whether an app upgrade is available and "
+                "resolves this issue. If that does not help, "
+                "please take a screen shot, and submit it using "
+                "the link icon to the left so we can help resolve the "
+                "problem. Sorry for the inconvenience.",
+            serviceUrl:
+                "https://github.com/okcode-studio/open_alert_viewer/issues",
+            monitorUrl: "",
+            age: Duration.zero,
+            silenced: false,
+            downtimeScheduled: false,
+            active: true,
+          ),
+          Alert(
+            source: 0,
+            kind: AlertType.syncFailure,
+            hostname: "Open Alert Viewer version ${SettingsRepo.appVersion}",
+            service: "Stack Trace",
+            message: errorMessage,
+            serviceUrl:
+                "https://github.com/okcode-studio/open_alert_viewer/issues",
+            monitorUrl: "",
+            age: Duration.zero,
+            silenced: false,
+            downtimeScheduled: false,
+            active: true,
+          ),
+        ],
+      ),
+    );
   }
 }

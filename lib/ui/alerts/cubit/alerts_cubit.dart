@@ -18,18 +18,18 @@ import '../../../domain/navigation.dart';
 import 'alerts_state.dart';
 
 class AlertsCubit extends Cubit<AlertsCubitState> {
-  AlertsCubit(
-      {required BackgroundChannel bgChannel,
-      required AlertsRepo alertsRepo,
-      required AccountsRepo accounts,
-      required Navigation navigation,
-      required SettingsRepo settings})
-      : _bgChannel = bgChannel,
-        _alertsRepo = alertsRepo,
-        _accounts = accounts,
-        _navigation = navigation,
-        _settings = settings,
-        super(AlertsCubitState.init()) {
+  AlertsCubit({
+    required BackgroundChannel bgChannel,
+    required AlertsRepo alertsRepo,
+    required AccountsRepo accounts,
+    required Navigation navigation,
+    required SettingsRepo settings,
+  }) : _bgChannel = bgChannel,
+       _alertsRepo = alertsRepo,
+       _accounts = accounts,
+       _navigation = navigation,
+       _settings = settings,
+       super(AlertsCubitState.init()) {
     _state = state;
     _listenForSettings();
     _listenForAlerts();
@@ -51,7 +51,7 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
       AlertType.error,
       AlertType.down,
       AlertType.unreachable,
-      AlertType.syncFailure
+      AlertType.syncFailure,
     ]) {
       if (filter[kind.index] == false) {
         areImportantShown = false;
@@ -60,21 +60,24 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     }
     bool notifyEnabled = await _settings.notificationsEnabledSafe;
     bool soundEnabled = _settings.soundEnabled;
-    _state = _state!.copyWith(settings: {
-      "notifications_enabled": notifyEnabled,
-      "sound_enabled": soundEnabled,
-      "alert_filter": _settings.alertFilter
-    });
+    _state = _state!.copyWith(
+      settings: {
+        "notifications_enabled": notifyEnabled,
+        "sound_enabled": soundEnabled,
+        "alert_filter": _settings.alertFilter,
+      },
+    );
     final sources = _accounts.listSources();
     final anyInvisible = sources.where((e) => !e.visible).isNotEmpty;
     final anyNotificationsOff =
         sources.where((e) => !e.notifications).isNotEmpty;
     _state = _state!.copyWith(
-        sources: sources,
-        showVisibilityStatusWidget: anyInvisible,
-        showNotificationStatusWidget: !notifyEnabled || anyNotificationsOff,
-        showSoundStatusWidget: !soundEnabled && notifyEnabled,
-        showFilterStatusWidget: !areImportantShown);
+      sources: sources,
+      showVisibilityStatusWidget: anyInvisible,
+      showNotificationStatusWidget: !notifyEnabled || anyNotificationsOff,
+      showSoundStatusWidget: !soundEnabled && notifyEnabled,
+      showFilterStatusWidget: !areImportantShown,
+    );
     _updateAlertsState();
     emit(_state!);
   }
@@ -98,14 +101,17 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     _alertsRepo.updateLastSeen();
   }
 
-  Future<void> _triggerRefreshIcon(
-      {required bool forceRefreshNow, bool? alreadyFetching}) async {
+  Future<void> _triggerRefreshIcon({
+    required bool forceRefreshNow,
+    bool? alreadyFetching,
+  }) async {
     _state = _state!.copyWith(
-        refresh: RefreshIconState(
-            status: RefreshIconStatus.triggeredOrRunning,
-            forceRefreshNow: forceRefreshNow,
-            alreadyFetching:
-                alreadyFetching ?? _state!.refresh.alreadyFetching));
+      refresh: RefreshIconState(
+        status: RefreshIconStatus.triggeredOrRunning,
+        forceRefreshNow: forceRefreshNow,
+        alreadyFetching: alreadyFetching ?? _state!.refresh.alreadyFetching,
+      ),
+    );
     await _refreshState();
   }
 
@@ -134,8 +140,9 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     }
     _state = _state!.copyWith(filteredAlerts: filteredAlerts);
     if (_state!.sources.isEmpty) {
-      _state =
-          _state!.copyWith(emptyPaneMessage: "Please configure an account");
+      _state = _state!.copyWith(
+        emptyPaneMessage: "Please configure an account",
+      );
     } else if (filteredAlerts.isEmpty) {
       String caveat = " ";
       if (_state!.alerts
@@ -162,10 +169,12 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
       await Future.delayed(const Duration(milliseconds: 100));
     }
     _state = _state!.copyWith(
-        refresh: RefreshIconState(
-            status: RefreshIconStatus.stopped,
-            forceRefreshNow: false,
-            alreadyFetching: false));
+      refresh: RefreshIconState(
+        status: RefreshIconStatus.stopped,
+        forceRefreshNow: false,
+        alreadyFetching: false,
+      ),
+    );
     await _refreshState();
   }
 
@@ -174,11 +183,13 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
         in _bgChannel.isolateStreams[MessageDestination.refreshIcon]!.stream) {
       if (message.name == MessageName.showRefreshIndicator) {
         await _triggerRefreshIcon(
-            forceRefreshNow: message.forceRefreshNow ?? false,
-            alreadyFetching: message.alreadyFetching ?? false);
+          forceRefreshNow: message.forceRefreshNow ?? false,
+          alreadyFetching: message.alreadyFetching ?? false,
+        );
       } else {
         throw Exception(
-            "OAV Invalid 'refresh' stream message name: ${message.name}");
+          "OAV Invalid 'refresh' stream message name: ${message.name}",
+        );
       }
     }
   }
@@ -210,7 +221,8 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
         status = _state!.status;
       } else {
         throw Exception(
-            "OAV Invalid 'alert' stream message name: ${message.name}");
+          "OAV Invalid 'alert' stream message name: ${message.name}",
+        );
       }
       _state = _state!.copyWith(status: status, alerts: alerts);
       await _refreshState();

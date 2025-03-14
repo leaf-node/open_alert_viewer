@@ -12,7 +12,8 @@ part of 'account_settings_cubit.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$AccountSettingsState {
@@ -28,9 +29,10 @@ mixin _$AccountSettingsState {
 
 /// @nodoc
 abstract class $AccountSettingsStateCopyWith<$Res> {
-  factory $AccountSettingsStateCopyWith(AccountSettingsState value,
-          $Res Function(AccountSettingsState) then) =
-      _$AccountSettingsStateCopyWithImpl<$Res, AccountSettingsState>;
+  factory $AccountSettingsStateCopyWith(
+    AccountSettingsState value,
+    $Res Function(AccountSettingsState) then,
+  ) = _$AccountSettingsStateCopyWithImpl<$Res, AccountSettingsState>;
   @useResult
   $Res call({bool globalNotificationsEnabled, AlertSourceData? source});
 
@@ -38,8 +40,10 @@ abstract class $AccountSettingsStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$AccountSettingsStateCopyWithImpl<$Res,
-        $Val extends AccountSettingsState>
+class _$AccountSettingsStateCopyWithImpl<
+  $Res,
+  $Val extends AccountSettingsState
+>
     implements $AccountSettingsStateCopyWith<$Res> {
   _$AccountSettingsStateCopyWithImpl(this._value, this._then);
 
@@ -56,16 +60,21 @@ class _$AccountSettingsStateCopyWithImpl<$Res,
     Object? globalNotificationsEnabled = null,
     Object? source = freezed,
   }) {
-    return _then(_value.copyWith(
-      globalNotificationsEnabled: null == globalNotificationsEnabled
-          ? _value.globalNotificationsEnabled
-          : globalNotificationsEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      source: freezed == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as AlertSourceData?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            globalNotificationsEnabled:
+                null == globalNotificationsEnabled
+                    ? _value.globalNotificationsEnabled
+                    : globalNotificationsEnabled // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            source:
+                freezed == source
+                    ? _value.source
+                    : source // ignore: cast_nullable_to_non_nullable
+                        as AlertSourceData?,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of AccountSettingsState
@@ -86,9 +95,10 @@ class _$AccountSettingsStateCopyWithImpl<$Res,
 /// @nodoc
 abstract class _$$AccountSettingsStateImplCopyWith<$Res>
     implements $AccountSettingsStateCopyWith<$Res> {
-  factory _$$AccountSettingsStateImplCopyWith(_$AccountSettingsStateImpl value,
-          $Res Function(_$AccountSettingsStateImpl) then) =
-      __$$AccountSettingsStateImplCopyWithImpl<$Res>;
+  factory _$$AccountSettingsStateImplCopyWith(
+    _$AccountSettingsStateImpl value,
+    $Res Function(_$AccountSettingsStateImpl) then,
+  ) = __$$AccountSettingsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({bool globalNotificationsEnabled, AlertSourceData? source});
@@ -101,9 +111,10 @@ abstract class _$$AccountSettingsStateImplCopyWith<$Res>
 class __$$AccountSettingsStateImplCopyWithImpl<$Res>
     extends _$AccountSettingsStateCopyWithImpl<$Res, _$AccountSettingsStateImpl>
     implements _$$AccountSettingsStateImplCopyWith<$Res> {
-  __$$AccountSettingsStateImplCopyWithImpl(_$AccountSettingsStateImpl _value,
-      $Res Function(_$AccountSettingsStateImpl) _then)
-      : super(_value, _then);
+  __$$AccountSettingsStateImplCopyWithImpl(
+    _$AccountSettingsStateImpl _value,
+    $Res Function(_$AccountSettingsStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of AccountSettingsState
   /// with the given fields replaced by the non-null parameter values.
@@ -113,24 +124,30 @@ class __$$AccountSettingsStateImplCopyWithImpl<$Res>
     Object? globalNotificationsEnabled = null,
     Object? source = freezed,
   }) {
-    return _then(_$AccountSettingsStateImpl(
-      globalNotificationsEnabled: null == globalNotificationsEnabled
-          ? _value.globalNotificationsEnabled
-          : globalNotificationsEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      source: freezed == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as AlertSourceData?,
-    ));
+    return _then(
+      _$AccountSettingsStateImpl(
+        globalNotificationsEnabled:
+            null == globalNotificationsEnabled
+                ? _value.globalNotificationsEnabled
+                : globalNotificationsEnabled // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        source:
+            freezed == source
+                ? _value.source
+                : source // ignore: cast_nullable_to_non_nullable
+                    as AlertSourceData?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$AccountSettingsStateImpl implements _AccountSettingsState {
-  const _$AccountSettingsStateImpl(
-      {required this.globalNotificationsEnabled, required this.source});
+  const _$AccountSettingsStateImpl({
+    required this.globalNotificationsEnabled,
+    required this.source,
+  });
 
   @override
   final bool globalNotificationsEnabled;
@@ -147,8 +164,10 @@ class _$AccountSettingsStateImpl implements _AccountSettingsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AccountSettingsStateImpl &&
-            (identical(other.globalNotificationsEnabled,
-                    globalNotificationsEnabled) ||
+            (identical(
+                  other.globalNotificationsEnabled,
+                  globalNotificationsEnabled,
+                ) ||
                 other.globalNotificationsEnabled ==
                     globalNotificationsEnabled) &&
             (identical(other.source, source) || other.source == source));
@@ -164,15 +183,18 @@ class _$AccountSettingsStateImpl implements _AccountSettingsState {
   @override
   @pragma('vm:prefer-inline')
   _$$AccountSettingsStateImplCopyWith<_$AccountSettingsStateImpl>
-      get copyWith =>
-          __$$AccountSettingsStateImplCopyWithImpl<_$AccountSettingsStateImpl>(
-              this, _$identity);
+  get copyWith =>
+      __$$AccountSettingsStateImplCopyWithImpl<_$AccountSettingsStateImpl>(
+        this,
+        _$identity,
+      );
 }
 
 abstract class _AccountSettingsState implements AccountSettingsState {
-  const factory _AccountSettingsState(
-      {required final bool globalNotificationsEnabled,
-      required final AlertSourceData? source}) = _$AccountSettingsStateImpl;
+  const factory _AccountSettingsState({
+    required final bool globalNotificationsEnabled,
+    required final AlertSourceData? source,
+  }) = _$AccountSettingsStateImpl;
 
   @override
   bool get globalNotificationsEnabled;
@@ -184,5 +206,5 @@ abstract class _AccountSettingsState implements AccountSettingsState {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AccountSettingsStateImplCopyWith<_$AccountSettingsStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }

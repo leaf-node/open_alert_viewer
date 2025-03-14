@@ -12,7 +12,8 @@ part of 'background_shared.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 IsolateMessage _$IsolateMessageFromJson(Map<String, dynamic> json) {
   return _IsolateMessage.fromJson(json);
@@ -41,17 +42,19 @@ mixin _$IsolateMessage {
 /// @nodoc
 abstract class $IsolateMessageCopyWith<$Res> {
   factory $IsolateMessageCopyWith(
-          IsolateMessage value, $Res Function(IsolateMessage) then) =
-      _$IsolateMessageCopyWithImpl<$Res, IsolateMessage>;
+    IsolateMessage value,
+    $Res Function(IsolateMessage) then,
+  ) = _$IsolateMessageCopyWithImpl<$Res, IsolateMessage>;
   @useResult
-  $Res call(
-      {MessageName name,
-      MessageDestination? destination,
-      int? id,
-      List<Alert>? alerts,
-      AlertSourceDataUpdate? sourceData,
-      bool? forceRefreshNow,
-      bool? alreadyFetching});
+  $Res call({
+    MessageName name,
+    MessageDestination? destination,
+    int? id,
+    List<Alert>? alerts,
+    AlertSourceDataUpdate? sourceData,
+    bool? forceRefreshNow,
+    bool? alreadyFetching,
+  });
 
   $AlertSourceDataUpdateCopyWith<$Res>? get sourceData;
 }
@@ -79,36 +82,46 @@ class _$IsolateMessageCopyWithImpl<$Res, $Val extends IsolateMessage>
     Object? forceRefreshNow = freezed,
     Object? alreadyFetching = freezed,
   }) {
-    return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as MessageName,
-      destination: freezed == destination
-          ? _value.destination
-          : destination // ignore: cast_nullable_to_non_nullable
-              as MessageDestination?,
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      alerts: freezed == alerts
-          ? _value.alerts
-          : alerts // ignore: cast_nullable_to_non_nullable
-              as List<Alert>?,
-      sourceData: freezed == sourceData
-          ? _value.sourceData
-          : sourceData // ignore: cast_nullable_to_non_nullable
-              as AlertSourceDataUpdate?,
-      forceRefreshNow: freezed == forceRefreshNow
-          ? _value.forceRefreshNow
-          : forceRefreshNow // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      alreadyFetching: freezed == alreadyFetching
-          ? _value.alreadyFetching
-          : alreadyFetching // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as MessageName,
+            destination:
+                freezed == destination
+                    ? _value.destination
+                    : destination // ignore: cast_nullable_to_non_nullable
+                        as MessageDestination?,
+            id:
+                freezed == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            alerts:
+                freezed == alerts
+                    ? _value.alerts
+                    : alerts // ignore: cast_nullable_to_non_nullable
+                        as List<Alert>?,
+            sourceData:
+                freezed == sourceData
+                    ? _value.sourceData
+                    : sourceData // ignore: cast_nullable_to_non_nullable
+                        as AlertSourceDataUpdate?,
+            forceRefreshNow:
+                freezed == forceRefreshNow
+                    ? _value.forceRefreshNow
+                    : forceRefreshNow // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+            alreadyFetching:
+                freezed == alreadyFetching
+                    ? _value.alreadyFetching
+                    : alreadyFetching // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of IsolateMessage
@@ -129,19 +142,21 @@ class _$IsolateMessageCopyWithImpl<$Res, $Val extends IsolateMessage>
 /// @nodoc
 abstract class _$$IsolateMessageImplCopyWith<$Res>
     implements $IsolateMessageCopyWith<$Res> {
-  factory _$$IsolateMessageImplCopyWith(_$IsolateMessageImpl value,
-          $Res Function(_$IsolateMessageImpl) then) =
-      __$$IsolateMessageImplCopyWithImpl<$Res>;
+  factory _$$IsolateMessageImplCopyWith(
+    _$IsolateMessageImpl value,
+    $Res Function(_$IsolateMessageImpl) then,
+  ) = __$$IsolateMessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {MessageName name,
-      MessageDestination? destination,
-      int? id,
-      List<Alert>? alerts,
-      AlertSourceDataUpdate? sourceData,
-      bool? forceRefreshNow,
-      bool? alreadyFetching});
+  $Res call({
+    MessageName name,
+    MessageDestination? destination,
+    int? id,
+    List<Alert>? alerts,
+    AlertSourceDataUpdate? sourceData,
+    bool? forceRefreshNow,
+    bool? alreadyFetching,
+  });
 
   @override
   $AlertSourceDataUpdateCopyWith<$Res>? get sourceData;
@@ -152,8 +167,9 @@ class __$$IsolateMessageImplCopyWithImpl<$Res>
     extends _$IsolateMessageCopyWithImpl<$Res, _$IsolateMessageImpl>
     implements _$$IsolateMessageImplCopyWith<$Res> {
   __$$IsolateMessageImplCopyWithImpl(
-      _$IsolateMessageImpl _value, $Res Function(_$IsolateMessageImpl) _then)
-      : super(_value, _then);
+    _$IsolateMessageImpl _value,
+    $Res Function(_$IsolateMessageImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of IsolateMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -168,51 +184,60 @@ class __$$IsolateMessageImplCopyWithImpl<$Res>
     Object? forceRefreshNow = freezed,
     Object? alreadyFetching = freezed,
   }) {
-    return _then(_$IsolateMessageImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as MessageName,
-      destination: freezed == destination
-          ? _value.destination
-          : destination // ignore: cast_nullable_to_non_nullable
-              as MessageDestination?,
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      alerts: freezed == alerts
-          ? _value._alerts
-          : alerts // ignore: cast_nullable_to_non_nullable
-              as List<Alert>?,
-      sourceData: freezed == sourceData
-          ? _value.sourceData
-          : sourceData // ignore: cast_nullable_to_non_nullable
-              as AlertSourceDataUpdate?,
-      forceRefreshNow: freezed == forceRefreshNow
-          ? _value.forceRefreshNow
-          : forceRefreshNow // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      alreadyFetching: freezed == alreadyFetching
-          ? _value.alreadyFetching
-          : alreadyFetching // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ));
+    return _then(
+      _$IsolateMessageImpl(
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as MessageName,
+        destination:
+            freezed == destination
+                ? _value.destination
+                : destination // ignore: cast_nullable_to_non_nullable
+                    as MessageDestination?,
+        id:
+            freezed == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        alerts:
+            freezed == alerts
+                ? _value._alerts
+                : alerts // ignore: cast_nullable_to_non_nullable
+                    as List<Alert>?,
+        sourceData:
+            freezed == sourceData
+                ? _value.sourceData
+                : sourceData // ignore: cast_nullable_to_non_nullable
+                    as AlertSourceDataUpdate?,
+        forceRefreshNow:
+            freezed == forceRefreshNow
+                ? _value.forceRefreshNow
+                : forceRefreshNow // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+        alreadyFetching:
+            freezed == alreadyFetching
+                ? _value.alreadyFetching
+                : alreadyFetching // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$IsolateMessageImpl implements _IsolateMessage {
-  const _$IsolateMessageImpl(
-      {required this.name,
-      this.destination,
-      this.id,
-      final List<Alert>? alerts,
-      this.sourceData,
-      this.forceRefreshNow,
-      this.alreadyFetching})
-      : _alerts = alerts;
+  const _$IsolateMessageImpl({
+    required this.name,
+    this.destination,
+    this.id,
+    final List<Alert>? alerts,
+    this.sourceData,
+    this.forceRefreshNow,
+    this.alreadyFetching,
+  }) : _alerts = alerts;
 
   factory _$IsolateMessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$IsolateMessageImplFromJson(json);
@@ -266,14 +291,15 @@ class _$IsolateMessageImpl implements _IsolateMessage {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      name,
-      destination,
-      id,
-      const DeepCollectionEquality().hash(_alerts),
-      sourceData,
-      forceRefreshNow,
-      alreadyFetching);
+    runtimeType,
+    name,
+    destination,
+    id,
+    const DeepCollectionEquality().hash(_alerts),
+    sourceData,
+    forceRefreshNow,
+    alreadyFetching,
+  );
 
   /// Create a copy of IsolateMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -282,25 +308,26 @@ class _$IsolateMessageImpl implements _IsolateMessage {
   @pragma('vm:prefer-inline')
   _$$IsolateMessageImplCopyWith<_$IsolateMessageImpl> get copyWith =>
       __$$IsolateMessageImplCopyWithImpl<_$IsolateMessageImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$IsolateMessageImplToJson(
-      this,
-    );
+    return _$$IsolateMessageImplToJson(this);
   }
 }
 
 abstract class _IsolateMessage implements IsolateMessage {
-  const factory _IsolateMessage(
-      {required final MessageName name,
-      final MessageDestination? destination,
-      final int? id,
-      final List<Alert>? alerts,
-      final AlertSourceDataUpdate? sourceData,
-      final bool? forceRefreshNow,
-      final bool? alreadyFetching}) = _$IsolateMessageImpl;
+  const factory _IsolateMessage({
+    required final MessageName name,
+    final MessageDestination? destination,
+    final int? id,
+    final List<Alert>? alerts,
+    final AlertSourceDataUpdate? sourceData,
+    final bool? forceRefreshNow,
+    final bool? alreadyFetching,
+  }) = _$IsolateMessageImpl;
 
   factory _IsolateMessage.fromJson(Map<String, dynamic> json) =
       _$IsolateMessageImpl.fromJson;

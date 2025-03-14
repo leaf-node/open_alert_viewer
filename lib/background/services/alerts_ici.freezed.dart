@@ -12,7 +12,8 @@ part of 'alerts_ici.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 IciAlertsData _$IciAlertsDataFromJson(Map<String, dynamic> json) {
   return _IciAlertsData.fromJson(json);
@@ -35,8 +36,9 @@ mixin _$IciAlertsData {
 /// @nodoc
 abstract class $IciAlertsDataCopyWith<$Res> {
   factory $IciAlertsDataCopyWith(
-          IciAlertsData value, $Res Function(IciAlertsData) then) =
-      _$IciAlertsDataCopyWithImpl<$Res, IciAlertsData>;
+    IciAlertsData value,
+    $Res Function(IciAlertsData) then,
+  ) = _$IciAlertsDataCopyWithImpl<$Res, IciAlertsData>;
   @useResult
   $Res call({List<IciResultsData>? results});
 }
@@ -55,15 +57,17 @@ class _$IciAlertsDataCopyWithImpl<$Res, $Val extends IciAlertsData>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? results = freezed,
-  }) {
-    return _then(_value.copyWith(
-      results: freezed == results
-          ? _value.results
-          : results // ignore: cast_nullable_to_non_nullable
-              as List<IciResultsData>?,
-    ) as $Val);
+  $Res call({Object? results = freezed}) {
+    return _then(
+      _value.copyWith(
+            results:
+                freezed == results
+                    ? _value.results
+                    : results // ignore: cast_nullable_to_non_nullable
+                        as List<IciResultsData>?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -71,8 +75,9 @@ class _$IciAlertsDataCopyWithImpl<$Res, $Val extends IciAlertsData>
 abstract class _$$IciAlertsDataImplCopyWith<$Res>
     implements $IciAlertsDataCopyWith<$Res> {
   factory _$$IciAlertsDataImplCopyWith(
-          _$IciAlertsDataImpl value, $Res Function(_$IciAlertsDataImpl) then) =
-      __$$IciAlertsDataImplCopyWithImpl<$Res>;
+    _$IciAlertsDataImpl value,
+    $Res Function(_$IciAlertsDataImpl) then,
+  ) = __$$IciAlertsDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<IciResultsData>? results});
@@ -83,22 +88,24 @@ class __$$IciAlertsDataImplCopyWithImpl<$Res>
     extends _$IciAlertsDataCopyWithImpl<$Res, _$IciAlertsDataImpl>
     implements _$$IciAlertsDataImplCopyWith<$Res> {
   __$$IciAlertsDataImplCopyWithImpl(
-      _$IciAlertsDataImpl _value, $Res Function(_$IciAlertsDataImpl) _then)
-      : super(_value, _then);
+    _$IciAlertsDataImpl _value,
+    $Res Function(_$IciAlertsDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of IciAlertsData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? results = freezed,
-  }) {
-    return _then(_$IciAlertsDataImpl(
-      results: freezed == results
-          ? _value._results
-          : results // ignore: cast_nullable_to_non_nullable
-              as List<IciResultsData>?,
-    ));
+  $Res call({Object? results = freezed}) {
+    return _then(
+      _$IciAlertsDataImpl(
+        results:
+            freezed == results
+                ? _value._results
+                : results // ignore: cast_nullable_to_non_nullable
+                    as List<IciResultsData>?,
+      ),
+    );
   }
 }
 
@@ -106,7 +113,7 @@ class __$$IciAlertsDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$IciAlertsDataImpl implements _IciAlertsData {
   const _$IciAlertsDataImpl({final List<IciResultsData>? results})
-      : _results = results;
+    : _results = results;
 
   factory _$IciAlertsDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$IciAlertsDataImplFromJson(json);
@@ -149,9 +156,7 @@ class _$IciAlertsDataImpl implements _IciAlertsData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$IciAlertsDataImplToJson(
-      this,
-    );
+    return _$$IciAlertsDataImplToJson(this);
   }
 }
 
@@ -195,8 +200,9 @@ mixin _$IciResultsData {
 /// @nodoc
 abstract class $IciResultsDataCopyWith<$Res> {
   factory $IciResultsDataCopyWith(
-          IciResultsData value, $Res Function(IciResultsData) then) =
-      _$IciResultsDataCopyWithImpl<$Res, IciResultsData>;
+    IciResultsData value,
+    $Res Function(IciResultsData) then,
+  ) = _$IciResultsDataCopyWithImpl<$Res, IciResultsData>;
   @useResult
   $Res call({AttrsData? attrs, JoinsData? joins});
 
@@ -218,20 +224,22 @@ class _$IciResultsDataCopyWithImpl<$Res, $Val extends IciResultsData>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? attrs = freezed,
-    Object? joins = freezed,
-  }) {
-    return _then(_value.copyWith(
-      attrs: freezed == attrs
-          ? _value.attrs
-          : attrs // ignore: cast_nullable_to_non_nullable
-              as AttrsData?,
-      joins: freezed == joins
-          ? _value.joins
-          : joins // ignore: cast_nullable_to_non_nullable
-              as JoinsData?,
-    ) as $Val);
+  $Res call({Object? attrs = freezed, Object? joins = freezed}) {
+    return _then(
+      _value.copyWith(
+            attrs:
+                freezed == attrs
+                    ? _value.attrs
+                    : attrs // ignore: cast_nullable_to_non_nullable
+                        as AttrsData?,
+            joins:
+                freezed == joins
+                    ? _value.joins
+                    : joins // ignore: cast_nullable_to_non_nullable
+                        as JoinsData?,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of IciResultsData
@@ -266,9 +274,10 @@ class _$IciResultsDataCopyWithImpl<$Res, $Val extends IciResultsData>
 /// @nodoc
 abstract class _$$IciResultsDataImplCopyWith<$Res>
     implements $IciResultsDataCopyWith<$Res> {
-  factory _$$IciResultsDataImplCopyWith(_$IciResultsDataImpl value,
-          $Res Function(_$IciResultsDataImpl) then) =
-      __$$IciResultsDataImplCopyWithImpl<$Res>;
+  factory _$$IciResultsDataImplCopyWith(
+    _$IciResultsDataImpl value,
+    $Res Function(_$IciResultsDataImpl) then,
+  ) = __$$IciResultsDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({AttrsData? attrs, JoinsData? joins});
@@ -284,27 +293,29 @@ class __$$IciResultsDataImplCopyWithImpl<$Res>
     extends _$IciResultsDataCopyWithImpl<$Res, _$IciResultsDataImpl>
     implements _$$IciResultsDataImplCopyWith<$Res> {
   __$$IciResultsDataImplCopyWithImpl(
-      _$IciResultsDataImpl _value, $Res Function(_$IciResultsDataImpl) _then)
-      : super(_value, _then);
+    _$IciResultsDataImpl _value,
+    $Res Function(_$IciResultsDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of IciResultsData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? attrs = freezed,
-    Object? joins = freezed,
-  }) {
-    return _then(_$IciResultsDataImpl(
-      attrs: freezed == attrs
-          ? _value.attrs
-          : attrs // ignore: cast_nullable_to_non_nullable
-              as AttrsData?,
-      joins: freezed == joins
-          ? _value.joins
-          : joins // ignore: cast_nullable_to_non_nullable
-              as JoinsData?,
-    ));
+  $Res call({Object? attrs = freezed, Object? joins = freezed}) {
+    return _then(
+      _$IciResultsDataImpl(
+        attrs:
+            freezed == attrs
+                ? _value.attrs
+                : attrs // ignore: cast_nullable_to_non_nullable
+                    as AttrsData?,
+        joins:
+            freezed == joins
+                ? _value.joins
+                : joins // ignore: cast_nullable_to_non_nullable
+                    as JoinsData?,
+      ),
+    );
   }
 }
 
@@ -346,19 +357,21 @@ class _$IciResultsDataImpl implements _IciResultsData {
   @pragma('vm:prefer-inline')
   _$$IciResultsDataImplCopyWith<_$IciResultsDataImpl> get copyWith =>
       __$$IciResultsDataImplCopyWithImpl<_$IciResultsDataImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$IciResultsDataImplToJson(
-      this,
-    );
+    return _$$IciResultsDataImplToJson(this);
   }
 }
 
 abstract class _IciResultsData implements IciResultsData {
-  const factory _IciResultsData(
-      {final AttrsData? attrs, final JoinsData? joins}) = _$IciResultsDataImpl;
+  const factory _IciResultsData({
+    final AttrsData? attrs,
+    final JoinsData? joins,
+  }) = _$IciResultsDataImpl;
 
   factory _IciResultsData.fromJson(Map<String, dynamic> json) =
       _$IciResultsDataImpl.fromJson;
@@ -413,16 +426,17 @@ abstract class $AttrsDataCopyWith<$Res> {
   factory $AttrsDataCopyWith(AttrsData value, $Res Function(AttrsData) then) =
       _$AttrsDataCopyWithImpl<$Res, AttrsData>;
   @useResult
-  $Res call(
-      {String? display_name,
-      num? state,
-      num? downtime_depth,
-      num? acknowledgement,
-      num? last_state_change,
-      num? last_hard_state_change,
-      num? last_check,
-      LastCheckResultData? last_check_result,
-      num? state_type});
+  $Res call({
+    String? display_name,
+    num? state,
+    num? downtime_depth,
+    num? acknowledgement,
+    num? last_state_change,
+    num? last_hard_state_change,
+    num? last_check,
+    LastCheckResultData? last_check_result,
+    num? state_type,
+  });
 
   $LastCheckResultDataCopyWith<$Res>? get last_check_result;
 }
@@ -452,44 +466,56 @@ class _$AttrsDataCopyWithImpl<$Res, $Val extends AttrsData>
     Object? last_check_result = freezed,
     Object? state_type = freezed,
   }) {
-    return _then(_value.copyWith(
-      display_name: freezed == display_name
-          ? _value.display_name
-          : display_name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as num?,
-      downtime_depth: freezed == downtime_depth
-          ? _value.downtime_depth
-          : downtime_depth // ignore: cast_nullable_to_non_nullable
-              as num?,
-      acknowledgement: freezed == acknowledgement
-          ? _value.acknowledgement
-          : acknowledgement // ignore: cast_nullable_to_non_nullable
-              as num?,
-      last_state_change: freezed == last_state_change
-          ? _value.last_state_change
-          : last_state_change // ignore: cast_nullable_to_non_nullable
-              as num?,
-      last_hard_state_change: freezed == last_hard_state_change
-          ? _value.last_hard_state_change
-          : last_hard_state_change // ignore: cast_nullable_to_non_nullable
-              as num?,
-      last_check: freezed == last_check
-          ? _value.last_check
-          : last_check // ignore: cast_nullable_to_non_nullable
-              as num?,
-      last_check_result: freezed == last_check_result
-          ? _value.last_check_result
-          : last_check_result // ignore: cast_nullable_to_non_nullable
-              as LastCheckResultData?,
-      state_type: freezed == state_type
-          ? _value.state_type
-          : state_type // ignore: cast_nullable_to_non_nullable
-              as num?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            display_name:
+                freezed == display_name
+                    ? _value.display_name
+                    : display_name // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            state:
+                freezed == state
+                    ? _value.state
+                    : state // ignore: cast_nullable_to_non_nullable
+                        as num?,
+            downtime_depth:
+                freezed == downtime_depth
+                    ? _value.downtime_depth
+                    : downtime_depth // ignore: cast_nullable_to_non_nullable
+                        as num?,
+            acknowledgement:
+                freezed == acknowledgement
+                    ? _value.acknowledgement
+                    : acknowledgement // ignore: cast_nullable_to_non_nullable
+                        as num?,
+            last_state_change:
+                freezed == last_state_change
+                    ? _value.last_state_change
+                    : last_state_change // ignore: cast_nullable_to_non_nullable
+                        as num?,
+            last_hard_state_change:
+                freezed == last_hard_state_change
+                    ? _value.last_hard_state_change
+                    : last_hard_state_change // ignore: cast_nullable_to_non_nullable
+                        as num?,
+            last_check:
+                freezed == last_check
+                    ? _value.last_check
+                    : last_check // ignore: cast_nullable_to_non_nullable
+                        as num?,
+            last_check_result:
+                freezed == last_check_result
+                    ? _value.last_check_result
+                    : last_check_result // ignore: cast_nullable_to_non_nullable
+                        as LastCheckResultData?,
+            state_type:
+                freezed == state_type
+                    ? _value.state_type
+                    : state_type // ignore: cast_nullable_to_non_nullable
+                        as num?,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of AttrsData
@@ -501,8 +527,9 @@ class _$AttrsDataCopyWithImpl<$Res, $Val extends AttrsData>
       return null;
     }
 
-    return $LastCheckResultDataCopyWith<$Res>(_value.last_check_result!,
-        (value) {
+    return $LastCheckResultDataCopyWith<$Res>(_value.last_check_result!, (
+      value,
+    ) {
       return _then(_value.copyWith(last_check_result: value) as $Val);
     });
   }
@@ -512,20 +539,22 @@ class _$AttrsDataCopyWithImpl<$Res, $Val extends AttrsData>
 abstract class _$$AttrsDataImplCopyWith<$Res>
     implements $AttrsDataCopyWith<$Res> {
   factory _$$AttrsDataImplCopyWith(
-          _$AttrsDataImpl value, $Res Function(_$AttrsDataImpl) then) =
-      __$$AttrsDataImplCopyWithImpl<$Res>;
+    _$AttrsDataImpl value,
+    $Res Function(_$AttrsDataImpl) then,
+  ) = __$$AttrsDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? display_name,
-      num? state,
-      num? downtime_depth,
-      num? acknowledgement,
-      num? last_state_change,
-      num? last_hard_state_change,
-      num? last_check,
-      LastCheckResultData? last_check_result,
-      num? state_type});
+  $Res call({
+    String? display_name,
+    num? state,
+    num? downtime_depth,
+    num? acknowledgement,
+    num? last_state_change,
+    num? last_hard_state_change,
+    num? last_check,
+    LastCheckResultData? last_check_result,
+    num? state_type,
+  });
 
   @override
   $LastCheckResultDataCopyWith<$Res>? get last_check_result;
@@ -536,8 +565,9 @@ class __$$AttrsDataImplCopyWithImpl<$Res>
     extends _$AttrsDataCopyWithImpl<$Res, _$AttrsDataImpl>
     implements _$$AttrsDataImplCopyWith<$Res> {
   __$$AttrsDataImplCopyWithImpl(
-      _$AttrsDataImpl _value, $Res Function(_$AttrsDataImpl) _then)
-      : super(_value, _then);
+    _$AttrsDataImpl _value,
+    $Res Function(_$AttrsDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of AttrsData
   /// with the given fields replaced by the non-null parameter values.
@@ -554,60 +584,72 @@ class __$$AttrsDataImplCopyWithImpl<$Res>
     Object? last_check_result = freezed,
     Object? state_type = freezed,
   }) {
-    return _then(_$AttrsDataImpl(
-      display_name: freezed == display_name
-          ? _value.display_name
-          : display_name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as num?,
-      downtime_depth: freezed == downtime_depth
-          ? _value.downtime_depth
-          : downtime_depth // ignore: cast_nullable_to_non_nullable
-              as num?,
-      acknowledgement: freezed == acknowledgement
-          ? _value.acknowledgement
-          : acknowledgement // ignore: cast_nullable_to_non_nullable
-              as num?,
-      last_state_change: freezed == last_state_change
-          ? _value.last_state_change
-          : last_state_change // ignore: cast_nullable_to_non_nullable
-              as num?,
-      last_hard_state_change: freezed == last_hard_state_change
-          ? _value.last_hard_state_change
-          : last_hard_state_change // ignore: cast_nullable_to_non_nullable
-              as num?,
-      last_check: freezed == last_check
-          ? _value.last_check
-          : last_check // ignore: cast_nullable_to_non_nullable
-              as num?,
-      last_check_result: freezed == last_check_result
-          ? _value.last_check_result
-          : last_check_result // ignore: cast_nullable_to_non_nullable
-              as LastCheckResultData?,
-      state_type: freezed == state_type
-          ? _value.state_type
-          : state_type // ignore: cast_nullable_to_non_nullable
-              as num?,
-    ));
+    return _then(
+      _$AttrsDataImpl(
+        display_name:
+            freezed == display_name
+                ? _value.display_name
+                : display_name // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        state:
+            freezed == state
+                ? _value.state
+                : state // ignore: cast_nullable_to_non_nullable
+                    as num?,
+        downtime_depth:
+            freezed == downtime_depth
+                ? _value.downtime_depth
+                : downtime_depth // ignore: cast_nullable_to_non_nullable
+                    as num?,
+        acknowledgement:
+            freezed == acknowledgement
+                ? _value.acknowledgement
+                : acknowledgement // ignore: cast_nullable_to_non_nullable
+                    as num?,
+        last_state_change:
+            freezed == last_state_change
+                ? _value.last_state_change
+                : last_state_change // ignore: cast_nullable_to_non_nullable
+                    as num?,
+        last_hard_state_change:
+            freezed == last_hard_state_change
+                ? _value.last_hard_state_change
+                : last_hard_state_change // ignore: cast_nullable_to_non_nullable
+                    as num?,
+        last_check:
+            freezed == last_check
+                ? _value.last_check
+                : last_check // ignore: cast_nullable_to_non_nullable
+                    as num?,
+        last_check_result:
+            freezed == last_check_result
+                ? _value.last_check_result
+                : last_check_result // ignore: cast_nullable_to_non_nullable
+                    as LastCheckResultData?,
+        state_type:
+            freezed == state_type
+                ? _value.state_type
+                : state_type // ignore: cast_nullable_to_non_nullable
+                    as num?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AttrsDataImpl implements _AttrsData {
-  const _$AttrsDataImpl(
-      {this.display_name,
-      this.state,
-      this.downtime_depth,
-      this.acknowledgement,
-      this.last_state_change,
-      this.last_hard_state_change,
-      this.last_check,
-      this.last_check_result,
-      this.state_type});
+  const _$AttrsDataImpl({
+    this.display_name,
+    this.state,
+    this.downtime_depth,
+    this.acknowledgement,
+    this.last_state_change,
+    this.last_hard_state_change,
+    this.last_check,
+    this.last_check_result,
+    this.state_type,
+  });
 
   factory _$AttrsDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$AttrsDataImplFromJson(json);
@@ -616,24 +658,24 @@ class _$AttrsDataImpl implements _AttrsData {
   final String? display_name;
   @override
   final num? state;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final num? downtime_depth;
   @override
   final num? acknowledgement;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final num? last_state_change;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final num? last_hard_state_change;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final num? last_check;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final LastCheckResultData? last_check_result;
-// ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   @override
   final num? state_type;
 
@@ -669,16 +711,17 @@ class _$AttrsDataImpl implements _AttrsData {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      display_name,
-      state,
-      downtime_depth,
-      acknowledgement,
-      last_state_change,
-      last_hard_state_change,
-      last_check,
-      last_check_result,
-      state_type);
+    runtimeType,
+    display_name,
+    state,
+    downtime_depth,
+    acknowledgement,
+    last_state_change,
+    last_hard_state_change,
+    last_check,
+    last_check_result,
+    state_type,
+  );
 
   /// Create a copy of AttrsData
   /// with the given fields replaced by the non-null parameter values.
@@ -690,23 +733,22 @@ class _$AttrsDataImpl implements _AttrsData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AttrsDataImplToJson(
-      this,
-    );
+    return _$$AttrsDataImplToJson(this);
   }
 }
 
 abstract class _AttrsData implements AttrsData {
-  const factory _AttrsData(
-      {final String? display_name,
-      final num? state,
-      final num? downtime_depth,
-      final num? acknowledgement,
-      final num? last_state_change,
-      final num? last_hard_state_change,
-      final num? last_check,
-      final LastCheckResultData? last_check_result,
-      final num? state_type}) = _$AttrsDataImpl;
+  const factory _AttrsData({
+    final String? display_name,
+    final num? state,
+    final num? downtime_depth,
+    final num? acknowledgement,
+    final num? last_state_change,
+    final num? last_hard_state_change,
+    final num? last_check,
+    final LastCheckResultData? last_check_result,
+    final num? state_type,
+  }) = _$AttrsDataImpl;
 
   factory _AttrsData.fromJson(Map<String, dynamic> json) =
       _$AttrsDataImpl.fromJson;
@@ -726,8 +768,7 @@ abstract class _AttrsData implements AttrsData {
   @override
   num? get last_check; // ignore: non_constant_identifier_names
   @override
-  LastCheckResultData?
-      get last_check_result; // ignore: non_constant_identifier_names
+  LastCheckResultData? get last_check_result; // ignore: non_constant_identifier_names
   @override
   num? get state_type;
 
@@ -760,8 +801,9 @@ mixin _$LastCheckResultData {
 /// @nodoc
 abstract class $LastCheckResultDataCopyWith<$Res> {
   factory $LastCheckResultDataCopyWith(
-          LastCheckResultData value, $Res Function(LastCheckResultData) then) =
-      _$LastCheckResultDataCopyWithImpl<$Res, LastCheckResultData>;
+    LastCheckResultData value,
+    $Res Function(LastCheckResultData) then,
+  ) = _$LastCheckResultDataCopyWithImpl<$Res, LastCheckResultData>;
   @useResult
   $Res call({String? output});
 }
@@ -780,24 +822,27 @@ class _$LastCheckResultDataCopyWithImpl<$Res, $Val extends LastCheckResultData>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? output = freezed,
-  }) {
-    return _then(_value.copyWith(
-      output: freezed == output
-          ? _value.output
-          : output // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  $Res call({Object? output = freezed}) {
+    return _then(
+      _value.copyWith(
+            output:
+                freezed == output
+                    ? _value.output
+                    : output // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$LastCheckResultDataImplCopyWith<$Res>
     implements $LastCheckResultDataCopyWith<$Res> {
-  factory _$$LastCheckResultDataImplCopyWith(_$LastCheckResultDataImpl value,
-          $Res Function(_$LastCheckResultDataImpl) then) =
-      __$$LastCheckResultDataImplCopyWithImpl<$Res>;
+  factory _$$LastCheckResultDataImplCopyWith(
+    _$LastCheckResultDataImpl value,
+    $Res Function(_$LastCheckResultDataImpl) then,
+  ) = __$$LastCheckResultDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? output});
@@ -807,23 +852,25 @@ abstract class _$$LastCheckResultDataImplCopyWith<$Res>
 class __$$LastCheckResultDataImplCopyWithImpl<$Res>
     extends _$LastCheckResultDataCopyWithImpl<$Res, _$LastCheckResultDataImpl>
     implements _$$LastCheckResultDataImplCopyWith<$Res> {
-  __$$LastCheckResultDataImplCopyWithImpl(_$LastCheckResultDataImpl _value,
-      $Res Function(_$LastCheckResultDataImpl) _then)
-      : super(_value, _then);
+  __$$LastCheckResultDataImplCopyWithImpl(
+    _$LastCheckResultDataImpl _value,
+    $Res Function(_$LastCheckResultDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of LastCheckResultData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? output = freezed,
-  }) {
-    return _then(_$LastCheckResultDataImpl(
-      output: freezed == output
-          ? _value.output
-          : output // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+  $Res call({Object? output = freezed}) {
+    return _then(
+      _$LastCheckResultDataImpl(
+        output:
+            freezed == output
+                ? _value.output
+                : output // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
@@ -862,13 +909,13 @@ class _$LastCheckResultDataImpl implements _LastCheckResultData {
   @pragma('vm:prefer-inline')
   _$$LastCheckResultDataImplCopyWith<_$LastCheckResultDataImpl> get copyWith =>
       __$$LastCheckResultDataImplCopyWithImpl<_$LastCheckResultDataImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$LastCheckResultDataImplToJson(
-      this,
-    );
+    return _$$LastCheckResultDataImplToJson(this);
   }
 }
 
@@ -932,15 +979,17 @@ class _$JoinsDataCopyWithImpl<$Res, $Val extends JoinsData>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? host = freezed,
-  }) {
-    return _then(_value.copyWith(
-      host: freezed == host
-          ? _value.host
-          : host // ignore: cast_nullable_to_non_nullable
-              as HostsData?,
-    ) as $Val);
+  $Res call({Object? host = freezed}) {
+    return _then(
+      _value.copyWith(
+            host:
+                freezed == host
+                    ? _value.host
+                    : host // ignore: cast_nullable_to_non_nullable
+                        as HostsData?,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of JoinsData
@@ -962,8 +1011,9 @@ class _$JoinsDataCopyWithImpl<$Res, $Val extends JoinsData>
 abstract class _$$JoinsDataImplCopyWith<$Res>
     implements $JoinsDataCopyWith<$Res> {
   factory _$$JoinsDataImplCopyWith(
-          _$JoinsDataImpl value, $Res Function(_$JoinsDataImpl) then) =
-      __$$JoinsDataImplCopyWithImpl<$Res>;
+    _$JoinsDataImpl value,
+    $Res Function(_$JoinsDataImpl) then,
+  ) = __$$JoinsDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({HostsData? host});
@@ -977,22 +1027,24 @@ class __$$JoinsDataImplCopyWithImpl<$Res>
     extends _$JoinsDataCopyWithImpl<$Res, _$JoinsDataImpl>
     implements _$$JoinsDataImplCopyWith<$Res> {
   __$$JoinsDataImplCopyWithImpl(
-      _$JoinsDataImpl _value, $Res Function(_$JoinsDataImpl) _then)
-      : super(_value, _then);
+    _$JoinsDataImpl _value,
+    $Res Function(_$JoinsDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of JoinsData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? host = freezed,
-  }) {
-    return _then(_$JoinsDataImpl(
-      host: freezed == host
-          ? _value.host
-          : host // ignore: cast_nullable_to_non_nullable
-              as HostsData?,
-    ));
+  $Res call({Object? host = freezed}) {
+    return _then(
+      _$JoinsDataImpl(
+        host:
+            freezed == host
+                ? _value.host
+                : host // ignore: cast_nullable_to_non_nullable
+                    as HostsData?,
+      ),
+    );
   }
 }
 
@@ -1034,9 +1086,7 @@ class _$JoinsDataImpl implements _JoinsData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$JoinsDataImplToJson(
-      this,
-    );
+    return _$$JoinsDataImplToJson(this);
   }
 }
 
@@ -1097,15 +1147,17 @@ class _$HostsDataCopyWithImpl<$Res, $Val extends HostsData>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? name = freezed,
-  }) {
-    return _then(_value.copyWith(
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  $Res call({Object? name = freezed}) {
+    return _then(
+      _value.copyWith(
+            name:
+                freezed == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -1113,8 +1165,9 @@ class _$HostsDataCopyWithImpl<$Res, $Val extends HostsData>
 abstract class _$$HostsDataImplCopyWith<$Res>
     implements $HostsDataCopyWith<$Res> {
   factory _$$HostsDataImplCopyWith(
-          _$HostsDataImpl value, $Res Function(_$HostsDataImpl) then) =
-      __$$HostsDataImplCopyWithImpl<$Res>;
+    _$HostsDataImpl value,
+    $Res Function(_$HostsDataImpl) then,
+  ) = __$$HostsDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? name});
@@ -1125,22 +1178,24 @@ class __$$HostsDataImplCopyWithImpl<$Res>
     extends _$HostsDataCopyWithImpl<$Res, _$HostsDataImpl>
     implements _$$HostsDataImplCopyWith<$Res> {
   __$$HostsDataImplCopyWithImpl(
-      _$HostsDataImpl _value, $Res Function(_$HostsDataImpl) _then)
-      : super(_value, _then);
+    _$HostsDataImpl _value,
+    $Res Function(_$HostsDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of HostsData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? name = freezed,
-  }) {
-    return _then(_$HostsDataImpl(
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+  $Res call({Object? name = freezed}) {
+    return _then(
+      _$HostsDataImpl(
+        name:
+            freezed == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
@@ -1182,9 +1237,7 @@ class _$HostsDataImpl implements _HostsData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$HostsDataImplToJson(
-      this,
-    );
+    return _$$HostsDataImplToJson(this);
   }
 }
 
