@@ -12,10 +12,14 @@ _ZabAlertsData _$ZabAlertsDataFromJson(Map<String, dynamic> json) =>
           (json['result'] as List<dynamic>?)
               ?.map((e) => ZabAlertData.fromJson(e as Map<String, dynamic>))
               .toList(),
+      error:
+          json['error'] == null
+              ? null
+              : ZabErrorData.fromJson(json['error'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ZabAlertsDataToJson(_ZabAlertsData instance) =>
-    <String, dynamic>{'result': instance.result};
+    <String, dynamic>{'result': instance.result, 'error': instance.error};
 
 _ZabAlertData _$ZabAlertDataFromJson(Map<String, dynamic> json) =>
     _ZabAlertData(
@@ -47,3 +51,12 @@ _ZabHostsData _$ZabHostsDataFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ZabHostsDataToJson(_ZabHostsData instance) =>
     <String, dynamic>{'host': instance.host, 'name': instance.name};
+
+_ZabErrorData _$ZabErrorDataFromJson(Map<String, dynamic> json) =>
+    _ZabErrorData(
+      message: json['message'] as String?,
+      data: json['data'] as String?,
+    );
+
+Map<String, dynamic> _$ZabErrorDataToJson(_ZabErrorData instance) =>
+    <String, dynamic>{'message': instance.message, 'data': instance.data};

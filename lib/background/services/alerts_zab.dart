@@ -78,7 +78,15 @@ class ZabAlerts extends AlertSource {
           return errors;
         }
       }
-      final dataList = ZabAlertsData.fromJson(dataSet).result!;
+      final data = ZabAlertsData.fromJson(dataSet);
+      if (data.error != null) {
+        return errorFetchingAlerts(
+          sourceData: sourceData,
+          error: "${data.error?.message} - ${data.error?.data}",
+          endpoint: endpoint,
+        );
+      }
+      final dataList = data.result!;
       for (var entry in dataList) {
         if (key == StatusType.events) {
           newAlerts.add(alertHandler(entry));
@@ -128,7 +136,10 @@ class ZabAlerts extends AlertSource {
 
 @freezed
 abstract class ZabAlertsData with _$ZabAlertsData {
-  const factory ZabAlertsData({List<ZabAlertData>? result}) = _ZabAlertsData;
+  const factory ZabAlertsData({
+    List<ZabAlertData>? result,
+    ZabErrorData? error,
+  }) = _ZabAlertsData;
 
   factory ZabAlertsData.fromJson(Map<String, dynamic> json) =>
       _$ZabAlertsDataFromJson(json);
@@ -156,4 +167,12 @@ abstract class ZabHostsData with _$ZabHostsData {
 
   factory ZabHostsData.fromJson(Map<String, dynamic> json) =>
       _$ZabHostsDataFromJson(json);
+}
+
+@freezed
+abstract class ZabErrorData with _$ZabErrorData {
+  const factory ZabErrorData({String? message, String? data}) = _ZabErrorData;
+
+  factory ZabErrorData.fromJson(Map<String, dynamic> json) =>
+      _$ZabErrorDataFromJson(json);
 }

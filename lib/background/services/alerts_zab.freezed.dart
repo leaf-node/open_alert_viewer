@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ZabAlertsData {
 
- List<ZabAlertData>? get result;
+ List<ZabAlertData>? get result; ZabErrorData? get error;
 /// Create a copy of ZabAlertsData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $ZabAlertsDataCopyWith<ZabAlertsData> get copyWith => _$ZabAlertsDataCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ZabAlertsData&&const DeepCollectionEquality().equals(other.result, result));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ZabAlertsData&&const DeepCollectionEquality().equals(other.result, result)&&(identical(other.error, error) || other.error == error));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(result));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(result),error);
 
 @override
 String toString() {
-  return 'ZabAlertsData(result: $result)';
+  return 'ZabAlertsData(result: $result, error: $error)';
 }
 
 
@@ -49,11 +49,11 @@ abstract mixin class $ZabAlertsDataCopyWith<$Res>  {
   factory $ZabAlertsDataCopyWith(ZabAlertsData value, $Res Function(ZabAlertsData) _then) = _$ZabAlertsDataCopyWithImpl;
 @useResult
 $Res call({
- List<ZabAlertData>? result
+ List<ZabAlertData>? result, ZabErrorData? error
 });
 
 
-
+$ZabErrorDataCopyWith<$Res>? get error;
 
 }
 /// @nodoc
@@ -66,13 +66,26 @@ class _$ZabAlertsDataCopyWithImpl<$Res>
 
 /// Create a copy of ZabAlertsData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? result = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? result = freezed,Object? error = freezed,}) {
   return _then(_self.copyWith(
 result: freezed == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
-as List<ZabAlertData>?,
+as List<ZabAlertData>?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as ZabErrorData?,
   ));
 }
+/// Create a copy of ZabAlertsData
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ZabErrorDataCopyWith<$Res>? get error {
+    if (_self.error == null) {
+    return null;
+  }
 
+  return $ZabErrorDataCopyWith<$Res>(_self.error!, (value) {
+    return _then(_self.copyWith(error: value));
+  });
+}
 }
 
 
@@ -80,7 +93,7 @@ as List<ZabAlertData>?,
 @JsonSerializable()
 
 class _ZabAlertsData implements ZabAlertsData {
-  const _ZabAlertsData({final  List<ZabAlertData>? result}): _result = result;
+  const _ZabAlertsData({final  List<ZabAlertData>? result, this.error}): _result = result;
   factory _ZabAlertsData.fromJson(Map<String, dynamic> json) => _$ZabAlertsDataFromJson(json);
 
  final  List<ZabAlertData>? _result;
@@ -92,6 +105,7 @@ class _ZabAlertsData implements ZabAlertsData {
   return EqualUnmodifiableListView(value);
 }
 
+@override final  ZabErrorData? error;
 
 /// Create a copy of ZabAlertsData
 /// with the given fields replaced by the non-null parameter values.
@@ -106,16 +120,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ZabAlertsData&&const DeepCollectionEquality().equals(other._result, _result));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ZabAlertsData&&const DeepCollectionEquality().equals(other._result, _result)&&(identical(other.error, error) || other.error == error));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_result));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_result),error);
 
 @override
 String toString() {
-  return 'ZabAlertsData(result: $result)';
+  return 'ZabAlertsData(result: $result, error: $error)';
 }
 
 
@@ -126,11 +140,11 @@ abstract mixin class _$ZabAlertsDataCopyWith<$Res> implements $ZabAlertsDataCopy
   factory _$ZabAlertsDataCopyWith(_ZabAlertsData value, $Res Function(_ZabAlertsData) _then) = __$ZabAlertsDataCopyWithImpl;
 @override @useResult
 $Res call({
- List<ZabAlertData>? result
+ List<ZabAlertData>? result, ZabErrorData? error
 });
 
 
-
+@override $ZabErrorDataCopyWith<$Res>? get error;
 
 }
 /// @nodoc
@@ -143,14 +157,27 @@ class __$ZabAlertsDataCopyWithImpl<$Res>
 
 /// Create a copy of ZabAlertsData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? result = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? result = freezed,Object? error = freezed,}) {
   return _then(_ZabAlertsData(
 result: freezed == result ? _self._result : result // ignore: cast_nullable_to_non_nullable
-as List<ZabAlertData>?,
+as List<ZabAlertData>?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as ZabErrorData?,
   ));
 }
 
+/// Create a copy of ZabAlertsData
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ZabErrorDataCopyWith<$Res>? get error {
+    if (_self.error == null) {
+    return null;
+  }
 
+  return $ZabErrorDataCopyWith<$Res>(_self.error!, (value) {
+    return _then(_self.copyWith(error: value));
+  });
+}
 }
 
 
@@ -441,6 +468,142 @@ class __$ZabHostsDataCopyWithImpl<$Res>
   return _then(_ZabHostsData(
 host: freezed == host ? _self.host : host // ignore: cast_nullable_to_non_nullable
 as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$ZabErrorData {
+
+ String? get message; String? get data;
+/// Create a copy of ZabErrorData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ZabErrorDataCopyWith<ZabErrorData> get copyWith => _$ZabErrorDataCopyWithImpl<ZabErrorData>(this as ZabErrorData, _$identity);
+
+  /// Serializes this ZabErrorData to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ZabErrorData&&(identical(other.message, message) || other.message == message)&&(identical(other.data, data) || other.data == data));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,message,data);
+
+@override
+String toString() {
+  return 'ZabErrorData(message: $message, data: $data)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ZabErrorDataCopyWith<$Res>  {
+  factory $ZabErrorDataCopyWith(ZabErrorData value, $Res Function(ZabErrorData) _then) = _$ZabErrorDataCopyWithImpl;
+@useResult
+$Res call({
+ String? message, String? data
+});
+
+
+
+
+}
+/// @nodoc
+class _$ZabErrorDataCopyWithImpl<$Res>
+    implements $ZabErrorDataCopyWith<$Res> {
+  _$ZabErrorDataCopyWithImpl(this._self, this._then);
+
+  final ZabErrorData _self;
+  final $Res Function(ZabErrorData) _then;
+
+/// Create a copy of ZabErrorData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? message = freezed,Object? data = freezed,}) {
+  return _then(_self.copyWith(
+message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// @nodoc
+@JsonSerializable()
+
+class _ZabErrorData implements ZabErrorData {
+  const _ZabErrorData({this.message, this.data});
+  factory _ZabErrorData.fromJson(Map<String, dynamic> json) => _$ZabErrorDataFromJson(json);
+
+@override final  String? message;
+@override final  String? data;
+
+/// Create a copy of ZabErrorData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ZabErrorDataCopyWith<_ZabErrorData> get copyWith => __$ZabErrorDataCopyWithImpl<_ZabErrorData>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ZabErrorDataToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ZabErrorData&&(identical(other.message, message) || other.message == message)&&(identical(other.data, data) || other.data == data));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,message,data);
+
+@override
+String toString() {
+  return 'ZabErrorData(message: $message, data: $data)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ZabErrorDataCopyWith<$Res> implements $ZabErrorDataCopyWith<$Res> {
+  factory _$ZabErrorDataCopyWith(_ZabErrorData value, $Res Function(_ZabErrorData) _then) = __$ZabErrorDataCopyWithImpl;
+@override @useResult
+$Res call({
+ String? message, String? data
+});
+
+
+
+
+}
+/// @nodoc
+class __$ZabErrorDataCopyWithImpl<$Res>
+    implements _$ZabErrorDataCopyWith<$Res> {
+  __$ZabErrorDataCopyWithImpl(this._self, this._then);
+
+  final _ZabErrorData _self;
+  final $Res Function(_ZabErrorData) _then;
+
+/// Create a copy of ZabErrorData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? message = freezed,Object? data = freezed,}) {
+  return _then(_ZabErrorData(
+message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
