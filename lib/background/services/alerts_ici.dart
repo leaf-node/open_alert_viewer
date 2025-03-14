@@ -174,9 +174,8 @@ abstract class IciResultsData with _$IciResultsData {
 
 @freezed
 abstract class AttrsData with _$AttrsData {
-  const factory AttrsData(
-  // ignore: non_constant_identifier_names
-  {
+  const factory AttrsData({
+    // ignore: non_constant_identifier_names
     String? display_name,
     num? state,
     // ignore: non_constant_identifier_names
