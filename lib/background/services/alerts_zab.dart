@@ -4,13 +4,15 @@
  * SPDX-License-Identifier: MIT
  */
 
-import 'dart:developer';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/alerts.dart';
-import '../../utils/utils.dart';
 import 'alerts.dart';
 
-enum StatusType { serviceStatus, serviceHistory, hostStatus, hostItems, alerts }
+part 'alerts_zab.freezed.dart';
+part 'alerts_zab.g.dart';
+
+enum StatusType { events }
 
 enum HostMonitored {
   monitored(0),
@@ -20,16 +22,7 @@ enum HostMonitored {
   final int value;
 }
 
-enum HostStatus {
-  down(0, AlertType.down),
-  up(1, AlertType.up);
-
-  const HostStatus(this.value, this.alertType);
-  final int value;
-  final AlertType alertType;
-}
-
-enum ServiceStatus {
+enum Severity {
   okay(-1, AlertType.okay),
   notClassified(0, AlertType.unknown),
   information(1, AlertType.okay),
@@ -38,12 +31,10 @@ enum ServiceStatus {
   high(4, AlertType.error),
   disaster(5, AlertType.error);
 
-  const ServiceStatus(this.value, this.alertType);
+  const Severity(this.value, this.alertType);
   final int value;
   final AlertType alertType;
 }
-
-int historyCutoffDays = 30;
 
 class ZabAlerts extends AlertSource {
   ZabAlerts({required super.sourceData})
@@ -55,62 +46,18 @@ class ZabAlerts extends AlertSource {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
-    final now = (DateTime.now().millisecondsSinceEpoch / 1000).floor();
-    final old =
-        (DateTime.now()
-                    .subtract(Duration(days: historyCutoffDays))
-                    .millisecondsSinceEpoch /
-                1000)
-            .floor();
     final queries = {
-      StatusType.serviceStatus: '''{
-          "jsonrpc": "2.0",
-          "method": "service.get",
-          "params": {
-              "output": ["serviceid", "status", "name", "description", "created_at"]
-          },
-          "id": 2
-        }''',
-      StatusType.serviceHistory: '''{
-          "jsonrpc": "2.0",
-          "method": "service.get",
-          "params": {
-              "limit": 1,
-              "selectStatusTimeline": [{"period_from": "$old",
-                "period_to": "${now + 3600}"}],
-              "serviceids": ["0"]
-          },
-          "id": 3
-        }''',
-      StatusType.hostStatus: '''{
-          "jsonrpc": "2.0",
-          "method": "host.get",
-          "params": {
-              "output": ["host", "status"]
-          },
-          "id": 4
-        }''',
-      StatusType.hostItems: '''{
-          "jsonrpc": "2.0",
-          "method": "item.get",
-          "params": {
-              "output": ["itemid", "hostid", "lastvalue"],
-              "search": {"key_": "agent.ping"}
-          },
-          "id": 5
-        }''',
-      StatusType.alerts: '''{
-          "jsonrpc": "2.0",
-          "method": "alert.get",
-          "params": {
-              "output": "extend"
-          },
-          "id": 6
-        }''',
+      StatusType.events: '''{
+        "jsonrpc": "2.0",
+        "method": "event.get",
+        "params": {
+          "output": "extend",
+          "selectHosts": "extend"
+        },
+        "id": 1
+      }''',
     };
     List<Alert> newAlerts = [];
-    List<(num, List<(num, num)>)> serviceAlarms = [];
-    List<(num, String, num)> hostInfo = [];
     for (StatusType key in queries.keys) {
       dynamic dataSet;
       List<Alert> errors;
@@ -130,102 +77,82 @@ class ZabAlerts extends AlertSource {
           return errors;
         }
       }
-      var data = Util.mapConvert(dataSet);
-      if (data.keys.contains("error")) {
-        String error1 = data["error"]["data"];
-        String error2 = data["error"]["message"];
-        return errorFetchingAlerts(
-          sourceData: sourceData,
-          error: (error1.isNotEmpty) ? error1 : error2,
-          endpoint: endpoint,
-        );
-      }
-      var dataList = (data["result"] as List).cast<Object>();
-      log("$key: $dataList");
+      final dataList = ZabAlertsData.fromJson(dataSet).result!;
       for (var entry in dataList) {
-        var data = Util.mapConvert<Object>(entry as Map<String, dynamic>);
-        if (key == StatusType.serviceHistory) {
-          final serviceId = int.parse(data["serviceid"] as String);
-          final alarms = data["serviceid"] as List<(num, num)>;
-          serviceAlarms.add((serviceId, alarms));
-        } else if (key == StatusType.serviceStatus) {
-          final serviceId = int.parse(data["serviceid"] as String);
-          final extraInfo = serviceAlarms.where(
-            (element) => element.$1 == serviceId,
-          );
-          newAlerts.add(alertHandler(data, true, extraInfo.toList()));
-        } else if (key == StatusType.hostStatus) {
-          final hostId = int.parse(data["hostid"] as String);
-          final hostName = data["host"] as String;
-          final unMonitored = int.parse(data["status"] as String);
-          hostInfo.add((hostId, hostName, unMonitored));
-        } else if (key == StatusType.hostItems) {
-          final hostId = int.parse(data["hostid"] as String);
-          final extraInfo = hostInfo.where((element) => element.$1 == hostId);
-          newAlerts.add(alertHandler(data, false, extraInfo.toList()));
+        if (key == StatusType.events) {
+          newAlerts.add(alertHandler(entry));
         }
       }
     }
     return newAlerts;
   }
 
-  Alert alertHandler(
-    Map<String, Object> alertsData,
-    bool isService,
-    List<Object> extraInfo,
-  ) {
-    final datum = Util.mapConvert(alertsData);
+  Alert alertHandler(ZabAlertData alertData) {
     AlertType kind;
-    String hostName;
-    String service;
-    String description;
-    DateTime startsAt;
-    if (isService) {
-      kind =
-          ServiceStatus.values
-              .firstWhere((v) => v.value == int.parse(datum["status"]))
-              .alertType;
-      hostName = "";
-      service = datum["name"];
-      description = datum["description"];
-      startsAt = _dateTime(int.parse(datum["created_at"]));
+    final severity = int.parse(alertData.severity!);
+    if (severity >= 4) {
+      kind = AlertType.error;
+    } else if (severity >= 2) {
+      kind = AlertType.warning;
+    } else if (severity >= 0) {
+      kind = AlertType.okay;
     } else {
-      num monitorStatus;
-      (_, hostName, monitorStatus) =
-          extraInfo.lastOrNull as (num, String, num)? ??
-          (-1, "(Unknown Host Name)", 1);
-      if (monitorStatus == HostMonitored.unMonitored.value) {
-        kind = AlertType.unknown;
-        description = "Unmonitored";
-      } else {
-        int status = int.parse(datum["lastvalue"] as String);
-        kind = HostStatus.values.firstWhere((v) => v.value == status).alertType;
-        description = "";
-      }
-      startsAt = DateTime.now();
-      service = "PING";
+      kind = AlertType.unknown;
     }
-    Duration age;
-    age =
-        (startsAt.difference(epoch) == Duration.zero)
-            ? Duration(seconds: 0)
-            : DateTime.now().difference(startsAt);
+    ZabHostsData? host = alertData.hosts?[0];
+    String hostDomain = host?.host ?? host?.name ?? "";
+    String hostName = host?.name ?? host?.host ?? "";
+    String? opData = (alertData.opdata == "") ? "..." : alertData.opdata;
     return Alert(
       source: sourceData.id!,
       kind: kind,
       hostname: hostName,
-      service: service,
-      message: description,
-      serviceUrl: generateURL(hostName, ""),
+      service: alertData.name!,
+      message: opData ?? "...",
+      serviceUrl: generateURL(hostDomain, ""),
       monitorUrl: generateURL(sourceData.baseURL, ""),
-      age: age,
-      silenced: false,
-      downtimeScheduled: false, // < ^ v FIXME
+      age: DateTime.now().difference(_dateTime(alertData.clock!)),
+      silenced: (alertData.acknowledged == "0") ? false : true,
+      downtimeScheduled: (alertData.suppressed == "0") ? false : true,
       active: true,
     );
   }
 
-  static DateTime _dateTime(num seconds) {
-    return DateTime.fromMillisecondsSinceEpoch((seconds * 1000).floor());
+  static DateTime _dateTime(String seconds) {
+    return DateTime.fromMillisecondsSinceEpoch(
+      (int.parse(seconds) * 1000).floor(),
+    );
   }
+}
+
+@freezed
+abstract class ZabAlertsData with _$ZabAlertsData {
+  const factory ZabAlertsData({List<ZabAlertData>? result}) = _ZabAlertsData;
+
+  factory ZabAlertsData.fromJson(Map<String, dynamic> json) =>
+      _$ZabAlertsDataFromJson(json);
+}
+
+@freezed
+abstract class ZabAlertData with _$ZabAlertData {
+  const factory ZabAlertData({
+    String? name,
+    String? clock,
+    String? opdata,
+    String? severity,
+    String? suppressed,
+    String? acknowledged,
+    List<ZabHostsData>? hosts,
+  }) = _ZabAlertData;
+
+  factory ZabAlertData.fromJson(Map<String, dynamic> json) =>
+      _$ZabAlertDataFromJson(json);
+}
+
+@freezed
+abstract class ZabHostsData with _$ZabHostsData {
+  const factory ZabHostsData({String? host, String? name}) = _ZabHostsData;
+
+  factory ZabHostsData.fromJson(Map<String, dynamic> json) =>
+      _$ZabHostsDataFromJson(json);
 }
