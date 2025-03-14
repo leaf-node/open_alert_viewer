@@ -7,7 +7,7 @@
 part of 'account_settings_cubit.dart';
 
 @freezed
-class AccountSettingsState with _$AccountSettingsState {
+abstract class AccountSettingsState with _$AccountSettingsState {
   const factory AccountSettingsState({
     required bool globalNotificationsEnabled,
     required AlertSourceData? source,

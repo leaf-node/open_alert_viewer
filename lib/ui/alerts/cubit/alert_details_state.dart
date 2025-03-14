@@ -7,7 +7,7 @@
 part of 'alert_details_cubit.dart';
 
 @freezed
-class AlertDetailsState with _$AlertDetailsState {
+abstract class AlertDetailsState with _$AlertDetailsState {
   const factory AlertDetailsState({required String sourceName}) =
       _AlertDetailsState;
   factory AlertDetailsState.initial() {

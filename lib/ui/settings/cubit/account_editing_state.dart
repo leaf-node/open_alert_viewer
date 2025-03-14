@@ -15,7 +15,7 @@ enum CheckStatus { needsCheck, checkingNow, responded }
 enum IconType { checking, invalid, valid }
 
 @freezed
-class AccountEditingState with _$AccountEditingState {
+abstract class AccountEditingState with _$AccountEditingState {
   const factory AccountEditingState({
     required AlertSourceDataUpdate? sourceData,
     required CheckStatus status,

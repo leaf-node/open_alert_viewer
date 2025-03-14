@@ -47,7 +47,7 @@ enum MessageDestination {
 }
 
 @freezed
-class IsolateMessage with _$IsolateMessage {
+abstract class IsolateMessage with _$IsolateMessage {
   const factory IsolateMessage({
     required MessageName name,
     MessageDestination? destination,

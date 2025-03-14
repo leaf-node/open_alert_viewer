@@ -27,7 +27,7 @@ enum AlertType {
 }
 
 @freezed
-class Alert with _$Alert {
+abstract class Alert with _$Alert {
   const factory Alert({
     required int source,
     required AlertType kind,
@@ -46,7 +46,7 @@ class Alert with _$Alert {
 }
 
 @freezed
-class AlertSourceData with _$AlertSourceData {
+abstract class AlertSourceData with _$AlertSourceData {
   const factory AlertSourceData({
     required int? id,
     required String name,
@@ -72,7 +72,7 @@ class AlertSourceData with _$AlertSourceData {
 }
 
 @freezed
-class AlertSourceDataUpdate with _$AlertSourceDataUpdate {
+abstract class AlertSourceDataUpdate with _$AlertSourceDataUpdate {
   const factory AlertSourceDataUpdate({
     required int? id,
     required String name,

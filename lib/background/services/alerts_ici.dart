@@ -153,7 +153,7 @@ class IciAlerts extends AlertSource {
 }
 
 @freezed
-class IciAlertsData with _$IciAlertsData {
+abstract class IciAlertsData with _$IciAlertsData {
   const factory IciAlertsData(
   // ignore: non_constant_identifier_names
   {List<IciResultsData>? results}) = _IciAlertsData;
@@ -163,7 +163,7 @@ class IciAlertsData with _$IciAlertsData {
 }
 
 @freezed
-class IciResultsData with _$IciResultsData {
+abstract class IciResultsData with _$IciResultsData {
   const factory IciResultsData(
   // ignore: non_constant_identifier_names
   {AttrsData? attrs, JoinsData? joins}) = _IciResultsData;
@@ -173,7 +173,7 @@ class IciResultsData with _$IciResultsData {
 }
 
 @freezed
-class AttrsData with _$AttrsData {
+abstract class AttrsData with _$AttrsData {
   const factory AttrsData(
   // ignore: non_constant_identifier_names
   {
@@ -199,7 +199,7 @@ class AttrsData with _$AttrsData {
 }
 
 @freezed
-class LastCheckResultData with _$LastCheckResultData {
+abstract class LastCheckResultData with _$LastCheckResultData {
   const factory LastCheckResultData({String? output}) = _LastCheckResultData;
 
   factory LastCheckResultData.fromJson(Map<String, dynamic> json) =>
@@ -207,7 +207,7 @@ class LastCheckResultData with _$LastCheckResultData {
 }
 
 @freezed
-class JoinsData with _$JoinsData {
+abstract class JoinsData with _$JoinsData {
   const factory JoinsData({HostsData? host}) = _JoinsData;
 
   factory JoinsData.fromJson(Map<String, dynamic> json) =>
@@ -215,7 +215,7 @@ class JoinsData with _$JoinsData {
 }
 
 @freezed
-class HostsData with _$HostsData {
+abstract class HostsData with _$HostsData {
   const factory HostsData({String? name}) = _HostsData;
 
   factory HostsData.fromJson(Map<String, dynamic> json) =>

@@ -79,7 +79,7 @@ class PromAlerts extends AlertSource {
 }
 
 @freezed
-class PromAlertsData with _$PromAlertsData {
+abstract class PromAlertsData with _$PromAlertsData {
   const factory PromAlertsData(
   // ignore: non_constant_identifier_names
   {
@@ -97,7 +97,7 @@ class PromAlertsData with _$PromAlertsData {
 }
 
 @freezed
-class AnnotationsData with _$AnnotationsData {
+abstract class AnnotationsData with _$AnnotationsData {
   const factory AnnotationsData({String? summary}) = _AnnotationsData;
 
   factory AnnotationsData.fromJson(Map<String, dynamic> json) =>
@@ -105,7 +105,7 @@ class AnnotationsData with _$AnnotationsData {
 }
 
 @freezed
-class StatusData with _$StatusData {
+abstract class StatusData with _$StatusData {
   const factory StatusData({List<Object>? silencedBy}) = _StatusData;
 
   factory StatusData.fromJson(Map<String, dynamic> json) =>
@@ -113,7 +113,7 @@ class StatusData with _$StatusData {
 }
 
 @freezed
-class LabelsData with _$LabelsData {
+abstract class LabelsData with _$LabelsData {
   const factory LabelsData({
     String? severity,
     // ignore: non_constant_identifier_names

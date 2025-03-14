@@ -150,7 +150,7 @@ class NagAlerts extends AlertSource {
 }
 
 @freezed
-class NagAlertsData with _$NagAlertsData {
+abstract class NagAlertsData with _$NagAlertsData {
   const factory NagAlertsData({NagDataSection? data}) = _NagAlertsData;
 
   factory NagAlertsData.fromJson(Map<String, dynamic> json) =>
@@ -158,7 +158,7 @@ class NagAlertsData with _$NagAlertsData {
 }
 
 @freezed
-class NagDataSection with _$NagDataSection {
+abstract class NagDataSection with _$NagDataSection {
   const factory NagDataSection({
     Map<String, NagAlertData?>? hostlist,
     Map<String, Map<String, NagAlertData?>?>? servicelist,
@@ -169,7 +169,7 @@ class NagDataSection with _$NagDataSection {
 }
 
 @freezed
-class NagAlertData with _$NagAlertData {
+abstract class NagAlertData with _$NagAlertData {
   const factory NagAlertData({
     String? description,
     int? status,

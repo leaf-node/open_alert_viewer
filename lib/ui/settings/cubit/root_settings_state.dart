@@ -11,7 +11,7 @@ import '../../../domain/alerts.dart';
 part 'root_settings_state.freezed.dart';
 
 @freezed
-class RootSettingsCubitState with _$RootSettingsCubitState {
+abstract class RootSettingsCubitState with _$RootSettingsCubitState {
   const factory RootSettingsCubitState({
     required List<AlertSourceData> sources,
     required bool? accountUpdated,

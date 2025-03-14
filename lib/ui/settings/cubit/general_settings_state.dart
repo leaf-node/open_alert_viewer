@@ -13,7 +13,7 @@ part 'general_settings_state.freezed.dart';
 String placeholder = "Pending...";
 
 @freezed
-class GeneralSettingsCubitState with _$GeneralSettingsCubitState {
+abstract class GeneralSettingsCubitState with _$GeneralSettingsCubitState {
   const factory GeneralSettingsCubitState({
     required Map<String, Object> settings,
     required String refreshIntervalSubtitle,

@@ -15,7 +15,7 @@ enum FetchingStatus { init, fetching, fetched }
 enum RefreshIconStatus { init, triggeredOrRunning, stopped }
 
 @freezed
-class RefreshIconState with _$RefreshIconState {
+abstract class RefreshIconState with _$RefreshIconState {
   const factory RefreshIconState({
     required RefreshIconStatus status,
     required bool alreadyFetching,
@@ -24,7 +24,7 @@ class RefreshIconState with _$RefreshIconState {
 }
 
 @freezed
-class AlertsCubitState with _$AlertsCubitState {
+abstract class AlertsCubitState with _$AlertsCubitState {
   const factory AlertsCubitState({
     required Map<String, Object> settings,
     required FetchingStatus status,
