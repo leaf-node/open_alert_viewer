@@ -120,7 +120,7 @@ Future<T?> settingsRadioDialogBuilder<T>({
     builder: (BuildContext context) {
       return Dialog(
         child: SizedBox(
-          width: 300,
+          width: 350,
           child: ListView(
             shrinkWrap: true,
             children: [

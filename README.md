@@ -14,11 +14,11 @@
         <img src="https://matrix.to/img/matrix-badge.svg" alt="Chat on Matrix"></a>
 </p>
 
-Display server and network alerts from servers running Prometheus, Nagios or
-Icinga.
+Display server and network alerts from servers running Prometheus, Nagios,
+Icinga or Zabbix.
 
-Prometheus v0.16.0+, Nagios Core 4.x and Icinga 2.12.0+ are supported, along
-with Basic Authentication.
+Prometheus v0.16.0+, Nagios Core 4.x and Icinga 2.12.0+ are supported with
+Basic Authentication; and default authentication for Zabbix 6.x or 7.x.
 
 ## Screenshots
 
@@ -56,12 +56,12 @@ with Basic Authentication.
   v0.16.0 or later ([configuration](#prometheus))
 * [Nagios Core](https://www.nagios.org/projects/nagios-core/) 4.x
 * [Icinga](https://icinga.com/) 2.12.0 or later
-* (More planned)
+* [Zabbix](https://zabbix.com/) 6.x or 7.x
 
 ### Authentication
 
 * Basic Authentication
-* (More planned)
+* Zabbix: default authentication only
 
 ### Target platforms
 
