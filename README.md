@@ -87,6 +87,7 @@ with Basic Authentication.
 cd open_alert_viewer
 flutter pub get
 dart run build_runner build
+lic_ck check-licenses --config lic_ck.yaml
 dart run flutter_oss_licenses:generate
 ```
 
