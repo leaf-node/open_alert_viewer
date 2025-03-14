@@ -51,8 +51,9 @@ class ZabAlerts extends AlertSource {
         "jsonrpc": "2.0",
         "method": "event.get",
         "params": {
-          "output": "extend",
-          "selectHosts": "extend"
+          "output": ["name", "clock", "opdata",
+            "severity", "suppressed", "acknowledged"],
+          "selectHosts": ["name", "host"]
         },
         "id": 1
       }''',
