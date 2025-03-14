@@ -303,7 +303,11 @@ class SourcesBackgroundRepo with NetworkFetch {
           apiEndpoint,
           maxTimeout: 5,
         );
-        if (response.statusCode == 200) {
+        if (response.statusCode == 200 &&
+            !RegExp(
+              r"<title>.*zabbix",
+              caseSensitive: false,
+            ).hasMatch(response.body)) {
           sourceData = sourceData.copyWith(
             type: sourceType.value,
             baseURL: trimmedBaseURL,
@@ -350,10 +354,20 @@ class SourcesBackgroundRepo with NetworkFetch {
             return (true, sourceData);
           }
         } else {
-          sourceData = sourceData.copyWith(
-            errorMessage:
-                "${response.statusCode}: ${response.reasonPhrase ?? ""}",
-          );
+          if (sourceType.value != SourceTypes.zab.value &&
+              RegExp(
+                r"<title>.*zabbix",
+                caseSensitive: false,
+              ).hasMatch(response.body)) {
+            sourceData = sourceData.copyWith(
+              errorMessage: "Page title contains the string \"Zabbix\".",
+            );
+          } else {
+            sourceData = sourceData.copyWith(
+              errorMessage:
+                  "${response.statusCode}: ${response.reasonPhrase ?? ""}",
+            );
+          }
         }
       } on SocketException catch (e) {
         sourceData = sourceData.copyWith(errorMessage: e.message);
