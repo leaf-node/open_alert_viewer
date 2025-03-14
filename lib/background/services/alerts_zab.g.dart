@@ -60,3 +60,9 @@ _ZabErrorData _$ZabErrorDataFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ZabErrorDataToJson(_ZabErrorData instance) =>
     <String, dynamic>{'message': instance.message, 'data': instance.data};
+
+_ZabVersionData _$ZabVersionDataFromJson(Map<String, dynamic> json) =>
+    _ZabVersionData(result: json['result'] as String?);
+
+Map<String, dynamic> _$ZabVersionDataToJson(_ZabVersionData instance) =>
+    <String, dynamic>{'result': instance.result};

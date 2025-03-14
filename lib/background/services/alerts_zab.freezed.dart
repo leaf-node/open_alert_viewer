@@ -611,4 +611,137 @@ as String?,
 
 }
 
+
+/// @nodoc
+mixin _$ZabVersionData {
+
+ String? get result;
+/// Create a copy of ZabVersionData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ZabVersionDataCopyWith<ZabVersionData> get copyWith => _$ZabVersionDataCopyWithImpl<ZabVersionData>(this as ZabVersionData, _$identity);
+
+  /// Serializes this ZabVersionData to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ZabVersionData&&(identical(other.result, result) || other.result == result));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,result);
+
+@override
+String toString() {
+  return 'ZabVersionData(result: $result)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ZabVersionDataCopyWith<$Res>  {
+  factory $ZabVersionDataCopyWith(ZabVersionData value, $Res Function(ZabVersionData) _then) = _$ZabVersionDataCopyWithImpl;
+@useResult
+$Res call({
+ String? result
+});
+
+
+
+
+}
+/// @nodoc
+class _$ZabVersionDataCopyWithImpl<$Res>
+    implements $ZabVersionDataCopyWith<$Res> {
+  _$ZabVersionDataCopyWithImpl(this._self, this._then);
+
+  final ZabVersionData _self;
+  final $Res Function(ZabVersionData) _then;
+
+/// Create a copy of ZabVersionData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? result = freezed,}) {
+  return _then(_self.copyWith(
+result: freezed == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// @nodoc
+@JsonSerializable()
+
+class _ZabVersionData implements ZabVersionData {
+  const _ZabVersionData({this.result});
+  factory _ZabVersionData.fromJson(Map<String, dynamic> json) => _$ZabVersionDataFromJson(json);
+
+@override final  String? result;
+
+/// Create a copy of ZabVersionData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ZabVersionDataCopyWith<_ZabVersionData> get copyWith => __$ZabVersionDataCopyWithImpl<_ZabVersionData>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ZabVersionDataToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ZabVersionData&&(identical(other.result, result) || other.result == result));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,result);
+
+@override
+String toString() {
+  return 'ZabVersionData(result: $result)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ZabVersionDataCopyWith<$Res> implements $ZabVersionDataCopyWith<$Res> {
+  factory _$ZabVersionDataCopyWith(_ZabVersionData value, $Res Function(_ZabVersionData) _then) = __$ZabVersionDataCopyWithImpl;
+@override @useResult
+$Res call({
+ String? result
+});
+
+
+
+
+}
+/// @nodoc
+class __$ZabVersionDataCopyWithImpl<$Res>
+    implements _$ZabVersionDataCopyWith<$Res> {
+  __$ZabVersionDataCopyWithImpl(this._self, this._then);
+
+  final _ZabVersionData _self;
+  final $Res Function(_ZabVersionData) _then;
+
+/// Create a copy of ZabVersionData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? result = freezed,}) {
+  return _then(_ZabVersionData(
+result: freezed == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
 // dart format on

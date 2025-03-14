@@ -12,7 +12,7 @@ import 'alerts.dart';
 part 'alerts_zab.freezed.dart';
 part 'alerts_zab.g.dart';
 
-enum StatusType { events }
+enum StatusType { version, events6, events7 }
 
 enum HostMonitored {
   monitored(0),
@@ -43,11 +43,29 @@ class ZabAlerts extends AlertSource {
 
   final DateTime epoch;
   final String endpoint;
+  int? baseVersion;
 
   @override
   Future<List<Alert>> fetchAlerts() async {
     final queries = {
-      StatusType.events: '''{
+      StatusType.version: '''{
+        "jsonrpc": "2.0",
+        "method": "apiinfo.version",
+        "params": [],
+        "id": 1
+      }''',
+      StatusType.events6: '''{
+        "jsonrpc": "2.0",
+        "auth": "${sourceData.accessToken}",
+        "method": "event.get",
+        "params": {
+          "output": ["name", "clock", "opdata",
+            "severity", "suppressed", "acknowledged"],
+          "selectHosts": ["name", "host"]
+        },
+        "id": 2
+      }''',
+      StatusType.events7: '''{
         "jsonrpc": "2.0",
         "method": "event.get",
         "params": {
@@ -55,40 +73,59 @@ class ZabAlerts extends AlertSource {
             "severity", "suppressed", "acknowledged"],
           "selectHosts": ["name", "host"]
         },
-        "id": 1
+        "id": 2
       }''',
     };
     List<Alert> newAlerts = [];
     for (StatusType key in queries.keys) {
       dynamic dataSet;
       List<Alert> errors;
-      (dataSet, errors) = await fetchAndDecodeJSON(
-        endpoint: endpoint,
-        postBody: queries[key],
-        authOverride: true,
-        headers: {
-          "Content-Type": "application/json-rpc",
-          "Authorization": "Bearer ${sourceData.accessToken}",
-        },
-      );
-      if (dataSet == null) {
-        if (errors.isEmpty) {
-          throw Exception("Missing alert message after Zabbix error");
-        } else {
-          return errors;
-        }
-      }
-      final data = ZabAlertsData.fromJson(dataSet);
-      if (data.error != null) {
-        return errorFetchingAlerts(
-          sourceData: sourceData,
-          error: "${data.error?.message} - ${data.error?.data}",
+      if (key == StatusType.version) {
+        (dataSet, errors) = await fetchAndDecodeJSON(
           endpoint: endpoint,
+          postBody: queries[key],
+          authOverride: true,
+          headers: {"Content-Type": "application/json-rpc"},
         );
-      }
-      final dataList = data.result!;
-      for (var entry in dataList) {
-        if (key == StatusType.events) {
+        if (dataSet == null) {
+          if (errors.isEmpty) {
+            throw Exception("Missing version message after Zabbix error");
+          } else {
+            return errors;
+          }
+        }
+        final data = ZabVersionData.fromJson(dataSet);
+        baseVersion = int.parse(
+          data.result?.substring(0, data.result?.indexOf('.')) ?? "0",
+        );
+      } else if ((key == StatusType.events6 && baseVersion == 6) ||
+          (key == StatusType.events7 && (baseVersion ?? 0) >= 7)) {
+        (dataSet, errors) = await fetchAndDecodeJSON(
+          endpoint: endpoint,
+          postBody: queries[key],
+          authOverride: true,
+          headers: {
+            "Content-Type": "application/json-rpc",
+            "Authorization": "Bearer ${sourceData.accessToken}",
+          },
+        );
+        if (dataSet == null) {
+          if (errors.isEmpty) {
+            throw Exception("Missing alert message after Zabbix error");
+          } else {
+            return errors;
+          }
+        }
+        final data = ZabAlertsData.fromJson(dataSet);
+        if (data.error != null) {
+          return errorFetchingAlerts(
+            sourceData: sourceData,
+            error: "${data.error?.message} - ${data.error?.data}",
+            endpoint: endpoint,
+          );
+        }
+        final dataList = data.result!;
+        for (var entry in dataList) {
           newAlerts.add(alertHandler(entry));
         }
       }
@@ -175,4 +212,12 @@ abstract class ZabErrorData with _$ZabErrorData {
 
   factory ZabErrorData.fromJson(Map<String, dynamic> json) =>
       _$ZabErrorDataFromJson(json);
+}
+
+@freezed
+abstract class ZabVersionData with _$ZabVersionData {
+  const factory ZabVersionData({String? result}) = _ZabVersionData;
+
+  factory ZabVersionData.fromJson(Map<String, dynamic> json) =>
+      _$ZabVersionDataFromJson(json);
 }
