@@ -139,7 +139,7 @@ class SourcesBackgroundRepo with NetworkFetch {
   }
 
   void setFailingStatus({required int id, required bool failing}) {
-    final sourceData = getSource(id)?.copyWith(failing: true);
+    final sourceData = getSource(id)?.copyWith(failing: failing);
     if (sourceData != null) {
       _updateSource(sourceData: sourceData);
     }

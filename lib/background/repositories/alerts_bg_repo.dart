@@ -181,7 +181,7 @@ class AlertsBackgroundRepo with NetworkFetch {
     );
     _cacheAlerts();
     for (var source in _alertSources) {
-      if (!source.failing) {
+      if (!(_sourcesRepo.getSource(source.id)?.failing ?? true)) {
         _sourcesRepo.setLastAndPriorFetch(
           id: source.id!,
           lastFetch: currentFetch,
