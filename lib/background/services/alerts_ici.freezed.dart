@@ -341,8 +341,9 @@ $JoinsDataCopyWith<$Res>? get joins {
 /// @nodoc
 mixin _$AttrsData {
 
- String? get display_name; num? get state;// ignore: non_constant_identifier_names
- num? get downtime_depth; num? get acknowledgement;// ignore: non_constant_identifier_names
+ String? get display_name;// ignore: non_constant_identifier_names
+ num? get state; num? get downtime_depth;// ignore: non_constant_identifier_names
+ num? get acknowledgement;// ignore: non_constant_identifier_names
  num? get last_state_change;// ignore: non_constant_identifier_names
  num? get last_hard_state_change;// ignore: non_constant_identifier_names
  num? get last_check;// ignore: non_constant_identifier_names
@@ -435,9 +436,10 @@ class _AttrsData implements AttrsData {
   factory _AttrsData.fromJson(Map<String, dynamic> json) => _$AttrsDataFromJson(json);
 
 @override final  String? display_name;
-@override final  num? state;
 // ignore: non_constant_identifier_names
+@override final  num? state;
 @override final  num? downtime_depth;
+// ignore: non_constant_identifier_names
 @override final  num? acknowledgement;
 // ignore: non_constant_identifier_names
 @override final  num? last_state_change;

@@ -175,22 +175,16 @@ abstract class IciResultsData with _$IciResultsData {
 @freezed
 abstract class AttrsData with _$AttrsData {
   const factory AttrsData({
-    // ignore: non_constant_identifier_names
-    String? display_name,
+    String? display_name, // ignore: non_constant_identifier_names
     num? state,
-    // ignore: non_constant_identifier_names
-    num? downtime_depth,
-    num? acknowledgement,
-    // ignore: non_constant_identifier_names
-    num? last_state_change,
-    // ignore: non_constant_identifier_names
-    num? last_hard_state_change,
-    // ignore: non_constant_identifier_names
-    num? last_check,
-    // ignore: non_constant_identifier_names
-    LastCheckResultData? last_check_result,
-    // ignore: non_constant_identifier_names
-    num? state_type,
+    num? downtime_depth, // ignore: non_constant_identifier_names
+    num? acknowledgement, // ignore: non_constant_identifier_names
+    num? last_state_change, // ignore: non_constant_identifier_names
+    num? last_hard_state_change, // ignore: non_constant_identifier_names
+    num? last_check, // ignore: non_constant_identifier_names
+    LastCheckResultData?
+    last_check_result, // ignore: non_constant_identifier_names
+    num? state_type, // ignore: non_constant_identifier_names
   }) = _AttrsData;
 
   factory AttrsData.fromJson(Map<String, dynamic> json) =>
