@@ -95,6 +95,12 @@ dart run flutter_oss_licenses:generate
 
 ```
 cd open_alert_viewer
+flutter build apk --debug
+adb install build/app/outputs/flutter-apk/app-debug.apk
+```
+- or -
+```
+cd open_alert_viewer
 vim android/key.properties
 flutter build apk
 adb install build/app/outputs/flutter-apk/app-release.apk
