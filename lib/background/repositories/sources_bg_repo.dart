@@ -75,7 +75,7 @@ class SourcesBackgroundRepo with NetworkFetch {
     );
   }
 
-  AlertSourceData? getSource(id) {
+  AlertSourceData? getSource(int? id) {
     final matches = _db.listSources().where((e) => e.id == id);
     if (matches.isEmpty) {
       return null;
