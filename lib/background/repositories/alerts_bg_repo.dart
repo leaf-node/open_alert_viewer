@@ -199,7 +199,7 @@ class AlertsBackgroundRepo with NetworkFetch {
     );
     _notifier.showFilteredNotifications(
       alerts: _alerts,
-      allSources: _alertSources,
+      allSources: _sourcesRepo.alertSources,
       alertStream: _outboundStream,
     );
     _fetching = false;
