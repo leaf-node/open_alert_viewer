@@ -95,8 +95,18 @@ dart run flutter_oss_licenses:generate
 
 ```
 cd open_alert_viewer
+vim android/key.properties
 flutter build apk
 adb install build/app/outputs/flutter-apk/app-release.apk
+```
+
+Where `android/key.properties` is something like:
+
+```
+storePassword=my_first_password
+keyPassword=my_second_password
+keyAlias=key0
+storeFile=/home/andrew/.android-keystore/upload-keystore.jks
 ```
 
 ### Linux
