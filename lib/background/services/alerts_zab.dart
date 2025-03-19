@@ -145,7 +145,7 @@ class ZabAlerts extends AlertSource {
     } else {
       kind = AlertType.unknown;
     }
-    ZabHostsData? host = alertData.hosts?[0];
+    ZabHostsData? host = alertData.hosts?.firstOrNull;
     String hostDomain = host?.host ?? host?.name ?? "";
     String hostName = host?.name ?? host?.host ?? "";
     String? opData = (alertData.opdata == "") ? "..." : alertData.opdata;
