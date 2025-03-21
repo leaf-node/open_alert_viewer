@@ -70,7 +70,7 @@ class AboutList extends StatelessWidget {
           icon: Icons.volunteer_activism_outlined,
           title: "Donate",
           onTap: () async {
-            var link = "https://buymeacoffee.com/okcode.studio";
+            var link = "https://buymeacoffee.com/sandpiper.codes";
             try {
               var uri = Uri.parse(link);
               await launchUrl(uri);

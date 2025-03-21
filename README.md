@@ -1,5 +1,5 @@
 
-<img width="100%" src="https://okcode.studio/assets/img/open-alert-viewer-feature-graphic.png">
+<img width="100%" src="https://sandpiper.codes/assets/img/open-alert-viewer-feature-graphic.png">
 
 # Open Alert Viewer
 
@@ -24,14 +24,14 @@ Basic Authentication; and default authentication for Zabbix 6.x or 7.x.
 
 <table>
   <tr>
-    <td><a href="https://okcode.studio/assets/img/screenshots/oav/phone-alerts.png">
-        <img alt="1" width="200px" height="auto" src="https://okcode.studio/assets/img/screenshots/oav/phone-alerts.png"></a></td>
-    <td><a href="https://okcode.studio/assets/img/screenshots/oav/phone-account.png">
-        <img alt="2" width="200px" height="auto" src="https://okcode.studio/assets/img/screenshots/oav/phone-account.png"></a></td>
-    <td><a href="https://okcode.studio/assets/img/screenshots/oav/phone-general-settings.png">
-        <img alt="3" width="200px" height="auto" src="https://okcode.studio/assets/img/screenshots/oav/phone-general-settings.png"></a></td>
-    <td><a href="https://okcode.studio/assets/img/screenshots/oav/phone-alerts-filter.png">
-        <img alt="4" width="200px" height="auto" src="https://okcode.studio/assets/img/screenshots/oav/phone-alerts-filter.png"></a></td>
+    <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-alerts.png">
+        <img alt="1" width="200px" height="auto" src="https://sandpiper.codes/assets/img/screenshots/oav/phone-alerts.png"></a></td>
+    <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-account.png">
+        <img alt="2" width="200px" height="auto" src="https://sandpiper.codes/assets/img/screenshots/oav/phone-account.png"></a></td>
+    <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-general-settings.png">
+        <img alt="3" width="200px" height="auto" src="https://sandpiper.codes/assets/img/screenshots/oav/phone-general-settings.png"></a></td>
+    <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-alerts-filter.png">
+        <img alt="4" width="200px" height="auto" src="https://sandpiper.codes/assets/img/screenshots/oav/phone-alerts-filter.png"></a></td>
   </tr>
 </table>
 
@@ -39,13 +39,13 @@ Basic Authentication; and default authentication for Zabbix 6.x or 7.x.
 
 <p align="center">
     <a href='https://f-droid.org/en/packages/studio.okcode.open_alert_viewer/'>
-        <img width='289' height='100' style='display: inline-block' alt='Get it on F-Droid' src='https://okcode.studio/assets/img/f-droid-badge-border.png'/></a>
+        <img width='289' height='100' style='display: inline-block' alt='Get it on F-Droid' src='https://sandpiper.codes/assets/img/f-droid-badge-border.png'/></a>
     <a href='https://flathub.org/apps/studio.okcode.open_alert_viewer'>
-        <img width='260' height='100' style='display: inline-block' alt='Get it on Flathub' src='https://okcode.studio/assets/img/flathub-badge-border.png'/></a>
+        <img width='260' height='100' style='display: inline-block' alt='Get it on Flathub' src='https://sandpiper.codes/assets/img/flathub-badge-border.png'/></a>
     <a href='https://github.com/okcode-studio/open_alert_viewer/releases'>
-        <img width='260' height='100' style='display: inline-block' alt='Get *.tar.gz and *.deb' src='https://okcode.studio/assets/img/generic-badge-border.svg'/></a>
+        <img width='260' height='100' style='display: inline-block' alt='Get *.tar.gz and *.deb' src='https://sandpiper.codes/assets/img/generic-badge-border.svg'/></a>
     <a href='https://play.google.com/store/apps/details?id=studio.okcode.open_alert_viewer'>
-        <img width='290' height='100' style='display: inline-block' alt='Get it on Google Play' src='https://okcode.studio/assets/img/Google-Play-badge-border.png'/></a>
+        <img width='290' height='100' style='display: inline-block' alt='Get it on Google Play' src='https://sandpiper.codes/assets/img/Google-Play-badge-border.png'/></a>
 </p>
 
 ## Back end compatibility
@@ -177,8 +177,8 @@ License: MIT
 Other dependencies use a variety of permissive licenses. See the licensing tab
 in the app for a list of them.
 
-Aside from Open Alert Viewer itself, neither Open Alert Viewer nor OK Code
-Studio are endorsed by, nor affiliated with, the creators of the software
+Aside from Open Alert Viewer itself, neither Open Alert Viewer nor Sandpiper
+Codes are endorsed by, nor affiliated with, the creators of the software
 referenced in this app, this app's source code, nor its documentation. While
 these may nominatively reference the names and logos of third party software,
 they are trademarked by their respective owners.

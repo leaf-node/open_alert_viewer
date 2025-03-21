@@ -13,13 +13,13 @@
   <metadata_license>MIT</metadata_license>
   <project_license>MIT</project_license>
 
-  <developer id="studio.okcode">
-    <name>OK Code Studio</name>
+  <developer id="sandpiper.codes">
+    <name>Sandpiper Codes</name>
   </developer>
 
-  <url type="homepage">https://okcode.studio/apps/open-alert-viewer/</url>
-  <url type="donation">https://okcode.studio/donate/</url>
-  <url type="contact">https://okcode.studio/about/</url>
+  <url type="homepage">https://sandpiper.codes/apps/open-alert-viewer/</url>
+  <url type="donation">https://sandpiper.codes/donate/</url>
+  <url type="contact">https://sandpiper.codes/about/</url>
   <url type="bugtracker">https://github.com/okcode-studio/open_alert_viewer/issues/</url>
   <url type="contribute">https://github.com/okcode-studio/open_alert_viewer/</url>
   <url type="vcs-browser">https://github.com/okcode-studio/open_alert_viewer/</url>
@@ -47,19 +47,19 @@
   <launchable type="desktop-id">studio.okcode.open_alert_viewer.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://okcode.studio/assets/img/screenshots/oav/desktop-alerts.png</image>
+      <image>https://sandpiper.codes/assets/img/screenshots/oav/desktop-alerts.png</image>
       <caption>Display service errors and down servers on your network</caption>
     </screenshot>
     <screenshot>
-      <image>https://okcode.studio/assets/img/screenshots/oav/desktop-account.png</image>
+      <image>https://sandpiper.codes/assets/img/screenshots/oav/desktop-account.png</image>
       <caption>Connect to a compatible network monitor</caption>
     </screenshot>
     <screenshot>
-      <image>https://okcode.studio/assets/img/screenshots/oav/desktop-general-settings.png</image>
+      <image>https://sandpiper.codes/assets/img/screenshots/oav/desktop-general-settings.png</image>
       <caption>Enable notifications and dark mode in the app settings</caption>
     </screenshot>
     <screenshot>
-      <image>https://okcode.studio/assets/img/screenshots/oav/desktop-alerts-filter.png</image>
+      <image>https://sandpiper.codes/assets/img/screenshots/oav/desktop-alerts-filter.png</image>
       <caption>Filter out visible alerts by type</caption>
     </screenshot>
   </screenshots>
