@@ -118,7 +118,7 @@ class AlertsBackgroundRepo with NetworkFetch {
                 "Please open an issue using the alert link to "
                 "report this error.",
             serviceUrl:
-                "https://github.com/okcode-studio/open_alert_viewer/issues",
+                "https://github.com/sandpiper-codes/open_alert_viewer/issues",
             monitorUrl: generateURL(source.baseURL, ""),
             age: Duration.zero,
             silenced: false,
@@ -132,7 +132,7 @@ class AlertsBackgroundRepo with NetworkFetch {
             service: "OAV",
             message: message,
             serviceUrl:
-                "https://github.com/okcode-studio/open_alert_viewer/issues",
+                "https://github.com/sandpiper-codes/open_alert_viewer/issues",
             monitorUrl: generateURL(source.baseURL, ""),
             age: Duration.zero,
             silenced: false,

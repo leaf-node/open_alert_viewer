@@ -4,8 +4,8 @@
 # Open Alert Viewer
 
 <p align="center">
-    <a href='https://github.com/okcode-studio/open_alert_viewer/releases'>
-        <img height="20" src="https://img.shields.io/github/release/okcode-studio/open_alert_viewer.svg?logo=github"></a>
+    <a href='https://github.com/sandpiper-codes/open_alert_viewer/releases'>
+        <img height="20" src="https://img.shields.io/github/release/sandpiper-codes/open_alert_viewer.svg?logo=github"></a>
     <a href='https://f-droid.org/en/packages/studio.okcode.open_alert_viewer/'>
         <img height="20" src="https://img.shields.io/f-droid/v/studio.okcode.open_alert_viewer.svg?logo=F-Droid"></a>
     <a href='https://flathub.org/apps/studio.okcode.open_alert_viewer'>
@@ -42,7 +42,7 @@ Basic Authentication; and default authentication for Zabbix 6.x or 7.x.
         <img width='289' height='100' style='display: inline-block' alt='Get it on F-Droid' src='https://sandpiper.codes/assets/img/f-droid-badge-border.png'/></a>
     <a href='https://flathub.org/apps/studio.okcode.open_alert_viewer'>
         <img width='260' height='100' style='display: inline-block' alt='Get it on Flathub' src='https://sandpiper.codes/assets/img/flathub-badge-border.png'/></a>
-    <a href='https://github.com/okcode-studio/open_alert_viewer/releases'>
+    <a href='https://github.com/sandpiper-codes/open_alert_viewer/releases'>
         <img width='260' height='100' style='display: inline-block' alt='Get *.tar.gz and *.deb' src='https://sandpiper.codes/assets/img/generic-badge-border.svg'/></a>
     <a href='https://play.google.com/store/apps/details?id=studio.okcode.open_alert_viewer'>
         <img width='290' height='100' style='display: inline-block' alt='Get it on Google Play' src='https://sandpiper.codes/assets/img/Google-Play-badge-border.png'/></a>
@@ -70,7 +70,7 @@ Basic Authentication; and default authentication for Zabbix 6.x or 7.x.
     * [Google Play](https://play.google.com/store/apps/details?id=studio.okcode.open_alert_viewer)
 * Linux (`x86_64`, `aarch64`)
     * [Flathub](https://flathub.org/apps/studio.okcode.open_alert_viewer)
-    * [.deb and .tar.gz](https://github.com/okcode-studio/open_alert_viewer/releases)
+    * [.deb and .tar.gz](https://github.com/sandpiper-codes/open_alert_viewer/releases)
 * (More planned)
 
 ## Build instructions
@@ -166,7 +166,7 @@ To view debug alerts, create an account with the base URL set to `demo`.
 
 ## Support
 
-* [Issue tracker](https://github.com/okcode-studio/open_alert_viewer/issues)
+* [Issue tracker](https://github.com/sandpiper-codes/open_alert_viewer/issues)
 * [![Chat on Matrix](https://matrix.to/img/matrix-badge.svg)](https://matrix.to/#/#sandpiper-codes:matrix.org)
 
 

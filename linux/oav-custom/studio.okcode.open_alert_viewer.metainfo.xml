@@ -20,9 +20,9 @@
   <url type="homepage">https://sandpiper.codes/apps/open-alert-viewer/</url>
   <url type="donation">https://sandpiper.codes/donate/</url>
   <url type="contact">https://sandpiper.codes/about/</url>
-  <url type="bugtracker">https://github.com/okcode-studio/open_alert_viewer/issues/</url>
-  <url type="contribute">https://github.com/okcode-studio/open_alert_viewer/</url>
-  <url type="vcs-browser">https://github.com/okcode-studio/open_alert_viewer/</url>
+  <url type="bugtracker">https://github.com/sandpiper-codes/open_alert_viewer/issues/</url>
+  <url type="contribute">https://github.com/sandpiper-codes/open_alert_viewer/</url>
+  <url type="vcs-browser">https://github.com/sandpiper-codes/open_alert_viewer/</url>
 
   <recommends>
     <display_length compare="ge">400</display_length>
