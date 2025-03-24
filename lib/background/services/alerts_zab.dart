@@ -83,30 +83,15 @@ class ZabAlerts extends AlertSource {
   }
 
   Future<(List<int>?, List<Alert>?)> _getProblems() async {
-    String query;
-    switch (baseVersion!) {
-      case 6:
-        query = '''{
-          "jsonrpc": "2.0",
-          "auth": "${sourceData.accessToken}",
-          "method": "problem.get",
-          "params": {
-              "output": ["eventid"]
-          },
-          "id": 2
-        }''';
-      case >= 7:
-        query = '''{
-          "jsonrpc": "2.0",
-          "method": "problem.get",
-          "params": {
-              "output": ["eventid"]
-          },
-          "id": 2
-        }''';
-      default:
-        throw Exception("Unsupported Version"); // FIXME: return error list
-    }
+    final query = '''{
+      "jsonrpc": "2.0",
+      ${(baseVersion! < 7) ? "\"auth\": \"${sourceData.accessToken}\"," : ""}
+      "method": "problem.get",
+      "params": {
+          "output": ["eventid"]
+      },
+      "id": 2
+    }''';
     dynamic dataSet;
     List<Alert> errors;
     (dataSet, errors) = await fetchAndDecodeJSON(
@@ -142,36 +127,18 @@ class ZabAlerts extends AlertSource {
   }
 
   Future<List<Alert>> _getAlerts(List<int> eventIDs) async {
-    String query;
-    switch (baseVersion!) {
-      case 6:
-        query = '''{
-          "jsonrpc": "2.0",
-          "auth": "${sourceData.accessToken}",
-          "method": "event.get",
-          "params": {
-            "eventids": $eventIDs,
-            "output": ["name", "clock", "opdata",
-              "severity", "suppressed", "acknowledged"],
-            "selectHosts": ["name", "host"]
-          },
-          "id": 3
-        }''';
-      case >= 7:
-        query = '''{
-          "jsonrpc": "2.0",
-          "method": "event.get",
-          "params": {
-            "eventids": $eventIDs,
-            "output": ["name", "clock", "opdata",
-              "severity", "suppressed", "acknowledged"],
-            "selectHosts": ["name", "host"]
-          },
-          "id": 3
-        }''';
-      default:
-        throw Exception("Unsupported Version"); // FIXME: return error list
-    }
+    final query = '''{
+      "jsonrpc": "2.0",
+      ${(baseVersion! < 7) ? "\"auth\": \"${sourceData.accessToken}\"," : ""}
+      "method": "event.get",
+      "params": {
+        "eventids": $eventIDs,
+        "output": ["name", "clock", "opdata",
+          "severity", "suppressed", "acknowledged"],
+        "selectHosts": ["name", "host"]
+      },
+      "id": 3
+    }''';
     dynamic dataSet;
     List<Alert> errors;
     List<Alert> newAlerts = [];
