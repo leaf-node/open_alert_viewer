@@ -12,8 +12,6 @@ import 'alerts.dart';
 part 'alerts_zab.freezed.dart';
 part 'alerts_zab.g.dart';
 
-enum StatusType { version, events6, events7 }
-
 enum HostMonitored {
   monitored(0),
   unMonitored(1);
@@ -47,88 +45,158 @@ class ZabAlerts extends AlertSource {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
-    final queries = {
-      StatusType.version: '''{
+    List<Alert>? errors = await _getVersion();
+    if (errors?.isNotEmpty ?? false) {
+      return errors!;
+    }
+    List<int>? events;
+    (events, errors) = await _getProblems();
+    if (errors?.isNotEmpty ?? false) {
+      return errors!;
+    }
+    return _getAlerts(events!);
+  }
+
+  Future<List<Alert>?> _getVersion() async {
+    final query = '''{
         "jsonrpc": "2.0",
         "method": "apiinfo.version",
         "params": [],
         "id": 1
-      }''',
-      StatusType.events6: '''{
-        "jsonrpc": "2.0",
-        "auth": "${sourceData.accessToken}",
-        "method": "event.get",
-        "params": {
-          "output": ["name", "clock", "opdata",
-            "severity", "suppressed", "acknowledged"],
-          "selectHosts": ["name", "host"]
-        },
-        "id": 2
-      }''',
-      StatusType.events7: '''{
-        "jsonrpc": "2.0",
-        "method": "event.get",
-        "params": {
-          "output": ["name", "clock", "opdata",
-            "severity", "suppressed", "acknowledged"],
-          "selectHosts": ["name", "host"]
-        },
-        "id": 2
-      }''',
-    };
-    List<Alert> newAlerts = [];
-    for (StatusType key in queries.keys) {
-      dynamic dataSet;
-      List<Alert> errors;
-      if (key == StatusType.version) {
-        (dataSet, errors) = await fetchAndDecodeJSON(
-          endpoint: endpoint,
-          postBody: queries[key],
-          authOverride: true,
-          headers: {"Content-Type": "application/json-rpc"},
-        );
-        if (dataSet == null) {
-          if (errors.isEmpty) {
-            throw Exception("Missing version message after Zabbix error");
-          } else {
-            return errors;
-          }
-        }
-        final data = ZabVersionData.fromJson(dataSet);
-        baseVersion = int.parse(
-          data.result?.substring(0, data.result?.indexOf('.')) ?? "0",
-        );
-      } else if ((key == StatusType.events6 && baseVersion == 6) ||
-          (key == StatusType.events7 && (baseVersion ?? 0) >= 7)) {
-        (dataSet, errors) = await fetchAndDecodeJSON(
-          endpoint: endpoint,
-          postBody: queries[key],
-          authOverride: true,
-          headers: {
-            "Content-Type": "application/json-rpc",
-            "Authorization": "Bearer ${sourceData.accessToken}",
+      }''';
+    dynamic dataSet;
+    List<Alert> errors;
+    (dataSet, errors) = await fetchAndDecodeJSON(
+      endpoint: endpoint,
+      postBody: query,
+      authOverride: true,
+      headers: {"Content-Type": "application/json-rpc"},
+    );
+    if (errors.isNotEmpty) {
+      return errors;
+    }
+    final data = ZabVersionData.fromJson(dataSet);
+    baseVersion = int.parse(
+      data.result?.substring(0, data.result?.indexOf('.')) ?? "0",
+    );
+    return [];
+  }
+
+  Future<(List<int>?, List<Alert>?)> _getProblems() async {
+    String query;
+    switch (baseVersion!) {
+      case 6:
+        query = '''{
+          "jsonrpc": "2.0",
+          "auth": "${sourceData.accessToken}",
+          "method": "problem.get",
+          "params": {
+              "output": ["eventid"]
           },
-        );
-        if (dataSet == null) {
-          if (errors.isEmpty) {
-            throw Exception("Missing alert message after Zabbix error");
-          } else {
-            return errors;
-          }
-        }
-        final data = ZabAlertsData.fromJson(dataSet);
-        if (data.error != null) {
-          return errorFetchingAlerts(
-            sourceData: sourceData,
-            error: "${data.error?.message} - ${data.error?.data}",
-            endpoint: endpoint,
-          );
-        }
-        final dataList = data.result!;
-        for (var entry in dataList) {
-          newAlerts.add(alertHandler(entry));
-        }
+          "id": 2
+        }''';
+      case >= 7:
+        query = '''{
+          "jsonrpc": "2.0",
+          "method": "problem.get",
+          "params": {
+              "output": ["eventid"]
+          },
+          "id": 2
+        }''';
+      default:
+        throw Exception("Unsupported Version"); // FIXME: return error list
+    }
+    dynamic dataSet;
+    List<Alert> errors;
+    (dataSet, errors) = await fetchAndDecodeJSON(
+      endpoint: endpoint,
+      postBody: query,
+      authOverride: true,
+      headers: {
+        "Content-Type": "application/json-rpc",
+        "Authorization": "Bearer ${sourceData.accessToken}",
+      },
+    );
+    if (errors.isNotEmpty) {
+      return (null, errors);
+    }
+    final data = ZabProblemsData.fromJson(dataSet);
+    if (data.error != null) {
+      return (
+        null,
+        errorFetchingAlerts(
+          sourceData: sourceData,
+          error: "${data.error?.message} - ${data.error?.data}",
+          endpoint: endpoint,
+        ),
+      );
+    }
+    List<int> problemEvents = [];
+    for (var entry in data.result!) {
+      if (entry.eventid != null) {
+        problemEvents.add(int.parse(entry.eventid!));
       }
+    }
+    return (problemEvents, null);
+  }
+
+  Future<List<Alert>> _getAlerts(List<int> eventIDs) async {
+    String query;
+    switch (baseVersion!) {
+      case 6:
+        query = '''{
+          "jsonrpc": "2.0",
+          "auth": "${sourceData.accessToken}",
+          "method": "event.get",
+          "params": {
+            "eventids": $eventIDs,
+            "output": ["name", "clock", "opdata",
+              "severity", "suppressed", "acknowledged"],
+            "selectHosts": ["name", "host"]
+          },
+          "id": 3
+        }''';
+      case >= 7:
+        query = '''{
+          "jsonrpc": "2.0",
+          "method": "event.get",
+          "params": {
+            "eventids": $eventIDs,
+            "output": ["name", "clock", "opdata",
+              "severity", "suppressed", "acknowledged"],
+            "selectHosts": ["name", "host"]
+          },
+          "id": 3
+        }''';
+      default:
+        throw Exception("Unsupported Version"); // FIXME: return error list
+    }
+    dynamic dataSet;
+    List<Alert> errors;
+    List<Alert> newAlerts = [];
+    (dataSet, errors) = await fetchAndDecodeJSON(
+      endpoint: endpoint,
+      postBody: query,
+      authOverride: true,
+      headers: {
+        "Content-Type": "application/json-rpc",
+        "Authorization": "Bearer ${sourceData.accessToken}",
+      },
+    );
+    if (errors.isNotEmpty) {
+      return errors;
+    }
+    final data = ZabAlertsData.fromJson(dataSet);
+    if (data.error != null) {
+      return errorFetchingAlerts(
+        sourceData: sourceData,
+        error: "${data.error?.message} - ${data.error?.data}",
+        endpoint: endpoint,
+      );
+    }
+    for (var entry in data.result!) {
+      newAlerts.add(alertHandler(entry));
     }
     return newAlerts;
   }
@@ -220,4 +288,23 @@ abstract class ZabVersionData with _$ZabVersionData {
 
   factory ZabVersionData.fromJson(Map<String, dynamic> json) =>
       _$ZabVersionDataFromJson(json);
+}
+
+@freezed
+abstract class ZabProblemsData with _$ZabProblemsData {
+  const factory ZabProblemsData({
+    List<ZabProblemData>? result,
+    ZabErrorData? error,
+  }) = _ZabProblemsData;
+
+  factory ZabProblemsData.fromJson(Map<String, dynamic> json) =>
+      _$ZabProblemsDataFromJson(json);
+}
+
+@freezed
+abstract class ZabProblemData with _$ZabProblemData {
+  const factory ZabProblemData({String? eventid}) = _ZabProblemData;
+
+  factory ZabProblemData.fromJson(Map<String, dynamic> json) =>
+      _$ZabProblemDataFromJson(json);
 }

@@ -744,4 +744,305 @@ as String?,
 
 }
 
+
+/// @nodoc
+mixin _$ZabProblemsData {
+
+ List<ZabProblemData>? get result; ZabErrorData? get error;
+/// Create a copy of ZabProblemsData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ZabProblemsDataCopyWith<ZabProblemsData> get copyWith => _$ZabProblemsDataCopyWithImpl<ZabProblemsData>(this as ZabProblemsData, _$identity);
+
+  /// Serializes this ZabProblemsData to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ZabProblemsData&&const DeepCollectionEquality().equals(other.result, result)&&(identical(other.error, error) || other.error == error));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(result),error);
+
+@override
+String toString() {
+  return 'ZabProblemsData(result: $result, error: $error)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ZabProblemsDataCopyWith<$Res>  {
+  factory $ZabProblemsDataCopyWith(ZabProblemsData value, $Res Function(ZabProblemsData) _then) = _$ZabProblemsDataCopyWithImpl;
+@useResult
+$Res call({
+ List<ZabProblemData>? result, ZabErrorData? error
+});
+
+
+$ZabErrorDataCopyWith<$Res>? get error;
+
+}
+/// @nodoc
+class _$ZabProblemsDataCopyWithImpl<$Res>
+    implements $ZabProblemsDataCopyWith<$Res> {
+  _$ZabProblemsDataCopyWithImpl(this._self, this._then);
+
+  final ZabProblemsData _self;
+  final $Res Function(ZabProblemsData) _then;
+
+/// Create a copy of ZabProblemsData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? result = freezed,Object? error = freezed,}) {
+  return _then(_self.copyWith(
+result: freezed == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
+as List<ZabProblemData>?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as ZabErrorData?,
+  ));
+}
+/// Create a copy of ZabProblemsData
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ZabErrorDataCopyWith<$Res>? get error {
+    if (_self.error == null) {
+    return null;
+  }
+
+  return $ZabErrorDataCopyWith<$Res>(_self.error!, (value) {
+    return _then(_self.copyWith(error: value));
+  });
+}
+}
+
+
+/// @nodoc
+@JsonSerializable()
+
+class _ZabProblemsData implements ZabProblemsData {
+  const _ZabProblemsData({final  List<ZabProblemData>? result, this.error}): _result = result;
+  factory _ZabProblemsData.fromJson(Map<String, dynamic> json) => _$ZabProblemsDataFromJson(json);
+
+ final  List<ZabProblemData>? _result;
+@override List<ZabProblemData>? get result {
+  final value = _result;
+  if (value == null) return null;
+  if (_result is EqualUnmodifiableListView) return _result;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+@override final  ZabErrorData? error;
+
+/// Create a copy of ZabProblemsData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ZabProblemsDataCopyWith<_ZabProblemsData> get copyWith => __$ZabProblemsDataCopyWithImpl<_ZabProblemsData>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ZabProblemsDataToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ZabProblemsData&&const DeepCollectionEquality().equals(other._result, _result)&&(identical(other.error, error) || other.error == error));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_result),error);
+
+@override
+String toString() {
+  return 'ZabProblemsData(result: $result, error: $error)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ZabProblemsDataCopyWith<$Res> implements $ZabProblemsDataCopyWith<$Res> {
+  factory _$ZabProblemsDataCopyWith(_ZabProblemsData value, $Res Function(_ZabProblemsData) _then) = __$ZabProblemsDataCopyWithImpl;
+@override @useResult
+$Res call({
+ List<ZabProblemData>? result, ZabErrorData? error
+});
+
+
+@override $ZabErrorDataCopyWith<$Res>? get error;
+
+}
+/// @nodoc
+class __$ZabProblemsDataCopyWithImpl<$Res>
+    implements _$ZabProblemsDataCopyWith<$Res> {
+  __$ZabProblemsDataCopyWithImpl(this._self, this._then);
+
+  final _ZabProblemsData _self;
+  final $Res Function(_ZabProblemsData) _then;
+
+/// Create a copy of ZabProblemsData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? result = freezed,Object? error = freezed,}) {
+  return _then(_ZabProblemsData(
+result: freezed == result ? _self._result : result // ignore: cast_nullable_to_non_nullable
+as List<ZabProblemData>?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as ZabErrorData?,
+  ));
+}
+
+/// Create a copy of ZabProblemsData
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ZabErrorDataCopyWith<$Res>? get error {
+    if (_self.error == null) {
+    return null;
+  }
+
+  return $ZabErrorDataCopyWith<$Res>(_self.error!, (value) {
+    return _then(_self.copyWith(error: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$ZabProblemData {
+
+ String? get eventid;
+/// Create a copy of ZabProblemData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ZabProblemDataCopyWith<ZabProblemData> get copyWith => _$ZabProblemDataCopyWithImpl<ZabProblemData>(this as ZabProblemData, _$identity);
+
+  /// Serializes this ZabProblemData to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ZabProblemData&&(identical(other.eventid, eventid) || other.eventid == eventid));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,eventid);
+
+@override
+String toString() {
+  return 'ZabProblemData(eventid: $eventid)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ZabProblemDataCopyWith<$Res>  {
+  factory $ZabProblemDataCopyWith(ZabProblemData value, $Res Function(ZabProblemData) _then) = _$ZabProblemDataCopyWithImpl;
+@useResult
+$Res call({
+ String? eventid
+});
+
+
+
+
+}
+/// @nodoc
+class _$ZabProblemDataCopyWithImpl<$Res>
+    implements $ZabProblemDataCopyWith<$Res> {
+  _$ZabProblemDataCopyWithImpl(this._self, this._then);
+
+  final ZabProblemData _self;
+  final $Res Function(ZabProblemData) _then;
+
+/// Create a copy of ZabProblemData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? eventid = freezed,}) {
+  return _then(_self.copyWith(
+eventid: freezed == eventid ? _self.eventid : eventid // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// @nodoc
+@JsonSerializable()
+
+class _ZabProblemData implements ZabProblemData {
+  const _ZabProblemData({this.eventid});
+  factory _ZabProblemData.fromJson(Map<String, dynamic> json) => _$ZabProblemDataFromJson(json);
+
+@override final  String? eventid;
+
+/// Create a copy of ZabProblemData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ZabProblemDataCopyWith<_ZabProblemData> get copyWith => __$ZabProblemDataCopyWithImpl<_ZabProblemData>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ZabProblemDataToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ZabProblemData&&(identical(other.eventid, eventid) || other.eventid == eventid));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,eventid);
+
+@override
+String toString() {
+  return 'ZabProblemData(eventid: $eventid)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ZabProblemDataCopyWith<$Res> implements $ZabProblemDataCopyWith<$Res> {
+  factory _$ZabProblemDataCopyWith(_ZabProblemData value, $Res Function(_ZabProblemData) _then) = __$ZabProblemDataCopyWithImpl;
+@override @useResult
+$Res call({
+ String? eventid
+});
+
+
+
+
+}
+/// @nodoc
+class __$ZabProblemDataCopyWithImpl<$Res>
+    implements _$ZabProblemDataCopyWith<$Res> {
+  __$ZabProblemDataCopyWithImpl(this._self, this._then);
+
+  final _ZabProblemData _self;
+  final $Res Function(_ZabProblemData) _then;
+
+/// Create a copy of ZabProblemData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? eventid = freezed,}) {
+  return _then(_ZabProblemData(
+eventid: freezed == eventid ? _self.eventid : eventid // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
 // dart format on

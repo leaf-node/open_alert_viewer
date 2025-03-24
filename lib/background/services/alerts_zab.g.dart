@@ -66,3 +66,24 @@ _ZabVersionData _$ZabVersionDataFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ZabVersionDataToJson(_ZabVersionData instance) =>
     <String, dynamic>{'result': instance.result};
+
+_ZabProblemsData _$ZabProblemsDataFromJson(Map<String, dynamic> json) =>
+    _ZabProblemsData(
+      result:
+          (json['result'] as List<dynamic>?)
+              ?.map((e) => ZabProblemData.fromJson(e as Map<String, dynamic>))
+              .toList(),
+      error:
+          json['error'] == null
+              ? null
+              : ZabErrorData.fromJson(json['error'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$ZabProblemsDataToJson(_ZabProblemsData instance) =>
+    <String, dynamic>{'result': instance.result, 'error': instance.error};
+
+_ZabProblemData _$ZabProblemDataFromJson(Map<String, dynamic> json) =>
+    _ZabProblemData(eventid: json['eventid'] as String?);
+
+Map<String, dynamic> _$ZabProblemDataToJson(_ZabProblemData instance) =>
+    <String, dynamic>{'eventid': instance.eventid};
