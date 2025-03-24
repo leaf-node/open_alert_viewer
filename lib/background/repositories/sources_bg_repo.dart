@@ -159,7 +159,7 @@ class SourcesBackgroundRepo with NetworkFetch {
   void updateLastSeen() {
     _settings.lastSeen = _settings.lastFetched;
     for (var source in alertSources) {
-      if (!source.failing) {
+      if (!source.failing && source.visible) {
         var sourceData = source.copyWith(lastSeen: _settings.lastFetched);
         _updateSource(sourceData: sourceData);
       }
