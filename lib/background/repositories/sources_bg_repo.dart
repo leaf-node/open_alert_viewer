@@ -372,7 +372,9 @@ class SourcesBackgroundRepo with NetworkFetch {
       } on SocketException catch (e) {
         sourceData = sourceData.copyWith(errorMessage: e.message);
       } on HandshakeException catch (e) {
-        sourceData = sourceData.copyWith(errorMessage: e.message);
+        sourceData = sourceData.copyWith(
+          errorMessage: "${e.message} - ${e.osError?.message.trim()}",
+        );
       } on FormatException catch (e) {
         sourceData = sourceData.copyWith(errorMessage: e.message);
       } on ClientException catch (e) {
