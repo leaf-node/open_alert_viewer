@@ -7,7 +7,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../domain/alerts.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../cubit/root_settings_cubit.dart';
 import '../view/account_editing_screen.dart';
@@ -250,12 +249,12 @@ class _SettingsCheckBoxEnumValueState extends State<SettingsCheckBoxEnumValue> {
 
 void openAccountEditor({
   required BuildContext context,
-  required AlertSourceData? source,
+  required int? sourceID,
   required bool popAgainOnRemoval,
 }) {
   Navigator.of(
     context,
-  ).push<bool?>(AccountEditingScreen.route(source: source)).then((result) {
+  ).push<bool?>(AccountEditingScreen.route(sourceID: sourceID)).then((result) {
     if (context.mounted) {
       if (result == true) {
         context.read<RootSettingsCubit>().accountUpdated();

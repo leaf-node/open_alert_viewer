@@ -8,23 +8,24 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_alert_viewer/ui/settings/cubit/account_editing_state.dart';
 
+import '../../../data/repositories/account_repo.dart';
 import '../../../data/services/network_fetch.dart';
 import '../../../domain/alerts.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../cubit/account_editing_cubit.dart';
+import '../cubit/account_editing_state.dart';
 import '../widgets/settings_widgets.dart';
 
 class AccountEditingScreen extends StatefulWidget {
-  const AccountEditingScreen({super.key, required this.source});
+  const AccountEditingScreen({super.key, required this.sourceID});
 
   final String title = "Edit Account";
-  final AlertSourceData? source;
+  final int? sourceID;
 
-  static Route<bool?> route({required AlertSourceData? source}) {
+  static Route<bool?> route({required int? sourceID}) {
     return MaterialPageRoute<bool?>(
-      builder: (_) => AccountEditingScreen(source: source),
+      builder: (_) => AccountEditingScreen(sourceID: sourceID),
     );
   }
 
@@ -51,11 +52,13 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
   bool systemIsUpdatingValues = false;
   AccountEditingCubit? cubit;
   bool? isValid;
+  AlertSourceData? originalSource;
 
   @override
   void initState() {
+    originalSource = context.read<AccountsRepo>().getSource(widget.sourceID);
     super.initState();
-    if (widget.source == null) {
+    if (originalSource == null) {
       nameController.text = "";
       typeController.text = "0";
       baseURLController.text = "";
@@ -64,13 +67,13 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
       accessTokenController.text = "";
       isValid = null;
     } else {
-      nameController.text = widget.source!.name;
-      typeController.text = widget.source!.type.toString();
-      baseURLController.text = widget.source!.baseURL;
-      userController.text = widget.source!.username;
-      passwordController.text = widget.source!.password;
-      accessTokenController.text = widget.source!.accessToken;
-      isValid = widget.source!.isValid;
+      nameController.text = originalSource!.name;
+      typeController.text = originalSource!.type.toString();
+      baseURLController.text = originalSource!.baseURL;
+      userController.text = originalSource!.username;
+      passwordController.text = originalSource!.password;
+      accessTokenController.text = originalSource!.accessToken;
+      isValid = originalSource!.isValid;
     }
     cubit = context.read<AccountEditingCubit>();
   }
@@ -89,10 +92,10 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
 
   AlertSourceDataUpdate get newSourceData {
     int? id;
-    if (widget.source == null) {
+    if (originalSource == null) {
       id = null;
     } else {
-      id = widget.source!.id;
+      id = originalSource!.id;
     }
     return AlertSourceDataUpdate(
       id: id,
@@ -123,7 +126,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
   }
 
   bool didDataChange() {
-    final sourceData = widget.source;
+    final sourceData = originalSource;
     if (nameController.text == (sourceData?.name ?? "") &&
         typeController.text == (sourceData?.type.toString() ?? "0") &&
         baseURLController.text == (sourceData?.baseURL ?? "") &&
@@ -190,7 +193,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
                         title: "Account Name",
                         controller: nameController,
                         validator: cubit!.generateAccountNameValidator(
-                          widget.source?.id,
+                          originalSource?.id,
                         ),
                       ),
                       AccountField(
@@ -251,10 +254,10 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
       child: Center(
         child: ElevatedButton(
           onPressed: () async {
-            if (widget.source != null) {
+            if (originalSource != null) {
               bool keep = await noRemoveDialog(context: context) ?? true;
               if (context.mounted && !keep) {
-                cubit!.removeSource(widget.source!.id!);
+                cubit!.removeSource(originalSource!.id!);
                 Navigator.of(context).pop(false);
               }
             } else {
@@ -266,7 +269,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
           },
           child: Text(
             () {
-              if (widget.source == null) {
+              if (originalSource == null) {
                 return "Cancel";
               } else {
                 return "Remove Account";
@@ -283,7 +286,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
   }
 
   Widget acceptButton({required BuildContext context, required bool isValid}) {
-    cubit!.setAcceptButtonText(widget.source, isValid);
+    cubit!.setAcceptButtonText(originalSource, isValid);
     return BlocBuilder<AccountEditingCubit, AccountEditingState>(
       builder: (context, state) {
         return Expanded(
@@ -301,7 +304,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
                               checkNow: true,
                             );
                           } else {
-                            if (widget.source == null) {
+                            if (originalSource == null) {
                               cubit!.addSource(newSourceData);
                             } else {
                               cubit!.updateSource(newSourceData);
