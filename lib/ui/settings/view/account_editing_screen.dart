@@ -22,8 +22,8 @@ class AccountEditingScreen extends StatefulWidget {
   final String title = "Edit Account";
   final AlertSourceData? source;
 
-  static Route<void> route({required AlertSourceData? source}) {
-    return MaterialPageRoute<void>(
+  static Route<bool?> route({required AlertSourceData? source}) {
+    return MaterialPageRoute<bool?>(
       builder: (_) => AccountEditingScreen(source: source),
     );
   }

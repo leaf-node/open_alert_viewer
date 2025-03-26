@@ -251,12 +251,17 @@ class _SettingsCheckBoxEnumValueState extends State<SettingsCheckBoxEnumValue> {
 void openAccountEditor({
   required BuildContext context,
   required AlertSourceData? source,
+  required bool popAgainOnRemoval,
 }) {
-  Navigator.of(context).push(AccountEditingScreen.route(source: source)).then((
-    result,
-  ) {
-    if ((result as bool? ?? false) && context.mounted) {
-      context.read<RootSettingsCubit>().accountUpdated();
+  Navigator.of(
+    context,
+  ).push<bool?>(AccountEditingScreen.route(source: source)).then((result) {
+    if (context.mounted) {
+      if (result == true) {
+        context.read<RootSettingsCubit>().accountUpdated();
+      } else if (popAgainOnRemoval && result == false) {
+        Navigator.of(context).pop();
+      }
     }
   });
 }

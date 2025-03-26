@@ -52,6 +52,7 @@ class AccountSettingsScreen extends StatelessWidget {
                       () => openAccountEditor(
                         context: context,
                         source: state.source,
+                        popAgainOnRemoval: true,
                       ),
                 ),
                 MenuItem(

@@ -101,7 +101,12 @@ class SettingsList extends StatelessWidget {
             MenuItem(
               icon: Icons.add,
               title: "Add new account",
-              onTap: () => openAccountEditor(context: context, source: null),
+              onTap:
+                  () => openAccountEditor(
+                    context: context,
+                    source: null,
+                    popAgainOnRemoval: false,
+                  ),
             ),
           ],
         );
