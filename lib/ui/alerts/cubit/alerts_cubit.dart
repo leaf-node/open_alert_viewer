@@ -14,7 +14,6 @@ import '../../../data/repositories/account_repo.dart';
 import '../../../data/repositories/alerts_repo.dart';
 import '../../../data/repositories/settings_repo.dart';
 import '../../../domain/alerts.dart';
-import '../../../domain/navigation.dart';
 import 'alerts_state.dart';
 
 class AlertsCubit extends Cubit<AlertsCubitState> {
@@ -22,12 +21,10 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     required BackgroundChannel bgChannel,
     required AlertsRepo alertsRepo,
     required AccountsRepo accounts,
-    required Navigation navigation,
     required SettingsRepo settings,
   }) : _bgChannel = bgChannel,
        _alertsRepo = alertsRepo,
        _accounts = accounts,
-       _navigation = navigation,
        _settings = settings,
        super(AlertsCubitState.init()) {
     _state = state;
@@ -41,7 +38,6 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
   final BackgroundChannel _bgChannel;
   final AlertsRepo _alertsRepo;
   final AccountsRepo _accounts;
-  final Navigation _navigation;
   final SettingsRepo _settings;
 
   Future<void> _refreshState() async {
@@ -80,14 +76,6 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
     );
     _updateAlertsState();
     emit(_state!);
-  }
-
-  void openRootSettings() {
-    _navigation.goTo(Screens.rootSettings);
-  }
-
-  void openGeneralSettings() {
-    _navigation.goTo(Screens.generalSettings);
   }
 
   Future<void> onTapRefresh() async {

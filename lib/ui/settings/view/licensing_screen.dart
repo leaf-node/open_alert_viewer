@@ -6,25 +6,22 @@
 
 import 'dart:developer';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../domain/navigation.dart';
 import '../widgets/settings_widgets.dart';
 import '../../../oss_licenses.dart';
+import 'licensing_details_screen.dart';
 
 class LicensingScreen extends StatelessWidget {
-  const LicensingScreen({super.key, required this.title});
+  const LicensingScreen({super.key});
 
-  final String title;
+  final String title = "License Information";
 
-  static Route<void> route({required String title}) {
-    return MaterialPageRoute<void>(
-      builder: (_) => LicensingScreen(title: title),
-    );
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => LicensingScreen());
   }
 
   @override
@@ -124,10 +121,9 @@ class LicenseTitle extends StatelessWidget {
       leading: Icon(Icons.link_outlined),
       title: Text(dependency.name),
       onTap:
-          () => context.read<Navigation>().goTo(
-            Screens.licensingDetails,
-            dependency,
-          ),
+          () => Navigator.of(
+            context,
+          ).push(LicensingDetailsScreen.route(dependency: dependency)),
     );
   }
 }

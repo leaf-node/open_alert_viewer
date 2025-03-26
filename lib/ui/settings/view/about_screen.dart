@@ -7,20 +7,20 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/repositories/settings_repo.dart';
-import '../../../domain/navigation.dart';
 import '../widgets/settings_widgets.dart';
+import 'licensing_screen.dart';
+import 'privacy_screen.dart';
 
 class AboutScreen extends StatelessWidget {
-  const AboutScreen({super.key, required this.title});
+  const AboutScreen({super.key});
 
-  final String title;
+  final String title = "About Open Alert Viewer";
 
-  static Route<void> route({required title}) {
-    return MaterialPageRoute<void>(builder: (_) => AboutScreen(title: title));
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => AboutScreen());
   }
 
   @override
@@ -43,14 +43,14 @@ class AboutList extends StatelessWidget {
           icon: Icons.article_outlined,
           title: "App and License Info",
           onTap: () async {
-            context.read<Navigation>().goTo(Screens.licensing);
+            Navigator.of(context).push(LicensingScreen.route());
           },
         ),
         MenuItem(
           icon: Icons.person_search_outlined,
           title: "Privacy Policy",
           onTap: () async {
-            context.read<Navigation>().goTo(Screens.privacy);
+            Navigator.of(context).push(PrivacyScreen.route());
           },
         ),
         MenuItem(

@@ -14,12 +14,12 @@ import 'package:url_launcher/url_launcher.dart';
 import '../widgets/settings_widgets.dart';
 
 class PrivacyScreen extends StatelessWidget {
-  const PrivacyScreen({super.key, required this.title});
+  const PrivacyScreen({super.key});
 
-  final String title;
+  final String title = "Privacy Policy";
 
-  static Route<void> route({required String title}) {
-    return MaterialPageRoute<void>(builder: (_) => PrivacyScreen(title: title));
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => PrivacyScreen());
   }
 
   @override

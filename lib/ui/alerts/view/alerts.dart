@@ -5,12 +5,11 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprintf/sprintf.dart';
 
-import '../../../domain/navigation.dart';
 import '../../../utils/utils.dart';
 import '../../../domain/alerts.dart';
+import 'alert_details_screen.dart';
 
 enum AlertTypeView {
   okay(
@@ -158,7 +157,9 @@ class AlertWidget extends StatelessWidget {
               ? null
               : () {
                 if (context.mounted) {
-                  context.read<Navigation>().goTo(Screens.alertDetails, alert);
+                  Navigator.of(
+                    context,
+                  ).push(AlertDetailsScreen.route(alert: alert));
                 }
               },
     );

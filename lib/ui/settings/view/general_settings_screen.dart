@@ -17,18 +17,14 @@ import '../cubit/general_settings_state.dart';
 import '../widgets/settings_widgets.dart';
 
 class GeneralSettingsScreen extends StatelessWidget {
-  const GeneralSettingsScreen({
-    super.key,
-    required this.title,
-    required this.cubit,
-  });
+  const GeneralSettingsScreen({super.key, required this.cubit});
 
-  final String title;
+  final String title = "General Settings";
   final GeneralSettingsCubit cubit;
 
-  static Route<void> route({required title, required cubit}) {
+  static Route<void> route({required cubit}) {
     return MaterialPageRoute<void>(
-      builder: (_) => GeneralSettingsScreen(title: title, cubit: cubit),
+      builder: (_) => GeneralSettingsScreen(cubit: cubit),
     );
   }
 

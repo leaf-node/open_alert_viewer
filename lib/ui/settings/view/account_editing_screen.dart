@@ -17,21 +17,14 @@ import '../cubit/account_editing_cubit.dart';
 import '../widgets/settings_widgets.dart';
 
 class AccountEditingScreen extends StatefulWidget {
-  const AccountEditingScreen({
-    super.key,
-    required this.title,
-    required this.source,
-  });
+  const AccountEditingScreen({super.key, required this.source});
 
-  final String title;
+  final String title = "Edit Account";
   final AlertSourceData? source;
 
-  static Route<void> route({
-    required String title,
-    required AlertSourceData? source,
-  }) {
+  static Route<void> route({required AlertSourceData? source}) {
     return MaterialPageRoute<void>(
-      builder: (_) => AccountEditingScreen(title: title, source: source),
+      builder: (_) => AccountEditingScreen(source: source),
     );
   }
 

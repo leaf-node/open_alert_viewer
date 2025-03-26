@@ -6,23 +6,24 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_alert_viewer/ui/settings/cubit/general_settings_cubit.dart';
+import 'package:open_alert_viewer/ui/settings/view/general_settings_screen.dart';
 
 import '../../../domain/alerts.dart';
-import '../../../domain/navigation.dart';
 import '../../core/widgets/shared_widgets.dart';
 import '../cubit/root_settings_cubit.dart';
 import '../cubit/root_settings_state.dart';
 import '../widgets/settings_widgets.dart';
+import 'about_screen.dart';
+import 'account_settings_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key, required this.title});
+  const SettingsScreen({super.key});
 
-  final String title;
+  final String title = "Settings";
 
-  static Route<void> route({required title}) {
-    return MaterialPageRoute<void>(
-      builder: (_) => SettingsScreen(title: title),
-    );
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => SettingsScreen());
   }
 
   @override
@@ -68,13 +69,16 @@ class SettingsList extends StatelessWidget {
               icon: Icons.settings,
               title: "General Settings",
               onTap:
-                  () =>
-                      context.read<Navigation>().goTo(Screens.generalSettings),
+                  () => Navigator.of(context).push(
+                    GeneralSettingsScreen.route(
+                      cubit: context.read<GeneralSettingsCubit>(),
+                    ),
+                  ),
             ),
             MenuItem(
               icon: Icons.info_outline,
               title: "About App",
-              onTap: () => context.read<Navigation>().goTo(Screens.about),
+              onTap: () => Navigator.of(context).push(AboutScreen.route()),
             ),
             const MenuHeaderTile(title: "Accounts"),
             for (AlertSourceData account in state.sources)
@@ -90,19 +94,14 @@ class SettingsList extends StatelessWidget {
                 ),
                 title: account.name,
                 onTap:
-                    () => context.read<Navigation>().goTo(
-                      Screens.accountSettings,
-                      account.id,
-                    ),
+                    () => Navigator.of(
+                      context,
+                    ).push(AccountSettingsScreen.route(sourceId: account.id!)),
               ),
             MenuItem(
               icon: Icons.add,
               title: "Add new account",
-              onTap:
-                  () => context.read<Navigation>().goTo(
-                    Screens.accountEditing,
-                    null,
-                  ),
+              onTap: () => openAccountEditor(context: context, source: null),
             ),
           ],
         );

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppState {
 
- Screens get screen; bool get screenPushed; int get timestamp; Object? get data; bool? get darkMode;
+ bool? get darkMode;
 /// Create a copy of AppState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $AppStateCopyWith<AppState> get copyWith => _$AppStateCopyWithImpl<AppState>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppState&&(identical(other.screen, screen) || other.screen == screen)&&(identical(other.screenPushed, screenPushed) || other.screenPushed == screenPushed)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&const DeepCollectionEquality().equals(other.data, data)&&(identical(other.darkMode, darkMode) || other.darkMode == darkMode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppState&&(identical(other.darkMode, darkMode) || other.darkMode == darkMode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,screen,screenPushed,timestamp,const DeepCollectionEquality().hash(data),darkMode);
+int get hashCode => Object.hash(runtimeType,darkMode);
 
 @override
 String toString() {
-  return 'AppState(screen: $screen, screenPushed: $screenPushed, timestamp: $timestamp, data: $data, darkMode: $darkMode)';
+  return 'AppState(darkMode: $darkMode)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $AppStateCopyWith<$Res>  {
   factory $AppStateCopyWith(AppState value, $Res Function(AppState) _then) = _$AppStateCopyWithImpl;
 @useResult
 $Res call({
- Screens screen, bool screenPushed, int timestamp, Object? data, bool? darkMode
+ bool? darkMode
 });
 
 
@@ -63,12 +63,9 @@ class _$AppStateCopyWithImpl<$Res>
 
 /// Create a copy of AppState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? screen = null,Object? screenPushed = null,Object? timestamp = null,Object? data = freezed,Object? darkMode = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? darkMode = freezed,}) {
   return _then(_self.copyWith(
-screen: null == screen ? _self.screen : screen // ignore: cast_nullable_to_non_nullable
-as Screens,screenPushed: null == screenPushed ? _self.screenPushed : screenPushed // ignore: cast_nullable_to_non_nullable
-as bool,timestamp: null == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
-as int,data: freezed == data ? _self.data : data ,darkMode: freezed == darkMode ? _self.darkMode : darkMode // ignore: cast_nullable_to_non_nullable
+darkMode: freezed == darkMode ? _self.darkMode : darkMode // ignore: cast_nullable_to_non_nullable
 as bool?,
   ));
 }
@@ -80,13 +77,9 @@ as bool?,
 
 
 class _AppState implements AppState {
-  const _AppState({required this.screen, required this.screenPushed, required this.timestamp, this.data, this.darkMode});
+  const _AppState({this.darkMode});
   
 
-@override final  Screens screen;
-@override final  bool screenPushed;
-@override final  int timestamp;
-@override final  Object? data;
 @override final  bool? darkMode;
 
 /// Create a copy of AppState
@@ -99,16 +92,16 @@ _$AppStateCopyWith<_AppState> get copyWith => __$AppStateCopyWithImpl<_AppState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppState&&(identical(other.screen, screen) || other.screen == screen)&&(identical(other.screenPushed, screenPushed) || other.screenPushed == screenPushed)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&const DeepCollectionEquality().equals(other.data, data)&&(identical(other.darkMode, darkMode) || other.darkMode == darkMode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppState&&(identical(other.darkMode, darkMode) || other.darkMode == darkMode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,screen,screenPushed,timestamp,const DeepCollectionEquality().hash(data),darkMode);
+int get hashCode => Object.hash(runtimeType,darkMode);
 
 @override
 String toString() {
-  return 'AppState(screen: $screen, screenPushed: $screenPushed, timestamp: $timestamp, data: $data, darkMode: $darkMode)';
+  return 'AppState(darkMode: $darkMode)';
 }
 
 
@@ -119,7 +112,7 @@ abstract mixin class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res>
   factory _$AppStateCopyWith(_AppState value, $Res Function(_AppState) _then) = __$AppStateCopyWithImpl;
 @override @useResult
 $Res call({
- Screens screen, bool screenPushed, int timestamp, Object? data, bool? darkMode
+ bool? darkMode
 });
 
 
@@ -136,12 +129,9 @@ class __$AppStateCopyWithImpl<$Res>
 
 /// Create a copy of AppState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? screen = null,Object? screenPushed = null,Object? timestamp = null,Object? data = freezed,Object? darkMode = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? darkMode = freezed,}) {
   return _then(_AppState(
-screen: null == screen ? _self.screen : screen // ignore: cast_nullable_to_non_nullable
-as Screens,screenPushed: null == screenPushed ? _self.screenPushed : screenPushed // ignore: cast_nullable_to_non_nullable
-as bool,timestamp: null == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
-as int,data: freezed == data ? _self.data : data ,darkMode: freezed == darkMode ? _self.darkMode : darkMode // ignore: cast_nullable_to_non_nullable
+darkMode: freezed == darkMode ? _self.darkMode : darkMode // ignore: cast_nullable_to_non_nullable
 as bool?,
   ));
 }

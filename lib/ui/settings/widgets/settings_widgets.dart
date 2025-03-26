@@ -5,8 +5,12 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../domain/alerts.dart';
 import '../../core/widgets/shared_widgets.dart';
+import '../cubit/root_settings_cubit.dart';
+import '../view/account_editing_screen.dart';
 
 class MenuItem extends StatelessWidget {
   const MenuItem({
@@ -242,4 +246,17 @@ class _SettingsCheckBoxEnumValueState extends State<SettingsCheckBoxEnumValue> {
       },
     );
   }
+}
+
+void openAccountEditor({
+  required BuildContext context,
+  required AlertSourceData? source,
+}) {
+  Navigator.of(context).push(AccountEditingScreen.route(source: source)).then((
+    result,
+  ) {
+    if ((result as bool? ?? false) && context.mounted) {
+      context.read<RootSettingsCubit>().accountUpdated();
+    }
+  });
 }

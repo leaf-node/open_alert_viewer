@@ -10,17 +10,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/widgets/shared_widgets.dart';
+import '../../settings/cubit/general_settings_cubit.dart';
+import '../../settings/view/general_settings_screen.dart';
+import '../../settings/view/root_settings_screen.dart';
 import '../cubit/alerts_cubit.dart';
 import '../cubit/alerts_state.dart';
 import 'alerts.dart';
 
 class AlertsScreen extends StatelessWidget {
-  const AlertsScreen({super.key, required this.title});
+  const AlertsScreen({super.key});
 
-  final String title;
+  final String title = "Open Alert Viewer";
 
-  static Route<void> route({required title}) {
-    return MaterialPageRoute<void>(builder: (_) => AlertsScreen(title: title));
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => AlertsScreen());
   }
 
   @override
@@ -50,28 +53,28 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
             state.showVisibilityStatusWidget
                 ? HeaderButton(
                   icon: Icons.visibility_off,
-                  onPressed: cubit.openRootSettings,
+                  onPressed: () => _openRootSettings(context),
                 )
                 : Container();
         notificationsStatusWidget =
             state.showNotificationStatusWidget
                 ? HeaderButton(
                   icon: Icons.notifications_off,
-                  onPressed: cubit.openRootSettings,
+                  onPressed: () => _openRootSettings(context),
                 )
                 : Container();
         soundStatusWidget =
             state.showSoundStatusWidget
                 ? HeaderButton(
                   icon: Icons.music_off_outlined,
-                  onPressed: cubit.openGeneralSettings,
+                  onPressed: () => _openGeneralSettings(context),
                 )
                 : Container();
         filterStatusWidget =
             state.showFilterStatusWidget
                 ? HeaderButton(
                   icon: Icons.filter_alt_off_outlined,
-                  onPressed: cubit.openGeneralSettings,
+                  onPressed: () => _openGeneralSettings(context),
                 )
                 : Container();
         return AppBar(
@@ -79,7 +82,7 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
           foregroundColor: Theme.of(context).colorScheme.onPrimary,
           leading: HeaderButton(
             icon: Icons.menu,
-            onPressed: cubit.openRootSettings,
+            onPressed: () => _openRootSettings(context),
           ),
           title: Text(title),
           actions: [
@@ -99,6 +102,16 @@ class AlertsHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  void _openRootSettings(BuildContext context) {
+    Navigator.of(context).push(SettingsScreen.route());
+  }
+
+  void _openGeneralSettings(BuildContext context) {
+    Navigator.of(context).push(
+      GeneralSettingsScreen.route(cubit: context.read<GeneralSettingsCubit>()),
+    );
+  }
 }
 
 class AlertsList extends StatefulWidget {

@@ -10,23 +10,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/repositories/account_repo.dart';
 import '../../../data/repositories/notifications_repo.dart';
 import '../../../data/repositories/settings_repo.dart';
-import '../../../domain/navigation.dart';
 import '../cubit/account_settings_cubit.dart';
 import '../widgets/settings_widgets.dart';
 
 class AccountSettingsScreen extends StatelessWidget {
-  const AccountSettingsScreen({
-    super.key,
-    required this.title,
-    required this.sourceId,
-  });
+  const AccountSettingsScreen({super.key, required this.sourceId});
 
-  final String title;
+  final String title = "Account Settings";
   final int sourceId;
 
-  static Route<void> route({required String title, required int sourceId}) {
+  static Route<void> route({required int sourceId}) {
     return MaterialPageRoute<void>(
-      builder: (_) => AccountSettingsScreen(title: title, sourceId: sourceId),
+      builder: (_) => AccountSettingsScreen(sourceId: sourceId),
     );
   }
 
@@ -54,9 +49,9 @@ class AccountSettingsScreen extends StatelessWidget {
                   title: "Edit Account Details",
                   icon: Icons.edit,
                   onTap:
-                      () => context.read<Navigation>().goTo(
-                        Screens.accountEditing,
-                        state.source,
+                      () => openAccountEditor(
+                        context: context,
+                        source: state.source,
                       ),
                 ),
                 MenuItem(

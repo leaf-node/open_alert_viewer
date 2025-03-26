@@ -18,16 +18,16 @@ import '../cubit/alert_details_cubit.dart';
 import 'alerts.dart';
 
 class AlertDetailsScreen extends StatelessWidget {
-  AlertDetailsScreen({super.key, required this.title, required this.alert})
+  AlertDetailsScreen({super.key, required this.alert})
     : _viewKind = alert.viewKind;
 
-  final String title;
+  final String title = "Details";
   final Alert alert;
   final AlertTypeView _viewKind;
 
-  static Route<void> route({required String title, required Alert alert}) {
+  static Route<void> route({required Alert alert}) {
     return MaterialPageRoute<void>(
-      builder: (_) => AlertDetailsScreen(title: title, alert: alert),
+      builder: (_) => AlertDetailsScreen(alert: alert),
     );
   }
 
