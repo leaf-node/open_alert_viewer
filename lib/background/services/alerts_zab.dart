@@ -20,7 +20,7 @@ enum HostMonitored {
   final int value;
 }
 
-enum Severity {
+enum ZabSeverity {
   okay(-1, AlertType.okay),
   notClassified(0, AlertType.unknown),
   information(1, AlertType.okay),
@@ -29,7 +29,7 @@ enum Severity {
   high(4, AlertType.error),
   disaster(5, AlertType.error);
 
-  const Severity(this.value, this.alertType);
+  const ZabSeverity(this.value, this.alertType);
   final int value;
   final AlertType alertType;
 }
@@ -169,17 +169,13 @@ class ZabAlerts extends AlertSource {
   }
 
   Alert alertHandler(ZabAlertData alertData) {
-    AlertType kind;
     final severity = int.parse(alertData.severity!);
-    if (severity >= 4) {
-      kind = AlertType.error;
-    } else if (severity >= 2) {
-      kind = AlertType.warning;
-    } else if (severity >= 0) {
-      kind = AlertType.okay;
-    } else {
-      kind = AlertType.unknown;
-    }
+    AlertType kind =
+        ZabSeverity.values
+            .where((e) => e.value == severity)
+            .firstOrNull
+            ?.alertType ??
+        AlertType.unknown;
     ZabHostsData? host = alertData.hosts?.firstOrNull;
     String hostDomain = host?.host ?? host?.name ?? "";
     String hostName = host?.name ?? host?.host ?? "";
