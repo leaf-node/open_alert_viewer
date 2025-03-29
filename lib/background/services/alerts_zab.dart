@@ -21,7 +21,6 @@ enum HostMonitored {
 }
 
 enum ZabSeverity {
-  okay(-1, AlertType.okay),
   notClassified(0, AlertType.unknown),
   information(1, AlertType.okay),
   warning(2, AlertType.warning),
