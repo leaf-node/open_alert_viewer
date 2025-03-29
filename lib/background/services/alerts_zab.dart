@@ -12,14 +12,6 @@ import 'alerts.dart';
 part 'alerts_zab.freezed.dart';
 part 'alerts_zab.g.dart';
 
-enum HostMonitored {
-  monitored(0),
-  unMonitored(1);
-
-  const HostMonitored(this.value);
-  final int value;
-}
-
 enum ZabSeverity {
   notClassified(0, AlertType.unknown),
   information(1, AlertType.okay),
