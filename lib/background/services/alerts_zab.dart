@@ -167,7 +167,7 @@ class ZabAlerts extends AlertSource {
             .firstOrNull
             ?.alertType ??
         AlertType.unknown;
-    ZabHostsData host;
+    ZabHostData host;
     List<Alert> newAlerts = [];
     for (host in alertData.hosts ?? []) {
       String hostDomain = host.host ?? host.name ?? "";
@@ -219,7 +219,7 @@ abstract class ZabAlertData with _$ZabAlertData {
     String? severity,
     String? suppressed,
     String? acknowledged,
-    List<ZabHostsData>? hosts,
+    List<ZabHostData>? hosts,
   }) = _ZabAlertData;
 
   factory ZabAlertData.fromJson(Map<String, dynamic> json) =>
@@ -227,11 +227,11 @@ abstract class ZabAlertData with _$ZabAlertData {
 }
 
 @freezed
-abstract class ZabHostsData with _$ZabHostsData {
-  const factory ZabHostsData({String? host, String? name}) = _ZabHostsData;
+abstract class ZabHostData with _$ZabHostData {
+  const factory ZabHostData({String? host, String? name}) = _ZabHostData;
 
-  factory ZabHostsData.fromJson(Map<String, dynamic> json) =>
-      _$ZabHostsDataFromJson(json);
+  factory ZabHostData.fromJson(Map<String, dynamic> json) =>
+      _$ZabHostDataFromJson(json);
 }
 
 @freezed

@@ -184,7 +184,7 @@ $ZabErrorDataCopyWith<$Res>? get error {
 /// @nodoc
 mixin _$ZabAlertData {
 
- String? get name; String? get clock; String? get opdata; String? get severity; String? get suppressed; String? get acknowledged; List<ZabHostsData>? get hosts;
+ String? get name; String? get clock; String? get opdata; String? get severity; String? get suppressed; String? get acknowledged; List<ZabHostData>? get hosts;
 /// Create a copy of ZabAlertData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -217,7 +217,7 @@ abstract mixin class $ZabAlertDataCopyWith<$Res>  {
   factory $ZabAlertDataCopyWith(ZabAlertData value, $Res Function(ZabAlertData) _then) = _$ZabAlertDataCopyWithImpl;
 @useResult
 $Res call({
- String? name, String? clock, String? opdata, String? severity, String? suppressed, String? acknowledged, List<ZabHostsData>? hosts
+ String? name, String? clock, String? opdata, String? severity, String? suppressed, String? acknowledged, List<ZabHostData>? hosts
 });
 
 
@@ -243,7 +243,7 @@ as String?,severity: freezed == severity ? _self.severity : severity // ignore: 
 as String?,suppressed: freezed == suppressed ? _self.suppressed : suppressed // ignore: cast_nullable_to_non_nullable
 as String?,acknowledged: freezed == acknowledged ? _self.acknowledged : acknowledged // ignore: cast_nullable_to_non_nullable
 as String?,hosts: freezed == hosts ? _self.hosts : hosts // ignore: cast_nullable_to_non_nullable
-as List<ZabHostsData>?,
+as List<ZabHostData>?,
   ));
 }
 
@@ -254,7 +254,7 @@ as List<ZabHostsData>?,
 @JsonSerializable()
 
 class _ZabAlertData implements ZabAlertData {
-  const _ZabAlertData({this.name, this.clock, this.opdata, this.severity, this.suppressed, this.acknowledged, final  List<ZabHostsData>? hosts}): _hosts = hosts;
+  const _ZabAlertData({this.name, this.clock, this.opdata, this.severity, this.suppressed, this.acknowledged, final  List<ZabHostData>? hosts}): _hosts = hosts;
   factory _ZabAlertData.fromJson(Map<String, dynamic> json) => _$ZabAlertDataFromJson(json);
 
 @override final  String? name;
@@ -263,8 +263,8 @@ class _ZabAlertData implements ZabAlertData {
 @override final  String? severity;
 @override final  String? suppressed;
 @override final  String? acknowledged;
- final  List<ZabHostsData>? _hosts;
-@override List<ZabHostsData>? get hosts {
+ final  List<ZabHostData>? _hosts;
+@override List<ZabHostData>? get hosts {
   final value = _hosts;
   if (value == null) return null;
   if (_hosts is EqualUnmodifiableListView) return _hosts;
@@ -306,7 +306,7 @@ abstract mixin class _$ZabAlertDataCopyWith<$Res> implements $ZabAlertDataCopyWi
   factory _$ZabAlertDataCopyWith(_ZabAlertData value, $Res Function(_ZabAlertData) _then) = __$ZabAlertDataCopyWithImpl;
 @override @useResult
 $Res call({
- String? name, String? clock, String? opdata, String? severity, String? suppressed, String? acknowledged, List<ZabHostsData>? hosts
+ String? name, String? clock, String? opdata, String? severity, String? suppressed, String? acknowledged, List<ZabHostData>? hosts
 });
 
 
@@ -332,7 +332,7 @@ as String?,severity: freezed == severity ? _self.severity : severity // ignore: 
 as String?,suppressed: freezed == suppressed ? _self.suppressed : suppressed // ignore: cast_nullable_to_non_nullable
 as String?,acknowledged: freezed == acknowledged ? _self.acknowledged : acknowledged // ignore: cast_nullable_to_non_nullable
 as String?,hosts: freezed == hosts ? _self._hosts : hosts // ignore: cast_nullable_to_non_nullable
-as List<ZabHostsData>?,
+as List<ZabHostData>?,
   ));
 }
 
@@ -341,22 +341,22 @@ as List<ZabHostsData>?,
 
 
 /// @nodoc
-mixin _$ZabHostsData {
+mixin _$ZabHostData {
 
  String? get host; String? get name;
-/// Create a copy of ZabHostsData
+/// Create a copy of ZabHostData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ZabHostsDataCopyWith<ZabHostsData> get copyWith => _$ZabHostsDataCopyWithImpl<ZabHostsData>(this as ZabHostsData, _$identity);
+$ZabHostDataCopyWith<ZabHostData> get copyWith => _$ZabHostDataCopyWithImpl<ZabHostData>(this as ZabHostData, _$identity);
 
-  /// Serializes this ZabHostsData to a JSON map.
+  /// Serializes this ZabHostData to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ZabHostsData&&(identical(other.host, host) || other.host == host)&&(identical(other.name, name) || other.name == name));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ZabHostData&&(identical(other.host, host) || other.host == host)&&(identical(other.name, name) || other.name == name));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -365,15 +365,15 @@ int get hashCode => Object.hash(runtimeType,host,name);
 
 @override
 String toString() {
-  return 'ZabHostsData(host: $host, name: $name)';
+  return 'ZabHostData(host: $host, name: $name)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ZabHostsDataCopyWith<$Res>  {
-  factory $ZabHostsDataCopyWith(ZabHostsData value, $Res Function(ZabHostsData) _then) = _$ZabHostsDataCopyWithImpl;
+abstract mixin class $ZabHostDataCopyWith<$Res>  {
+  factory $ZabHostDataCopyWith(ZabHostData value, $Res Function(ZabHostData) _then) = _$ZabHostDataCopyWithImpl;
 @useResult
 $Res call({
  String? host, String? name
@@ -384,14 +384,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$ZabHostsDataCopyWithImpl<$Res>
-    implements $ZabHostsDataCopyWith<$Res> {
-  _$ZabHostsDataCopyWithImpl(this._self, this._then);
+class _$ZabHostDataCopyWithImpl<$Res>
+    implements $ZabHostDataCopyWith<$Res> {
+  _$ZabHostDataCopyWithImpl(this._self, this._then);
 
-  final ZabHostsData _self;
-  final $Res Function(ZabHostsData) _then;
+  final ZabHostData _self;
+  final $Res Function(ZabHostData) _then;
 
-/// Create a copy of ZabHostsData
+/// Create a copy of ZabHostData
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? host = freezed,Object? name = freezed,}) {
   return _then(_self.copyWith(
@@ -407,27 +407,27 @@ as String?,
 /// @nodoc
 @JsonSerializable()
 
-class _ZabHostsData implements ZabHostsData {
-  const _ZabHostsData({this.host, this.name});
-  factory _ZabHostsData.fromJson(Map<String, dynamic> json) => _$ZabHostsDataFromJson(json);
+class _ZabHostData implements ZabHostData {
+  const _ZabHostData({this.host, this.name});
+  factory _ZabHostData.fromJson(Map<String, dynamic> json) => _$ZabHostDataFromJson(json);
 
 @override final  String? host;
 @override final  String? name;
 
-/// Create a copy of ZabHostsData
+/// Create a copy of ZabHostData
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$ZabHostsDataCopyWith<_ZabHostsData> get copyWith => __$ZabHostsDataCopyWithImpl<_ZabHostsData>(this, _$identity);
+_$ZabHostDataCopyWith<_ZabHostData> get copyWith => __$ZabHostDataCopyWithImpl<_ZabHostData>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$ZabHostsDataToJson(this, );
+  return _$ZabHostDataToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ZabHostsData&&(identical(other.host, host) || other.host == host)&&(identical(other.name, name) || other.name == name));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ZabHostData&&(identical(other.host, host) || other.host == host)&&(identical(other.name, name) || other.name == name));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -436,15 +436,15 @@ int get hashCode => Object.hash(runtimeType,host,name);
 
 @override
 String toString() {
-  return 'ZabHostsData(host: $host, name: $name)';
+  return 'ZabHostData(host: $host, name: $name)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ZabHostsDataCopyWith<$Res> implements $ZabHostsDataCopyWith<$Res> {
-  factory _$ZabHostsDataCopyWith(_ZabHostsData value, $Res Function(_ZabHostsData) _then) = __$ZabHostsDataCopyWithImpl;
+abstract mixin class _$ZabHostDataCopyWith<$Res> implements $ZabHostDataCopyWith<$Res> {
+  factory _$ZabHostDataCopyWith(_ZabHostData value, $Res Function(_ZabHostData) _then) = __$ZabHostDataCopyWithImpl;
 @override @useResult
 $Res call({
  String? host, String? name
@@ -455,17 +455,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$ZabHostsDataCopyWithImpl<$Res>
-    implements _$ZabHostsDataCopyWith<$Res> {
-  __$ZabHostsDataCopyWithImpl(this._self, this._then);
+class __$ZabHostDataCopyWithImpl<$Res>
+    implements _$ZabHostDataCopyWith<$Res> {
+  __$ZabHostDataCopyWithImpl(this._self, this._then);
 
-  final _ZabHostsData _self;
-  final $Res Function(_ZabHostsData) _then;
+  final _ZabHostData _self;
+  final $Res Function(_ZabHostData) _then;
 
-/// Create a copy of ZabHostsData
+/// Create a copy of ZabHostData
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? host = freezed,Object? name = freezed,}) {
-  return _then(_ZabHostsData(
+  return _then(_ZabHostData(
 host: freezed == host ? _self.host : host // ignore: cast_nullable_to_non_nullable
 as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,
