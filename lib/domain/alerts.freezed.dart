@@ -360,7 +360,7 @@ as int?,
 /// @nodoc
 mixin _$AlertSourceDataUpdate {
 
- int? get id; String get name; int get type; int get authType; String get baseURL; String get username; String get password; String get errorMessage; bool? get isValid; String get accessToken; int? get serial;
+ int? get id; String get name; int get type; int? get authType; String get baseURL; String get username; String get password; String get errorMessage; bool? get isValid; String get accessToken; int? get serial;
 /// Create a copy of AlertSourceDataUpdate
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -393,7 +393,7 @@ abstract mixin class $AlertSourceDataUpdateCopyWith<$Res>  {
   factory $AlertSourceDataUpdateCopyWith(AlertSourceDataUpdate value, $Res Function(AlertSourceDataUpdate) _then) = _$AlertSourceDataUpdateCopyWithImpl;
 @useResult
 $Res call({
- int? id, String name, int type, int authType, String baseURL, String username, String password, String errorMessage, bool? isValid, String accessToken, int? serial
+ int? id, String name, int type, int? authType, String baseURL, String username, String password, String errorMessage, bool? isValid, String accessToken, int? serial
 });
 
 
@@ -410,13 +410,13 @@ class _$AlertSourceDataUpdateCopyWithImpl<$Res>
 
 /// Create a copy of AlertSourceDataUpdate
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? type = null,Object? authType = null,Object? baseURL = null,Object? username = null,Object? password = null,Object? errorMessage = null,Object? isValid = freezed,Object? accessToken = null,Object? serial = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? type = null,Object? authType = freezed,Object? baseURL = null,Object? username = null,Object? password = null,Object? errorMessage = null,Object? isValid = freezed,Object? accessToken = null,Object? serial = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as int,authType: null == authType ? _self.authType : authType // ignore: cast_nullable_to_non_nullable
-as int,baseURL: null == baseURL ? _self.baseURL : baseURL // ignore: cast_nullable_to_non_nullable
+as int,authType: freezed == authType ? _self.authType : authType // ignore: cast_nullable_to_non_nullable
+as int?,baseURL: null == baseURL ? _self.baseURL : baseURL // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,errorMessage: null == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -434,13 +434,13 @@ as int?,
 @JsonSerializable()
 
 class _AlertSourceDataUpdate implements AlertSourceDataUpdate {
-  const _AlertSourceDataUpdate({required this.id, required this.name, required this.type, required this.authType, required this.baseURL, required this.username, required this.password, required this.errorMessage, this.isValid, required this.accessToken, this.serial});
+  const _AlertSourceDataUpdate({required this.id, required this.name, required this.type, this.authType, required this.baseURL, required this.username, required this.password, required this.errorMessage, this.isValid, required this.accessToken, this.serial});
   factory _AlertSourceDataUpdate.fromJson(Map<String, dynamic> json) => _$AlertSourceDataUpdateFromJson(json);
 
 @override final  int? id;
 @override final  String name;
 @override final  int type;
-@override final  int authType;
+@override final  int? authType;
 @override final  String baseURL;
 @override final  String username;
 @override final  String password;
@@ -482,7 +482,7 @@ abstract mixin class _$AlertSourceDataUpdateCopyWith<$Res> implements $AlertSour
   factory _$AlertSourceDataUpdateCopyWith(_AlertSourceDataUpdate value, $Res Function(_AlertSourceDataUpdate) _then) = __$AlertSourceDataUpdateCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String name, int type, int authType, String baseURL, String username, String password, String errorMessage, bool? isValid, String accessToken, int? serial
+ int? id, String name, int type, int? authType, String baseURL, String username, String password, String errorMessage, bool? isValid, String accessToken, int? serial
 });
 
 
@@ -499,13 +499,13 @@ class __$AlertSourceDataUpdateCopyWithImpl<$Res>
 
 /// Create a copy of AlertSourceDataUpdate
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? type = null,Object? authType = null,Object? baseURL = null,Object? username = null,Object? password = null,Object? errorMessage = null,Object? isValid = freezed,Object? accessToken = null,Object? serial = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? type = null,Object? authType = freezed,Object? baseURL = null,Object? username = null,Object? password = null,Object? errorMessage = null,Object? isValid = freezed,Object? accessToken = null,Object? serial = freezed,}) {
   return _then(_AlertSourceDataUpdate(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as int,authType: null == authType ? _self.authType : authType // ignore: cast_nullable_to_non_nullable
-as int,baseURL: null == baseURL ? _self.baseURL : baseURL // ignore: cast_nullable_to_non_nullable
+as int,authType: freezed == authType ? _self.authType : authType // ignore: cast_nullable_to_non_nullable
+as int?,baseURL: null == baseURL ? _self.baseURL : baseURL // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,errorMessage: null == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable

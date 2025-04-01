@@ -56,7 +56,7 @@ abstract class AlertSource with NetworkFetch {
   Future<(dynamic, List<Alert>)> fetchAndDecodeJSON({
     required String endpoint,
     String? postBody,
-    bool? authOverride,
+    bool authOverride = false,
     Map<String, String>? headers,
   }) async {
     if (!(sourceData.isValid ?? false)) {

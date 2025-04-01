@@ -77,7 +77,7 @@ abstract class AlertSourceDataUpdate with _$AlertSourceDataUpdate {
     required int? id,
     required String name,
     required int type,
-    required int authType,
+    int? authType,
     required String baseURL,
     required String username,
     required String password,
@@ -103,7 +103,8 @@ enum SilenceTypes {
 }
 
 enum AuthTypes {
-  basicAuth("Basic Auth", 0);
+  basicAuth("Basic Auth", 0),
+  zabDefault("Zabbix Default", 1);
 
   const AuthTypes(this.text, this.value);
 

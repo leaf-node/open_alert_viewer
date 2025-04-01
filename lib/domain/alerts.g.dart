@@ -95,7 +95,7 @@ _AlertSourceDataUpdate _$AlertSourceDataUpdateFromJson(
   id: (json['id'] as num?)?.toInt(),
   name: json['name'] as String,
   type: (json['type'] as num).toInt(),
-  authType: (json['authType'] as num).toInt(),
+  authType: (json['authType'] as num?)?.toInt(),
   baseURL: json['baseURL'] as String,
   username: json['username'] as String,
   password: json['password'] as String,

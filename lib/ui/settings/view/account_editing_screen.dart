@@ -38,6 +38,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
   _AccountEditingScreenState()
     : nameController = TextEditingController(),
       typeController = TextEditingController(),
+      authTypeController = TextEditingController(),
       baseURLController = TextEditingController(),
       userController = TextEditingController(),
       passwordController = TextEditingController(),
@@ -45,6 +46,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
 
   final TextEditingController nameController;
   final TextEditingController typeController;
+  final TextEditingController authTypeController;
   final TextEditingController baseURLController;
   final TextEditingController userController;
   final TextEditingController passwordController;
@@ -61,6 +63,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
     if (originalSource == null) {
       nameController.text = "";
       typeController.text = "0";
+      authTypeController.text = "0";
       baseURLController.text = "";
       userController.text = "";
       passwordController.text = "";
@@ -69,6 +72,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
     } else {
       nameController.text = originalSource!.name;
       typeController.text = originalSource!.type.toString();
+      authTypeController.text = originalSource!.type.toString();
       baseURLController.text = originalSource!.baseURL;
       userController.text = originalSource!.username;
       passwordController.text = originalSource!.password;
@@ -83,6 +87,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
     super.dispose();
     nameController.dispose();
     typeController.dispose();
+    authTypeController.dispose();
     baseURLController.dispose();
     userController.dispose();
     passwordController.dispose();
@@ -96,7 +101,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
       id: id,
       name: nameController.text,
       type: int.parse(typeController.text),
-      authType: AuthTypes.basicAuth.value,
+      authType: int.parse(authTypeController.text),
       baseURL: baseURLController.text,
       username: userController.text,
       password: passwordController.text,
@@ -111,6 +116,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
       systemIsUpdatingValues = true;
       nameController.text = sourceData.name;
       typeController.text = sourceData.type.toString();
+      authTypeController.text = sourceData.authType.toString();
       baseURLController.text = sourceData.baseURL;
       userController.text = sourceData.username;
       passwordController.text = sourceData.password;
@@ -124,6 +130,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
     final sourceData = originalSource;
     if (nameController.text == (sourceData?.name ?? "") &&
         typeController.text == (sourceData?.type.toString() ?? "0") &&
+        authTypeController.text == (sourceData?.authType.toString() ?? "0") &&
         baseURLController.text == (sourceData?.baseURL ?? "") &&
         userController.text == (sourceData?.username ?? "") &&
         passwordController.text == (sourceData?.password ?? "") &&

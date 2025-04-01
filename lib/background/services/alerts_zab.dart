@@ -36,6 +36,15 @@ class ZabAlerts extends AlertSource {
 
   @override
   Future<List<Alert>> fetchAlerts() async {
+    if (sourceData.authType != AuthTypes.zabDefault.value) {
+      return errorFetchingAlerts(
+        sourceData: sourceData,
+        error:
+            "Outdated Zabbix account configuration... "
+            "Please re-confirm and save the alert source.",
+        endpoint: endpoint,
+      );
+    }
     List<Alert>? errors = await _getVersion();
     if (errors?.isNotEmpty ?? false) {
       return errors!;

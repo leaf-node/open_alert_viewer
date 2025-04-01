@@ -89,7 +89,7 @@ class SourcesBackgroundRepo with NetworkFetch {
       id: sourceData.id,
       name: sourceData.name,
       type: sourceData.type,
-      authType: sourceData.authType,
+      authType: sourceData.authType!,
       baseURL: sourceData.baseURL,
       username: sourceData.username,
       password: sourceData.password,
@@ -114,7 +114,7 @@ class SourcesBackgroundRepo with NetworkFetch {
       id: sourceData.id,
       name: sourceData.name,
       type: sourceData.type,
-      authType: sourceData.authType,
+      authType: sourceData.authType!,
       baseURL: sourceData.baseURL,
       username: sourceData.username,
       password: sourceData.password,
@@ -310,6 +310,7 @@ class SourcesBackgroundRepo with NetworkFetch {
             ).hasMatch(response.body)) {
           sourceData = sourceData.copyWith(
             type: sourceType.value,
+            authType: AuthTypes.basicAuth.value,
             baseURL: trimmedBaseURL,
             isValid: true,
           );
@@ -347,6 +348,7 @@ class SourcesBackgroundRepo with NetworkFetch {
           } else {
             sourceData = sourceData.copyWith(
               accessToken: replyMap["result"],
+              authType: AuthTypes.zabDefault.value,
               type: sourceType.value,
               baseURL: trimmedBaseURL,
               isValid: true,

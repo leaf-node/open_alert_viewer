@@ -20,13 +20,13 @@ mixin NetworkFetch {
     String password,
     String restOfURL, {
     String? postBody,
-    bool? authOverride,
+    bool authOverride = false,
     Map<String, String>? headers,
     int? maxTimeout,
   }) async {
     Map<String, String> collectedHeaders = {"User-Agent": useragent};
     collectedHeaders.addAll(headers ?? {});
-    if ((username != "" || password != "") && !(authOverride ?? false)) {
+    if ((username != "" || password != "") && !authOverride) {
       var basicAuth =
           "Basic ${base64.encode(utf8.encode("$username:$password"))}";
       collectedHeaders["authorization"] = basicAuth;
