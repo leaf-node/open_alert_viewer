@@ -8,6 +8,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../../background/domain/background_external.dart';
 
@@ -82,5 +83,14 @@ mixin NetworkFetch {
       prefix = "https://";
     }
     return prefix + baseURL + restOfURL;
+  }
+
+  Future<bool> isOnline(String baseURL) async {
+    final isLocalhost = RegExp(
+      r"^(https?://)?localhost(:[0-9]+)?(/.*)?",
+    ).hasMatch(baseURL);
+    final List<ConnectivityResult> connectivityResult =
+        await Connectivity().checkConnectivity();
+    return isLocalhost || !connectivityResult.contains(ConnectivityResult.none);
   }
 }

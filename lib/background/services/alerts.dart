@@ -65,22 +65,26 @@ abstract class AlertSource with NetworkFetch {
     dynamic dataSet;
     Response? response;
     String errorMessage = "";
-    try {
-      response = await networkFetch(
-        sourceData.baseURL,
-        sourceData.username,
-        sourceData.password,
-        endpoint,
-        postBody: postBody,
-        authOverride: authOverride,
-        headers: headers,
-      );
-    } on SocketException catch (e) {
-      errorMessage = e.message;
-    } on HandshakeException catch (e) {
-      errorMessage = e.message;
-    } on ClientException catch (e) {
-      errorMessage = e.message;
+    if (!await isOnline(sourceData.baseURL)) {
+      errorMessage = "Your device is offline. Try connecting to the Internet.";
+    } else {
+      try {
+        response = await networkFetch(
+          sourceData.baseURL,
+          sourceData.username,
+          sourceData.password,
+          endpoint,
+          postBody: postBody,
+          authOverride: authOverride,
+          headers: headers,
+        );
+      } on SocketException catch (e) {
+        errorMessage = e.message;
+      } on HandshakeException catch (e) {
+        errorMessage = e.message;
+      } on ClientException catch (e) {
+        errorMessage = e.message;
+      }
     }
     if (response == null || errorMessage.isNotEmpty) {
       return (

@@ -292,6 +292,14 @@ class SourcesBackgroundRepo with NetworkFetch {
             ),
           );
         }
+        if (!await isOnline(sourceData.baseURL)) {
+          sourceData = sourceData.copyWith(
+            isValid: false,
+            errorMessage:
+                "Your device is offline. Try connecting to the Internet.",
+          );
+          return (false, sourceData);
+        }
         var trimmedBaseURL = sourceData.baseURL.replaceFirst(
           RegExp(trimRegex),
           "",
