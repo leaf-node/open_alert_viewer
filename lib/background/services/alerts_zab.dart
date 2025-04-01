@@ -154,12 +154,12 @@ class ZabAlerts extends AlertSource {
       );
     }
     for (var entry in data.result!) {
-      newAlerts.add(alertHandler(entry));
+      newAlerts.addAll(alertHandler(entry));
     }
     return newAlerts;
   }
 
-  Alert alertHandler(ZabAlertData alertData) {
+  List<Alert> alertHandler(ZabAlertData alertData) {
     final severity = int.parse(alertData.severity!);
     AlertType kind =
         ZabSeverity.values
@@ -167,23 +167,29 @@ class ZabAlerts extends AlertSource {
             .firstOrNull
             ?.alertType ??
         AlertType.unknown;
-    ZabHostsData? host = alertData.hosts?.firstOrNull;
-    String hostDomain = host?.host ?? host?.name ?? "";
-    String hostName = host?.name ?? host?.host ?? "";
-    String? opData = (alertData.opdata == "") ? "..." : alertData.opdata;
-    return Alert(
-      source: sourceData.id!,
-      kind: kind,
-      hostname: hostName,
-      service: alertData.name!,
-      message: opData ?? "...",
-      serviceUrl: generateURL(hostDomain, ""),
-      monitorUrl: generateURL(sourceData.baseURL, ""),
-      age: DateTime.now().difference(_dateTime(alertData.clock!)),
-      silenced: (alertData.acknowledged == "0") ? false : true,
-      downtimeScheduled: (alertData.suppressed == "0") ? false : true,
-      active: true,
-    );
+    ZabHostsData host;
+    List<Alert> newAlerts = [];
+    for (host in alertData.hosts ?? []) {
+      String hostDomain = host.host ?? host.name ?? "";
+      String hostName = host.name ?? host.host ?? "";
+      String? opData = (alertData.opdata == "") ? "..." : alertData.opdata;
+      newAlerts.add(
+        Alert(
+          source: sourceData.id!,
+          kind: kind,
+          hostname: hostName,
+          service: alertData.name!,
+          message: opData ?? "...",
+          serviceUrl: generateURL(hostDomain, ""),
+          monitorUrl: generateURL(sourceData.baseURL, ""),
+          age: DateTime.now().difference(_dateTime(alertData.clock!)),
+          silenced: (alertData.acknowledged == "0") ? false : true,
+          downtimeScheduled: (alertData.suppressed == "0") ? false : true,
+          active: true,
+        ),
+      );
+    }
+    return newAlerts;
   }
 
   static DateTime _dateTime(String seconds) {
