@@ -91,12 +91,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
   }
 
   AlertSourceDataUpdate get newSourceData {
-    int? id;
-    if (originalSource == null) {
-      id = null;
-    } else {
-      id = originalSource!.id;
-    }
+    int? id = originalSource?.id;
     return AlertSourceDataUpdate(
       id: id,
       name: nameController.text,
