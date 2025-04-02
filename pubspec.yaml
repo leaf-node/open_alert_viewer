@@ -42,7 +42,7 @@ dependencies:
   sqlite3: ^2.4.7
   sqlite3_flutter_libs: ^0.5.26
   path_provider: ^2.1.5
-  flutter_local_notifications: ^18.0.0
+  flutter_local_notifications: ^19.0.0
   url_launcher: ^6.3.1
   app_settings: ^5.1.1
   audioplayers: ^6.1.0
