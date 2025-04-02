@@ -9,13 +9,13 @@ menu item in the app.
 
 ### Data Use
 
-[Open Alert Viewer](https://sandpiper.codes/apps/open-alert-viewer) ("the app")
-is libre / open source software, so it respects your freedom to use, study,
-change and share the code. It also respects your privacy: Usernames, passwords
-and remote server addresses ("credentials") that you enter into the account
-settings of the app are used by the app in only two ways by the app: They are
-stored on your device's storage, and they are transmitted to the remote servers
-you specify according to those credentials.
+[Open Alert Viewer](https://sandpiper.codes/apps/open-alert-viewer/) ("the
+app") is libre / open source software, so it respects your freedom to use,
+study, change and share the code. It also respects your privacy: Usernames,
+passwords and remote server addresses ("credentials") that you enter into the
+account settings of the app are used by the app in only two ways by the app:
+They are stored on your device's storage, and they are transmitted to the
+remote servers you specify according to those credentials.
 
 These two behaviors are for the app's main functionality, which is to fetch and
 display server alert data from remote servers using the credentials that you
@@ -90,7 +90,7 @@ be coordinated with those third parties.
 Sandpiper Codes may occasionally update this privacy policy for Open Alert
 Viewer. When we do, we'll change the date that it was last edited at the top of
 the page of the website-hosted version at
-[sandpiper.codes](https://sandpiper.codes/apps/open-alert-viewer/privacy-policy).
+[sandpiper.codes](https://sandpiper.codes/apps/open-alert-viewer/privacy-policy/).
 We suggest visiting that page from time to time to be notified of any changes.
 
 For older versions of the app with outdated embedded privacy policies, the user
