@@ -72,7 +72,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
     } else {
       nameController.text = originalSource!.name;
       typeController.text = originalSource!.type.toString();
-      authTypeController.text = originalSource!.type.toString();
+      authTypeController.text = originalSource!.authType.toString();
       baseURLController.text = originalSource!.baseURL;
       userController.text = originalSource!.username;
       passwordController.text = originalSource!.password;
