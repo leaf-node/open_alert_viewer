@@ -30,13 +30,13 @@ class NotificationsBackgroundRepo {
   }) : _settings = settings,
        _platformChannel = platformChannel,
        _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin() {
-    updateAlertDetails(important: true);
+    _updateAlertDetails(important: true);
   }
 
   final SettingsRepo _settings;
   final PlatformChannel _platformChannel;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
-  late NotificationDetails _notificationDetails;
+  NotificationDetails? _notificationDetails;
 
   Future<void> initializeAlertNotifications() async {
     if (Platform.isLinux) {
@@ -172,8 +172,11 @@ class NotificationsBackgroundRepo {
       messages.add("$newErrorCount New Error${newErrorCount == 1 ? "" : "s"}");
     }
     final important = (brandNew > 0);
-    await updateAlertDetails(important: important);
+    final didDetailsChange = _updateAlertDetails(important: important);
     if (messages.isNotEmpty) {
+      if (Platform.isLinux && didDetailsChange) {
+        await _removeAlertNotification();
+      }
       await _showNotification(message: messages.join(", "));
       await _playDesktopSound(alertStream, important);
     } else {
@@ -227,9 +230,19 @@ class NotificationsBackgroundRepo {
     await _removeAlertNotification();
   }
 
-  Future<void> updateAlertDetails({required bool important}) async {
-    final linuxUrgency = important ? null : LinuxNotificationUrgency.low;
+  bool _updateAlertDetails({required bool important}) {
+    final linuxUrgency =
+        important
+            ? LinuxNotificationUrgency.normal
+            : LinuxNotificationUrgency.low;
     final androidImportance = important ? Importance.max : Importance.low;
+    bool changed = false;
+    if (Platform.isLinux &&
+            linuxUrgency != _notificationDetails?.linux?.urgency ||
+        Platform.isAndroid &&
+            androidImportance != _notificationDetails?.android?.importance) {
+      changed = true;
+    }
     final linuxNotificationDetails = LinuxNotificationDetails(
       urgency: linuxUrgency,
     );
@@ -245,5 +258,6 @@ class NotificationsBackgroundRepo {
       linux: linuxNotificationDetails,
       android: androidNotificationDetails,
     );
+    return changed;
   }
 }
