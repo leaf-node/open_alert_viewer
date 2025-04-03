@@ -127,14 +127,13 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
   }
 
   bool didDataChange() {
-    final sourceData = originalSource;
-    if (nameController.text == (sourceData?.name ?? "") &&
-        typeController.text == (sourceData?.type.toString() ?? "0") &&
-        authTypeController.text == (sourceData?.authType.toString() ?? "0") &&
-        baseURLController.text == (sourceData?.baseURL ?? "") &&
-        userController.text == (sourceData?.username ?? "") &&
-        passwordController.text == (sourceData?.password ?? "") &&
-        accessTokenController.text == (sourceData?.accessToken ?? "")) {
+    if (nameController.text == (originalSource?.name ?? "") &&
+        typeController.text == (originalSource?.type.toString()) &&
+        authTypeController.text == (originalSource?.authType.toString()) &&
+        baseURLController.text == (originalSource?.baseURL ?? "") &&
+        userController.text == (originalSource?.username ?? "") &&
+        passwordController.text == (originalSource?.password ?? "") &&
+        accessTokenController.text == (originalSource?.accessToken ?? "")) {
       return false;
     } else {
       return true;
