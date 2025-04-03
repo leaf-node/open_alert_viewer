@@ -57,7 +57,8 @@ class AboutList extends StatelessWidget {
           icon: Icons.support_outlined,
           title: "Online Support",
           onTap: () async {
-            var link = "https://github.com/sandpiper-codes/open_alert_viewer";
+            var link =
+                "https://github.com/sandpiper-codes/open_alert_viewer/issues";
             try {
               var uri = Uri.parse(link);
               await launchUrl(uri);
