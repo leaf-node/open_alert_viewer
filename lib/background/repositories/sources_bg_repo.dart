@@ -375,7 +375,8 @@ class SourcesBackgroundRepo with NetworkFetch {
           } else {
             sourceData = sourceData.copyWith(
               errorMessage:
-                  "${response.statusCode}: ${response.reasonPhrase ?? ""}",
+                  "${response.statusCode}: ${response.reasonPhrase ?? ""}: "
+                  "$apiEndpoint",
             );
           }
         }
