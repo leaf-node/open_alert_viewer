@@ -128,8 +128,8 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
 
   bool didDataChange() {
     if (nameController.text == (originalSource?.name ?? "") &&
-        typeController.text == (originalSource?.type.toString()) &&
-        authTypeController.text == (originalSource?.authType.toString()) &&
+        typeController.text == "${originalSource?.type ?? 0}" &&
+        authTypeController.text == "${originalSource?.authType ?? 0}" &&
         baseURLController.text == (originalSource?.baseURL ?? "") &&
         userController.text == (originalSource?.username ?? "") &&
         passwordController.text == (originalSource?.password ?? "") &&
