@@ -104,13 +104,13 @@ class NotificationsBackgroundRepo {
     required List<AlertSourceData> allSources,
     StreamController<IsolateMessage>? alertStream,
   }) async {
-    Map<int, Duration> sinceLookedPerSource = {};
+    Map<int?, Duration> sinceLookedPerSource = {};
     for (var sourceData in allSources) {
       sinceLookedPerSource[sourceData.id!] = sourceData.lastFetch.difference(
         sourceData.lastSeen,
       );
     }
-    Map<int, Duration> sincePriorFetchPerSource = {};
+    Map<int?, Duration> sincePriorFetchPerSource = {};
     for (var sourceData in allSources) {
       sincePriorFetchPerSource[sourceData.id!] = sourceData.lastFetch
           .difference(sourceData.priorFetch);
@@ -121,8 +121,8 @@ class NotificationsBackgroundRepo {
     Duration globalSincePriorFetch = _settings.lastFetched.difference(
       _settings.priorFetch,
     );
-    Duration sinceLooked;
-    Duration sincePriorFetch;
+    Duration? sinceLooked;
+    Duration? sincePriorFetch;
     int newSyncFailureCount = 0, newDownCount = 0, newErrorCount = 0;
     int brandNew = 0, brandNewInc = 0;
     List<String> messages = [];
@@ -131,8 +131,11 @@ class NotificationsBackgroundRepo {
         sinceLooked = globalSinceLooked;
         sincePriorFetch = globalSincePriorFetch;
       } else {
-        sinceLooked = sinceLookedPerSource[alert.source]!;
-        sincePriorFetch = sincePriorFetchPerSource[alert.source]!;
+        sinceLooked = sinceLookedPerSource[alert.source];
+        sincePriorFetch = sincePriorFetchPerSource[alert.source];
+      }
+      if (sinceLooked == null || sincePriorFetch == null) {
+        continue;
       }
       if (alert.age.compareTo(sinceLooked) > 0) {
         continue;
