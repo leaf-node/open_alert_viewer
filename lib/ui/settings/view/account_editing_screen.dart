@@ -210,6 +210,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
                         title: "Password",
                         controller: passwordController,
                         passwordField: true,
+                        acceptInputCallback: (_) => acceptInput(context, state),
                       ),
                       const SizedBox(height: 10),
                       ListTile(
@@ -293,27 +294,7 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
         return Expanded(
           child: Center(
             child: ElevatedButton(
-              onPressed:
-                  (!state.allowClickAccept)
-                      ? () {}
-                      : () {
-                        if (Form.of(context).validate()) {
-                          if (state.status == CheckStatus.needsCheck ||
-                              !isValid) {
-                            cubit!.confirmSource(
-                              newSourceData: newSourceData,
-                              checkNow: true,
-                            );
-                          } else {
-                            if (originalSource == null) {
-                              cubit!.addSource(newSourceData);
-                            } else {
-                              cubit!.updateSource(newSourceData);
-                            }
-                            Navigator.of(context).pop(true);
-                          }
-                        }
-                      },
+              onPressed: () => acceptInput(context, state),
               child: Text(
                 state.acceptButtonText,
                 style: TextStyle(
@@ -326,6 +307,24 @@ class _AccountEditingScreenState extends State<AccountEditingScreen>
         );
       },
     );
+  }
+
+  void acceptInput(BuildContext context, AccountEditingState state) {
+    final isValid = state.sourceData?.isValid ?? false;
+    if (state.allowClickAccept) {
+      if (Form.of(context).validate()) {
+        if (state.status == CheckStatus.needsCheck || !isValid) {
+          cubit!.confirmSource(newSourceData: newSourceData, checkNow: true);
+        } else {
+          if (originalSource == null) {
+            cubit!.addSource(newSourceData);
+          } else {
+            cubit!.updateSource(newSourceData);
+          }
+          Navigator.of(context).pop(true);
+        }
+      }
+    }
   }
 
   void setNeedsCheck() {
@@ -366,13 +365,15 @@ class AccountField extends StatefulWidget {
     required this.title,
     required this.controller,
     this.validator,
-    this.passwordField,
+    this.passwordField = false,
+    this.acceptInputCallback,
   });
 
   final String title;
   final TextEditingController controller;
   final FormFieldValidator<String>? validator;
-  final bool? passwordField;
+  final bool passwordField;
+  final void Function(String)? acceptInputCallback;
 
   @override
   State<AccountField> createState() => _AccountFieldState();
@@ -384,7 +385,7 @@ class _AccountFieldState extends State<AccountField> {
   @override
   void initState() {
     super.initState();
-    _textVisible = !(widget.passwordField ?? false);
+    _textVisible = !(widget.passwordField);
   }
 
   @override
@@ -399,7 +400,7 @@ class _AccountFieldState extends State<AccountField> {
           decoration: InputDecoration(
             labelText: widget.title,
             suffixIcon:
-                widget.passwordField ?? false
+                widget.passwordField
                     ? IconButton(
                       icon: Icon(
                         _textVisible ? Icons.visibility : Icons.visibility_off,
@@ -414,6 +415,11 @@ class _AccountFieldState extends State<AccountField> {
           enableSuggestions: false,
           obscureText: !_textVisible,
           validator: widget.validator,
+          textInputAction:
+              widget.passwordField
+                  ? TextInputAction.done
+                  : TextInputAction.next,
+          onFieldSubmitted: widget.acceptInputCallback,
         ),
       ),
     );
