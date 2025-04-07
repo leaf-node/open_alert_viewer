@@ -97,17 +97,6 @@ class AlertDetails extends StatelessWidget {
                 "Status: ${alert.message}",
                 _viewKind.fgColor,
               ),
-              ColorTile(
-                Icons.timer_outlined,
-                "Age: ${Util.prettyPrintDuration(duration: alert.age)}",
-                _viewKind.fgColor,
-              ),
-              UrlTile(
-                url: alert.serviceUrl,
-                textColor: _viewKind.fgColor,
-                icon: Icons.public_outlined,
-              ),
-              UrlTile(url: alert.monitorUrl, textColor: _viewKind.fgColor),
               if (!alert.enabled)
                 ColorTile(
                   Icons.do_not_disturb_outlined,
@@ -132,6 +121,17 @@ class AlertDetails extends StatelessWidget {
                   SilenceTypes.downtimeScheduled.text,
                   _viewKind.fgColor,
                 ),
+              ColorTile(
+                Icons.timer_outlined,
+                "Age: ${Util.prettyPrintDuration(duration: alert.age)}",
+                _viewKind.fgColor,
+              ),
+              UrlTile(
+                url: alert.serviceUrl,
+                textColor: _viewKind.fgColor,
+                icon: Icons.public_outlined,
+              ),
+              UrlTile(url: alert.monitorUrl, textColor: _viewKind.fgColor),
             ],
           );
         },
