@@ -83,8 +83,8 @@ Do these tasks first.
 Do these tasks last if / when the above is complete and working.
 
 * [ ] Update the version in `pubspec.yaml`, which including the semantic version, and increasing the versionCode after the `+` by 10, so it ends in `0`.
-* [ ] Add Markdown-style log from commit history since prior release in `metadata/en-US/changelogs/${VersionCode * 10}.txt`
-* [ ] Edit release history with new version in `./linux/studio.okcode.open_alert_viewer.metainfo.xml`
+* [ ] Add Markdown-style log from commit history since prior release in `metadata/en-US/changelogs/${VersionCode}.txt`
+* [ ] Edit release history, including new version number, in `./linux/studio.okcode.open_alert_viewer.metainfo.xml`
 * [ ] For major new releases, update the major version in the app's user agent string
 * [ ] Commit with commit message like `Version X.Y.Z`
 * [ ] Tag release with version string, like `vX.Y.Z`
@@ -94,5 +94,5 @@ Do these tasks last if / when the above is complete and working.
 
 * [ ] Update and commit the external Flatpak manifest file with the new version strings and file checksums
 * [ ] Create a pull request and merge it in the Flathub [manifest repo](https://github.com/sandpiper-codes/flathub-studio.okcode.open_alert_viewer)
-* [ ] Upload new .aab bundle and native debug symbols
+* [ ] Upload new .aab bundle and native debug symbols, updating metadata and info for reviewers
 
