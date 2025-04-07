@@ -46,11 +46,18 @@ Map<String, dynamic> _$ZabAlertDataToJson(_ZabAlertData instance) =>
       'hosts': instance.hosts,
     };
 
-_ZabHostData _$ZabHostDataFromJson(Map<String, dynamic> json) =>
-    _ZabHostData(host: json['host'] as String?, name: json['name'] as String?);
+_ZabHostData _$ZabHostDataFromJson(Map<String, dynamic> json) => _ZabHostData(
+  host: json['host'] as String?,
+  name: json['name'] as String?,
+  status: json['status'] as String?,
+);
 
 Map<String, dynamic> _$ZabHostDataToJson(_ZabHostData instance) =>
-    <String, dynamic>{'host': instance.host, 'name': instance.name};
+    <String, dynamic>{
+      'host': instance.host,
+      'name': instance.name,
+      'status': instance.status,
+    };
 
 _ZabErrorData _$ZabErrorDataFromJson(Map<String, dynamic> json) =>
     _ZabErrorData(

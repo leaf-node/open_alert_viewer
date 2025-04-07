@@ -121,7 +121,7 @@ class ZabAlerts extends AlertSource {
         "eventids": $eventIDs,
         "output": ["name", "clock", "opdata",
           "severity", "suppressed", "acknowledged"],
-        "selectHosts": ["name", "host"]
+        "selectHosts": ["name", "host", "status"]
       },
       "id": 3
     }''';
@@ -169,7 +169,11 @@ class ZabAlerts extends AlertSource {
           age: DateTime.now().difference(_dateTime(alertData.clock!)),
           silenced: (alertData.acknowledged == "0") ? false : true,
           downtimeScheduled: (alertData.suppressed == "0") ? false : true,
-          active: true,
+          active: switch (host.status) {
+            "0" => true,
+            "1" => false,
+            _ => true,
+          },
         ),
       );
     }
@@ -241,7 +245,8 @@ abstract class ZabAlertData with _$ZabAlertData {
 
 @freezed
 abstract class ZabHostData with _$ZabHostData {
-  const factory ZabHostData({String? host, String? name}) = _ZabHostData;
+  const factory ZabHostData({String? host, String? name, String? status}) =
+      _ZabHostData;
 
   factory ZabHostData.fromJson(Map<String, dynamic> json) =>
       _$ZabHostDataFromJson(json);
