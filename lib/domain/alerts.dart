@@ -93,8 +93,8 @@ abstract class AlertSourceDataUpdate with _$AlertSourceDataUpdate {
 
 enum SilenceTypes {
   downtimeScheduled("Downtime Scheduled", 0),
-  acknowledged("Acknowledged", 1),
-  inactive("Inactive", 2);
+  acknowledged("Acknowledged / Silenced", 1),
+  inactive("Inactive / Disabled", 2);
 
   const SilenceTypes(this.text, this.id);
 

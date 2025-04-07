@@ -109,13 +109,21 @@ class AlertDetails extends StatelessWidget {
               ),
               UrlTile(url: alert.monitorUrl, textColor: _viewKind.fgColor),
               if (!alert.active)
-                ColorTile(Icons.pending_outlined, "Pending", _viewKind.fgColor),
+                ColorTile(
+                  Icons.pending_outlined,
+                  SilenceTypes.inactive.text,
+                  _viewKind.fgColor,
+                ),
               if (alert.silenced)
-                ColorTile(Icons.music_off, "Silenced", _viewKind.fgColor),
+                ColorTile(
+                  Icons.music_off,
+                  SilenceTypes.acknowledged.text,
+                  _viewKind.fgColor,
+                ),
               if (alert.downtimeScheduled)
                 ColorTile(
                   Icons.bedtime_outlined,
-                  "Downtime Scheduled",
+                  SilenceTypes.downtimeScheduled.text,
                   _viewKind.fgColor,
                 ),
             ],
