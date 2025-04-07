@@ -49,6 +49,7 @@ abstract class AlertSource with NetworkFetch {
         silenced: false,
         downtimeScheduled: false,
         active: true,
+        enabled: true,
       ),
     ];
   }

@@ -114,7 +114,8 @@ class AlertsCubit extends Cubit<AlertsCubitState> {
       if ((alert.downtimeScheduled &&
               !silenceFilter[SilenceTypes.downtimeScheduled.id]) ||
           (alert.silenced && !silenceFilter[SilenceTypes.acknowledged.id]) ||
-          (!alert.active && !silenceFilter[SilenceTypes.inactive.id])) {
+          (!alert.active && !silenceFilter[SilenceTypes.inactive.id]) ||
+          (!alert.enabled && !silenceFilter[SilenceTypes.disabled.id])) {
         continue;
       }
       if (!(alert.source == 0 ||

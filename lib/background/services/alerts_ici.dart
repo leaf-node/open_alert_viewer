@@ -144,6 +144,7 @@ class IciAlerts extends AlertSource {
       silenced: Util.toBool(alertDatum.attrs?.acknowledgement?.floor() ?? 0),
       downtimeScheduled: ((alertDatum.attrs?.downtime_depth?.floor() ?? 0) > 0),
       active: active,
+      enabled: true,
     );
   }
 

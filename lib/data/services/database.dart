@@ -15,6 +15,7 @@ import '../../domain/alerts.dart';
 import '../../schema/version_1_0_0sql.dart';
 import '../../schema/version_1_3_0sql.dart';
 import '../../schema/version_1_3_1sql.dart';
+import '../../schema/version_1_3_2sql.dart';
 import '../../utils/utils.dart';
 
 class LocalDatabase {
@@ -85,6 +86,10 @@ class LocalDatabase {
     if (getSetting(setting: _migrationSetting) == "1.3.0") {
       _db.execute(version_1_3_1sql);
       setSetting(setting: _migrationSetting, value: "1.3.1");
+    }
+    if (getSetting(setting: _migrationSetting) == "1.3.1") {
+      _db.execute(version_1_3_2sql);
+      setSetting(setting: _migrationSetting, value: "1.3.2");
     }
     _db.execute("COMMIT TRANSACTION;");
   }
@@ -289,7 +294,7 @@ class LocalDatabase {
   List<Alert> fetchCachedAlerts() {
     List<Map<String, Object>> alerts = _fetchFromTable(
       query: '''SELECT id, source, kind, hostname, service, message, url, age,
-          silenced, downtime_scheduled, active, monitor_url
+          silenced, downtime_scheduled, active, monitor_url, enabled
             FROM alerts_cache;''',
       values: [],
     );
@@ -307,6 +312,7 @@ class LocalDatabase {
           downtimeScheduled: Util.toBool(alert["downtime_scheduled"]!),
           active: Util.toBool(alert["active"]!),
           monitorUrl: alert["monitor_url"] as String,
+          enabled: Util.toBool(alert["enabled"]!),
         ),
     ];
   }
@@ -320,8 +326,8 @@ class LocalDatabase {
       query: '''
         INSERT INTO alerts_cache
           (source, kind, hostname, service, message, url, age, silenced,
-            downtime_scheduled, active, monitor_url)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);''',
+            downtime_scheduled, active, monitor_url, enabled)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);''',
       values: [
         for (var alert in alerts)
           [
@@ -336,6 +342,7 @@ class LocalDatabase {
             alert.downtimeScheduled,
             alert.active,
             alert.monitorUrl,
+            alert.enabled,
           ],
       ],
     );

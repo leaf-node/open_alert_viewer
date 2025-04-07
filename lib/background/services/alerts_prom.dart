@@ -74,6 +74,7 @@ class PromAlerts extends AlertSource {
               alertDatum.status!.silencedBy!.isNotEmpty),
       downtimeScheduled: false,
       active: true,
+      enabled: true,
     );
   }
 }

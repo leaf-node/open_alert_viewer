@@ -41,6 +41,7 @@ class RandomAlerts extends AlertSource {
           silenced: _randomSeed.nextInt(10) > 8 ? true : false,
           downtimeScheduled: frequentlyChosenBool(false),
           active: frequentlyChosenBool(true),
+          enabled: frequentlyChosenBool(true),
         ),
       );
     }

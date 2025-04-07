@@ -146,7 +146,9 @@ class AlertWidget extends StatelessWidget {
         spacing: 10,
         children: [
           Icon(_viewKind.icon),
-          if (alert.silenced || alert.downtimeScheduled)
+          if (!alert.enabled)
+            const Icon(Icons.do_not_disturb_outlined)
+          else if (alert.silenced || alert.downtimeScheduled)
             const Icon(Icons.bedtime_outlined)
           else if (!alert.active)
             const Icon(Icons.pending_outlined),

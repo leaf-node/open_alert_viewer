@@ -93,6 +93,7 @@ class BackgroundChannel {
             silenced: false,
             downtimeScheduled: false,
             active: true,
+            enabled: true,
           ),
           Alert(
             source: 0,
@@ -107,6 +108,7 @@ class BackgroundChannel {
             silenced: false,
             downtimeScheduled: false,
             active: true,
+            enabled: true,
           ),
         ],
       ),

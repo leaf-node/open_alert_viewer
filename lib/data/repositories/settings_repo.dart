@@ -103,7 +103,7 @@ class SettingsRepo {
             [false, true, true, false, true, false, true, true, false, true]
                 as T;
       } else if (name == "silence_filter") {
-        value = [true, true, true] as T;
+        value = [true, true, true, true] as T;
       } else {
         value = defaultValue;
       }

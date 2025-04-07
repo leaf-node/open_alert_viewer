@@ -169,7 +169,8 @@ class ZabAlerts extends AlertSource {
           age: DateTime.now().difference(_dateTime(alertData.clock!)),
           silenced: (alertData.acknowledged == "0") ? false : true,
           downtimeScheduled: (alertData.suppressed == "0") ? false : true,
-          active: switch (host.status) {
+          active: true,
+          enabled: switch (host.status) {
             "0" => true,
             "1" => false,
             _ => true,

@@ -124,6 +124,7 @@ class AlertsBackgroundRepo with NetworkFetch {
             silenced: false,
             downtimeScheduled: false,
             active: true,
+            enabled: true,
           ),
           Alert(
             source: source.id!,
@@ -138,6 +139,7 @@ class AlertsBackgroundRepo with NetworkFetch {
             silenced: false,
             downtimeScheduled: false,
             active: true,
+            enabled: true,
           ),
         ]);
       });
@@ -232,6 +234,7 @@ class AlertsBackgroundRepo with NetworkFetch {
           silenced: false,
           downtimeScheduled: false,
           active: true,
+          enabled: true,
         );
       }
       return alert;

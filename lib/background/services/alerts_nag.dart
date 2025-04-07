@@ -141,6 +141,7 @@ class NagAlerts extends AlertSource {
       silenced: alertDatum.problem_has_been_acknowledged ?? false,
       downtimeScheduled: Util.toBool(alertDatum.scheduled_downtime_depth ?? 0),
       active: active,
+      enabled: true,
     );
   }
 

@@ -40,6 +40,7 @@ abstract class Alert with _$Alert {
     required bool downtimeScheduled,
     required bool silenced,
     required bool active,
+    required bool enabled,
   }) = _Alert;
 
   factory Alert.fromJson(Map<String, Object?> json) => _$AlertFromJson(json);
@@ -94,7 +95,8 @@ abstract class AlertSourceDataUpdate with _$AlertSourceDataUpdate {
 enum SilenceTypes {
   downtimeScheduled("Downtime Scheduled", 0),
   acknowledged("Acknowledged / Silenced", 1),
-  inactive("Inactive / Disabled", 2);
+  inactive("Pending", 2),
+  disabled("Disabled", 3);
 
   const SilenceTypes(this.text, this.id);
 

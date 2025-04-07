@@ -108,6 +108,12 @@ class AlertDetails extends StatelessWidget {
                 icon: Icons.public_outlined,
               ),
               UrlTile(url: alert.monitorUrl, textColor: _viewKind.fgColor),
+              if (!alert.enabled)
+                ColorTile(
+                  Icons.do_not_disturb_outlined,
+                  SilenceTypes.disabled.text,
+                  _viewKind.fgColor,
+                ),
               if (!alert.active)
                 ColorTile(
                   Icons.pending_outlined,

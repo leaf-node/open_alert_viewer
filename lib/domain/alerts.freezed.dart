@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Alert {
 
- int get source; AlertType get kind; String get hostname; String get service; String get message; String get serviceUrl; String get monitorUrl; Duration get age; bool get downtimeScheduled; bool get silenced; bool get active;
+ int get source; AlertType get kind; String get hostname; String get service; String get message; String get serviceUrl; String get monitorUrl; Duration get age; bool get downtimeScheduled; bool get silenced; bool get active; bool get enabled;
 /// Create a copy of Alert
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $AlertCopyWith<Alert> get copyWith => _$AlertCopyWithImpl<Alert>(this as Alert, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Alert&&(identical(other.source, source) || other.source == source)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.hostname, hostname) || other.hostname == hostname)&&(identical(other.service, service) || other.service == service)&&(identical(other.message, message) || other.message == message)&&(identical(other.serviceUrl, serviceUrl) || other.serviceUrl == serviceUrl)&&(identical(other.monitorUrl, monitorUrl) || other.monitorUrl == monitorUrl)&&(identical(other.age, age) || other.age == age)&&(identical(other.downtimeScheduled, downtimeScheduled) || other.downtimeScheduled == downtimeScheduled)&&(identical(other.silenced, silenced) || other.silenced == silenced)&&(identical(other.active, active) || other.active == active));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Alert&&(identical(other.source, source) || other.source == source)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.hostname, hostname) || other.hostname == hostname)&&(identical(other.service, service) || other.service == service)&&(identical(other.message, message) || other.message == message)&&(identical(other.serviceUrl, serviceUrl) || other.serviceUrl == serviceUrl)&&(identical(other.monitorUrl, monitorUrl) || other.monitorUrl == monitorUrl)&&(identical(other.age, age) || other.age == age)&&(identical(other.downtimeScheduled, downtimeScheduled) || other.downtimeScheduled == downtimeScheduled)&&(identical(other.silenced, silenced) || other.silenced == silenced)&&(identical(other.active, active) || other.active == active)&&(identical(other.enabled, enabled) || other.enabled == enabled));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,source,kind,hostname,service,message,serviceUrl,monitorUrl,age,downtimeScheduled,silenced,active);
+int get hashCode => Object.hash(runtimeType,source,kind,hostname,service,message,serviceUrl,monitorUrl,age,downtimeScheduled,silenced,active,enabled);
 
 @override
 String toString() {
-  return 'Alert(source: $source, kind: $kind, hostname: $hostname, service: $service, message: $message, serviceUrl: $serviceUrl, monitorUrl: $monitorUrl, age: $age, downtimeScheduled: $downtimeScheduled, silenced: $silenced, active: $active)';
+  return 'Alert(source: $source, kind: $kind, hostname: $hostname, service: $service, message: $message, serviceUrl: $serviceUrl, monitorUrl: $monitorUrl, age: $age, downtimeScheduled: $downtimeScheduled, silenced: $silenced, active: $active, enabled: $enabled)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $AlertCopyWith<$Res>  {
   factory $AlertCopyWith(Alert value, $Res Function(Alert) _then) = _$AlertCopyWithImpl;
 @useResult
 $Res call({
- int source, AlertType kind, String hostname, String service, String message, String serviceUrl, String monitorUrl, Duration age, bool downtimeScheduled, bool silenced, bool active
+ int source, AlertType kind, String hostname, String service, String message, String serviceUrl, String monitorUrl, Duration age, bool downtimeScheduled, bool silenced, bool active, bool enabled
 });
 
 
@@ -66,7 +66,7 @@ class _$AlertCopyWithImpl<$Res>
 
 /// Create a copy of Alert
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? source = null,Object? kind = null,Object? hostname = null,Object? service = null,Object? message = null,Object? serviceUrl = null,Object? monitorUrl = null,Object? age = null,Object? downtimeScheduled = null,Object? silenced = null,Object? active = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? source = null,Object? kind = null,Object? hostname = null,Object? service = null,Object? message = null,Object? serviceUrl = null,Object? monitorUrl = null,Object? age = null,Object? downtimeScheduled = null,Object? silenced = null,Object? active = null,Object? enabled = null,}) {
   return _then(_self.copyWith(
 source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
 as int,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
@@ -79,6 +79,7 @@ as String,age: null == age ? _self.age : age // ignore: cast_nullable_to_non_nul
 as Duration,downtimeScheduled: null == downtimeScheduled ? _self.downtimeScheduled : downtimeScheduled // ignore: cast_nullable_to_non_nullable
 as bool,silenced: null == silenced ? _self.silenced : silenced // ignore: cast_nullable_to_non_nullable
 as bool,active: null == active ? _self.active : active // ignore: cast_nullable_to_non_nullable
+as bool,enabled: null == enabled ? _self.enabled : enabled // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -90,7 +91,7 @@ as bool,
 @JsonSerializable()
 
 class _Alert implements Alert {
-  const _Alert({required this.source, required this.kind, required this.hostname, required this.service, required this.message, required this.serviceUrl, required this.monitorUrl, required this.age, required this.downtimeScheduled, required this.silenced, required this.active});
+  const _Alert({required this.source, required this.kind, required this.hostname, required this.service, required this.message, required this.serviceUrl, required this.monitorUrl, required this.age, required this.downtimeScheduled, required this.silenced, required this.active, required this.enabled});
   factory _Alert.fromJson(Map<String, dynamic> json) => _$AlertFromJson(json);
 
 @override final  int source;
@@ -104,6 +105,7 @@ class _Alert implements Alert {
 @override final  bool downtimeScheduled;
 @override final  bool silenced;
 @override final  bool active;
+@override final  bool enabled;
 
 /// Create a copy of Alert
 /// with the given fields replaced by the non-null parameter values.
@@ -118,16 +120,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Alert&&(identical(other.source, source) || other.source == source)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.hostname, hostname) || other.hostname == hostname)&&(identical(other.service, service) || other.service == service)&&(identical(other.message, message) || other.message == message)&&(identical(other.serviceUrl, serviceUrl) || other.serviceUrl == serviceUrl)&&(identical(other.monitorUrl, monitorUrl) || other.monitorUrl == monitorUrl)&&(identical(other.age, age) || other.age == age)&&(identical(other.downtimeScheduled, downtimeScheduled) || other.downtimeScheduled == downtimeScheduled)&&(identical(other.silenced, silenced) || other.silenced == silenced)&&(identical(other.active, active) || other.active == active));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Alert&&(identical(other.source, source) || other.source == source)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.hostname, hostname) || other.hostname == hostname)&&(identical(other.service, service) || other.service == service)&&(identical(other.message, message) || other.message == message)&&(identical(other.serviceUrl, serviceUrl) || other.serviceUrl == serviceUrl)&&(identical(other.monitorUrl, monitorUrl) || other.monitorUrl == monitorUrl)&&(identical(other.age, age) || other.age == age)&&(identical(other.downtimeScheduled, downtimeScheduled) || other.downtimeScheduled == downtimeScheduled)&&(identical(other.silenced, silenced) || other.silenced == silenced)&&(identical(other.active, active) || other.active == active)&&(identical(other.enabled, enabled) || other.enabled == enabled));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,source,kind,hostname,service,message,serviceUrl,monitorUrl,age,downtimeScheduled,silenced,active);
+int get hashCode => Object.hash(runtimeType,source,kind,hostname,service,message,serviceUrl,monitorUrl,age,downtimeScheduled,silenced,active,enabled);
 
 @override
 String toString() {
-  return 'Alert(source: $source, kind: $kind, hostname: $hostname, service: $service, message: $message, serviceUrl: $serviceUrl, monitorUrl: $monitorUrl, age: $age, downtimeScheduled: $downtimeScheduled, silenced: $silenced, active: $active)';
+  return 'Alert(source: $source, kind: $kind, hostname: $hostname, service: $service, message: $message, serviceUrl: $serviceUrl, monitorUrl: $monitorUrl, age: $age, downtimeScheduled: $downtimeScheduled, silenced: $silenced, active: $active, enabled: $enabled)';
 }
 
 
@@ -138,7 +140,7 @@ abstract mixin class _$AlertCopyWith<$Res> implements $AlertCopyWith<$Res> {
   factory _$AlertCopyWith(_Alert value, $Res Function(_Alert) _then) = __$AlertCopyWithImpl;
 @override @useResult
 $Res call({
- int source, AlertType kind, String hostname, String service, String message, String serviceUrl, String monitorUrl, Duration age, bool downtimeScheduled, bool silenced, bool active
+ int source, AlertType kind, String hostname, String service, String message, String serviceUrl, String monitorUrl, Duration age, bool downtimeScheduled, bool silenced, bool active, bool enabled
 });
 
 
@@ -155,7 +157,7 @@ class __$AlertCopyWithImpl<$Res>
 
 /// Create a copy of Alert
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? source = null,Object? kind = null,Object? hostname = null,Object? service = null,Object? message = null,Object? serviceUrl = null,Object? monitorUrl = null,Object? age = null,Object? downtimeScheduled = null,Object? silenced = null,Object? active = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? source = null,Object? kind = null,Object? hostname = null,Object? service = null,Object? message = null,Object? serviceUrl = null,Object? monitorUrl = null,Object? age = null,Object? downtimeScheduled = null,Object? silenced = null,Object? active = null,Object? enabled = null,}) {
   return _then(_Alert(
 source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
 as int,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
@@ -168,6 +170,7 @@ as String,age: null == age ? _self.age : age // ignore: cast_nullable_to_non_nul
 as Duration,downtimeScheduled: null == downtimeScheduled ? _self.downtimeScheduled : downtimeScheduled // ignore: cast_nullable_to_non_nullable
 as bool,silenced: null == silenced ? _self.silenced : silenced // ignore: cast_nullable_to_non_nullable
 as bool,active: null == active ? _self.active : active // ignore: cast_nullable_to_non_nullable
+as bool,enabled: null == enabled ? _self.enabled : enabled // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
