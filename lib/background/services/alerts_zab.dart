@@ -94,28 +94,14 @@ class ZabAlerts extends AlertSource {
     }''';
     dynamic dataSet;
     List<Alert> errors;
-    (dataSet, errors) = await fetchAndDecodeJSON(
-      endpoint: endpoint,
-      postBody: query,
-      authOverride: true,
-      headers: {
-        "Content-Type": "application/json-rpc",
-        "Authorization": "Bearer ${sourceData.accessToken}",
-      },
-    );
+    (dataSet, errors) = await _fetchData(query);
     if (errors.isNotEmpty) {
       return (null, errors);
     }
     final data = ZabProblemsData.fromJson(dataSet);
-    if (data.error != null) {
-      return (
-        null,
-        errorFetchingAlerts(
-          sourceData: sourceData,
-          error: "${data.error?.message} - ${data.error?.data}",
-          endpoint: endpoint,
-        ),
-      );
+    errors = await _checkForError(data.error);
+    if (errors.isNotEmpty) {
+      return (null, errors);
     }
     List<int> problemEvents = [];
     for (var entry in data.result!) {
@@ -142,25 +128,14 @@ class ZabAlerts extends AlertSource {
     dynamic dataSet;
     List<Alert> errors;
     List<Alert> newAlerts = [];
-    (dataSet, errors) = await fetchAndDecodeJSON(
-      endpoint: endpoint,
-      postBody: query,
-      authOverride: true,
-      headers: {
-        "Content-Type": "application/json-rpc",
-        "Authorization": "Bearer ${sourceData.accessToken}",
-      },
-    );
+    (dataSet, errors) = await _fetchData(query);
     if (errors.isNotEmpty) {
       return errors;
     }
     final data = ZabAlertsData.fromJson(dataSet);
-    if (data.error != null) {
-      return errorFetchingAlerts(
-        sourceData: sourceData,
-        error: "${data.error?.message} - ${data.error?.data}",
-        endpoint: endpoint,
-      );
+    errors = await _checkForError(data.error);
+    if (errors.isNotEmpty) {
+      return errors;
     }
     for (var entry in data.result!) {
       newAlerts.addAll(alertHandler(entry));
@@ -205,6 +180,35 @@ class ZabAlerts extends AlertSource {
     return DateTime.fromMillisecondsSinceEpoch(
       (int.parse(seconds) * 1000).floor(),
     );
+  }
+
+  Future<(Object?, List<Alert>)> _fetchData<T>(String query) async {
+    dynamic dataSet;
+    List<Alert> errors;
+    (dataSet, errors) = await fetchAndDecodeJSON(
+      endpoint: endpoint,
+      postBody: query,
+      authOverride: true,
+      headers: {
+        "Content-Type": "application/json-rpc",
+        "Authorization": "Bearer ${sourceData.accessToken}",
+      },
+    );
+    if (errors.isNotEmpty) {
+      return (null, errors);
+    }
+    return (dataSet, <Alert>[]);
+  }
+
+  Future<List<Alert>> _checkForError<T>(ZabErrorData? error) async {
+    if (error != null) {
+      return errorFetchingAlerts(
+        sourceData: sourceData,
+        error: "${error.message} - ${error.data}",
+        endpoint: endpoint,
+      );
+    }
+    return <Alert>[];
   }
 }
 
