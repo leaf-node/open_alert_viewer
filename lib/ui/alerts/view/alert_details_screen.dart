@@ -103,22 +103,22 @@ class AlertDetails extends StatelessWidget {
                   SilenceTypes.disabled.text,
                   _viewKind.fgColor,
                 ),
-              if (!alert.active)
-                ColorTile(
-                  Icons.pending_outlined,
-                  SilenceTypes.inactive.text,
-                  _viewKind.fgColor,
-                ),
-              if (alert.silenced)
-                ColorTile(
-                  Icons.music_off,
-                  SilenceTypes.acknowledged.text,
-                  _viewKind.fgColor,
-                ),
               if (alert.downtimeScheduled)
                 ColorTile(
                   Icons.bedtime_outlined,
                   SilenceTypes.downtimeScheduled.text,
+                  _viewKind.fgColor,
+                ),
+              if (alert.silenced)
+                ColorTile(
+                  Icons.check_outlined,
+                  SilenceTypes.acknowledged.text,
+                  _viewKind.fgColor,
+                ),
+              if (!alert.active)
+                ColorTile(
+                  Icons.pending_outlined,
+                  SilenceTypes.inactive.text,
                   _viewKind.fgColor,
                 ),
               ColorTile(
