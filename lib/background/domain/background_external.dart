@@ -84,7 +84,7 @@ class BackgroundChannel {
                 "Please check whether an app upgrade is available and "
                 "resolves this issue. If that does not help, "
                 "please take a screen shot, and submit it using "
-                "the link icon to the left so we can help resolve the "
+                "the alert link so we can help resolve the "
                 "problem. Sorry for the inconvenience.",
             serviceUrl:
                 "https://github.com/sandpiper-codes/open_alert_viewer/issues",
