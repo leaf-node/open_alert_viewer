@@ -34,6 +34,7 @@ Do these tasks first.
     * [ ] Passwords can be shown and hidden
     * [ ] Trying to remove an account shows a warning dialog
     * [ ] Trying to discard entered text shows a warning dialog
+    * [ ] Hiding of alert sources works
 * [ ] All screens load their data
 * [ ] The app opens quickly after a force stop
 * [ ] None of the text or dialogs have spelling errors
@@ -51,6 +52,7 @@ Do these tasks first.
     * [ ] Notifications are generated when there are recent alerts
     * [ ] Sounds are played when enabled in-app
     * [ ] Sounds are not played when sounds are disabled
+    * [ ] Per-account notification ignoring works
 * [ ] Does the app recover from or handle all errors gracefully?
 
 ## Android-specific testing
