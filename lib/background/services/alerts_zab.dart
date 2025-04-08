@@ -49,12 +49,22 @@ class ZabAlerts extends AlertSource {
     if (errors?.isNotEmpty ?? false) {
       return errors!;
     }
-    List<int>? events;
-    (events, errors) = await _getProblems();
+    List<ZabProblemData>? problemsData;
+    (problemsData, errors) = await _getProblems();
     if (errors?.isNotEmpty ?? false) {
       return errors!;
     }
-    return _getAlerts(events!);
+    List<ZabEventData>? eventsData;
+    (eventsData, errors) = await _getEvents(problemsData!);
+    if (errors?.isNotEmpty ?? false) {
+      return errors!;
+    }
+    List<ZabTriggerData>? triggersData;
+    (triggersData, errors) = await _getTriggers(eventsData!);
+    if (errors?.isNotEmpty ?? false) {
+      return errors!;
+    }
+    return _alertHandler(eventsData, triggersData!);
   }
 
   Future<List<Alert>?> _getVersion() async {
@@ -82,13 +92,13 @@ class ZabAlerts extends AlertSource {
     return [];
   }
 
-  Future<(List<int>?, List<Alert>?)> _getProblems() async {
+  Future<(List<ZabProblemData>?, List<Alert>?)> _getProblems() async {
     final query = '''{
       "jsonrpc": "2.0",
       ${(baseVersion! < 7) ? "\"auth\": \"${sourceData.accessToken}\"," : ""}
       "method": "problem.get",
       "params": {
-          "output": ["eventid"]
+          "output": ["objectid", "eventid"]
       },
       "id": 2
     }''';
@@ -99,20 +109,17 @@ class ZabAlerts extends AlertSource {
       return (null, errors);
     }
     final data = ZabProblemsData.fromJson(dataSet);
-    errors = await _checkForError(data.error);
+    errors = _checkForError(data.error);
     if (errors.isNotEmpty) {
       return (null, errors);
     }
-    List<int> problemEvents = [];
-    for (var entry in data.result!) {
-      if (entry.eventid != null) {
-        problemEvents.add(int.parse(entry.eventid!));
-      }
-    }
-    return (problemEvents, null);
+    return (data.result!, null);
   }
 
-  Future<List<Alert>> _getAlerts(List<int> eventIDs) async {
+  Future<(List<ZabEventData>?, List<Alert>?)> _getEvents(
+    List<ZabProblemData> problemsData,
+  ) async {
+    final eventIDs = problemsData.map((e) => e.eventid).toList();
     final query = '''{
       "jsonrpc": "2.0",
       ${(baseVersion! < 7) ? "\"auth\": \"${sourceData.accessToken}\"," : ""}
@@ -120,63 +127,101 @@ class ZabAlerts extends AlertSource {
       "params": {
         "eventids": $eventIDs,
         "output": ["name", "clock", "opdata",
-          "severity", "suppressed", "acknowledged"],
+          "severity", "suppressed", "acknowledged", "objectid"],
         "selectHosts": ["name", "host", "status"]
       },
       "id": 3
     }''';
     dynamic dataSet;
     List<Alert> errors;
-    List<Alert> newAlerts = [];
     (dataSet, errors) = await _fetchData(query);
     if (errors.isNotEmpty) {
-      return errors;
+      return (null, errors);
     }
-    final data = ZabAlertsData.fromJson(dataSet);
-    errors = await _checkForError(data.error);
+    final data = ZabEventsData.fromJson(dataSet);
+    errors = _checkForError(data.error);
     if (errors.isNotEmpty) {
-      return errors;
+      return (null, errors);
     }
-    for (var entry in data.result!) {
-      newAlerts.addAll(alertHandler(entry));
-    }
-    return newAlerts;
+    return (data.result!, null);
   }
 
-  List<Alert> alertHandler(ZabAlertData alertData) {
-    final severity = int.parse(alertData.severity!);
-    AlertType kind =
-        ZabSeverity.values
-            .where((e) => e.value == severity)
-            .firstOrNull
-            ?.alertType ??
-        AlertType.unknown;
-    ZabHostData host;
+  Future<(List<ZabTriggerData>?, List<Alert>?)> _getTriggers(
+    List<ZabEventData> eventsData,
+  ) async {
+    final triggerIDs = eventsData.map((e) => e.objectid).toList();
+    final query = '''{
+      "jsonrpc": "2.0",
+      ${(baseVersion! < 7) ? "\"auth\": \"${sourceData.accessToken}\"," : ""}
+      "method": "trigger.get",
+      "params": {
+          "triggerids": $triggerIDs,
+          "output": ["triggerid", "status"]
+      },
+      "id": 4
+    }''';
+    dynamic dataSet;
+    List<Alert> errors;
+    (dataSet, errors) = await _fetchData(query);
+    if (errors.isNotEmpty) {
+      return (null, errors);
+    }
+    final data = ZabTriggersData.fromJson(dataSet);
+    errors = _checkForError(data.error);
+    if (errors.isNotEmpty) {
+      return (null, errors);
+    }
+    return (data.result!, null);
+  }
+
+  List<Alert> _alertHandler(
+    List<ZabEventData> eventsData,
+    List<ZabTriggerData> triggersData,
+  ) {
     List<Alert> newAlerts = [];
-    for (host in alertData.hosts ?? []) {
-      String hostDomain = host.host ?? host.name ?? "";
-      String hostName = host.name ?? host.host ?? "";
-      String? opData = (alertData.opdata == "") ? "..." : alertData.opdata;
-      newAlerts.add(
-        Alert(
-          source: sourceData.id!,
-          kind: kind,
-          hostname: hostName,
-          service: alertData.name!,
-          message: opData ?? "...",
-          serviceUrl: generateURL(hostDomain, ""),
-          monitorUrl: generateURL(sourceData.baseURL, ""),
-          age: DateTime.now().difference(_dateTime(alertData.clock!)),
-          silenced: (alertData.acknowledged == "0") ? false : true,
-          downtimeScheduled: (alertData.suppressed == "0") ? false : true,
-          active: true,
-          enabled: switch (host.status) {
-            "0" => true,
-            "1" => false,
-            _ => true,
-          },
-        ),
-      );
+    for (final event in eventsData) {
+      final severity = int.parse(event.severity!);
+      AlertType kind =
+          ZabSeverity.values
+              .where((e) => e.value == severity)
+              .firstOrNull
+              ?.alertType ??
+          AlertType.unknown;
+      final triggerEnabled = switch (triggersData
+          .where((e) => e.triggerid == event.objectid)
+          .firstOrNull
+          ?.status) {
+        "0" => true,
+        "1" => false,
+        _ => true,
+      };
+      ZabHostData host;
+      for (host in event.hosts ?? []) {
+        String hostDomain = host.host ?? host.name ?? "";
+        String hostName = host.name ?? host.host ?? "";
+        String? opData = (event.opdata == "") ? "..." : event.opdata;
+        final hostEnabled = switch (host.status) {
+          "0" => true,
+          "1" => false,
+          _ => true,
+        };
+        newAlerts.add(
+          Alert(
+            source: sourceData.id!,
+            kind: kind,
+            hostname: hostName,
+            service: event.name!,
+            message: opData ?? "...",
+            serviceUrl: generateURL(hostDomain, ""),
+            monitorUrl: generateURL(sourceData.baseURL, ""),
+            age: DateTime.now().difference(_dateTime(event.clock!)),
+            silenced: (event.acknowledged == "0") ? false : true,
+            downtimeScheduled: (event.suppressed == "0") ? false : true,
+            active: true,
+            enabled: triggerEnabled && hostEnabled,
+          ),
+        );
+      }
     }
     return newAlerts;
   }
@@ -205,7 +250,7 @@ class ZabAlerts extends AlertSource {
     return (dataSet, <Alert>[]);
   }
 
-  Future<List<Alert>> _checkForError<T>(ZabErrorData? error) async {
+  List<Alert> _checkForError<T>(ZabErrorData? error) {
     if (error != null) {
       return errorFetchingAlerts(
         sourceData: sourceData,
@@ -218,30 +263,31 @@ class ZabAlerts extends AlertSource {
 }
 
 @freezed
-abstract class ZabAlertsData with _$ZabAlertsData {
-  const factory ZabAlertsData({
-    List<ZabAlertData>? result,
+abstract class ZabEventsData with _$ZabEventsData {
+  const factory ZabEventsData({
+    List<ZabEventData>? result,
     ZabErrorData? error,
-  }) = _ZabAlertsData;
+  }) = _ZabEventsData;
 
-  factory ZabAlertsData.fromJson(Map<String, dynamic> json) =>
-      _$ZabAlertsDataFromJson(json);
+  factory ZabEventsData.fromJson(Map<String, dynamic> json) =>
+      _$ZabEventsDataFromJson(json);
 }
 
 @freezed
-abstract class ZabAlertData with _$ZabAlertData {
-  const factory ZabAlertData({
+abstract class ZabEventData with _$ZabEventData {
+  const factory ZabEventData({
     String? name,
     String? clock,
     String? opdata,
     String? severity,
+    String? objectid,
     String? suppressed,
     String? acknowledged,
     List<ZabHostData>? hosts,
-  }) = _ZabAlertData;
+  }) = _ZabEventData;
 
-  factory ZabAlertData.fromJson(Map<String, dynamic> json) =>
-      _$ZabAlertDataFromJson(json);
+  factory ZabEventData.fromJson(Map<String, dynamic> json) =>
+      _$ZabEventDataFromJson(json);
 }
 
 @freezed
@@ -282,8 +328,29 @@ abstract class ZabProblemsData with _$ZabProblemsData {
 
 @freezed
 abstract class ZabProblemData with _$ZabProblemData {
-  const factory ZabProblemData({String? eventid}) = _ZabProblemData;
+  const factory ZabProblemData({String? eventid, String? objectid}) =
+      _ZabProblemData;
 
   factory ZabProblemData.fromJson(Map<String, dynamic> json) =>
       _$ZabProblemDataFromJson(json);
+}
+
+@freezed
+abstract class ZabTriggersData with _$ZabTriggersData {
+  const factory ZabTriggersData({
+    List<ZabTriggerData>? result,
+    ZabErrorData? error,
+  }) = _ZabTriggersData;
+
+  factory ZabTriggersData.fromJson(Map<String, dynamic> json) =>
+      _$ZabTriggersDataFromJson(json);
+}
+
+@freezed
+abstract class ZabTriggerData with _$ZabTriggerData {
+  const factory ZabTriggerData({String? triggerid, String? status}) =
+      _ZabTriggerData;
+
+  factory ZabTriggerData.fromJson(Map<String, dynamic> json) =>
+      _$ZabTriggerDataFromJson(json);
 }

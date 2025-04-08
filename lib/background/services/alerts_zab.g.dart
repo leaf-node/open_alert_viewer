@@ -6,11 +6,11 @@ part of 'alerts_zab.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_ZabAlertsData _$ZabAlertsDataFromJson(Map<String, dynamic> json) =>
-    _ZabAlertsData(
+_ZabEventsData _$ZabEventsDataFromJson(Map<String, dynamic> json) =>
+    _ZabEventsData(
       result:
           (json['result'] as List<dynamic>?)
-              ?.map((e) => ZabAlertData.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => ZabEventData.fromJson(e as Map<String, dynamic>))
               .toList(),
       error:
           json['error'] == null
@@ -18,15 +18,16 @@ _ZabAlertsData _$ZabAlertsDataFromJson(Map<String, dynamic> json) =>
               : ZabErrorData.fromJson(json['error'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$ZabAlertsDataToJson(_ZabAlertsData instance) =>
+Map<String, dynamic> _$ZabEventsDataToJson(_ZabEventsData instance) =>
     <String, dynamic>{'result': instance.result, 'error': instance.error};
 
-_ZabAlertData _$ZabAlertDataFromJson(Map<String, dynamic> json) =>
-    _ZabAlertData(
+_ZabEventData _$ZabEventDataFromJson(Map<String, dynamic> json) =>
+    _ZabEventData(
       name: json['name'] as String?,
       clock: json['clock'] as String?,
       opdata: json['opdata'] as String?,
       severity: json['severity'] as String?,
+      objectid: json['objectid'] as String?,
       suppressed: json['suppressed'] as String?,
       acknowledged: json['acknowledged'] as String?,
       hosts:
@@ -35,12 +36,13 @@ _ZabAlertData _$ZabAlertDataFromJson(Map<String, dynamic> json) =>
               .toList(),
     );
 
-Map<String, dynamic> _$ZabAlertDataToJson(_ZabAlertData instance) =>
+Map<String, dynamic> _$ZabEventDataToJson(_ZabEventData instance) =>
     <String, dynamic>{
       'name': instance.name,
       'clock': instance.clock,
       'opdata': instance.opdata,
       'severity': instance.severity,
+      'objectid': instance.objectid,
       'suppressed': instance.suppressed,
       'acknowledged': instance.acknowledged,
       'hosts': instance.hosts,
@@ -90,7 +92,40 @@ Map<String, dynamic> _$ZabProblemsDataToJson(_ZabProblemsData instance) =>
     <String, dynamic>{'result': instance.result, 'error': instance.error};
 
 _ZabProblemData _$ZabProblemDataFromJson(Map<String, dynamic> json) =>
-    _ZabProblemData(eventid: json['eventid'] as String?);
+    _ZabProblemData(
+      eventid: json['eventid'] as String?,
+      objectid: json['objectid'] as String?,
+    );
 
 Map<String, dynamic> _$ZabProblemDataToJson(_ZabProblemData instance) =>
-    <String, dynamic>{'eventid': instance.eventid};
+    <String, dynamic>{
+      'eventid': instance.eventid,
+      'objectid': instance.objectid,
+    };
+
+_ZabTriggersData _$ZabTriggersDataFromJson(Map<String, dynamic> json) =>
+    _ZabTriggersData(
+      result:
+          (json['result'] as List<dynamic>?)
+              ?.map((e) => ZabTriggerData.fromJson(e as Map<String, dynamic>))
+              .toList(),
+      error:
+          json['error'] == null
+              ? null
+              : ZabErrorData.fromJson(json['error'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$ZabTriggersDataToJson(_ZabTriggersData instance) =>
+    <String, dynamic>{'result': instance.result, 'error': instance.error};
+
+_ZabTriggerData _$ZabTriggerDataFromJson(Map<String, dynamic> json) =>
+    _ZabTriggerData(
+      triggerid: json['triggerid'] as String?,
+      status: json['status'] as String?,
+    );
+
+Map<String, dynamic> _$ZabTriggerDataToJson(_ZabTriggerData instance) =>
+    <String, dynamic>{
+      'triggerid': instance.triggerid,
+      'status': instance.status,
+    };
