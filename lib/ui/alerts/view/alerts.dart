@@ -151,7 +151,7 @@ class AlertWidget extends StatelessWidget {
           else if (alert.downtimeScheduled)
             const Icon(Icons.bedtime_outlined)
           else if (alert.silenced)
-            const Icon(Icons.check_outlined)
+            const Icon(Icons.flag_outlined)
           else if (!alert.active)
             const Icon(Icons.pending_outlined),
         ],

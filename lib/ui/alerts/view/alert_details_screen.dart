@@ -111,7 +111,7 @@ class AlertDetails extends StatelessWidget {
                 ),
               if (alert.silenced)
                 ColorTile(
-                  Icons.check_outlined,
+                  Icons.flag_outlined,
                   SilenceTypes.acknowledged.text,
                   _viewKind.fgColor,
                 ),
