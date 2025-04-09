@@ -76,6 +76,7 @@ Do these tasks first.
 * [ ] Trying to open a second running version of the app only launches a notification
 * [ ] Enabling and disabling sound works as expected
 * [ ] Test Flatpak build
+* [ ] Test .deb on old version of Ubuntu Linux
 
 ## Pre-release
 
