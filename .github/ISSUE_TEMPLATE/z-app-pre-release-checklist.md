@@ -66,7 +66,7 @@ Do these tasks first.
     * [ ] Is the app launched after restarting the phone when notifications were enabled?
 * [ ] Previous bugs
     * [ ] Turning off notifications in app settings doesn't crash, freeze or blank out the app
-    * [ ] ~App doesn't flicker when navigating through menus or scrolling~
+    * [ ] App doesn't flicker when navigating through menus or scrolling
 * [ ] Test app on tablet, phone and foldable form-factors, test changing rotation and folding
 * [ ] Run basic tests on oldest version of Android supported by the app
 * [ ] Permissions are requested after the user creates the first account, not when the app opens
