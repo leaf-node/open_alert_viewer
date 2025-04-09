@@ -89,8 +89,13 @@ mixin NetworkFetch {
     final isLocalhost = RegExp(
       r"^(https?://)?localhost(:[0-9]+)?(/.*)?",
     ).hasMatch(baseURL);
-    final List<ConnectivityResult> connectivityResult =
-        await Connectivity().checkConnectivity();
-    return isLocalhost || !connectivityResult.contains(ConnectivityResult.none);
+    try {
+      final List<ConnectivityResult> connectivityResult =
+          await Connectivity().checkConnectivity();
+      return isLocalhost ||
+          !connectivityResult.contains(ConnectivityResult.none);
+    } catch (e) {
+      return true;
+    }
   }
 }
