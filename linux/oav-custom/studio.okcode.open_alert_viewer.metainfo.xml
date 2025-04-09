@@ -65,6 +65,11 @@
   </screenshots>
 
   <releases>
+    <release version="1.3.0" date="2025-04-09">
+      <description>
+          <p>Support for Zabbix 6 and 7 was added, along with per-source visibility and notification switches. This version also adds a details screen opened by tapping on alerts, and a helpful messages if a new alert source isn't discovered. Support and donation links were updated. Flutter and Dart dependencies were upgraded, and various application fixes were made.</p>
+      </description>
+    </release>
     <release version="1.2.0" date="2025-02-04">
       <description>
           <p>Switched JSON parsing to use '@freezed', added an explicit summary of dependency licenses, and updated Flutter dependencies</p>
