@@ -90,7 +90,7 @@ mixin NetworkFetch {
     final isLocalhost = RegExp(
       r"^(https?://)?localhost(:[0-9]+)?(/.*)?",
     ).hasMatch(baseURL);
-    if (Platform.environment["container"] != null) {
+    if (_isInContainer()) {
       return true;
     } else {
       final List<ConnectivityResult> connectivityResult =
@@ -98,5 +98,12 @@ mixin NetworkFetch {
       return isLocalhost ||
           !connectivityResult.contains(ConnectivityResult.none);
     }
+  }
+
+  bool _isInContainer() {
+    if (Platform.environment["container"] != null) {
+      return true;
+    }
+    return false;
   }
 }
