@@ -5,6 +5,7 @@
  */
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:isolate';
 
 import 'package:flutter/services.dart';
@@ -38,14 +39,29 @@ class BackgroundChannelInternal {
     SettingsRepo.appVersion = appVersion;
     final portFromForeground = ReceivePort();
     portToForeground.send(portFromForeground.sendPort);
-    try {
-      await init();
-      portFromForeground.listen(handleRequestsToBackground);
-    } catch (e) {
-      sendBackgroundReady();
-      rethrow;
-    }
-    sendBackgroundReady();
+    runZonedGuarded(
+      () async {
+        try {
+          await init();
+          portFromForeground.listen(handleRequestsToBackground);
+        } catch (e) {
+          sendBackgroundReady();
+          rethrow;
+        }
+        sendBackgroundReady();
+      },
+      (error, trace) {
+        if (error.runtimeType == SocketException) {
+          SocketException sockExcept = error as SocketException;
+          if (sockExcept.address?.address ==
+                  "/var/run/dbus/system_bus_socket" &&
+              sockExcept.osError?.errorCode == 2) {
+            return;
+          }
+        }
+        throw error;
+      },
+    );
   }
 
   Future<void> init() async {
