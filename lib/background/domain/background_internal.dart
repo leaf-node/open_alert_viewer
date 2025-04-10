@@ -5,6 +5,7 @@
  */
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -56,6 +57,7 @@ class BackgroundChannelInternal {
           if (sockExcept.address?.address ==
                   "/var/run/dbus/system_bus_socket" &&
               sockExcept.osError?.errorCode == 2) {
+            log("In an unexpected container? See _isInContainer(): $error");
             return;
           }
         }
