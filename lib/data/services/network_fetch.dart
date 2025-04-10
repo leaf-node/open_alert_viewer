@@ -5,6 +5,7 @@
  */
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -89,13 +90,13 @@ mixin NetworkFetch {
     final isLocalhost = RegExp(
       r"^(https?://)?localhost(:[0-9]+)?(/.*)?",
     ).hasMatch(baseURL);
-    try {
+    if (Platform.environment["container"] == "flatpak") {
+      return true;
+    } else {
       final List<ConnectivityResult> connectivityResult =
           await Connectivity().checkConnectivity();
       return isLocalhost ||
           !connectivityResult.contains(ConnectivityResult.none);
-    } catch (e) {
-      return true;
     }
   }
 }
