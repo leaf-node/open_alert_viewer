@@ -1,3 +1,3 @@
-Display server and network alerts from servers running Prometheus, Nagios, Icinga or Zabbix.
+Display server and network alerts from servers running Prometheus, Nagios, Icinga or Zabbix. For Linux and Android.
 
 Prometheus v0.16.0+, Nagios Core 4.x and Icinga 2.12.0+ are supported with Basic Authentication; and default authentication for Zabbix 6.x or 7.x.
