@@ -26,13 +26,13 @@ and 7.x.
 <table>
   <tr>
     <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-alerts.png">
-        <img alt="1" width="200px" height="auto" src="https://sandpiper.codes/assets/img/screenshots/oav/phone-alerts.png"></a></td>
+        <img alt="1" width="200px" height="auto" src="https://github.com/sandpiper-codes/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/1.png"></a></td>
     <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-account.png">
-        <img alt="2" width="200px" height="auto" src="https://sandpiper.codes/assets/img/screenshots/oav/phone-account.png"></a></td>
+        <img alt="2" width="200px" height="auto" src="https://github.com/sandpiper-codes/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/2.png"></a></td>
     <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-general-settings.png">
-        <img alt="3" width="200px" height="auto" src="https://sandpiper.codes/assets/img/screenshots/oav/phone-general-settings.png"></a></td>
+        <img alt="3" width="200px" height="auto" src="https://github.com/sandpiper-codes/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/3.png"></a></td>
     <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-alerts-filter.png">
-        <img alt="4" width="200px" height="auto" src="https://sandpiper.codes/assets/img/screenshots/oav/phone-alerts-filter.png"></a></td>
+        <img alt="4" width="200px" height="auto" src="https://github.com/sandpiper-codes/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/4.png"></a></td>
   </tr>
 </table>
 
