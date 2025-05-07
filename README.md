@@ -45,8 +45,6 @@ Basic Authentication; partial support, and default authentication for Zabbix
         <img width='260' height='100' style='display: inline-block' alt='Get it on Flathub' src='https://sandpiper.codes/assets/img/flathub-badge-border.png'/></a>
     <a href='https://github.com/sandpiper-codes/open_alert_viewer/releases'>
         <img width='260' height='100' style='display: inline-block' alt='Get *.tar.gz and *.deb' src='https://sandpiper.codes/assets/img/generic-badge-border.svg'/></a>
-    <a href='https://play.google.com/store/apps/details?id=studio.okcode.open_alert_viewer'>
-        <img width='290' height='100' style='display: inline-block' alt='Get it on Google Play' src='https://sandpiper.codes/assets/img/Google-Play-badge-border.png'/></a>
 </p>
 
 ## Back end compatibility
