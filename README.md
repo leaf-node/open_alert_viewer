@@ -25,13 +25,13 @@ Basic Authentication; partial support, and default authentication for Zabbix
 
 <table>
   <tr>
-    <td><a href="https://sourceflow.dev/assets/img/screenshots/oav/phone-alerts.png">
+    <td><a href="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/1.png">
         <img alt="1" width="200px" height="auto" src="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/1.png"></a></td>
-    <td><a href="https://sourceflow.dev/assets/img/screenshots/oav/phone-account.png">
+    <td><a href="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/2.png">
         <img alt="2" width="200px" height="auto" src="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/2.png"></a></td>
-    <td><a href="https://sourceflow.dev/assets/img/screenshots/oav/phone-general-settings.png">
+    <td><a href="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/3.png">
         <img alt="3" width="200px" height="auto" src="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/3.png"></a></td>
-    <td><a href="https://sourceflow.dev/assets/img/screenshots/oav/phone-alerts-filter.png">
+    <td><a href="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/4.png">
         <img alt="4" width="200px" height="auto" src="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/4.png"></a></td>
   </tr>
 </table>
