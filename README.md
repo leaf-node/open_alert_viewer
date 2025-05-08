@@ -176,9 +176,8 @@ License: MIT
 Other dependencies use a variety of permissive licenses. See the licensing tab
 in the app for a list of them.
 
-Aside from Open Alert Viewer itself, neither Open Alert Viewer nor Sandpiper
-Codes are endorsed by, nor affiliated with, the creators of the software
-referenced in this app, this app's source code, nor its documentation. While
-these may nominatively reference the names and logos of third party software,
-they are trademarked by their respective owners.
+This app, its source code, and documentation may nominatively reference the
+names or logos of third party software, which are trademarked by their
+respective owners. This app, its source code, documentation, and its owners are
+not endorsed by, nor affiliated with, owners of third party software.
 
