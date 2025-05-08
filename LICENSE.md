@@ -12,7 +12,7 @@ than "Open Alert Viewer", and change the logo and application ID.
 Open Alert Viewer License (MIT)
 ===============================
 
-Copyright 2024, 2025 Sandpiper Codes and Open Alert Viewer authors
+Copyright 2024, 2025 Andrew Engelbrecht and Open Alert Viewer authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the “Software”), to deal in

@@ -2,14 +2,14 @@
 
 ### Contact Info
 
-Open Alert Viewer is made by Sandpiper Codes and other Open Alert Viewer
-authors. Sandpiper Codes may be reached at
-[support@sandpiper.codes](mailto:support@sandpiper.codes), or via the "Support"
+Open Alert Viewer is made by Andrew Engelbrecht and other Open Alert Viewer
+authors. Support may be reached at
+[support@sourceflow.dev](mailto:support@sourceflow.dev), or via the "Support"
 menu item in the app.
 
 ### Data Use
 
-[Open Alert Viewer](https://sandpiper.codes/apps/open-alert-viewer/) ("the
+[Open Alert Viewer](https://sourceflow.dev/apps/open-alert-viewer/) ("the
 app") is libre / open source software, so it respects your freedom to use,
 study, change and share the code. It also respects your privacy: Usernames,
 passwords and remote server addresses ("credentials") that you enter into the
@@ -75,8 +75,8 @@ backed-up versions of the data you entered into the app.
 ### Third Parties
 
 Sites linked to from the app, such as [GitHub](https://github.com) and [Buy Me
-a Coffee](https://buymeacoffee.com), are not controlled by Sandpiper Codes, so
-the owners of those sites are responsible for their own privacy policies.
+a Coffee](https://buymeacoffee.com), are not controlled by Andrew Engelbrecht,
+so the owners of those sites are responsible for their own privacy policies.
 
 The owners of remote servers you configure the app to connect to are
 responsible for their own privacy policies regarding the handling and recording
@@ -87,10 +87,10 @@ be coordinated with those third parties.
 
 ### Changes to this Policy
 
-Sandpiper Codes may occasionally update this privacy policy for Open Alert
+Andrew Engelbrecht may occasionally update this privacy policy for Open Alert
 Viewer. When we do, we'll change the date that it was last edited at the top of
 the page of the website-hosted version at
-[sandpiper.codes](https://sandpiper.codes/apps/open-alert-viewer/privacy-policy/).
+[sourceflow.dev](https://sourceflow.dev/apps/open-alert-viewer/privacy-policy/).
 We suggest visiting that page from time to time to be notified of any changes.
 
 For older versions of the app with outdated embedded privacy policies, the user
