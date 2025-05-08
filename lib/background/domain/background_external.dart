@@ -87,7 +87,7 @@ class BackgroundChannel {
                 "the alert link so we can help resolve the "
                 "problem. Sorry for the inconvenience.",
             serviceUrl:
-                "https://github.com/sandpiper-codes/open_alert_viewer/issues",
+                "https://github.com/leaf-node/open_alert_viewer/issues",
             monitorUrl: "",
             age: Duration.zero,
             silenced: false,
@@ -102,7 +102,7 @@ class BackgroundChannel {
             service: "Stack Trace",
             message: errorMessage,
             serviceUrl:
-                "https://github.com/sandpiper-codes/open_alert_viewer/issues",
+                "https://github.com/leaf-node/open_alert_viewer/issues",
             monitorUrl: "",
             age: Duration.zero,
             silenced: false,

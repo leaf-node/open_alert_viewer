@@ -13,16 +13,16 @@
   <metadata_license>MIT</metadata_license>
   <project_license>MIT</project_license>
 
-  <developer id="sandpiper.codes">
-    <name>Sandpiper Codes</name>
+  <developer id="sourceflow.dev">
+    <name>sourceflow.dev</name>
   </developer>
 
-  <url type="homepage">https://sandpiper.codes/apps/open-alert-viewer/</url>
-  <url type="donation">https://sandpiper.codes/donate/</url>
-  <url type="contact">https://sandpiper.codes/about/</url>
-  <url type="bugtracker">https://github.com/sandpiper-codes/open_alert_viewer/issues/</url>
-  <url type="contribute">https://github.com/sandpiper-codes/open_alert_viewer/</url>
-  <url type="vcs-browser">https://github.com/sandpiper-codes/open_alert_viewer/</url>
+  <url type="homepage">https://sourceflow.dev/apps/open-alert-viewer/</url>
+  <url type="donation">https://sourceflow.dev/donate/</url>
+  <url type="contact">https://sourceflow.dev/about/</url>
+  <url type="bugtracker">https://github.com/leaf-node/open_alert_viewer/issues/</url>
+  <url type="contribute">https://github.com/leaf-node/open_alert_viewer/</url>
+  <url type="vcs-browser">https://github.com/leaf-node/open_alert_viewer/</url>
 
   <recommends>
     <display_length compare="ge">400</display_length>
@@ -47,19 +47,19 @@
   <launchable type="desktop-id">studio.okcode.open_alert_viewer.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://sandpiper.codes/assets/img/screenshots/oav/desktop-alerts.png</image>
+      <image>https://sourceflow.dev/assets/img/screenshots/oav/desktop-alerts.png</image>
       <caption>Display service errors and down servers on your network</caption>
     </screenshot>
     <screenshot>
-      <image>https://sandpiper.codes/assets/img/screenshots/oav/desktop-account.png</image>
+      <image>https://sourceflow.dev/assets/img/screenshots/oav/desktop-account.png</image>
       <caption>Connect to a compatible network monitor</caption>
     </screenshot>
     <screenshot>
-      <image>https://sandpiper.codes/assets/img/screenshots/oav/desktop-general-settings.png</image>
+      <image>https://sourceflow.dev/assets/img/screenshots/oav/desktop-general-settings.png</image>
       <caption>Enable notifications and dark mode in the app settings</caption>
     </screenshot>
     <screenshot>
-      <image>https://sandpiper.codes/assets/img/screenshots/oav/desktop-alerts-filter.png</image>
+      <image>https://sourceflow.dev/assets/img/screenshots/oav/desktop-alerts-filter.png</image>
       <caption>Filter out visible alerts by type</caption>
     </screenshot>
   </screenshots>

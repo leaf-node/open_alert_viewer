@@ -89,7 +89,7 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "Sandpiper Codes" "\0"
+            VALUE "CompanyName", "sourceflow.dev" "\0"
             VALUE "FileDescription", "open_alert_viewer" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "studio.okcode.open_alert_viewer" "\0"

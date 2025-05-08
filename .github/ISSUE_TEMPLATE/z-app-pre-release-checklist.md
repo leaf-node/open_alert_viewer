@@ -99,7 +99,7 @@ Do these tasks last if / when the above is complete and working.
 
 * [ ] Wait for CD jobs to complete successfully
 * [ ] Update and commit the external Flatpak manifest file with the new version strings and file checksums
-* [ ] Create a pull request and merge it in the Flathub [manifest repo](https://github.com/sandpiper-codes/flathub-studio.okcode.open_alert_viewer)
+* [ ] Create a pull request and merge it in the Flathub [manifest repo](https://github.com/leaf-node/flathub-studio.okcode.open_alert_viewer)
 * [ ] Upload new .aab bundle and native debug symbols, updating metadata and info for reviewers
 * [ ] Submit release for .aab bundle
 
