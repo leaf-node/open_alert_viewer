@@ -1,11 +1,11 @@
 
-<img width="100%" src="https://sandpiper.codes/assets/img/open-alert-viewer-feature-graphic.png">
+<img width="100%" src="https://sourceflow.dev/assets/img/open-alert-viewer-feature-graphic.png">
 
 # Open Alert Viewer
 
 <p align="center">
-    <a href='https://github.com/sandpiper-codes/open_alert_viewer/releases'>
-        <img height="20" src="https://img.shields.io/github/release/sandpiper-codes/open_alert_viewer.svg?logo=github"></a>
+    <a href='https://github.com/leaf-node/open_alert_viewer/releases'>
+        <img height="20" src="https://img.shields.io/github/release/leaf-node/open_alert_viewer.svg?logo=github"></a>
     <a href='https://f-droid.org/en/packages/studio.okcode.open_alert_viewer/'>
         <img height="20" src="https://img.shields.io/f-droid/v/studio.okcode.open_alert_viewer.svg?logo=F-Droid"></a>
     <a href='https://flathub.org/apps/studio.okcode.open_alert_viewer'>
@@ -25,14 +25,14 @@ Basic Authentication; partial support, and default authentication for Zabbix
 
 <table>
   <tr>
-    <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-alerts.png">
-        <img alt="1" width="200px" height="auto" src="https://github.com/sandpiper-codes/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/1.png"></a></td>
-    <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-account.png">
-        <img alt="2" width="200px" height="auto" src="https://github.com/sandpiper-codes/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/2.png"></a></td>
-    <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-general-settings.png">
-        <img alt="3" width="200px" height="auto" src="https://github.com/sandpiper-codes/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/3.png"></a></td>
-    <td><a href="https://sandpiper.codes/assets/img/screenshots/oav/phone-alerts-filter.png">
-        <img alt="4" width="200px" height="auto" src="https://github.com/sandpiper-codes/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/4.png"></a></td>
+    <td><a href="https://sourceflow.dev/assets/img/screenshots/oav/phone-alerts.png">
+        <img alt="1" width="200px" height="auto" src="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/1.png"></a></td>
+    <td><a href="https://sourceflow.dev/assets/img/screenshots/oav/phone-account.png">
+        <img alt="2" width="200px" height="auto" src="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/2.png"></a></td>
+    <td><a href="https://sourceflow.dev/assets/img/screenshots/oav/phone-general-settings.png">
+        <img alt="3" width="200px" height="auto" src="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/3.png"></a></td>
+    <td><a href="https://sourceflow.dev/assets/img/screenshots/oav/phone-alerts-filter.png">
+        <img alt="4" width="200px" height="auto" src="https://github.com/leaf-node/open_alert_viewer/blob/main/metadata/en-US/images/phoneScreenshots/4.png"></a></td>
   </tr>
 </table>
 
@@ -40,11 +40,11 @@ Basic Authentication; partial support, and default authentication for Zabbix
 
 <p align="center">
     <a href='https://f-droid.org/en/packages/studio.okcode.open_alert_viewer/'>
-        <img width='289' height='100' style='display: inline-block' alt='Get it on F-Droid' src='https://sandpiper.codes/assets/img/f-droid-badge-border.png'/></a>
+        <img width='289' height='100' style='display: inline-block' alt='Get it on F-Droid' src='https://sourceflow.dev/assets/img/f-droid-badge-border.png'/></a>
     <a href='https://flathub.org/apps/studio.okcode.open_alert_viewer'>
-        <img width='260' height='100' style='display: inline-block' alt='Get it on Flathub' src='https://sandpiper.codes/assets/img/flathub-badge-border.png'/></a>
-    <a href='https://github.com/sandpiper-codes/open_alert_viewer/releases'>
-        <img width='260' height='100' style='display: inline-block' alt='Get *.tar.gz and *.deb' src='https://sandpiper.codes/assets/img/generic-badge-border.svg'/></a>
+        <img width='260' height='100' style='display: inline-block' alt='Get it on Flathub' src='https://sourceflow.dev/assets/img/flathub-badge-border.png'/></a>
+    <a href='https://github.com/leaf-node/open_alert_viewer/releases'>
+        <img width='260' height='100' style='display: inline-block' alt='Get *.tar.gz and *.deb' src='https://sourceflow.dev/assets/img/generic-badge-border.svg'/></a>
 </p>
 
 ## Back end compatibility
@@ -69,7 +69,7 @@ Basic Authentication; partial support, and default authentication for Zabbix
     * [Google Play](https://play.google.com/store/apps/details?id=studio.okcode.open_alert_viewer)
 * Linux (`x86_64`, `aarch64`)
     * [Flathub](https://flathub.org/apps/studio.okcode.open_alert_viewer)
-    * [.deb and .tar.gz](https://github.com/sandpiper-codes/open_alert_viewer/releases)
+    * [.deb and .tar.gz](https://github.com/leaf-node/open_alert_viewer/releases)
 * (More planned)
 
 ## Build instructions
@@ -165,7 +165,7 @@ To view debug alerts, create an account with the base URL set to `demo`.
 
 ## Support
 
-* [Issue tracker](https://github.com/sandpiper-codes/open_alert_viewer/issues)
+* [Issue tracker](https://github.com/leaf-node/open_alert_viewer/issues)
 * [![Chat on Matrix](https://matrix.to/img/matrix-badge.svg)](https://matrix.to/#/#sandpiper-codes:matrix.org)
 
 
