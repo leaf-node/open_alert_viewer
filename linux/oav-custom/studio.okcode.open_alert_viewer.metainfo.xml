@@ -65,6 +65,11 @@
   </screenshots>
 
   <releases>
+    <release version="1.3.2" date="2025-05-09">
+      <description>
+          <p>Upgraded dependencies. Updated app owner information, URLs, and trademark disclaimer</p>
+      </description>
+    </release>
     <release version="1.3.1" date="2025-04-09">
       <description>
           <p>Fixed an exception for Flatpak builds on Linux</p>

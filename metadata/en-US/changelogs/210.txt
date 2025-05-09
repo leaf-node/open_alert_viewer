@@ -1,0 +1,3 @@
+* Upgraded dependencies
+* Updated app owner information and URLs
+* Updated trademark disclaimer
