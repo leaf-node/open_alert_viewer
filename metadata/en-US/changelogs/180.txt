@@ -1,4 +1,0 @@
-* Specified per-arch version codes
-* Switched JSON parsing to use '@freezed'
-* Added an explicit summary of dependency licenses
-* Updated Flutter dependencies

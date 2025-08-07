@@ -1,3 +1,0 @@
-* Adding metainfo.xml and .desktop files for Linux
-* Upgrade OS packages before automated build for Linux
-* Adding full-sized circular icons for Linux

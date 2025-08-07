@@ -1,2 +1,0 @@
-* Improvements to automation and packaging for Linux
-* Update alerts w/o fetch when filters change

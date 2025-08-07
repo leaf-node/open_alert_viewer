@@ -1,1 +1,0 @@
-* Fixed an exception for Flatpak builds on Linux

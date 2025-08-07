@@ -1,3 +1,0 @@
-* Adjust padding of text in info screen
-* Update Flutter dependencies
-* Improvements to automated Linux bundle builds

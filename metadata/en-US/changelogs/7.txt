@@ -1,1 +1,0 @@
-* Add .flutter submodule for F-Droid builds, v3.27.3

@@ -1,2 +1,0 @@
-* Adding app metadata for F-Droid details page
-* Adding rounded icons to repo

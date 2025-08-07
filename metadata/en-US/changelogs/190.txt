@@ -1,8 +1,0 @@
-* Added support for Zabbix 6 and 7
-* Added per-source visibility and notification switches
-* Added details screen opened by tapping on alerts
-* Helpful messages if a new alert source isn't discovered
-* Enable use of user-installed CA certificates on Android
-* Updated support and donation links
-* Upgraded Flutter and Dart dependencies
-* Various application fixes

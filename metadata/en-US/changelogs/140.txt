@@ -1,4 +1,0 @@
-* Updated app descriptions
-* Updated trademark disclaimer
-* Updated phone and tablet screenshots
-* Added old changelog summaries

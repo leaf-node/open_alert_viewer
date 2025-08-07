@@ -1,1 +1,0 @@
-* Update demo alert status text

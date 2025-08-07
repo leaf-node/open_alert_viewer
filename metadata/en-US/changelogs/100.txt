@@ -1,1 +1,0 @@
-* Setting up builds of Linux bundles, to be used for making Flatpaks
